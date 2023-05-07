@@ -5,6 +5,7 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Balance from '../components/Balance';
 import Orders from '../components/Orders';
+import Subsidiary from '../components/subsidiary'
 import Copyright from '../../common/Copyright'
 import { Typography } from '@mui/material';
 import LoggedInLayout from '../../common/LoggedInLayout';
@@ -14,7 +15,6 @@ const Home = () => {
 
         <Container sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3} >
-                {/* Recent Deposits */}
                 <Grid item sx={{ flexGrow: 1 }}>
                     <Paper
                         sx={{
@@ -25,21 +25,18 @@ const Home = () => {
                         <Balance />
                     </Paper>
                 </Grid>
-                {/* Chart */}
-                {/*<Grid item xs={12} md={8} lg={9}>
-                        <Paper
-                            sx={{
-                                p: 2,
-                                display: 'flex',
-                                flexDirection: 'column',
-                                height: 240,
-                            }}
-                        >
-                        </Paper>
-                    </Grid>
-                        */}
-                {/* Recent Orders */}
-                <Grid item xs={12}>
+
+                <Grid item xs={8} >
+                    <Paper sx={{ p: 1, display: 'flex', flexDirection: 'column' }}>
+                        <Typography component="p" variant="h6" sx={{
+                            display: 'flex',
+                        }}>
+                        </Typography>
+                        <Subsidiary />
+                    </Paper>
+                </Grid>
+                
+                <Grid item xs={12} >
                     <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                         <Typography component="p" variant="h6" sx={{
                             display: 'flex',

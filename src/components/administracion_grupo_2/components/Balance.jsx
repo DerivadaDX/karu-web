@@ -21,7 +21,7 @@ const [balance,setBalance]=useState(0);
   return <Box sx={{
     display: 'flex',
     flexDirection: 'column',
-    p: 2,
+    p: 4.4,
     gap:'1rem'
   }}>
     <div>
@@ -30,33 +30,12 @@ const [balance,setBalance]=useState(0);
         ${balance}
       </Typography>
     </div>
-    {/* <Typography color="text.secondary" sx={{ flex: 1 }}>
-      on 15 March, 2019
-    </Typography>
-    <div>
-      <Link color="primary" href="#" onClick={preventDefault}>
-        View balance
-</Link>
-    </div>*/}
+    
     <Box sx={{
       display: 'flex',
       flexDirection: 'row',
       justifyContent: 'space-between',
     }}>
-      <Box sx={{
-        display: 'flex',
-        gap: '1rem',
-      }}>
-        <Button variant="contained">Ingresar Dinero</Button>
-        <Button variant="outlined">Transferir dinero</Button>
-      </Box>
-      <Typography component="p" sx={{
-        display: 'flex',
-        alignItems:'center'
-      }}>
-        CBU: 0sdsd0784522
-      </Typography>
-
     </Box>
 
   </Box>;

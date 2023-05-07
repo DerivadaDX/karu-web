@@ -6,53 +6,21 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Title from '../../common/Title';
-
-// Generate Order Data
-function createData(id, date, name, shipTo, paymentMethod, amount) {
-  return { id, date, name, shipTo, paymentMethod, amount };
-}
-
-const rows = [
-  createData(
-    0,
-    '16 Mar, 2019',
-    'Elvis Presley',
-    'Tupelo, MS',
-    'VISA ⠀•••• 3719',
-    312.44,
-  ),
-  createData(
-    1,
-    '16 Mar, 2019',
-    'Paul McCartney',
-    'London, UK',
-    'VISA ⠀•••• 2574',
-    866.99,
-  ),
-  createData(2, '16 Mar, 2019', 'Tom Scholz', 'Boston, MA', 'MC ⠀•••• 1253', 100.81),
-  createData(
-    3,
-    '16 Mar, 2019',
-    'Michael Jackson',
-    'Gary, IN',
-    'AMEX ⠀•••• 2000',
-    654.39,
-  ),
-  createData(
-    4,
-    '15 Mar, 2019',
-    'Bruce Springsteen',
-    'Long Branch, NJ',
-    'VISA ⠀•••• 5919',
-    212.79,
-  ),
-];
+import { useEffect } from 'react';
+import { useState } from 'react';
+import { getMovimientos } from '../../services';
 
 function preventDefault(event) {
   event.preventDefault();
 }
 
 export default function Orders() {
+  const [movimientos,setMovimientos]=useState([]);
+
+  useEffect(()=>{
+    getMovimientos().then(response=> setMovimientos(response.data,));
+  },[])
+
   return (
     <React.Fragment>
       <Title>Ultimos Movimientos</Title>
@@ -60,27 +28,26 @@ export default function Orders() {
         <TableHead>
           <TableRow>
             <TableCell>Fecha</TableCell>
-            <TableCell>Nombre</TableCell>
-            <TableCell>Destino</TableCell>
-            <TableCell>Método de pago</TableCell>
+            <TableCell>Cuenta Origen</TableCell>
+            <TableCell>Cuenta Destino</TableCell>
+            <TableCell>Concepto</TableCell>
             <TableCell align="right">Monto</TableCell>
+            <TableCell>Numero de operación</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.id}>
-              <TableCell>{row.date}</TableCell>
-              <TableCell>{row.name}</TableCell>
-              <TableCell>{row.shipTo}</TableCell>
-              <TableCell>{row.paymentMethod}</TableCell>
-              <TableCell align="right">{`$${row.amount}`}</TableCell>
+        {movimientos && movimientos.map((movimiento, index) => (
+            <TableRow key={movimiento.numero_operacion}>
+              <TableCell>{movimiento.fecha}</TableCell>
+              <TableCell>{movimiento.id_cuenta_origen}</TableCell>
+              <TableCell>{movimiento.id_cuenta_destino}</TableCell>
+              <TableCell>{movimiento.concepto}</TableCell>
+              <TableCell align="right">{`$${movimiento.monto}`}</TableCell>
+              <TableCell align="center">{movimiento.numero_operacion}</TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
-      <Link color="primary" href="#" onClick={preventDefault} sx={{ mt: 3 }}>
-        See more orders
-      </Link>
     </React.Fragment>
   );
 }
