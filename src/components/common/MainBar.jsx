@@ -54,7 +54,7 @@ const MainBar = ({ open, drawerWidth, toggleDrawer }) => {
                     noWrap
                     sx={{ flexGrow: 1 }}
                 >
-                    Administraci&oacute;n de usuario
+                    Cuenta Corriente
                 </Typography>
                 <IconButton color="inherit">
                     <Badge badgeContent={4} color="secondary">

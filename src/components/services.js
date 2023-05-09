@@ -1,12 +1,15 @@
-import axios from "axios";
-const url = "https://json-mock-grupo-2.onrender.com";
-const version = "/v1";
-const urlCompleta = url+version;
+import axios from 'axios';
 
-const getBalance = () => axios.get("https://8bb2e05b-06e9-4c9a-8080-02d3539f1a94.mock.pstmn.io/balance");
-const getMovimientos = () => axios.get(urlCompleta+"/movimientos");
-const getSubsidiary = () => axios.get("https://json-mock-grupo-2.onrender.com/v1/sucursal/1");
+const url = 'http://localhost:8000';
+const version = '/v1';
+const urlCompleta = url + version;
 
-export { getBalance }
-export { getMovimientos }
-export { getSubsidiary }
+const getBalance = accountId => axios.get(urlCompleta + `/cuenta/${accountId}/`);
+const getMovimientos = accountId => axios.get(urlCompleta + `/movimientos/${accountId}/`);
+const getSubsidiary = subsidiaryId => axios.get(urlCompleta + `/sucursal/${subsidiaryId}/`);
+
+export {
+  getBalance,
+  getMovimientos,
+  getSubsidiary,
+};

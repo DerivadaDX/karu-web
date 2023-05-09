@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Link from '@mui/material/Link';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -10,16 +9,25 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { getMovimientos } from '../../services';
 
-function preventDefault(event) {
-  event.preventDefault();
-}
+const CODIGO_CUENTA = 1683429886806;
 
-export default function Orders() {
-  const [movimientos,setMovimientos]=useState([]);
+const formatStringDate = stringDate => {
+  const date = new Date(Date.parse(stringDate));
+  const day = (date.getDay() + 1).toString().padStart(2, '0');
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const year = date.getFullYear();
 
-  useEffect(()=>{
-    getMovimientos().then(response=> setMovimientos(response.data,));
-  },[])
+  const formattedDate = `${day}/${month}/${year}`;
+
+  return formattedDate;
+};
+
+const Orders = () => {
+  const [movimientos, setMovimientos] = useState([]);
+
+  useEffect(() => {
+    getMovimientos(CODIGO_CUENTA).then(response => setMovimientos(response.data));
+  }, []);
 
   return (
     <React.Fragment>
@@ -36,9 +44,9 @@ export default function Orders() {
           </TableRow>
         </TableHead>
         <TableBody>
-        {movimientos && movimientos.map((movimiento, index) => (
+          {movimientos && movimientos.map((movimiento) => (
             <TableRow key={movimiento.numero_operacion}>
-              <TableCell>{movimiento.fecha}</TableCell>
+              <TableCell>{formatStringDate(movimiento.fecha)}</TableCell>
               <TableCell>{movimiento.id_cuenta_origen}</TableCell>
               <TableCell>{movimiento.id_cuenta_destino}</TableCell>
               <TableCell>{movimiento.concepto}</TableCell>
@@ -50,4 +58,6 @@ export default function Orders() {
       </Table>
     </React.Fragment>
   );
-}
+};
+
+export default Orders;
