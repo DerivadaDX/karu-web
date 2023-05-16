@@ -1,17 +1,14 @@
-import { Route, Routes } from 'react-router-dom';
-import './App.css';
-import Home from './components/administracion_grupo_2/pages/Home';
-import MasOrdenes from './components/administracion_grupo_2/pages/MasOrdenes';
+/* eslint-disable react/function-component-definition */
+/* eslint-disable react/jsx-filename-extension */
 
+import './App.css';
+import React from 'react';
+import Main from './components/Main';
 
 function App() {
   return (
-    <div className="App" >
-
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/masordenes" element={<MasOrdenes />} />
-      </Routes>
+    <div className="App">
+      <Main />
     </div>
   );
 }

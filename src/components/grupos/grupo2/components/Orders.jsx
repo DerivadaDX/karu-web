@@ -4,14 +4,13 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Title from '../../common/Title';
-import { useEffect } from 'react';
-import { useState } from 'react';
-import { getMovimientos } from '../../services';
+import { useEffect, useState } from 'react';
+import Title from '../../../common/Title';
+import { getMovimientos } from '../services/services';
 
 const CODIGO_CUENTA = 1683429886806;
 
-const formatStringDate = stringDate => {
+const formatStringDate = (stringDate) => {
   const date = new Date(Date.parse(stringDate));
   const day = (date.getDay() + 1).toString().padStart(2, '0');
   const month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -26,11 +25,11 @@ const Orders = () => {
   const [movimientos, setMovimientos] = useState([]);
 
   useEffect(() => {
-    getMovimientos(CODIGO_CUENTA).then(response => setMovimientos(response.data));
+    getMovimientos(CODIGO_CUENTA).then((response) => setMovimientos(response.data));
   }, []);
 
   return (
-    <React.Fragment>
+    <>
       <Title>Ultimos Movimientos</Title>
       <Table size="small">
         <TableHead>
@@ -56,7 +55,7 @@ const Orders = () => {
           ))}
         </TableBody>
       </Table>
-    </React.Fragment>
+    </>
   );
 };
 

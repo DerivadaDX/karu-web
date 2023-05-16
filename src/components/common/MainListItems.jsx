@@ -2,24 +2,31 @@ import * as React from 'react';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import ApartmentIcon from '@mui/icons-material/Apartment';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import EngineeringIcon from '@mui/icons-material/Engineering';
+import LocalAtmIcon from '@mui/icons-material/LocalAtm';
 
 const MainListItems = (
-  <React.Fragment>
+  <>
     <ListItemButton>
       <ListItemIcon>
-        <AccountCircleIcon />
+        <AdminPanelSettingsIcon />
       </ListItemIcon>
-      <ListItemText primary="Cuenta Corriente" />
+      <ListItemText primary="Administración" />
     </ListItemButton>
     <ListItemButton>
       <ListItemIcon>
-        <ApartmentIcon />
+        <EngineeringIcon />
       </ListItemIcon>
-      <ListItemText primary="Sucursales" />
+      <ListItemText primary="Área técnica" />
     </ListItemButton>
-  </React.Fragment>
+    <ListItemButton>
+      <ListItemIcon>
+        <LocalAtmIcon />
+      </ListItemIcon>
+      <ListItemText primary="Comercial" />
+    </ListItemButton>
+  </>
 );
 
 export default MainListItems;
