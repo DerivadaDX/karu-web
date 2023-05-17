@@ -69,6 +69,10 @@ Algunos errores del linter pueden corregirse automáticamente mediante el script
 
 ### Branching
 
+El repositorio cuenta con dos branch principales: `main` y `dev`. En `main` se encontrará la versión de producción, mientras que en `dev` la versión de desarrollo.
+
+Al crear una rama debe hacerse a partir de `dev`. Al hacer pull request también debe hacerse hacia `dev`.
+
 Para poder identificar rápidamente a qué grupo le pertenece cada branch, sugerimos seguir el siguiente formato de nombre:
 `g#-nombreDeBranch`.
 
