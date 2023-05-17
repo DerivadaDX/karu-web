@@ -16,6 +16,8 @@ Ir [http://localhost:3000](http://localhost:3000) para visualizar en un browser.
 
 ## Modo de uso
 
+### Directorios
+
 Cada grupo cuenta con un directorio ubicado en `src/components/grupos` que servirá de espacio de trabajo donde desarrollar sus páginas.
 Se crearon los directorios `components`, `pages` y `services` dentro del espacio de trabajo de cada grupo a modo de guía para ubicar los distintos tipos de archivos.
 
@@ -64,6 +66,17 @@ Se definió el script `lint` para validar que la guía se esté siguiendo. Tambi
 Para correrlo se debe ejecutar `npm run lint` en la terminal.
 
 Algunos errores del linter pueden corregirse automáticamente mediante el script `lint:fix`. Para correrlo se debe ejecutar `npm run lint:fix` en la terminal.
+
+### Branching
+
+Para poder identificar rápidamente a qué grupo le pertenece cada branch, sugerimos seguir el siguiente formato de nombre:
+`g#-nombreDeBranch`.
+
+- `g#-`: corresponde al número de grupo (g1, g2, g3 o g4).
+- `nombreDeBranch`: corresponde a un nombre que identifique el desarrollo escrito en *snakeCase*.
+
+Por ejemplo, el nombre de una rama para implementar el inicio de sesión en el sitio, creada por el grupo 4, podría ser
+`g4-implementacionLogin`.
 
 ## Bases y condiciones
 
