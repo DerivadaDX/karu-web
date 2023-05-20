@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable no-nested-ternary */
 import { useState, useEffect } from 'react';
 import Typography from '@mui/material/Typography';
