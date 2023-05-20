@@ -1,28 +1,32 @@
-import { useState, useEffect, useMemo, useCallback } from 'react';
+/* eslint-disable react/react-in-jsx-scope */
+/* eslint-disable no-unused-vars */
+import {
+  useState, useEffect, useMemo, useCallback,
+} from 'react';
 
 import MaterialReactTable from 'material-react-table';
-import { getDetalleTurno } from '../../services/services-Turnos';
-import Alerts from '../components/generales/Alerts';
 import { Button, Box, DialogActions } from '@mui/material';
+import { getDetalleTurno } from '../../services/services-Turnos';
+import Alerts from '../../components/common/Alerts';
 import { getTurnosEvaluacion } from '../../services/services-tecnicos';
-import Popup from '../components/generales/DialogPopup';
+import Popup from '../../components/common/DialogPopup';
 
-const id_tecnico = 5;
+const idTecnico = 5;
 
-const TablaTurnosEvaluacion = (props) => {
+const TablaTurnosEvaluacion = () => {
   const [turnosEvaluacion, setTurnosEvaluacion] = useState([]);
   const [actualizarTabla, setActualizarTabla] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  //Para ver los detalles del turno antes de realizarlo
+  // Para ver los detalles del turno antes de realizarlo
   const [openVerMas, setOpenVerMas] = useState(false);
   const [detalle, setDetalle] = useState([]);
 
-  //Para abrir el popup con la checklist
+  // Para abrir el popup con la checklist
   const [idTurno, setIdTurno] = useState(0);
   const [openChecklist, setOpenChecklist] = useState(false);
 
-  //alertas de la API
+  // alertas de la API
   const [alertType, setAlertType] = useState('');
   const [alertMessage, setAlertMessage] = useState('');
   const [alertTitle, setAlertTitle] = useState('');
@@ -50,11 +54,11 @@ const TablaTurnosEvaluacion = (props) => {
         header: 'Hora de fin',
       },
     ],
-    []
+    [],
   );
 
   const traerTurnos = useCallback(() => {
-    getTurnosEvaluacion(id_tecnico)
+    getTurnosEvaluacion(idTecnico)
       .then((response) => {
         setTurnosEvaluacion(response.data);
         setLoading(false);
@@ -63,7 +67,7 @@ const TablaTurnosEvaluacion = (props) => {
         setAlertType('Error');
         setAlertTitle('Error de servidor');
         setAlertMessage(
-          'Error en el servidor. Por favor, vuelva a intentarlo nuevamente. Si el error persiste, comuníquese con el área técnica de KarU.'
+          'Error en el servidor. Por favor, vuelva a intentarlo nuevamente. Si el error persiste, comuníquese con el área técnica de KarU.',
         );
       });
   }, []);
@@ -73,8 +77,8 @@ const TablaTurnosEvaluacion = (props) => {
     setActualizarTabla(false);
   }, [traerTurnos, actualizarTabla]);
 
-  const obtenerDetalle = (idTurno) => {
-    getDetalleTurno(idTurno)
+  const obtenerDetalle = (idTurnoRow) => {
+    getDetalleTurno(idTurnoRow)
       .then((response) => {
         setDetalle(response.data);
       })
@@ -83,11 +87,10 @@ const TablaTurnosEvaluacion = (props) => {
         setAlertType('error');
         setAlertTitle('Error de servidor');
         setAlertMessage(
-          'Error al mostrar el detalle. Por favor, vuelva a intentarlo nuevamente. Si el problema persiste, comuníquese con el área técnica de KarU.'
+          'Error al mostrar el detalle. Por favor, vuelva a intentarlo nuevamente. Si el problema persiste, comuníquese con el área técnica de KarU.',
         );
       });
   };
-
 
   const renderRowActions = ({ row }) => (
     <Box
@@ -95,8 +98,8 @@ const TablaTurnosEvaluacion = (props) => {
       sx={{ height: '3.2em' }}
     >
       <Button
-        variant='contained'
-        sx={{fontSize:'0.9em', backgroundColor:'rgba(51,51,51,0.75)'}}
+        variant="contained"
+        sx={{ fontSize: '0.9em', backgroundColor: 'rgba(51,51,51,0.75)' }}
         onClick={() => {
           obtenerDetalle(row.original.id_turno);
           setOpenVerMas(true);
@@ -105,9 +108,9 @@ const TablaTurnosEvaluacion = (props) => {
         Ver más
       </Button>
       <Button
-        variant='contained'
-        color='secondary'
-        onClick={()=> {
+        variant="contained"
+        color="secondary"
+        onClick={() => {
           setIdTurno(row.original.id_turno);
           setOpenChecklist(true);
         }}
@@ -117,36 +120,34 @@ const TablaTurnosEvaluacion = (props) => {
     </Box>
   );
 
-  const noData= () => {
+  const noData = () => {
     <Box
-    sx={{display:'flex', justifyContent:'center', alignItems:'center'}}
+      sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
     >
       <Alerts
-        title='No hay turnos asignados'
-        description='No hay turnos asignados para usted en este momento. Consulte con su supervisor a cargo.'
-        alertType='info'
+        title="No hay turnos asignados"
+        description="No hay turnos asignados para usted en este momento. Consulte con su supervisor a cargo."
+        alertType="info"
       />
-    </Box>
-  }
+    </Box>;
+  };
 
   return (
     <>
       <Box
         sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
       >
-        {
-          <Alerts
-            alertType={alertType}
-            description={alertMessage}
-            title={alertTitle}
-          />
-        }
+        <Alerts
+          alertType={alertType}
+          description={alertMessage}
+          title={alertTitle}
+        />
       </Box>
       <MaterialReactTable
         columns={columnas}
         data={turnosEvaluacion}
         state={{ isLoading: loading }}
-        positionActionsColumn='last'
+        positionActionsColumn="last"
         enableRowActions
         renderRowActions={renderRowActions}
         renderEmptyRowsFallback={noData}
@@ -162,15 +163,19 @@ const TablaTurnosEvaluacion = (props) => {
         }}
       />
       <Popup
-        title='Detalle del Turno'
+        title="Detalle del Turno"
         openDialog={openVerMas}
         setOpenDialog={setOpenVerMas}
       >
         {
-          Object.entries(detalle).map(([key,value])=> (
-            <div key={key}> 
+          Object.entries(detalle).map(([key, value]) => (
+            <div key={key}>
               <span>
-                <strong>{key}: </strong>
+                <strong>
+                  {key}
+                  :
+                  {' '}
+                </strong>
               </span>
               <span>{value}</span>
             </div>
@@ -179,10 +184,10 @@ const TablaTurnosEvaluacion = (props) => {
         <Box>
           <DialogActions>
             <Button
-              color='primary'
-              variant='outlined'
-              sx={{marginTop:'10px'}}
-              onClick={()=> {
+              color="primary"
+              variant="outlined"
+              sx={{ marginTop: '10px' }}
+              onClick={() => {
                 setOpenVerMas(false);
               }}
             >
@@ -192,7 +197,7 @@ const TablaTurnosEvaluacion = (props) => {
         </Box>
       </Popup>
       <Popup
-        title='Checklist Evaluación'
+        title="Checklist Evaluación"
         openDialog={openChecklist}
         setOpenDialog={setOpenChecklist}
       >
