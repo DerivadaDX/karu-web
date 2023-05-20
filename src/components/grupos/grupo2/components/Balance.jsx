@@ -6,8 +6,9 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import { getBalance } from '../services/services';
+import formatAsCurrency from '../helpers/currencyHelper';
 
-const CODIGO_CUENTA = 1683429886806;
+const CODIGO_CUENTA = '0000000000000000000001';
 
 const styles = {
   list: {
@@ -21,8 +22,6 @@ const styles = {
   },
 };
 
-const getAsCurrency = (numero) => numero?.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' }) ?? '';
-
 const Balance = () => {
   const [balance, setBalance] = useState([]);
 
@@ -34,7 +33,7 @@ const Balance = () => {
     <List sx={styles.list}>
       <ListItem>
         <ListItemText
-          primary={getAsCurrency(balance.saldo_actual)}
+          primary={formatAsCurrency(balance.saldo_actual)}
           primaryTypographyProps={styles.balanceTypography}
         />
       </ListItem>

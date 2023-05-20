@@ -5,10 +5,11 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { useEffect, useState } from 'react';
-import Title from '../../../common/Title';
 import { getMovimientos } from '../services/services';
+import PopUpDetalleMovimiento from './PopUpDetalleMovimiento';
+import formatAsCurrency from '../helpers/currencyHelper';
 
-const CODIGO_CUENTA = 1683429886806;
+const CODIGO_CUENTA = '0000000000000000000001';
 
 const formatStringDate = (stringDate) => {
   const date = new Date(Date.parse(stringDate));
@@ -29,33 +30,40 @@ const Orders = () => {
   }, []);
 
   return (
-    <>
-      <Title>Ultimos Movimientos</Title>
-      <Table size="small">
-        <TableHead>
-          <TableRow>
-            <TableCell>Fecha</TableCell>
-            <TableCell>Cuenta Origen</TableCell>
-            <TableCell>Cuenta Destino</TableCell>
-            <TableCell>Concepto</TableCell>
-            <TableCell align="right">Monto</TableCell>
-            <TableCell>Numero de operación</TableCell>
+    <Table size="small">
+      <TableHead>
+        <TableRow>
+          <TableCell>Fecha</TableCell>
+          <TableCell>Cuenta Origen</TableCell>
+          <TableCell>Cuenta Destino</TableCell>
+          <TableCell>Concepto</TableCell>
+          <TableCell align="right">Monto</TableCell>
+          <TableCell>Numero de operación</TableCell>
+          <TableCell>Detalle</TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {movimientos && movimientos.map((movimiento) => (
+          <TableRow key={movimiento.numero_operacion}>
+            <TableCell>{formatStringDate(movimiento.fecha)}</TableCell>
+            <TableCell>{movimiento.id_cuenta_origen}</TableCell>
+            <TableCell>{movimiento.id_cuenta_destino}</TableCell>
+            <TableCell>{movimiento.concepto}</TableCell>
+            <TableCell
+              align="right"
+              sx={{
+                color: movimiento.id_cuenta_destino === CODIGO_CUENTA ? 'black' : 'red',
+                fontWeight: 'bold',
+              }}
+            >
+              {formatAsCurrency(movimiento.monto)}
+            </TableCell>
+            <TableCell align="center">{movimiento.numero_operacion}</TableCell>
+            <TableCell><PopUpDetalleMovimiento movimientoId={movimiento.id} /></TableCell>
           </TableRow>
-        </TableHead>
-        <TableBody>
-          {movimientos && movimientos.map((movimiento) => (
-            <TableRow key={movimiento.numero_operacion}>
-              <TableCell>{formatStringDate(movimiento.fecha)}</TableCell>
-              <TableCell>{movimiento.id_cuenta_origen}</TableCell>
-              <TableCell>{movimiento.id_cuenta_destino}</TableCell>
-              <TableCell>{movimiento.concepto}</TableCell>
-              <TableCell align="right">{`$${movimiento.monto}`}</TableCell>
-              <TableCell align="center">{movimiento.numero_operacion}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </>
+        ))}
+      </TableBody>
+    </Table>
   );
 };
 
