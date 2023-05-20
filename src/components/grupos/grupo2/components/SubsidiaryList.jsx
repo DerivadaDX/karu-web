@@ -4,7 +4,10 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import CheckBoxOutlinedIcon from '@mui/icons-material/CheckBoxOutlined';
+import CheckBoxOutlineBlankOutlinedIcon from '@mui/icons-material/CheckBoxOutlineBlankOutlined';
+import IconButton from '@mui/material/IconButton';
+import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import FormLabel from '@mui/material/FormLabel';
 import { Divider } from '@mui/material';
 import { useEffect, useState } from 'react';
@@ -20,17 +23,9 @@ const styles = {
     marginBottom: 20,
     marginRight: 10,
   },
-  selectCategory: {
+  select: {
     fontSize: 13,
     padding: 11,
-    width: 100,
-    marginLeft: 10,
-    marginRight: 10,
-  },
-  selectBox: {
-    fontSize: 13,
-    padding: 11,
-    width: 80,
     marginLeft: 10,
     marginRight: 10,
   },
@@ -97,7 +92,7 @@ const SubsidiaryList = () => {
       <div>
         <FormLabel>Seleccionar categoria: </FormLabel>
         <select
-          style={styles.selectCategory}
+          style={{ ...styles.select, width: 100 }}
           value={optionCategory}
           onChange={(event) => setOptionCategory(event.target.value)}
         >
@@ -112,7 +107,7 @@ const SubsidiaryList = () => {
 
         <FormLabel>Taller:</FormLabel>
         <select
-          style={styles.selectBox}
+          style={{ ...styles.select, width: 80 }}
           value={optionHasWorkshop}
           onChange={(event) => setOptionHasWorkshop(event.target.value)}
         >
@@ -123,7 +118,7 @@ const SubsidiaryList = () => {
 
         <FormLabel>Habilitada:</FormLabel>
         <select
-          style={styles.selectBox}
+          style={{ ...styles.select, width: 80 }}
           value={optionEnabled}
           onChange={(event) => setOptionEnabled(event.target.value)}
         >
@@ -145,6 +140,7 @@ const SubsidiaryList = () => {
             <TableCell>Altura</TableCell>
             <TableCell>Taller</TableCell>
             <TableCell>Estado</TableCell>
+            <TableCell> </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -157,9 +153,18 @@ const SubsidiaryList = () => {
               <TableCell>{subsidiary.codigo_postal}</TableCell>
               <TableCell>{subsidiary.calle}</TableCell>
               <TableCell>{subsidiary.numero}</TableCell>
-              <TableCell>{subsidiary.posee_taller ? <CheckCircleOutlineIcon /> : ''}</TableCell>
+              <TableCell>
+                {subsidiary.posee_taller
+                  ? <CheckBoxOutlinedIcon />
+                  : <CheckBoxOutlineBlankOutlinedIcon />}
+              </TableCell>
               <TableCell style={{ color: subsidiary.activa ? 'green' : 'red' }}>
                 {subsidiary.activa ? 'Hab.' : 'Deshab.'}
+              </TableCell>
+              <TableCell>
+                <IconButton aria-label="delete">
+                  <RemoveCircleIcon />
+                </IconButton>
               </TableCell>
             </TableRow>
           ))}
