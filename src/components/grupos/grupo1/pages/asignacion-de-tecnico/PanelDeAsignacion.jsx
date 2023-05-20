@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable consistent-return */
 /* eslint-disable react/prop-types */
 import React, { useState, useEffect } from 'react';
