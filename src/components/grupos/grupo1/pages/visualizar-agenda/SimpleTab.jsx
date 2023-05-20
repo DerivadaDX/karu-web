@@ -1,16 +1,21 @@
-import * as React from "react";
-import PropTypes from "prop-types";
-import { Box, Tabs } from "@mui/material";
-import Tab from "@mui/material/Tab";
+/* eslint-disable import/prefer-default-export */
+/* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable react/prop-types */
+import * as React from 'react';
+import PropTypes from 'prop-types';
+import { Box, Tabs } from '@mui/material';
+import Tab from '@mui/material/Tab';
 
-import { useState } from "react";
-import TablaTurnosPendientes from "./TablaTurnosPendientes";
-import TablaTurnosEnProgreso from "./TablaTurnosEnProgreso";
-import TablaTurnosTerminados from "./TablaTurnosTerminados";
-import TablaTurnosPendientesDeAprobacion from "./TablaTurnosPendientesAprobacion";
+import { useState } from 'react';
+import TablaTurnosPendientes from './TablaTurnosPendientes';
+import TablaTurnosEnProgreso from './TablaTurnosEnProgreso';
+import TablaTurnosTerminados from './TablaTurnosTerminados';
+import TablaTurnosPendientesDeAprobacion from './TablaTurnosPendientesAprobacion';
 
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
+const TabPanel = (props) => {
+  const {
+    children, value, index, ...other
+  } = props;
   return (
     <div
       role="tabpanel"
@@ -25,7 +30,7 @@ function TabPanel(props) {
       )}
     </div>
   );
-}
+};
 
 TabPanel.prototypes = {
   children: PropTypes.node,
@@ -36,7 +41,7 @@ TabPanel.prototypes = {
 function allyProps(index) {
   return {
     id: `simple-tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`,
   };
 }
 
@@ -48,8 +53,8 @@ export const SimpleTabTurnos = () => {
   };
 
   return (
-    <Box sx={{ width: "100%" }}>
-      <Box sx={{ borderBottom: 1, borderColor: "silver" }}>
+    <Box sx={{ width: '100%' }}>
+      <Box sx={{ borderBottom: 1, borderColor: 'silver' }}>
         <Tabs
           value={value}
           onChange={handleChange}

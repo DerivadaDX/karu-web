@@ -1,19 +1,23 @@
-import { useState, useEffect, useMemo, useCallback } from "react";
+/* eslint-disable react/react-in-jsx-scope */
+/* eslint-disable no-unused-vars */
+import {
+  useState, useEffect, useMemo, useCallback,
+} from 'react';
+import { Box, Button } from '@mui/material';
+import MaterialReactTable from 'material-react-table';
+import DialogActions from '@mui/material/DialogActions';
+import Snackbar from '@mui/material/Snackbar';
 import {
   getTurnosEnProceso,
   patchFinalizarTurno,
-} from "../../services/services-Turnos";
-import { Box, Button } from "@mui/material";
-import MaterialReactTable from "material-react-table";
-import DialogActions from "@mui/material/DialogActions";
-import Snackbar from "@mui/material/Snackbar";
-import Alerts from "../components/generales/Alerts";
-import { getDetalleTurno } from "../../services/services-Turnos";
-import Popup from "../components/generales/DialogPopup";
+  getDetalleTurno,
+} from '../../services/services-Turnos';
+import Alerts from '../../components/common/Alerts';
+import Popup from '../../components/common/DialogPopup';
 
-const id_taller = "S002";
+const idTaller = 'S002';
 
-const TablaTurnosEnProgreso = (props) => {
+const TablaTurnosEnProgreso = () => {
   const [turnosEnProceso, setTurnosEnProceso] = useState([]);
   const [loading, setLoading] = useState(true);
   const [openVerMas, setVerMas] = useState(false);
@@ -24,29 +28,29 @@ const TablaTurnosEnProgreso = (props) => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [actualizarTabla, setActualizarTabla] = useState(false);
 
-  //alertas de la API
-  const [alertType, setAlertType] = useState("");
-  const [alertMessage, setAlertMessage] = useState("");
-  const [alertTitle, setAlertTitle] = useState("");
+  // alertas de la API
+  const [alertType, setAlertType] = useState('');
+  const [alertMessage, setAlertMessage] = useState('');
+  const [alertTitle, setAlertTitle] = useState('');
 
   const traerTurnos = useCallback(() => {
-    getTurnosEnProceso(id_taller)
+    getTurnosEnProceso(idTaller)
       .then((response) => {
         setTurnosEnProceso(response.data);
         setLoading(false);
       })
       .catch((error) => {
-        setAlertType("Error");
-        setAlertTitle("Error de servidor");
+        setAlertType('Error');
+        setAlertTitle('Error de servidor');
         setAlertMessage(
-          "Error en el servidor. Por favor, vuelva a intentarlo nuevamente."
+          'Error en el servidor. Por favor, vuelva a intentarlo nuevamente.',
         );
       });
   }, []);
 
   useEffect(() => {
     traerTurnos();
-    setActualizarTabla(false); //Reiniciar el estado de actualizarTabla
+    setActualizarTabla(false); // Reiniciar el estado de actualizarTabla
   }, [traerTurnos, actualizarTabla]);
 
   const obtenerDetalle = (idTurno) => {
@@ -56,10 +60,10 @@ const TablaTurnosEnProgreso = (props) => {
       })
       .catch((error) => {
         setVerMas(false);
-        setAlertType("error");
-        setAlertTitle("Error de servidor");
+        setAlertType('error');
+        setAlertTitle('Error de servidor');
         setAlertMessage(
-          "Error al mostrar el detalle. Por favor, vuelva a intentarlo nuevamente."
+          'Error al mostrar el detalle. Por favor, vuelva a intentarlo nuevamente.',
         );
       });
   };
@@ -68,7 +72,7 @@ const TablaTurnosEnProgreso = (props) => {
     patchFinalizarTurno(idTurno)
       .then((response) => {
         setResFinalizar(response.data);
-        setActualizarTabla(true); //Para actualizar la tabla despues de cancelar turno
+        setActualizarTabla(true); // Para actualizar la tabla despues de cancelar turno
       })
       .catch((error) => {
         setResFinalizar(error.message);
@@ -76,7 +80,7 @@ const TablaTurnosEnProgreso = (props) => {
   };
 
   const handleCloseSnackbar = (event, reason) => {
-    if (reason === "clickaway") {
+    if (reason === 'clickaway') {
       return;
     }
     setOpenSnackbar(false);
@@ -85,51 +89,51 @@ const TablaTurnosEnProgreso = (props) => {
   const columnas = useMemo(
     () => [
       {
-        accessorKey: "id_turno",
-        header: "Turno id",
+        accessorKey: 'id_turno',
+        header: 'Turno id',
       },
       {
-        accessorKey: "patente",
-        header: "Patente",
+        accessorKey: 'patente',
+        header: 'Patente',
       },
       {
-        accessorKey: "estado",
-        header: "Estado",
+        accessorKey: 'estado',
+        header: 'Estado',
       },
       {
-        accessorKey: "tipo",
-        header: "Tipo de Turno",
+        accessorKey: 'tipo',
+        header: 'Tipo de Turno',
       },
       {
-        accessorKey: "fecha_inicio",
-        header: "Fecha",
+        accessorKey: 'fecha_inicio',
+        header: 'Fecha',
       },
       {
-        accessorKey: "hora_inicio",
-        header: "Hora",
+        accessorKey: 'hora_inicio',
+        header: 'Hora',
       },
       {
-        accessorKey: "tecnico_id",
-        header: "Tecnico id",
+        accessorKey: 'tecnico_id',
+        header: 'Tecnico id',
       },
       {
-        accessorKey: "nombre_completo",
-        header: "Nombre del Tecnico",
+        accessorKey: 'nombre_completo',
+        header: 'Nombre del Tecnico',
       },
     ],
-    []
+    [],
   );
 
   const renderRowActions = ({ row }) => (
     <Box
-      style={{ display: "flex", flexWrap: "nowrap", gap: "0.5rem" }}
-      sx={{ height: "3.2em" }}
+      style={{ display: 'flex', flexWrap: 'nowrap', gap: '0.5rem' }}
+      sx={{ height: '3.2em' }}
     >
       <Button
         variant="contained"
-        sx={{ fontSize: "0.9em", backgroundColor: "rgba(51,51,51,0.75)" }}
+        sx={{ fontSize: '0.9em', backgroundColor: 'rgba(51,51,51,0.75)' }}
         onClick={() => {
-          console.log("Ver más", row.original.id_turno);
+          // console.log('Ver más', row.original.id_turno);
           obtenerDetalle(row.original.id_turno);
           setVerMas(true);
         }}
@@ -140,7 +144,7 @@ const TablaTurnosEnProgreso = (props) => {
         variant="contained"
         color="error"
         onClick={() => {
-          console.log("Finalizar", row.original);
+          // console.log('Finalizar', row.original);
           setIdTurnoFinalizar(row.original.id_turno);
           setOpenFinalizar(true);
         }}
@@ -152,7 +156,7 @@ const TablaTurnosEnProgreso = (props) => {
 
   const noData = () => (
     <Box
-      sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+      sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
     >
       <Alerts
         title="No hay datos"
@@ -165,15 +169,13 @@ const TablaTurnosEnProgreso = (props) => {
   return (
     <>
       <Box
-        sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+        sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
       >
-        {
-          <Alerts
-            alertType={alertType}
-            description={alertMessage}
-            title={alertTitle}
-          />
-        }
+        <Alerts
+          alertType={alertType}
+          description={alertMessage}
+          title={alertTitle}
+        />
       </Box>
       <MaterialReactTable
         columns={columnas}
@@ -186,11 +188,11 @@ const TablaTurnosEnProgreso = (props) => {
         defaultColumn={{ minSize: 10, maxSize: 100 }}
         muiTopToolbarProps={{
           sx: {
-            display: "flex",
-            flexWrap: "inherit",
-            justifyContent: "flex-end",
-            overflow: "auto",
-            maxHeight: "200px",
+            display: 'flex',
+            flexWrap: 'inherit',
+            justifyContent: 'flex-end',
+            overflow: 'auto',
+            maxHeight: '200px',
           },
         }}
       />
@@ -242,9 +244,16 @@ const TablaTurnosEnProgreso = (props) => {
         {Object.entries(detalleTurno).map(([key, value]) => (
           <div key={key}>
             <span>
-              <strong>{key}: </strong>
+              <strong>
+                {key}
+                :
+                {' '}
+              </strong>
             </span>
-            <span>{value} </span>
+            <span>
+              {value}
+              {' '}
+            </span>
           </div>
         ))}
         <Box>
@@ -252,7 +261,7 @@ const TablaTurnosEnProgreso = (props) => {
             <Button
               color="primary"
               variant="outlined"
-              sx={{ marginTop: "10px" }}
+              sx={{ marginTop: '10px' }}
               onClick={() => {
                 setVerMas(false);
               }}

@@ -1,13 +1,14 @@
-import { useState, useEffect, useMemo } from "react";
-import { getTurnosTerminados } from "../../services/services-Turnos";
-import { Box, Button } from "@mui/material";
-import MaterialReactTable from "material-react-table";
-import DialogActions from "@mui/material/DialogActions";
-import Alerts from "../components/generales/Alerts";
-import { getDetalleTurno } from "../../services/services-Turnos";
-import Popup from "../components/generales/DialogPopup";
+/* eslint-disable react/react-in-jsx-scope */
+/* eslint-disable no-unused-vars */
+import { useState, useEffect, useMemo } from 'react';
+import { Box, Button } from '@mui/material';
+import MaterialReactTable from 'material-react-table';
+import DialogActions from '@mui/material/DialogActions';
+import { getTurnosTerminados, getDetalleTurno } from '../../services/services-Turnos';
+import Alerts from '../../components/common/Alerts';
+import Popup from '../../components/common/DialogPopup';
 
-const id_taller = "S002";
+const idTaller = 'S002';
 
 const TablaTurnosTerminados = () => {
   const [turnosTerminados, setTurnosTerminados] = useState([]);
@@ -15,22 +16,22 @@ const TablaTurnosTerminados = () => {
   const [detalleTurno, setDetalleTurno] = useState([]);
   const [openVerMas, setVerMas] = useState(false);
 
-  //alertas de la API
-  const [alertType, setAlertType] = useState("");
-  const [alertMessage, setAlertMessage] = useState("");
-  const [alertTitle, setAlertTitle] = useState("");
+  // alertas de la API
+  const [alertType, setAlertType] = useState('');
+  const [alertMessage, setAlertMessage] = useState('');
+  const [alertTitle, setAlertTitle] = useState('');
 
   const traerTurnos = () => {
-    getTurnosTerminados(id_taller)
+    getTurnosTerminados(idTaller)
       .then((response) => {
         setTurnosTerminados(response.data);
         setLoading(false);
       })
       .catch((error) => {
-        setAlertType("error");
-        setAlertTitle("Error de servidor");
+        setAlertType('error');
+        setAlertTitle('Error de servidor');
         setAlertMessage(
-          "Error de servidor. Por favor, recargue la página y vuelva a intentarlo nuevamente."
+          'Error de servidor. Por favor, recargue la página y vuelva a intentarlo nuevamente.',
         );
       });
   };
@@ -39,10 +40,10 @@ const TablaTurnosTerminados = () => {
     try {
       traerTurnos();
     } catch (error) {
-      setAlertType("error");
-      setAlertTitle("Error de servidor");
+      setAlertType('error');
+      setAlertTitle('Error de servidor');
       setAlertMessage(
-        "Error de servidor. Por favor, recargue la página y vuelva a intentarlo nuevamente."
+        'Error de servidor. Por favor, recargue la página y vuelva a intentarlo nuevamente.',
       );
     }
   }, []);
@@ -50,74 +51,75 @@ const TablaTurnosTerminados = () => {
   const obtenerDetalle = (idTurno) => {
     getDetalleTurno(idTurno).then((response) => {
       setDetalleTurno(response.data);
-      console.log(detalleTurno);
+      // console.log(detalleTurno);
     })
-    .catch((error)=> {
-      setVerMas(false);
-      setAlertType("error");
-      setAlertTitle("Error de servidor");
-      setAlertMessage(
-        "Error al mostrar el detalle. Por favor, recargue la página y  vuelva a intentarlo nuevamente.");
-    });
+      .catch((error) => {
+        setVerMas(false);
+        setAlertType('error');
+        setAlertTitle('Error de servidor');
+        setAlertMessage(
+          'Error al mostrar el detalle. Por favor, recargue la página y  vuelva a intentarlo nuevamente.',
+        );
+      });
   };
 
   const columnas = useMemo(
     () => [
       {
-        accessorKey: "id_turno",
-        header: "Turno id",
+        accessorKey: 'id_turno',
+        header: 'Turno id',
       },
       {
-        accessorKey: "patente",
-        header: "Patente",
+        accessorKey: 'patente',
+        header: 'Patente',
       },
       {
-        accessorKey: "estado",
-        header: "Estado",
+        accessorKey: 'estado',
+        header: 'Estado',
       },
       {
-        accessorKey: "tipo",
-        header: "Tipo de Turno",
+        accessorKey: 'tipo',
+        header: 'Tipo de Turno',
       },
       {
-        accessorKey: "fecha_inicio",
-        header: "Fecha Inicio",
+        accessorKey: 'fecha_inicio',
+        header: 'Fecha Inicio',
       },
       {
-        accessorKey: "hora_inicio",
-        header: "Hora Inicio",
+        accessorKey: 'hora_inicio',
+        header: 'Hora Inicio',
       },
       {
-        accessorKey: "fecha_fin",
-        header: "Fecha Fin",
+        accessorKey: 'fecha_fin',
+        header: 'Fecha Fin',
       },
       {
-        accessorKey: "hora_fin",
-        header: "Hora fin",
+        accessorKey: 'hora_fin',
+        header: 'Hora fin',
       },
       {
-        accessorKey: "tecnico_id",
-        header: "Tecnico id",
+        accessorKey: 'tecnico_id',
+        header: 'Tecnico id',
       },
       {
-        accessorKey: "nombre_completo",
-        header: "Nombre del Tecnico",
+        accessorKey: 'nombre_completo',
+        header: 'Nombre del Tecnico',
       },
     ],
-    []
+    [],
   );
 
   const renderRowActions = ({ row }) => (
     <Box
-      style={{ display: "flex", flexWrap: "nowrap", gap: "0.5rem" }}
-      sx={{ height: "3.5em" }}
+      style={{ display: 'flex', flexWrap: 'nowrap', gap: '0.5rem' }}
+      sx={{ height: '3.5em' }}
     >
       <Button
         variant="contained"
         color="secondary"
-        sx={{ fontSize: "1em" }}
+        sx={{ fontSize: '1em' }}
         onClick={() => {
-          console.log("Ver mas", row.original.id_turno);
+          // console.log('Ver mas', row.original.id_turno);
           obtenerDetalle(row.original.id_turno);
           setVerMas(true);
         }}
@@ -129,7 +131,7 @@ const TablaTurnosTerminados = () => {
 
   const noData = () => (
     <Box
-      sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+      sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
     >
       <Alerts
         title="No hay datos"
@@ -141,16 +143,14 @@ const TablaTurnosTerminados = () => {
 
   return (
     <>
-    <Box
-        sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+      <Box
+        sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
       >
-        {
-          <Alerts
-            alertType={alertType}
-            description={alertMessage}
-            title={alertTitle}
-          />
-        }
+        <Alerts
+          alertType={alertType}
+          description={alertMessage}
+          title={alertTitle}
+        />
       </Box>
       <MaterialReactTable
         columns={columnas}
@@ -163,11 +163,11 @@ const TablaTurnosTerminados = () => {
         defaultColumn={{ minSize: 10, maxSize: 120 }}
         muiTopToolbarProps={{
           sx: {
-            display: "flex",
-            flexWrap: "inherit",
-            justifyContent: "flex-end",
-            overflow: "auto",
-            maxHeight: "200px",
+            display: 'flex',
+            flexWrap: 'inherit',
+            justifyContent: 'flex-end',
+            overflow: 'auto',
+            maxHeight: '200px',
           },
         }}
       />
@@ -179,9 +179,16 @@ const TablaTurnosTerminados = () => {
         {Object.entries(detalleTurno).map(([key, value]) => (
           <div key={key}>
             <span>
-              <strong>{key}: </strong>
+              <strong>
+                {key}
+                :
+                {' '}
+              </strong>
             </span>
-            <span>{value} </span>
+            <span>
+              {value}
+              {' '}
+            </span>
           </div>
         ))}
         <Box>
@@ -189,7 +196,7 @@ const TablaTurnosTerminados = () => {
             <Button
               color="primary"
               variant="outlined"
-              sx={{ marginTop: "10px" }}
+              sx={{ marginTop: '10px' }}
               onClick={() => {
                 setVerMas(false);
               }}
