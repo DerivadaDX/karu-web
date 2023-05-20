@@ -2,6 +2,7 @@ import React from 'react';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import StoreIcon from '@mui/icons-material/Store';
 import CheckingAccount from './pages/CheckingAccount';
+import SubsidiariesPage from './pages/SubsidiariesPage';
 
 const GROUP_2_PAGES_CONFIG = [
   {
@@ -16,7 +17,7 @@ const GROUP_2_PAGES_CONFIG = [
     name: 'Sucursales',
     href: '/subsidiaries',
     icon: <StoreIcon />,
-    page: null,
+    page: <SubsidiariesPage />,
   },
 ];
 
