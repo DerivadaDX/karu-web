@@ -9,9 +9,9 @@ import VisualizacionFiltroBusqueda from './pages/visualizacion-tecnicos/Visualiz
 const GROUP_1_PAGES_CONFIG = [
   {
     id: 'g1-Home',
-    name: 'Home',
+    name: 'Dashboard',
     href: '/home',
-    icon: <TooltipCus icon={<DashboardIcon />} title="Home" />,
+    icon: <TooltipCus icon={<DashboardIcon />} title="Dashboard" />,
     page: null,
   },
   {
@@ -25,14 +25,14 @@ const GROUP_1_PAGES_CONFIG = [
     id: 'g1-Tecnicos',
     name: 'Técnicos',
     href: '/informacion-tecnicos',
-    icon: <TooltipCus icon={<PersonSearchIcon />} title="Tecnicos" />,
+    icon: <TooltipCus icon={<PersonSearchIcon />} title="Técnicos" />,
     page: <VisualizacionFiltroBusqueda />,
   },
   {
     id: 'g1-ChecklistEvaluaciones',
-    name: 'Checklist Evaluaciones',
+    name: 'Evaluación',
     href: '/checklist-evaluaciones',
-    icon: <TooltipCus icon={<FactCheckIcon />} title="Checklist Evaluaciones" />,
+    icon: <TooltipCus icon={<FactCheckIcon />} title="Evaluación" />,
     page: null,
   },
 
