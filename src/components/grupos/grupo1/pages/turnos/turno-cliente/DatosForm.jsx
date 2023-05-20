@@ -76,14 +76,14 @@ const Talleres = () => {
             ))}
           </Select>
           {
-                        t.taller !== '' && (
-                        <Stack spacing={3} width={300} padding={5}>
-                          <Grid item xs={12} md={10}>
-                            <DateValidationShouldDisableDate />
-                          </Grid>
-                        </Stack>
-                        )
-                    }
+            t.taller !== '' && (
+              <Stack spacing={3} width={300} padding={5}>
+                <Grid item xs={12} md={10}>
+                  <DateValidationShouldDisableDate />
+                </Grid>
+              </Stack>
+            )
+          }
         </FormControl>
       </div>
     </Box>
@@ -130,8 +130,8 @@ const DateValidationShouldDisableDate = () => {
   fetchAgendaData(turno.taller_id);
 
   return (
-  // Para que ponga las cosas del calendario en español: adapterLocale="es"
-  // Problema: desfasa el calendario, porque arranca desde L y está para arrancar desde Sunday
+    // Para que ponga las cosas del calendario en español: adapterLocale="es"
+    // Problema: desfasa el calendario, porque arranca desde L y está para arrancar desde Sunday
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Box>
         <Stack spacing={3} width={300}>
@@ -148,19 +148,18 @@ const DateValidationShouldDisableDate = () => {
                   setDia(newValue);
                   turno.fecha_inicio = format(new Date(newValue), 'yyyy-MM-dd');
                   turno.fecha_fin = format(new Date(newValue), 'yyyy-MM-dd');
-                  console.log('Fecha inicio:', turno.fecha_inicio, '| Fecha fin:', turno.fecha_fin);
                 }}
               />
             </Grid>
             <Grid item xs={12} md={10}>
               {turno.fecha_inicio !== ''
-                                && (
-                                <Hora
-                                  required
-                                  fecha={turno.fecha_inicio}
-                                  dias_y_horarios={disponibilidad.dias_y_horarios}
-                                />
-                                )}
+                && (
+                  <Hora
+                    required
+                    fecha={turno.fecha_inicio}
+                    dias_y_horarios={disponibilidad.dias_y_horarios}
+                  />
+                )}
             </Grid>
           </Grid>
         </Stack>
@@ -199,11 +198,11 @@ const Hora = ({ dias_y_horarios, fecha }) => {
       >
         <MenuItem value="">Elija una hora, por favor</MenuItem>
         {horariosDisponibles
-                    && horariosDisponibles.map((horaItem) => (
-                      <MenuItem key={horaItem} value={horaItem}>
-                        {horaItem}
-                      </MenuItem>
-                    ))}
+          && horariosDisponibles.map((horaItem) => (
+            <MenuItem key={horaItem} value={horaItem}>
+              {horaItem}
+            </MenuItem>
+          ))}
       </Select>
     </FormControl>
   );

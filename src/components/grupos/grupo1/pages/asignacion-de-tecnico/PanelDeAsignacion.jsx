@@ -119,10 +119,10 @@ const AsignacionDeTecnicos = ({
 
   const handleRowSelected = (rowData) => {
     const selectedItemId = rowData.row.id;
-    const selectedItem = tecnicosData.find(
-      (item) => item.id === selectedItemId
+    const selItem = tecnicosData.find(
+      (item) => item.id === selectedItemId,
     );
-    setSelectedItem(selectedItem);
+    setSelectedItem(selItem);
   };
 
   const asignarTecnico = () => {
@@ -134,7 +134,7 @@ const AsignacionDeTecnicos = ({
 
       axios
         .post(urlAsignarTecnico)
-        .then((response) => {
+        .then(() => {
           // setResAsginar("Se ha asignado el turno al tecnico seleccionado.");
           // setOpenSnackbar(true);
           // setOpen(false);
@@ -150,7 +150,7 @@ const AsignacionDeTecnicos = ({
 
       axios
         .post(urlModificarTurno, nuevoEstado)
-        .then((response) => {
+        .then(() => {
           // setResAsginar("Se ha asignado el turno al tecnico seleccionado.");
           setOpenPopupSeleccion(true);
           setActualizar(true);
