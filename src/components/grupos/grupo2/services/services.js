@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const url = 'http://localhost:8000';
+const url = process.env.REACT_APP_G2_URL_BACK || 'http://localhost:8000';
 const version = '/v1';
 const urlCompleta = url + version;
 
