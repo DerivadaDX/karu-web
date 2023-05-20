@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import { Toolbar } from '@mui/material';
@@ -24,20 +23,17 @@ const styles = {
 const LoggedInLayout = ({ children }) => {
   const [open, setOpen] = React.useState(false);
   const toggleDrawer = () => setOpen(!open);
-  const mdTheme = createTheme();
 
   return (
-    <ThemeProvider theme={mdTheme}>
-      <Box sx={styles.mainBox}>
-        <CssBaseline />
-        <NavBar drawerWidth={240} open={open} toggleDrawer={toggleDrawer} />
-        <SideBar drawerWidth={240} open={open} toggleDrawer={toggleDrawer} />
-        <Box component="main" sx={styles.secondaryBox}>
-          <Toolbar />
-          {children}
-        </Box>
+    <Box sx={styles.mainBox}>
+      <CssBaseline />
+      <NavBar drawerWidth={240} open={open} toggleDrawer={toggleDrawer} />
+      <SideBar drawerWidth={240} open={open} toggleDrawer={toggleDrawer} />
+      <Box component="main" sx={styles.secondaryBox}>
+        <Toolbar />
+        {children}
       </Box>
-    </ThemeProvider>
+    </Box>
   );
 };
 
