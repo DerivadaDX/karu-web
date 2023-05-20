@@ -80,7 +80,7 @@ const Main = () => {
   return (
     <ThemeProvider theme={mdTheme}>
       <LoggedInLayout>
-        <Container maxWidth="lg" sx={styles.container}>
+        <Container maxWidth="xl" sx={styles.container}>
           <Routes>
             <Route path="/" element={<Home />} />
             {GROUP_1_PAGES_CONFIG.map(buildRoute)}
