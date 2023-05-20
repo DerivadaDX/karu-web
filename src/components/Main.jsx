@@ -22,7 +22,7 @@ const buildRoute = (routeConfig) => (
 
 const Main = () => (
   <LoggedInLayout>
-    <Container maxWidth="lg" sx={stlyes.container}>
+    <Container maxWidth="xl" sx={stlyes.container}>
       <Routes>
         <Route path="/" element={<Home />} />
         {GROUP_1_PAGES_CONFIG.map(buildRoute)}
