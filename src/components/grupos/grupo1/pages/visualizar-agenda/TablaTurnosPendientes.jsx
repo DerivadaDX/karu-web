@@ -1,22 +1,26 @@
-import { useState, useEffect, useMemo, useCallback } from "react";
-import { Box, Button } from "@mui/material";
-import MaterialReactTable from "material-react-table";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
-import Tooltip from "@mui/material/Tooltip";
-import Snackbar from "@mui/material/Snackbar";
-import DialogActions from "@mui/material/DialogActions";
-import Alerts from "../components/generales/Alerts";
-import Popup from "../components/generales/DialogPopup";
+/* eslint-disable react/react-in-jsx-scope */
+/* eslint-disable no-unused-vars */
+import {
+  useState, useEffect, useMemo, useCallback,
+} from 'react';
+import { Box, Button } from '@mui/material';
+import MaterialReactTable from 'material-react-table';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import Tooltip from '@mui/material/Tooltip';
+import Snackbar from '@mui/material/Snackbar';
+import DialogActions from '@mui/material/DialogActions';
+import Alerts from '../../components/common/Alerts';
+import Popup from '../../components/common/DialogPopup';
 
 import {
   getDetalleTurno,
   getCancelarTurno,
   getTurnosPendientes,
-} from "../../services/services-Turnos";
+} from '../../services/services-Turnos';
 
-import PanelDeAsignacion from '../asignacion-de-tecnico/PanelDeAsignacion'
+import PanelDeAsignacion from '../asignacion-de-tecnico/PanelDeAsignacion';
 
-const id_taller = "S002";
+const idTaller = 'S002';
 
 const TablaTurnosPendientes = () => {
   const [turnosPendientes, setTurnosPendientes] = useState([]);
@@ -29,57 +33,56 @@ const TablaTurnosPendientes = () => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [actualizarTabla, setActualizarTabla] = useState(false);
 
-  //Para abrir el formulario de asignacion
+  // Para abrir el formulario de asignacion
   const [idTurnoAsignar, setIdTurnoAsignar] = useState(0);
-  const [openAsignacion, setOpenAsignacion]= useState(false);
+  const [openAsignacion, setOpenAsignacion] = useState(false);
 
-
-  //alertas de la API
-  const [alertType, setAlertType] = useState("");
-  const [alertMessage, setAlertMessage] = useState("");
-  const [alertTitle, setAlertTitle] = useState("");
+  // alertas de la API
+  const [alertType, setAlertType] = useState('');
+  const [alertMessage, setAlertMessage] = useState('');
+  const [alertTitle, setAlertTitle] = useState('');
 
   const columnas = useMemo(
     () => [
       {
-        accessorKey: "id_turno",
-        header: "Turno id",
+        accessorKey: 'id_turno',
+        header: 'Turno id',
       },
       {
-        accessorKey: "tipo",
-        header: "Tipo de Turno",
+        accessorKey: 'tipo',
+        header: 'Tipo de Turno',
       },
       {
-        accessorKey: "patente",
-        header: "Patente",
+        accessorKey: 'patente',
+        header: 'Patente',
       },
       {
-        accessorKey: "estado",
-        header: "Estado",
+        accessorKey: 'estado',
+        header: 'Estado',
       },
       {
-        accessorKey: "fecha_inicio",
-        header: "Fecha",
+        accessorKey: 'fecha_inicio',
+        header: 'Fecha',
       },
       {
-        accessorKey: "hora_inicio",
-        header: "Hora",
+        accessorKey: 'hora_inicio',
+        header: 'Hora',
       },
     ],
-    []
+    [],
   );
 
   const traerTurnos = useCallback(() => {
-    getTurnosPendientes(id_taller)
+    getTurnosPendientes(idTaller)
       .then((response) => {
         setTurnosPendientes(response.data);
         setLoading(false);
       })
       .catch((error) => {
-        setAlertType("error");
-        setAlertTitle("Error de servidor");
+        setAlertType('error');
+        setAlertTitle('Error de servidor');
         setAlertMessage(
-          "Error en el servidor. Por favor, recargue la página y vuelva a intentarlo nuevamente."
+          'Error en el servidor. Por favor, recargue la página y vuelva a intentarlo nuevamente.',
         );
       });
   }, []);
@@ -87,12 +90,12 @@ const TablaTurnosPendientes = () => {
   useEffect(() => {
     try {
       traerTurnos();
-      setActualizarTabla(false); //Reiniciar el estado de actualizarTabla
+      setActualizarTabla(false); // Reiniciar el estado de actualizarTabla
     } catch (error) {
-      setAlertType("error");
-      setAlertTitle("Error de servidor");
+      setAlertType('error');
+      setAlertTitle('Error de servidor');
       setAlertMessage(
-        "Error al traer los turnos. Por favor, recargue la página y vuelva a intentarlo nuevamente."
+        'Error al traer los turnos. Por favor, recargue la página y vuelva a intentarlo nuevamente.',
       );
     }
   }, [traerTurnos, actualizarTabla]);
@@ -104,10 +107,10 @@ const TablaTurnosPendientes = () => {
       })
       .catch((error) => {
         setVerMas(false);
-        setAlertType("error");
-        setAlertTitle("Error de servidor");
+        setAlertType('error');
+        setAlertTitle('Error de servidor');
         setAlertMessage(
-          "Error al mostrar el detalle. Por favor, reacargue la página y vuelva a intentarlo nuevamente."
+          'Error al mostrar el detalle. Por favor, reacargue la página y vuelva a intentarlo nuevamente.',
         );
       });
   };
@@ -116,7 +119,7 @@ const TablaTurnosPendientes = () => {
     getCancelarTurno(idTurno)
       .then((response) => {
         setResCancelar(response.data);
-        setActualizarTabla(true); //Para actualizar la tabla despues de cancelar turno
+        setActualizarTabla(true); // Para actualizar la tabla despues de cancelar turno
       })
       .catch((error) => {
         setResCancelar(error.message);
@@ -124,7 +127,7 @@ const TablaTurnosPendientes = () => {
   };
 
   const handleCloseSnackbar = (event, reason) => {
-    if (reason === "clickaway") {
+    if (reason === 'clickaway') {
       return;
     }
     setOpenSnackbar(false);
@@ -132,12 +135,12 @@ const TablaTurnosPendientes = () => {
 
   const renderRowActions = ({ row }) => (
     <Box
-      style={{ display: "flex", flexWrap: "nowrap", gap: "0.5rem" }}
-      sx={{ height: "3.2em" }}
+      style={{ display: 'flex', flexWrap: 'nowrap', gap: '0.5rem' }}
+      sx={{ height: '3.2em' }}
     >
       <Button
         variant="contained"
-        sx={{ fontSize: "0.9em", backgroundColor: "rgba(51,51,51,0.75)" }}
+        sx={{ fontSize: '0.9em', backgroundColor: 'rgba(51,51,51,0.75)' }}
         onClick={() => {
           obtenerDetalle(row.original.id_turno);
           setVerMas(true);
@@ -148,7 +151,7 @@ const TablaTurnosPendientes = () => {
       <Button
         variant="contained"
         color="secondary"
-        sx={{ fontSize: "0.9em" }}
+        sx={{ fontSize: '0.9em' }}
         onClick={() => {
           setOpenAsignacion(true);
           setIdTurnoAsignar(row.original.id_turno);
@@ -159,7 +162,7 @@ const TablaTurnosPendientes = () => {
       <Button
         variant="contained"
         color="error"
-        sx={{ fontSize: "0.9em" }}
+        sx={{ fontSize: '0.9em' }}
         onClick={() => {
           setOpenDialog(true);
           setIdTurnoCancelar(row.original.id_turno);
@@ -172,7 +175,7 @@ const TablaTurnosPendientes = () => {
 
   const noData = () => (
     <Box
-      sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+      sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
     >
       <Alerts
         title="No hay datos"
@@ -186,16 +189,16 @@ const TablaTurnosPendientes = () => {
     <Tooltip title="Agregar turno" placement="right">
       <Button
         variant="contained"
-        startIcon={<AddCircleIcon sx={{ height: "2rem" }} />}
+        startIcon={<AddCircleIcon sx={{ height: '2rem' }} />}
         sx={{
           fontSize: {
-            sm: "0.7rem",
-            maxWidth: "300px",
-            maxHeight: "40px",
+            sm: '0.7rem',
+            maxWidth: '300px',
+            maxHeight: '40px',
           },
         }}
         onClick={() => {
-          console.log("Agregar turno");
+          // console.log('Agregar turno');
         }}
       >
         Agregar turno
@@ -206,15 +209,13 @@ const TablaTurnosPendientes = () => {
   return (
     <>
       <Box
-        sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+        sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
       >
-        {
-          <Alerts
-            alertType={alertType}
-            description={alertMessage}
-            title={alertTitle}
-          />
-        }
+        <Alerts
+          alertType={alertType}
+          description={alertMessage}
+          title={alertTitle}
+        />
       </Box>
       <MaterialReactTable
         columns={columnas}
@@ -223,11 +224,11 @@ const TablaTurnosPendientes = () => {
         renderTopToolbarCustomActions={agregarTurno}
         muiTopToolbarProps={{
           sx: {
-            display: "flex",
-            flexWrap: "inherit",
-            justifyContent: "flex-end",
-            overflow: "auto",
-            maxHeight: "200px",
+            display: 'flex',
+            flexWrap: 'inherit',
+            justifyContent: 'flex-end',
+            overflow: 'auto',
+            maxHeight: '200px',
           },
         }}
         positionActionsColumn="last"
@@ -282,9 +283,16 @@ const TablaTurnosPendientes = () => {
         {Object.entries(detalleTurno).map(([key, value]) => (
           <div key={key}>
             <span>
-              <strong>{key}: </strong>
+              <strong>
+                {key}
+                :
+                {' '}
+              </strong>
             </span>
-            <span>{value} </span>
+            <span>
+              {value}
+              {' '}
+            </span>
           </div>
         ))}
         <Box>
@@ -292,7 +300,7 @@ const TablaTurnosPendientes = () => {
             <Button
               color="primary"
               variant="outlined"
-              sx={{ marginTop: "10px" }}
+              sx={{ marginTop: '10px' }}
               onClick={() => {
                 setVerMas(false);
               }}
@@ -302,10 +310,18 @@ const TablaTurnosPendientes = () => {
           </DialogActions>
         </Box>
       </Popup>
-      <Popup title="Asignar Turno a un Técnico"
+      <Popup
+        title="Asignar Turno a un Técnico"
         openDialog={openAsignacion}
-        setOpenDialog={setOpenAsignacion}>
-        <PanelDeAsignacion idTurnoPadre={idTurnoAsignar} open={openAsignacion} setOpen={setOpenAsignacion} actualizar={actualizarTabla} setActualizar={setActualizarTabla}/>
+        setOpenDialog={setOpenAsignacion}
+      >
+        <PanelDeAsignacion
+          idTurnoPadre={idTurnoAsignar}
+          open={openAsignacion}
+          setOpen={setOpenAsignacion}
+          actualizar={actualizarTabla}
+          setActualizar={setActualizarTabla}
+        />
       </Popup>
     </>
   );
