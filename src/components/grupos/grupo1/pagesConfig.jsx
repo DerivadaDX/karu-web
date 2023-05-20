@@ -36,7 +36,7 @@ const GROUP_1_PAGES_CONFIG = [
     id: 'g1-MisTurnos',
     name: 'Mis turnos',
     href: '/mis-turnos',
-    icon: <TooltipCus icon={<FactCheckIcon />} title="Mis turnos" />,
+    icon: <TooltipCus icon={<ListAltIcon />} title="Mis turnos" />,
     page: <MisTurnos />,
   },
   {
