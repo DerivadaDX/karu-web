@@ -9,7 +9,7 @@ import GROUP_2_PAGES_CONFIG from './grupos/grupo2/pagesConfig';
 import GROUP_3_PAGES_CONFIG from './grupos/grupo3/pagesConfig';
 import GROUP_4_PAGES_CONFIG from './grupos/grupo4/pagesConfig';
 
-const stlyes = {
+const styles = {
   container: {
     mt: 4,
     mb: 4,
@@ -22,7 +22,7 @@ const buildRoute = (routeConfig) => (
 
 const Main = () => (
   <LoggedInLayout>
-    <Container maxWidth="lg" sx={stlyes.container}>
+    <Container maxWidth="lg" sx={styles.container}>
       <Routes>
         <Route path="/" element={<Home />} />
         {GROUP_1_PAGES_CONFIG.map(buildRoute)}
