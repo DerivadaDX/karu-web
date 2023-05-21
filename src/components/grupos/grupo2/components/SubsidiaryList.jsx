@@ -65,7 +65,8 @@ const SubsidiaryList = () => {
     if (prop === 'id') {
       setRecords(subsidiaries.filter((f) => f[prop].toString().includes(event.target.value)));
     } else {
-      setRecords(subsidiaries.filter((f) => f[prop].toLowerCase().includes(event.target.value)));
+      const valueToSearch = event.target.value.toLowerCase();
+      setRecords(subsidiaries.filter((f) => f[prop].toLowerCase().includes(valueToSearch)));
     }
   };
 
@@ -149,7 +150,7 @@ const SubsidiaryList = () => {
         </TableHead>
         <TableBody>
           {filteredRecords.map((subsidiary) => (
-            <TableRow>
+            <TableRow key={subsidiary.id}>
               <TableCell>{subsidiary.id}</TableCell>
               <TableCell>{subsidiary.nombre}</TableCell>
               <TableCell>{subsidiary.provincia}</TableCell>
