@@ -77,8 +77,8 @@ const PopUpDetalleMovimiento = ({ movimientoId }) => {
             <TextField
               disabled
               id="standard-disabled"
-              label="Datos de la persona"
-              defaultValue={movimiento.documento_persona}
+              label="DNI/CUIT"
+              defaultValue={movimiento.documento_persona ?? '-'}
               variant="standard"
             />
           </Stack>
