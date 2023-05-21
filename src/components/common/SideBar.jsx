@@ -15,7 +15,9 @@ import LocalAtmIcon from '@mui/icons-material/LocalAtm';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import Collapse from '@mui/material/Collapse';
+import { Tooltip } from '@mui/material';
 import PropTypes from 'prop-types';
+import TooltipCus from '../grupos/grupo1/components/common/Tooltip';
 import GROUP_1_PAGES_CONFIG from '../grupos/grupo1/pagesConfig';
 import GROUP_2_PAGES_CONFIG from '../grupos/grupo2/pagesConfig';
 import GROUP_3_PAGES_CONFIG from '../grupos/grupo3/pagesConfig';
@@ -33,14 +35,21 @@ const styles = {
   },
 };
 
-const buildCollapsableMenu = (menuItemConfig) => (
-  <ListItemButton key={menuItemConfig.id} sx={styles.listItemButton} href={menuItemConfig.href}>
-    <ListItemIcon>
-      {menuItemConfig.icon}
-    </ListItemIcon>
-    <ListItemText primary={menuItemConfig.name} />
-  </ListItemButton>
-);
+const buildCollapsableMenu = (menuItemConfig) => {
+  const iconIsTooltip = menuItemConfig.icon.name === TooltipCus.name;
+  const icon = !iconIsTooltip
+    ? (<Tooltip title={menuItemConfig.name} placement="right">{menuItemConfig.icon}</Tooltip>)
+    : menuItemConfig.icon;
+
+  return (
+    <ListItemButton key={menuItemConfig.id} sx={styles.listItemButton} href={menuItemConfig.href}>
+      <ListItemIcon>
+        {icon}
+      </ListItemIcon>
+      <ListItemText primary={menuItemConfig.name} />
+    </ListItemButton>
+  );
+};
 
 const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
   const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(({ theme }) => ({
@@ -86,7 +95,9 @@ const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
       <List component="nav">
         <ListItemButton onClick={toggleAdministrationMenu}>
           <ListItemIcon>
-            <AdminPanelSettingsIcon />
+            <Tooltip title="Administración" placement="right">
+              <AdminPanelSettingsIcon />
+            </Tooltip>
           </ListItemIcon>
           <ListItemText primary="Administración" />
           {openAdminMenu ? <ExpandLess /> : <ExpandMore />}
@@ -99,7 +110,9 @@ const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
         </Collapse>
         <ListItemButton onClick={toggleTechnicalAreaMenu}>
           <ListItemIcon>
-            <EngineeringIcon />
+            <Tooltip title="Área técnica" placement="right">
+              <EngineeringIcon />
+            </Tooltip>
           </ListItemIcon>
           <ListItemText primary="Área técnica" />
           {openTechnicalMenu ? <ExpandLess /> : <ExpandMore />}
@@ -111,9 +124,11 @@ const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
         </Collapse>
         <ListItemButton onClick={toggleCommercialAreaMenu}>
           <ListItemIcon>
-            <LocalAtmIcon />
+            <Tooltip title="Área comercial" placement="right">
+              <LocalAtmIcon />
+            </Tooltip>
           </ListItemIcon>
-          <ListItemText primary="Comercial" />
+          <ListItemText primary="Área comercial" />
           {openCommercialMenu ? <ExpandLess /> : <ExpandMore />}
         </ListItemButton>
         <Collapse in={openCommercialMenu} timeout="auto" unmountOnExit>
