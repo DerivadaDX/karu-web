@@ -2,7 +2,7 @@ import * as React from 'react';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import SubsidiaryList from '../components/SubsidiaryList';
+import ListadoSucursales from '../components/ListadoSucursales';
 
 const styles = {
   container: {
@@ -21,7 +21,7 @@ const SubsidiariesPage = () => (
     <Grid container spacing={3}>
       <Grid item xs={12}>
         <Paper sx={styles.paper}>
-          <SubsidiaryList />
+          <ListadoSucursales />
         </Paper>
       </Grid>
     </Grid>

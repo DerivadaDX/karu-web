@@ -34,7 +34,7 @@ const styles = {
   },
 };
 
-const SubsidiaryList = () => {
+const ListadoSucursales = () => {
   const [subsidiaries, setSubsidiaries] = useState([]);
   const [records, setRecords] = useState([]);
 
@@ -190,4 +190,4 @@ const SubsidiaryList = () => {
   );
 };
 
-export default SubsidiaryList;
+export default ListadoSucursales;
