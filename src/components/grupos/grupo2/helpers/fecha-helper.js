@@ -1,11 +1,13 @@
 const FechaHelper = {
-  formatearFechaStringComoDiaMesAño: (stringDate) => {
-    const fecha = new Date(Date.parse(stringDate));
-    const dia = (fecha.getDay() + 1).toString().padStart(2, '0');
-    const mes = (fecha.getMonth() + 1).toString().padStart(2, '0');
-    const año = fecha.getFullYear();
+  formatearComoFecha: (fechaString) => {
+    const fecha = new Date(Date.parse(fechaString));
+    const fechaFormateada = fecha.toLocaleDateString();
 
-    const fechaFormateada = `${dia}/${mes}/${año}`;
+    return fechaFormateada;
+  },
+  formatearComoFechaHora: (fechaString) => {
+    const fecha = new Date(Date.parse(fechaString));
+    const fechaFormateada = fecha.toLocaleString();
 
     return fechaFormateada;
   },
