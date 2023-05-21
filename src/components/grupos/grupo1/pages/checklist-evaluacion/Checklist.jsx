@@ -11,7 +11,7 @@ import {
   TextField,
 } from '@mui/material';
 import {
-  useState, useEffect, useMemo, React,
+  useState, useEffect, useMemo, React, useRef,
 } from 'react';
 import MaterialReactTable from 'material-react-table';
 import Slider from '@mui/material/Slider';
@@ -26,9 +26,10 @@ const ChecklistEvaluacion = () => {
   const [loading, setLoading] = useState(true);
   const [resError, setResError] = useState([]);
   const [crearEvaluacion, setCrearEvaluacion] = useState(false);
-  const [openSnackbar, setOpenSnackbar] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
+  const [valoresSlider, setValoresSlider] = useState({});
   const idTurno = 1;
+  evaluacion.id_turno = idTurno;
   const msjErrorDefault = 'Ha ocurrido un error, disculpe las molestias. Intente nuevamente. Si el error persiste comunicarse con soporte: soporte-tecnico@KarU.com';
 
   const [valoresEvaluacion, setValoresEvaluacion] = useState({
@@ -72,13 +73,17 @@ const ChecklistEvaluacion = () => {
   );
 
   const handleChangeScore = (event, index) => {
+    const nuevoValorSlider = event.target.value;
     const { name, value } = event.target;
     setValoresEvaluacion((prevState) => ({
       ...prevState,
       [name]: value,
     }));
+    setValoresSlider((prevValoresSlider) => ({
+      ...prevValoresSlider,
+      [index]: nuevoValorSlider,
+    }));
     evaluacion.id_task_puntaje[index] = value;
-    evaluacion.id_turno = idTurno;
     console.log('json: ', evaluacion);
   };
 
@@ -92,31 +97,27 @@ const ChecklistEvaluacion = () => {
     console.log('Comentario ', evaluacion.detalle);
   };
 
-  const renderRowActions = ({ row }) => (
-    <Box
-      style={{ display: 'flex', flexWrap: 'nowrap', gap: '0.5rem' }}
-      sx={{ height: '3.5em', marginLeft: '0.2rem', marginRight: '0.2rem' }}
-    >
-      <Slider
-        aria-label="Puntaje máximo"
-        defaultValue={0}
-        size="small"
-        valueLabelDisplay="auto"
-        step={5}
-        min={0}
-        max={row.original.puntaje_max}
-        className="pt-5"
-        color="secondary"
-        onChange={(event) => handleChangeScore(event, row.original.id_task)}
-      />
-    </Box>
-  );
-
-  const handleCloseSnackbar = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setOpenSnackbar(false);
+  const renderRowActions = ({ row }) => {
+    const valorSlider = valoresSlider[row.original.id_task] || 0;
+    return (
+      <Box
+        style={{ display: 'flex', flexWrap: 'nowrap', gap: '0.5rem' }}
+        sx={{ height: '3.5em', marginLeft: '0.2rem', marginRight: '0.2rem' }}
+      >
+        <Slider
+          aria-label="Puntaje máximo"
+          size="small"
+          valueLabelDisplay="on"
+          value={valorSlider}
+          step={5}
+          min={0}
+          max={row.original.puntaje_max}
+          className="pt-5"
+          color="secondary"
+          onChange={(event) => handleChangeScore(event, row.original.id_task)}
+        />
+      </Box>
+    );
   };
 
   async function handleSubmit(event) {
@@ -195,7 +196,6 @@ const ChecklistEvaluacion = () => {
           }}
           muiSelectCheckboxProps={{
             color: 'secondary',
-            required: true,
           }}
         />
       </Container>
@@ -222,16 +222,16 @@ const ChecklistEvaluacion = () => {
           type="submit"
           sx={{ mt: 3, ml: 1 }}
           color="secondary"
-          onClick={setOpenDialog}
+          onClick={() => { setOpenDialog(true); }}
         >
-          Crear evaluación
+          Terminar evaluación
         </Button>
       </Box>
 
       <Popup
         title="Terminar evaluación"
-        setOpenDialog={setOpenDialog}
         openDialog={openDialog}
+        setOpenDialog={setOpenDialog}
         description="¿Está seguro que desea enviar la evaluación? No se podrá modificar una vez realizada."
       >
         <Box>
@@ -242,7 +242,6 @@ const ChecklistEvaluacion = () => {
               onClick={() => {
                 handleSubmit();
                 setOpenDialog(false);
-                setOpenSnackbar(true);
               }}
             >
               Enviar
@@ -259,11 +258,6 @@ const ChecklistEvaluacion = () => {
           </DialogActions>
         </Box>
       </Popup>
-      <Snackbar
-        autoHideDuration={4000}
-        open={openSnackbar}
-        onClose={handleCloseSnackbar}
-      />
     </>
   );
 };
