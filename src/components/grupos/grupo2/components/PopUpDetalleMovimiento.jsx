@@ -5,35 +5,30 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import { DialogTitle, Stack, TextField } from '@mui/material';
 import PropTypes from 'prop-types';
-import { useState, useEffect } from 'react';
 import MovimientoService from '../services/movimiento-service';
 import FechaHelper from '../helpers/fecha-helper';
 
 const PopUpDetalleMovimiento = ({ movimientoId }) => {
-  const [open, setOpen] = React.useState(false);
-  const [movimiento, setMovimiento] = useState({});
+  const [mostrarPopUp, setMostrarPopUp] = React.useState(false);
+  const [movimiento, setMovimiento] = React.useState({});
 
-  const handleClickOpen = () => {
-    setOpen(true);
+  const cambiarVisibilidadPopUp = () => {
+    setMostrarPopUp(!mostrarPopUp);
   };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  useEffect(() => {
+  React.useEffect(() => {
     MovimientoService.obtenerMovimientoPorId(movimientoId)
       .then((response) => setMovimiento(response.data));
   }, []);
 
   return (
-    <div>
-      <Button variant="text" onClick={handleClickOpen}>
-        Ver mas
+    <>
+      <Button variant="text" onClick={cambiarVisibilidadPopUp}>
+        Ver más
       </Button>
       <Dialog
-        open={open}
-        onClose={handleClose}
+        open={mostrarPopUp}
+        onClose={cambiarVisibilidadPopUp}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
@@ -89,10 +84,10 @@ const PopUpDetalleMovimiento = ({ movimientoId }) => {
           </Stack>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cerrar</Button>
+          <Button onClick={cambiarVisibilidadPopUp}>Cerrar</Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </>
   );
 };
 
