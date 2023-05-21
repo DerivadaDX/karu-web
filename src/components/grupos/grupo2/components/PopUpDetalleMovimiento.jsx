@@ -6,6 +6,7 @@ import DialogContent from '@mui/material/DialogContent';
 import { DialogTitle, Stack, TextField } from '@mui/material';
 import PropTypes from 'prop-types';
 import MovimientoService from '../services/movimiento-service';
+import DineroHelper from '../helpers/dinero-helper';
 import FechaHelper from '../helpers/fecha-helper';
 
 const PopUpDetalleMovimiento = ({ movimientoId }) => {
@@ -63,7 +64,7 @@ const PopUpDetalleMovimiento = ({ movimientoId }) => {
               disabled
               id="standard-disabled"
               label="Monto"
-              defaultValue={movimiento.monto}
+              defaultValue={DineroHelper.formatearComoDinero(movimiento.monto)}
               variant="standard"
             />
             <TextField
