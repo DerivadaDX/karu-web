@@ -18,6 +18,7 @@ import CheckBoxOutlineBlankOutlinedIcon from '@mui/icons-material/CheckBoxOutlin
 
 import SucursalService from '../services/sucursal-service';
 import PopUpConfirmDisable from './PopUpConfirmDisable';
+import CrearSucursal from './CrearSucursal';
 
 const styles = {
   barraSuperior: {
@@ -154,6 +155,10 @@ const ListadoSucursales = () => {
           <MenuItem value="si">Habilitadas</MenuItem>
           <MenuItem value="no">Deshabilitadas</MenuItem>
         </Select>
+
+        <Divider orientation="vertical" variant="middle" sx={styles.divider} flexItem />
+
+        <CrearSucursal />
       </Box>
 
       <Divider sx={styles.divider} />
