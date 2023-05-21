@@ -1,4 +1,5 @@
 import * as React from 'react';
+
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
@@ -29,7 +30,7 @@ styles.paperInferior = {
   maxHeight: '60vh',
 };
 
-const CheckingAccount = () => (
+const CuentaCorriente = () => (
   <Container maxWidth="lg" sx={styles.container}>
     <Grid container spacing={3}>
       <Grid item xs={12} md={4} lg={3}>
@@ -51,4 +52,4 @@ const CheckingAccount = () => (
   </Container>
 );
 
-export default CheckingAccount;
+export default CuentaCorriente;
