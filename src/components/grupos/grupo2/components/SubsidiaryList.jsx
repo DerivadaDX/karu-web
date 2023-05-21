@@ -4,12 +4,14 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import CheckBoxOutlinedIcon from '@mui/icons-material/CheckBoxOutlined';
+import CheckBoxOutlineBlankOutlinedIcon from '@mui/icons-material/CheckBoxOutlineBlankOutlined';
 import FormLabel from '@mui/material/FormLabel';
 import { Divider } from '@mui/material';
 import { useEffect, useState } from 'react';
 import Title from '../../../common/Title';
 import SucursalService from '../services/sucursal-service';
+import PopUpConfirmDisable from './PopUpConfirmDisable';
 
 const styles = {
   input: {
@@ -17,22 +19,18 @@ const styles = {
     paddingBottom: 10,
     paddingRight: 5,
     paddingLeft: 5,
-    marginBottom: 20,
+    marginBottom: 10,
     marginRight: 10,
   },
-  selectCategory: {
-    fontSize: 13,
-    padding: 11,
-    width: 100,
+  select: {
+    fontSize: 10,
+    padding: 13,
     marginLeft: 10,
     marginRight: 10,
+    marginBottom: 10,
   },
-  selectBox: {
-    fontSize: 13,
-    padding: 11,
-    width: 80,
-    marginLeft: 10,
-    marginRight: 10,
+  header: {
+    marginTop: 20,
   },
 };
 
@@ -44,7 +42,7 @@ const SubsidiaryList = () => {
     SucursalService.obtenerSucursales()
       .then((response) => {
         setSubsidiaries(response.data);
-        setRecords(response.data);
+        setRecords(response.data.sort((a, b) => a.id - b.id));
       });
   }, []);
 
@@ -91,15 +89,24 @@ const SubsidiaryList = () => {
     return true; // No se aplica ningún filtro
   };
 
+  const actualizarSucursalBorrada = (id) => {
+    setRecords((prevRecords) => prevRecords.map((record) => {
+      if (record.id === id) {
+        return { ...record, activa: false };
+      }
+      return record;
+    }));
+  };
+
   const filteredRecords = records.filter(filterByWorkshop).filter(filterByEnabled);
 
   return (
     <>
       <Title>Listado de Sucursales</Title>
-      <div>
-        <FormLabel>Seleccionar categoria: </FormLabel>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <FormLabel style={{ marginBottom: 10 }}>Seleccionar categoría:</FormLabel>
         <select
-          style={styles.selectCategory}
+          style={{ ...styles.select, width: 100 }}
           value={optionCategory}
           onChange={(event) => setOptionCategory(event.target.value)}
         >
@@ -111,10 +118,11 @@ const SubsidiaryList = () => {
         </select>
 
         <input type="text" style={styles.input} onChange={Filter} placeholder="Buscar..." />
+        <Divider style={{ borderColor: '#ccc' }} orientation="vertical" flexItem />
 
-        <FormLabel>Taller:</FormLabel>
+        <FormLabel style={{ marginBottom: 10, marginLeft: 10 }}>Taller:</FormLabel>
         <select
-          style={styles.selectBox}
+          style={{ ...styles.select, width: 80 }}
           value={optionHasWorkshop}
           onChange={(event) => setOptionHasWorkshop(event.target.value)}
         >
@@ -123,9 +131,9 @@ const SubsidiaryList = () => {
           <option value="no">No</option>
         </select>
 
-        <FormLabel>Habilitada:</FormLabel>
+        <FormLabel style={{ marginBottom: 10 }}>Habilitada:</FormLabel>
         <select
-          style={styles.selectBox}
+          style={{ ...styles.select, width: 80 }}
           value={optionEnabled}
           onChange={(event) => setOptionEnabled(event.target.value)}
         >
@@ -134,8 +142,8 @@ const SubsidiaryList = () => {
           <option value="no">No</option>
         </select>
       </div>
-      <Divider style={{ borderColor: 'black' }} />
-      <Table size="small">
+      <Divider style={{ borderColor: '#ccc' }} />
+      <Table size="small" style={styles.header}>
         <TableHead>
           <TableRow>
             <TableCell>ID</TableCell>
@@ -147,6 +155,7 @@ const SubsidiaryList = () => {
             <TableCell>Altura</TableCell>
             <TableCell>Taller</TableCell>
             <TableCell>Estado</TableCell>
+            <TableCell> </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -159,9 +168,19 @@ const SubsidiaryList = () => {
               <TableCell>{subsidiary.codigo_postal}</TableCell>
               <TableCell>{subsidiary.calle}</TableCell>
               <TableCell>{subsidiary.numero}</TableCell>
-              <TableCell>{subsidiary.posee_taller ? <CheckCircleOutlineIcon /> : ''}</TableCell>
+              <TableCell>
+                {subsidiary.posee_taller
+                  ? <CheckBoxOutlinedIcon />
+                  : <CheckBoxOutlineBlankOutlinedIcon />}
+              </TableCell>
               <TableCell style={{ color: subsidiary.activa ? 'green' : 'red' }}>
                 {subsidiary.activa ? 'Hab.' : 'Deshab.'}
+              </TableCell>
+              <TableCell>
+                <PopUpConfirmDisable
+                  id={subsidiary.id}
+                  onDelete={actualizarSucursalBorrada}
+                />
               </TableCell>
             </TableRow>
           ))}
