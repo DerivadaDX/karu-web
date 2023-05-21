@@ -16,7 +16,7 @@ const styles = {
   },
 };
 
-const SubsidiariesPage = () => (
+const Sucursales = () => (
   <Container maxWidth="lg" sx={styles.container}>
     <Grid container spacing={3}>
       <Grid item xs={12}>
@@ -28,4 +28,4 @@ const SubsidiariesPage = () => (
   </Container>
 );
 
-export default SubsidiariesPage;
+export default Sucursales;
