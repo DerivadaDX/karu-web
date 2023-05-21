@@ -89,6 +89,15 @@ const SubsidiaryList = () => {
 
   const filteredRecords = records.filter(filterByWorkshop).filter(filterByEnabled);
 
+  const handleDisableSubsidiary = (id) => {
+    setRecords((prevRecords) => prevRecords.map((record) => {
+      if (record.id === id) {
+        return { ...record, posee_taller: false };
+      }
+      return record;
+    }));
+  };
+
   return (
     <>
       <Title>Listado de Sucursales</Title>
@@ -165,7 +174,12 @@ const SubsidiaryList = () => {
               <TableCell style={{ color: subsidiary.activa ? 'green' : 'red' }}>
                 {subsidiary.activa ? 'Hab.' : 'Deshab.'}
               </TableCell>
-              <TableCell><PopUpConfirmDisable id={subsidiary.id} /></TableCell>
+              <TableCell>
+                <PopUpConfirmDisable
+                  id={subsidiary.id}
+                  onDisableSubsidiary={handleDisableSubsidiary}
+                />
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

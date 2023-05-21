@@ -11,7 +11,7 @@ import {
   DialogTitle,
 } from '@mui/material';
 
-const PopUpConfirmDisable = ({ id }) => {
+const PopUpConfirmDisable = ({ id, onDisableSubsidiary }) => {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -23,25 +23,16 @@ const PopUpConfirmDisable = ({ id }) => {
   };
 
   const handleConfirm = () => {
-    // Aquí debes realizar la llamada al endpoint para modificar el registro
-    // Puedes utilizar fetch, axios u otra librería para realizar la solicitud HTTP
-    // Ejemplo de uso de fetch:
     fetch(`http://localhost:8000/v1/sucursal/${id}/`, {
-      method: 'put',
+      method: 'delete',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ posee_taller: true }),
+      body: JSON.stringify({ activa: false }),
     })
       .then((response) => {
-        // Maneja la respuesta de la solicitud
         if (response.ok) {
           // La solicitud se realizó correctamente, puedes mostrar un mensaje de éxito
-        } else {
-          // La solicitud no se pudo completar, muestra un mensaje de error
+          onDisableSubsidiary(id);
         }
-      })
-      .catch((error) => {
-        // Maneja el error en caso de que ocurra un problema de red u otro tipo de error
-        console.error(error);
       });
 
     // Cierra el diálogo después de confirmar la deshabilitación
@@ -80,6 +71,7 @@ const PopUpConfirmDisable = ({ id }) => {
 
 PopUpConfirmDisable.propTypes = {
   id: PropTypes.number.isRequired,
+  onDisableSubsidiary: PropTypes.func.isRequired,
 };
 
 export default PopUpConfirmDisable;
