@@ -23,7 +23,7 @@ const PopUpDetalleMovimiento = ({ movimientoId }) => {
 
   return (
     <>
-      <Button variant="text" onClick={cambiarVisibilidadPopUp}>
+      <Button variant="contained" onClick={cambiarVisibilidadPopUp}>
         Ver más
       </Button>
       <Dialog
