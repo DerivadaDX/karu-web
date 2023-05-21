@@ -5,7 +5,7 @@ import {
 } from '@mui/material';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import { useState, useEffect } from 'react';
-import { postSubsidiary } from '../services/services';
+import SucursalService from '../services/sucursal-service';
 
 const CrearSucursal = () => {
   const [creacionExitosaPopup, setCreacionExitosaPopup] = useState(false);
@@ -33,7 +33,7 @@ const CrearSucursal = () => {
   };
 
   useEffect(() => {
-    postSubsidiary(data)
+    SucursalService.crearSucursal(data)
       .then(() => setCreacionExitosaPopup(true))
       .catch(() => setCreacionExitosaPopup(false));
   }, [data]);
