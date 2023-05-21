@@ -93,6 +93,18 @@ const TablaTurnosEvaluacion = () => {
       });
   };
 
+  const noData = () => (
+    <Box
+      sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+    >
+      <Alerts
+        title="No hay turnos asignados"
+        description="No hay turnos asignados para usted en este momento. Consulte con su supervisor a cargo."
+        alertType="info"
+      />
+    </Box>
+  );
+
   const renderRowActions = ({ row }) => (
     <Box
       style={{ display: 'flex', flexWrap: 'nowrap', gap: '0.5rem' }}
@@ -120,18 +132,6 @@ const TablaTurnosEvaluacion = () => {
       </Button>
     </Box>
   );
-
-  const noData = () => {
-    <Box
-      sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-    >
-      <Alerts
-        title="No hay turnos asignados"
-        description="No hay turnos asignados para usted en este momento. Consulte con su supervisor a cargo."
-        alertType="info"
-      />
-    </Box>;
-  };
 
   const filaDetalle = (llave, valor) => {
     if (llave === 'papeles_en_regla') {

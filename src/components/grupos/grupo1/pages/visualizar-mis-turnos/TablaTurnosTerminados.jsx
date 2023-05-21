@@ -120,7 +120,7 @@ const TablaTurnosTerminados = () => {
     </Box>
   );
 
-  const noData = () => {
+  const noData = () => (
     <Box
       sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
     >
@@ -129,8 +129,8 @@ const TablaTurnosTerminados = () => {
         description="No hay turnos asignados para usted en este momento. Consulte con su supervisor a cargo."
         alertType="info"
       />
-    </Box>;
-  };
+    </Box>
+  );
 
   const filaDetalle = (llave, valor) => {
     if (llave === 'papeles_en_regla') {
