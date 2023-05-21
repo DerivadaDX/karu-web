@@ -7,17 +7,7 @@ import { DialogTitle, Stack, TextField } from '@mui/material';
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
 import MovimientoService from '../services/movimiento-service';
-
-const formatStringDate = (stringDate) => {
-  const date = new Date(Date.parse(stringDate));
-  const day = (date.getDay() + 1).toString().padStart(2, '0');
-  const month = (date.getMonth() + 1).toString().padStart(2, '0');
-  const year = date.getFullYear();
-
-  const formattedDate = `${day}/${month}/${year}`;
-
-  return formattedDate;
-};
+import FechaHelper from '../helpers/fecha-helper';
 
 const PopUpDetalleMovimiento = ({ movimientoId }) => {
   const [open, setOpen] = React.useState(false);
@@ -58,7 +48,7 @@ const PopUpDetalleMovimiento = ({ movimientoId }) => {
               disabled
               id="standard-disabled"
               label="Fecha en que se realizo"
-              defaultValue={formatStringDate(movimiento.fecha)}
+              defaultValue={FechaHelper.formatearFechaStringComoDiaMesAño(movimiento.fecha)}
               variant="standard"
             />
             <TextField
