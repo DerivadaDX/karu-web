@@ -65,6 +65,7 @@ const CrearSucursal = () => {
         <AddIcon />
         Crear sucursal
       </Button>
+
       <Dialog open={mostrarPopUpCrearSucursal} onClose={cambiarVisibilidadPopUpCrearSucursal}>
         <Dialog open={mostrarPopUpCreacionExitosa} onClose={cambiarVisibilidadPopUpCreacionExitosa}>
           <DialogTitle id="alert-dialog-title">
@@ -81,73 +82,79 @@ const CrearSucursal = () => {
           <Stack
             component="form"
             onSubmit={crearSucursal}
-            sx={{ padding: '70px' }}
+            sx={{ paddingX: '70px', paddingY: '50px' }}
           >
             <TextField
-              margin="dense"
-              onChange={(event) => setNombre(event.target.value)}
-              value={nombre}
               id="nombre"
+              value={nombre}
               label="Nombre"
+              onChange={(event) => setNombre(event.target.value)}
               variant="standard"
+              margin="dense"
               required
             />
             <TextField
-              margin="dense"
-              onChange={(event) => setCalle(event.target.value)}
-              value={calle}
               id="calle"
+              value={calle}
               label="Calle"
+              onChange={(event) => setCalle(event.target.value)}
               variant="standard"
+              margin="dense"
               required
             />
             <TextField
-              margin="dense"
-              onChange={(event) => setNumero(event.target.value)}
-              value={numero}
               id="numero"
-              type="number"
+              value={numero}
               label="Altura"
+              onChange={(event) => setNumero(event.target.value)}
               variant="standard"
-              required
-            />
-            <TextField
               margin="dense"
-              onChange={(event) => setCodigoPostal(event.target.value)}
-              value={codigoPostal}
-              id="codigo_postal"
               type="number"
-              label="C.P"
-              variant="standard"
               required
             />
             <TextField
+              id="codigo_postal"
+              value={codigoPostal}
+              label="C.P."
+              onChange={(event) => setCodigoPostal(event.target.value)}
+              variant="standard"
               margin="dense"
-              onChange={(event) => setLocalidad(event.target.value)}
-              value={localidad}
+              type="number"
+              required
+            />
+            <TextField
               id="localidad"
+              value={localidad}
               label="Localidad"
+              onChange={(event) => setLocalidad(event.target.value)}
               variant="standard"
+              margin="dense"
               required
             />
             <TextField
-              margin="dense"
-              onChange={(event) => setProvincia(event.target.value)}
-              value={provincia}
               id="provincia"
+              value={provincia}
               label="Provincia"
+              onChange={(event) => setProvincia(event.target.value)}
               variant="standard"
+              margin="dense"
               required
             />
             <FormControlLabel
-              onChange={(event) => setPoseeTaller(event.target.checked)}
-              value={poseeTaller}
               id="posee_taller"
-              control={<Checkbox />}
+              value={poseeTaller}
               label="Cuenta con taller mecánico"
+              onChange={(event) => setPoseeTaller(event.target.checked)}
+              control={<Checkbox />}
+              sx={{ marginTop: '2ch' }}
             />
-            <Button type="submit" variant="contained">
-              Dar de alta sucursal
+
+            <Button
+              type="submit"
+              variant="contained"
+              sx={{ marginTop: '2ch' }}
+            >
+              Crear
             </Button>
           </Stack>
         </Paper>
