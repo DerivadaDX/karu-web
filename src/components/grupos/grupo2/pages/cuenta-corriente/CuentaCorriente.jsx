@@ -3,9 +3,9 @@ import * as React from 'react';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import EstadoCuenta from '../components/EstadoCuenta';
-import ListadoMovimientos from '../components/ListadoMovimientos';
-import InformacionSucursal from '../components/InformacionSucursal';
+import EstadoCuenta from './components/EstadoCuenta';
+import ListadoMovimientos from './components/ListadoMovimientos';
+import InformacionSucursal from './components/InformacionSucursal';
 
 const styles = {
   container: {

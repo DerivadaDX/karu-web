@@ -1,7 +1,7 @@
 import React from 'react';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import StoreIcon from '@mui/icons-material/Store';
-import CuentaCorriente from './pages/CuentaCorriente';
+import CuentaCorriente from './pages/cuenta-corriente/CuentaCorriente';
 import SubsidiariesPage from './pages/SubsidiariesPage';
 
 const GROUP_2_PAGES_CONFIG = [
