@@ -35,6 +35,7 @@ const CrearSucursal = () => {
 
   const cambiarVisibilidadPopUpCreacionExitosa = () => {
     setMostrarPopUpCreacionExitosa(false);
+    setMostrarPopUpCrearSucursal(false);
   };
 
   const crearSucursal = (evento) => {
