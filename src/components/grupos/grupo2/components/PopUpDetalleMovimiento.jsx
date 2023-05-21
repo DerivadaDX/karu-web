@@ -49,13 +49,13 @@ const PopUpDetalleMovimiento = ({ movimientoId }) => {
               disabled
               id="standard-disabled"
               label="Tipo de operación"
-              defaultValue={movimiento.tipo === 'D' ? 'Egreso' : 'Ingreso'}
+              defaultValue={movimiento.tipo === 'D' ? 'Débito' : 'Crédito'}
               variant="standard"
             />
             <TextField
               disabled
               id="standard-disabled"
-              label={movimiento.tipo === 'D' ? 'Se le envió a ' : 'Envió'}
+              label={movimiento.tipo === 'D' ? 'Se le envió a' : 'Envió'}
               defaultValue={movimiento.nombre_persona}
               variant="standard"
             />
@@ -83,7 +83,9 @@ const PopUpDetalleMovimiento = ({ movimientoId }) => {
           </Stack>
         </DialogContent>
         <DialogActions>
-          <Button onClick={cambiarVisibilidadPopUp}>Cerrar</Button>
+          <Button onClick={cambiarVisibilidadPopUp}>
+            Cerrar
+          </Button>
         </DialogActions>
       </Dialog>
     </>
