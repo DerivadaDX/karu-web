@@ -1,4 +1,4 @@
-import HttpService from '../http-service';
+import HttpService from '../../../http-service';
 
 const MovimientoService = {
   obtenerMovimientoPorId: (idMovimiento) => HttpService.get(`/movimiento/${idMovimiento}/`),

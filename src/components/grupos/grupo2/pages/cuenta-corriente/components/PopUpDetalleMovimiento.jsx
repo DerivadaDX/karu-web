@@ -7,7 +7,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import { DialogTitle, Stack, TextField } from '@mui/material';
 import PropTypes from 'prop-types';
-import MovimientoService from '../../../services/movimiento-service';
+import MovimientoService from '../services/movimiento-service';
 import DineroHelper from '../../../helpers/dinero-helper';
 import FechaHelper from '../../../helpers/fecha-helper';
 
