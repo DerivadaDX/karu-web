@@ -1,12 +1,11 @@
-import * as React from 'react';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
-import CuentaService from '../../../services/cuenta-service';
-import DineroHelper from '../../../helpers/dinero-helper';
+import CuentaService from '../services/cuenta-service';
+import DineroHelper from '../helpers/dinero-helper';
 
 const CODIGO_CUENTA = '0000000000000000000001';
 

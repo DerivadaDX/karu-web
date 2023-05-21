@@ -1,4 +1,5 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
+
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -8,8 +9,6 @@ import CheckBoxOutlinedIcon from '@mui/icons-material/CheckBoxOutlined';
 import CheckBoxOutlineBlankOutlinedIcon from '@mui/icons-material/CheckBoxOutlineBlankOutlined';
 import FormLabel from '@mui/material/FormLabel';
 import { Divider } from '@mui/material';
-import { useEffect, useState } from 'react';
-import Title from '../../../common/Title';
 import SucursalService from '../services/sucursal-service';
 import PopUpConfirmDisable from './PopUpConfirmDisable';
 
@@ -34,7 +33,7 @@ const styles = {
   },
 };
 
-const SubsidiaryList = () => {
+const ListadoSucursales = () => {
   const [subsidiaries, setSubsidiaries] = useState([]);
   const [records, setRecords] = useState([]);
 
@@ -102,7 +101,6 @@ const SubsidiaryList = () => {
 
   return (
     <>
-      <Title>Listado de Sucursales</Title>
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <FormLabel style={{ marginBottom: 10 }}>Seleccionar categoría:</FormLabel>
         <select
@@ -190,4 +188,4 @@ const SubsidiaryList = () => {
   );
 };
 
-export default SubsidiaryList;
+export default ListadoSucursales;
