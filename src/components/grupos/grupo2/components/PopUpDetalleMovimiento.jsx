@@ -5,73 +5,58 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import { DialogTitle, Stack, TextField } from '@mui/material';
 import PropTypes from 'prop-types';
-import { useState, useEffect } from 'react';
 import MovimientoService from '../services/movimiento-service';
-
-const formatStringDate = (stringDate) => {
-  const date = new Date(Date.parse(stringDate));
-  const day = (date.getDay() + 1).toString().padStart(2, '0');
-  const month = (date.getMonth() + 1).toString().padStart(2, '0');
-  const year = date.getFullYear();
-
-  const formattedDate = `${day}/${month}/${year}`;
-
-  return formattedDate;
-};
+import DineroHelper from '../helpers/dinero-helper';
+import FechaHelper from '../helpers/fecha-helper';
 
 const PopUpDetalleMovimiento = ({ movimientoId }) => {
-  const [open, setOpen] = React.useState(false);
-  const [movimiento, setMovimiento] = useState({});
+  const [mostrarPopUp, setMostrarPopUp] = React.useState(false);
+  const [movimiento, setMovimiento] = React.useState({});
 
-  const handleClickOpen = () => {
-    setOpen(true);
+  const cambiarVisibilidadPopUp = () => {
+    setMostrarPopUp(!mostrarPopUp);
   };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  useEffect(() => {
+  React.useEffect(() => {
     MovimientoService.obtenerMovimientoPorId(movimientoId)
       .then((response) => setMovimiento(response.data));
   }, []);
 
   return (
-    <div>
-      <Button variant="text" onClick={handleClickOpen}>
-        Ver mas
+    <>
+      <Button variant="contained" onClick={cambiarVisibilidadPopUp}>
+        Ver más
       </Button>
       <Dialog
-        open={open}
-        onClose={handleClose}
+        open={mostrarPopUp}
+        onClose={cambiarVisibilidadPopUp}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
           Número de operación:
-          {' '}
-          {movimiento.numero_operacion}
+          {` ${movimiento.numero_operacion}`}
         </DialogTitle>
         <DialogContent>
           <Stack spacing={3}>
             <TextField
               disabled
               id="standard-disabled"
-              label="Fecha en que se realizo"
-              defaultValue={formatStringDate(movimiento.fecha)}
+              label="Fecha en que se realizó"
+              defaultValue={FechaHelper.formatearComoFechaHora(movimiento.fecha)}
               variant="standard"
             />
             <TextField
               disabled
               id="standard-disabled"
               label="Tipo de operación"
-              defaultValue={movimiento.tipo === 'D' ? 'Egreso' : 'Ingreso'}
+              defaultValue={movimiento.tipo === 'D' ? 'Débito' : 'Crédito'}
               variant="standard"
             />
             <TextField
               disabled
               id="standard-disabled"
-              label={movimiento.tipo === 'D' ? 'Se le envió a ' : 'Envió'}
+              label={movimiento.tipo === 'D' ? 'Se le envió a' : 'Envió'}
               defaultValue={movimiento.nombre_persona}
               variant="standard"
             />
@@ -79,7 +64,7 @@ const PopUpDetalleMovimiento = ({ movimientoId }) => {
               disabled
               id="standard-disabled"
               label="Monto"
-              defaultValue={movimiento.monto}
+              defaultValue={DineroHelper.formatearComoDinero(movimiento.monto)}
               variant="standard"
             />
             <TextField
@@ -92,17 +77,19 @@ const PopUpDetalleMovimiento = ({ movimientoId }) => {
             <TextField
               disabled
               id="standard-disabled"
-              label="Datos de la persona"
-              defaultValue={movimiento.documento_persona}
+              label="DNI/CUIT"
+              defaultValue={movimiento.documento_persona ?? '-'}
               variant="standard"
             />
           </Stack>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cerrar</Button>
+          <Button onClick={cambiarVisibilidadPopUp}>
+            Cerrar
+          </Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </>
   );
 };
 

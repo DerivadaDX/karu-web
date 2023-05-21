@@ -6,21 +6,11 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { useEffect, useState } from 'react';
 import PopUpDetalleMovimiento from './PopUpDetalleMovimiento';
-import formatAsCurrency from '../helpers/currencyHelper';
+import DineroHelper from '../helpers/dinero-helper';
 import MovimientoService from '../services/movimiento-service';
+import FechaHelper from '../helpers/fecha-helper';
 
 const CODIGO_CUENTA = '0000000000000000000001';
-
-const formatStringDate = (stringDate) => {
-  const date = new Date(Date.parse(stringDate));
-  const day = (date.getDay() + 1).toString().padStart(2, '0');
-  const month = (date.getMonth() + 1).toString().padStart(2, '0');
-  const year = date.getFullYear();
-
-  const formattedDate = `${day}/${month}/${year}`;
-
-  return formattedDate;
-};
 
 const Orders = () => {
   const [movimientos, setMovimientos] = useState([]);
@@ -46,7 +36,7 @@ const Orders = () => {
       <TableBody>
         {movimientos && movimientos.map((movimiento) => (
           <TableRow key={movimiento.numero_operacion}>
-            <TableCell>{formatStringDate(movimiento.fecha)}</TableCell>
+            <TableCell>{FechaHelper.formatearComoFecha(movimiento.fecha)}</TableCell>
             <TableCell>{movimiento.id_cuenta_origen}</TableCell>
             <TableCell>{movimiento.id_cuenta_destino}</TableCell>
             <TableCell>{movimiento.concepto}</TableCell>
@@ -57,7 +47,7 @@ const Orders = () => {
                 fontWeight: 'bold',
               }}
             >
-              {formatAsCurrency(movimiento.monto)}
+              {DineroHelper.formatearComoDinero(movimiento.monto)}
             </TableCell>
             <TableCell align="center">{movimiento.numero_operacion}</TableCell>
             <TableCell><PopUpDetalleMovimiento movimientoId={movimiento.id} /></TableCell>

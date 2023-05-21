@@ -6,7 +6,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import CuentaService from '../services/cuenta-service';
-import formatAsCurrency from '../helpers/currencyHelper';
+import DineroHelper from '../helpers/dinero-helper';
 
 const CODIGO_CUENTA = '0000000000000000000001';
 
@@ -34,7 +34,7 @@ const Balance = () => {
     <List sx={styles.list}>
       <ListItem>
         <ListItemText
-          primary={formatAsCurrency(balance.saldo_actual)}
+          primary={DineroHelper.formatearComoDinero(balance.saldo_actual)}
           primaryTypographyProps={styles.balanceTypography}
         />
       </ListItem>
