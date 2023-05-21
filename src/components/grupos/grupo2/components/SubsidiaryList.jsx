@@ -10,7 +10,7 @@ import FormLabel from '@mui/material/FormLabel';
 import { Divider } from '@mui/material';
 import { useEffect, useState } from 'react';
 import Title from '../../../common/Title';
-import { getSubsidiaryList } from '../services/services';
+import SucursalService from '../services/sucursal-service';
 import PopUpConfirmDisable from './PopUpConfirmDisable';
 
 const styles = {
@@ -35,14 +35,15 @@ const styles = {
 };
 
 const SubsidiaryList = () => {
-  const [subsidiaries, setsubsidiaries] = useState([]);
+  const [subsidiaries, setSubsidiaries] = useState([]);
   const [records, setRecords] = useState([]);
 
   useEffect(() => {
-    getSubsidiaryList().then((response) => {
-      setsubsidiaries(response.data);
-      setRecords(response.data);
-    });
+    SucursalService.obtenerSucursales()
+      .then((response) => {
+        setSubsidiaries(response.data);
+        setRecords(response.data);
+      });
   }, []);
 
   const [optionCategory, setOptionCategory] = useState('id');
@@ -63,7 +64,8 @@ const SubsidiaryList = () => {
     if (prop === 'id') {
       setRecords(subsidiaries.filter((f) => f[prop].toString().includes(event.target.value)));
     } else {
-      setRecords(subsidiaries.filter((f) => f[prop].toLowerCase().includes(event.target.value)));
+      const valueToSearch = event.target.value.toLowerCase();
+      setRecords(subsidiaries.filter((f) => f[prop].toLowerCase().includes(valueToSearch)));
     }
   };
 
@@ -158,7 +160,7 @@ const SubsidiaryList = () => {
         </TableHead>
         <TableBody>
           {filteredRecords.map((subsidiary) => (
-            <TableRow>
+            <TableRow key={subsidiary.id}>
               <TableCell>{subsidiary.id}</TableCell>
               <TableCell>{subsidiary.nombre}</TableCell>
               <TableCell>{subsidiary.provincia}</TableCell>
