@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import SucursalService from '../../../services/sucursal-service';
+import SucursalService from '../services/sucursal-service';
 
 const CrearSucursal = () => {
   const [mostrarPopUpCrearSucursal, setMostrarPopUpCrearSucursal] = useState(false);
