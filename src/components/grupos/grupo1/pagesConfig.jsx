@@ -9,6 +9,7 @@ import Dashboard from './pages/dashboard/Dashboard';
 import MisTurnos from './pages/visualizar-mis-turnos/MisTurnos';
 import AgendaTaller from './pages/visualizar-agenda/AgendaTaller';
 import Checklist from './pages/checklist-evaluacion/Checklist';
+import TurnoForm from './pages/turnos/turno-cliente/TurnoForm';
 
 const GROUP_1_PAGES_CONFIG = [
   {
@@ -45,6 +46,13 @@ const GROUP_1_PAGES_CONFIG = [
     href: '/checklist-evaluaciones',
     icon: <TooltipCus icon={<FactCheckIcon />} title="Evaluación" />,
     page: <Checklist />,
+  },
+  {
+    id: 'g1-TurnosCliente',
+    name: 'Turnos cliente',
+    href: '/turnos-form',
+    icon: <TooltipCus icon={<FactCheckIcon />} title="Evaluación" />,
+    page: <TurnoForm />,
   },
 
 ];
