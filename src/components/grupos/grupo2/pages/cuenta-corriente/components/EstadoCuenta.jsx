@@ -6,7 +6,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import CuentaService from '../services/cuenta-service';
-import DineroHelper from '../../../helpers/dinero-helper';
+import DineroHelper from '../helpers/dinero-helper';
 
 const CODIGO_CUENTA = '0000000000000000000001';
 
