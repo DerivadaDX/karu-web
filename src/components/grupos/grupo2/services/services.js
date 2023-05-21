@@ -1,15 +1,11 @@
-import axios from 'axios';
+import request from './http-service';
 
-const url = process.env.REACT_APP_G2_URL_BACK || 'http://localhost:8000';
-const version = '/v1';
-const urlCompleta = url + version;
-
-const getBalance = (accountId) => axios.get(`${urlCompleta}/cuenta/${accountId}/`);
-const getMovimiento = (movimientoId) => axios.get(`${urlCompleta}/movimiento/${movimientoId}/`);
-const getMovimientos = (accountId) => axios.get(`${urlCompleta}/movimientos/${accountId}/`);
-const getSubsidiary = (subsidiaryId) => axios.get(`${urlCompleta}/sucursal/${subsidiaryId}/`);
-const getSubsidiaryList = () => axios.get(`${urlCompleta}/sucursales/`);
-const postSubsidiary = (data) => axios.post(`${urlCompleta}/sucursal/`, data);
+const getBalance = (accountId) => request.get(`/cuenta/${accountId}/`);
+const getMovimiento = (movimientoId) => request.get(`/movimiento/${movimientoId}/`);
+const getMovimientos = (accountId) => request.get(`/movimientos/${accountId}/`);
+const getSubsidiary = (subsidiaryId) => request.get(`/sucursal/${subsidiaryId}/`);
+const getSubsidiaryList = () => request.get('/sucursales/');
+const postSubsidiary = (data) => request.post('/sucursal/', data);
 
 export {
   getBalance,
