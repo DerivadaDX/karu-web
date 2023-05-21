@@ -5,7 +5,9 @@ import {
   Box,
   Button,
   Container,
+  DialogActions,
   Divider,
+  Snackbar,
   TextField,
 } from '@mui/material';
 import {
@@ -17,12 +19,15 @@ import Header from '../../components/common/Header';
 import Alerts from '../../components/common/Alerts';
 import { getChecklistEvaluaciones, postRegistroEvaluaciones } from '../../services/services-checklist';
 import evaluacion from './evaluacion.json';
+import Popup from '../../components/common/DialogPopup';
 
 const ChecklistEvaluacion = () => {
   const [evaluaciones, setEvaluaciones] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [open, setOpen] = useState(false);
   const [resError, setResError] = useState([]);
+  const [crearEvaluacion, setCrearEvaluacion] = useState(false);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
   const idTurno = 1;
   const msjErrorDefault = 'Ha ocurrido un error, disculpe las molestias. Intente nuevamente. Si el error persiste comunicarse con soporte: soporte-tecnico@KarU.com';
 
@@ -107,25 +112,31 @@ const ChecklistEvaluacion = () => {
     </Box>
   );
 
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenSnackbar(false);
+  };
+
   async function handleSubmit(event) {
-    event.preventDefault();
-    postRegistroEvaluaciones()
-      .then((response) => {
-        console.log(response.status);
-        // setResCancelar(response.data);
-        // setActualizarTabla(true); // Para actualizar la tabla despues de cancelar turno
-      })
-      .catch((error) => {
-        // setResCancelar(error.message);
-        console.log(error.response.status);
-        setResError(error.response.data.error);
-        console.log(resError);
-        setAlertMessage(
-          resError,
-        );
-        setAlertType('error');
-        setAlertTitle('Error de servidor');
-      });
+    setCrearEvaluacion(true);
+    if (crearEvaluacion) {
+      postRegistroEvaluaciones()
+        .then((response) => {
+          console.log(response.status);
+        })
+        .catch((error) => {
+          console.log(error.response.status);
+          setResError(error.response.data.error);
+          console.log(resError);
+          setAlertMessage(
+            resError,
+          );
+          setAlertType('error');
+          setAlertTitle('Error de servidor');
+        });
+    }
   }
 
   useEffect(() => {
@@ -196,26 +207,63 @@ const ChecklistEvaluacion = () => {
           multiline
           rows={5}
           variant="outlined"
+          color="secondary"
           sx={{ width: '50em' }}
           onChange={handleChangeComment}
         />
       </Box>
 
-      <form onSubmit={handleSubmit}>
-        <Box sx={{
-          display: 'flex', justifyContent: 'center', alignItems: 'center',
-        }}
+      <Box sx={{
+        display: 'flex', justifyContent: 'center', alignItems: 'center',
+      }}
+      >
+        <Button
+          variant="contained"
+          type="submit"
+          sx={{ mt: 3, ml: 1 }}
+          color="secondary"
+          onClick={setOpenDialog}
         >
-          <Button
-            variant="contained"
-            type="submit"
-            sx={{ mt: 3, ml: 1 }}
-            color="secondary"
-          >
-            Crear evaluación
-          </Button>
+          Crear evaluación
+        </Button>
+      </Box>
+
+      <Popup
+        title="Terminar evaluación"
+        setOpenDialog={setOpenDialog}
+        openDialog={openDialog}
+        description="¿Está seguro que desea enviar la evaluación? No se podrá modificar una vez realizada."
+      >
+        <Box>
+          <DialogActions>
+            <Button
+              color="secondary"
+              variant="outlined"
+              onClick={() => {
+                handleSubmit();
+                setOpenDialog(false);
+                setOpenSnackbar(true);
+              }}
+            >
+              Enviar
+            </Button>
+            <Button
+              color="error"
+              variant="outlined"
+              onClick={() => {
+                setOpenDialog(false);
+              }}
+            >
+              Cancelar
+            </Button>
+          </DialogActions>
         </Box>
-      </form>
+      </Popup>
+      <Snackbar
+        autoHideDuration={4000}
+        open={openSnackbar}
+        onClose={handleCloseSnackbar}
+      />
     </>
   );
 };
