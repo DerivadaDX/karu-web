@@ -5,9 +5,9 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { useEffect, useState } from 'react';
-import { getMovimientos } from '../services/services';
 import PopUpDetalleMovimiento from './PopUpDetalleMovimiento';
 import formatAsCurrency from '../helpers/currencyHelper';
+import MovimientoService from '../services/movimiento-service';
 
 const CODIGO_CUENTA = '0000000000000000000001';
 
@@ -26,7 +26,8 @@ const Orders = () => {
   const [movimientos, setMovimientos] = useState([]);
 
   useEffect(() => {
-    getMovimientos(CODIGO_CUENTA).then((response) => setMovimientos(response.data));
+    MovimientoService.obtenerMovimientosDeCuenta(CODIGO_CUENTA)
+      .then((response) => setMovimientos(response.data));
   }, []);
 
   return (
