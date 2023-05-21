@@ -34,14 +34,12 @@ const styles = {
 };
 
 const ListadoSucursales = () => {
-  const [subsidiaries, setSubsidiaries] = useState([]);
-  const [records, setRecords] = useState([]);
+  const [sucursales, setSucursales] = useState([]);
 
   useEffect(() => {
     SucursalService.obtenerSucursales()
       .then((response) => {
-        setSubsidiaries(response.data);
-        setRecords(response.data.sort((a, b) => a.id - b.id));
+        setSucursales(response.data.sort((a, b) => a.id - b.id));
       });
   }, []);
 
@@ -61,10 +59,10 @@ const ListadoSucursales = () => {
     const prop = options[optionCategory] || 'id';
 
     if (prop === 'id') {
-      setRecords(subsidiaries.filter((f) => f[prop].toString().includes(event.target.value)));
+      setSucursales(sucursales.filter((f) => f[prop].toString().includes(event.target.value)));
     } else {
       const valueToSearch = event.target.value.toLowerCase();
-      setRecords(subsidiaries.filter((f) => f[prop].toLowerCase().includes(valueToSearch)));
+      setSucursales(sucursales.filter((f) => f[prop].toLowerCase().includes(valueToSearch)));
     }
   };
 
@@ -89,7 +87,7 @@ const ListadoSucursales = () => {
   };
 
   const actualizarSucursalBorrada = (id) => {
-    setRecords((prevRecords) => prevRecords.map((record) => {
+    setSucursales((prevRecords) => prevRecords.map((record) => {
       if (record.id === id) {
         return { ...record, activa: false };
       }
@@ -97,7 +95,7 @@ const ListadoSucursales = () => {
     }));
   };
 
-  const filteredRecords = records.filter(filterByWorkshop).filter(filterByEnabled);
+  const filteredRecords = sucursales.filter(filterByWorkshop).filter(filterByEnabled);
 
   return (
     <Box>
