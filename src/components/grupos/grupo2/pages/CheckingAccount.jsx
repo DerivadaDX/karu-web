@@ -4,7 +4,7 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import EstadoCuenta from '../components/EstadoCuenta';
 import ListadoMovimientos from '../components/ListadoMovimientos';
-import Subsidiary from '../components/Subsidiary';
+import InformacionSucursal from '../components/InformacionSucursal';
 
 const styles = {
   container: {
@@ -39,7 +39,7 @@ const CheckingAccount = () => (
       </Grid>
       <Grid item xs={12} md={8} lg={9}>
         <Paper sx={styles.paperSuperior}>
-          <Subsidiary />
+          <InformacionSucursal />
         </Paper>
       </Grid>
       <Grid item xs={12}>
