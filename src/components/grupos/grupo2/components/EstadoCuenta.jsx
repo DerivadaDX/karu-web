@@ -14,7 +14,6 @@ const styles = {
   list: {
     width: '100%',
     maxWidth: 360,
-    bgcolor: 'background.paper',
   },
   balanceTypography: {
     fontSize: '2rem',
@@ -22,29 +21,29 @@ const styles = {
   },
 };
 
-const Balance = () => {
-  const [balance, setBalance] = useState([]);
+const EstadoCuenta = () => {
+  const [estadoCuenta, setEstadoCuenta] = useState([]);
 
   useEffect(() => {
     CuentaService.obtenerSaldoActual(CODIGO_CUENTA)
-      .then((response) => setBalance(response.data));
+      .then((response) => setEstadoCuenta(response.data));
   }, []);
 
   return (
     <List sx={styles.list}>
       <ListItem>
         <ListItemText
-          primary={DineroHelper.formatearComoDinero(balance.saldo_actual)}
+          primary={DineroHelper.formatearComoDinero(estadoCuenta.saldo_actual)}
           primaryTypographyProps={styles.balanceTypography}
         />
       </ListItem>
       <Divider component="li" />
       <ListItem>
-        <ListItemText primary="CBU/CVU" secondary={balance.codigo_unico} />
+        <ListItemText primary="CBU/CVU" secondary={estadoCuenta.codigo_unico} />
       </ListItem>
       <Divider component="li" />
     </List>
   );
 };
 
-export default Balance;
+export default EstadoCuenta;

@@ -2,7 +2,7 @@ import * as React from 'react';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import Balance from '../components/Balance';
+import EstadoCuenta from '../components/EstadoCuenta';
 import Orders from '../components/Orders';
 import Subsidiary from '../components/Subsidiary';
 
@@ -34,7 +34,7 @@ const CheckingAccount = () => (
     <Grid container spacing={3}>
       <Grid item xs={12} md={4} lg={3}>
         <Paper sx={styles.paperSuperior}>
-          <Balance />
+          <EstadoCuenta />
         </Paper>
       </Grid>
       <Grid item xs={12} md={8} lg={9}>
