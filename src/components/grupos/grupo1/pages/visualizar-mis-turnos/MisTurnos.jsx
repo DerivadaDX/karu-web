@@ -7,7 +7,7 @@ const MisTurnos = () => (
   <>
     <Box mt="5px">
       <Box display="flex">
-        <Header titulo="Mis Turnos" subtitulo="Area de trabajo" />
+        <Header titulo="Mis Turnos" subtitulo="Área de trabajo" />
       </Box>
     </Box>
     <Divider sx={{ color: 'silver' }} />

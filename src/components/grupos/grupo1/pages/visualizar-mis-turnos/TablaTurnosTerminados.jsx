@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable no-unused-vars */
 import {
@@ -8,13 +9,13 @@ import MaterialReactTable from 'material-react-table';
 import { Button, Box, DialogActions } from '@mui/material';
 import { getDetalleTurno } from '../../services/services-Turnos';
 import Alerts from '../../components/common/Alerts';
-import { getTurnosEvaluacion } from '../../services/services-tecnicos';
+import { getTurnosTerminados } from '../../services/services-tecnicos';
 import Popup from '../../components/common/DialogPopup';
 
 const idTecnico = 5;
 
-const TablaTurnosEvaluacion = () => {
-  const [turnosEvaluacion, setTurnosEvaluacion] = useState([]);
+const TablaTurnosTerminados = () => {
+  const [turnosTerminados, setTurnosTerminados] = useState([]);
   const [actualizarTabla, setActualizarTabla] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -42,12 +43,20 @@ const TablaTurnosEvaluacion = () => {
         header: 'Patente',
       },
       {
+        accessorKey: 'tipo',
+        header: 'Tipo',
+      },
+      {
         accessorKey: 'fecha_inicio',
         header: 'Fecha de inicio',
       },
       {
         accessorKey: 'hora_inicio',
         header: 'Hora de inicio',
+      },
+      {
+        accessorKey: 'fecha_fin',
+        header: 'Fecha de fin',
       },
       {
         accessorKey: 'hora_fin',
@@ -58,16 +67,16 @@ const TablaTurnosEvaluacion = () => {
   );
 
   const traerTurnos = useCallback(() => {
-    getTurnosEvaluacion(idTecnico)
+    getTurnosTerminados(idTecnico)
       .then((response) => {
-        setTurnosEvaluacion(response.data);
+        setTurnosTerminados(response.data);
         setLoading(false);
       })
       .catch((error) => {
         setAlertType('Error');
         setAlertTitle('Error de servidor');
         setAlertMessage(
-          'Error en el servidor. Por favor, vuelva a intentarlo nuevamente. Si el error persiste, comuníquese con el área técnica de KarU. ✉ insomia.autotech@gmail.com',
+          'Error en el servidor. Por favor, vuelva a intentarlo nuevamente. Si el error persiste, comuníquese con el área técnica de KarU. ✉: insomia.autotech@gmail.com',
         );
       });
   }, []);
@@ -107,16 +116,6 @@ const TablaTurnosEvaluacion = () => {
         }}
       >
         Ver más
-      </Button>
-      <Button
-        variant="contained"
-        color="secondary"
-        onClick={() => {
-          setIdTurno(row.original.id_turno);
-          setOpenChecklist(true);
-        }}
-      >
-        Realizar evaluación
       </Button>
     </Box>
   );
@@ -165,7 +164,7 @@ const TablaTurnosEvaluacion = () => {
       </Box>
       <MaterialReactTable
         columns={columnas}
-        data={turnosEvaluacion}
+        data={turnosTerminados}
         state={{ isLoading: loading }}
         positionActionsColumn="last"
         enableRowActions
@@ -220,4 +219,4 @@ const TablaTurnosEvaluacion = () => {
   );
 };
 
-export default TablaTurnosEvaluacion;
+export default TablaTurnosTerminados;

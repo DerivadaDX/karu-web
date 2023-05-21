@@ -8,13 +8,13 @@ import MaterialReactTable from 'material-react-table';
 import { Button, Box, DialogActions } from '@mui/material';
 import { getDetalleTurno } from '../../services/services-Turnos';
 import Alerts from '../../components/common/Alerts';
-import { getTurnosEvaluacion } from '../../services/services-tecnicos';
+import { getTurnosService } from '../../services/services-tecnicos';
 import Popup from '../../components/common/DialogPopup';
 
 const idTecnico = 5;
 
-const TablaTurnosEvaluacion = () => {
-  const [turnosEvaluacion, setTurnosEvaluacion] = useState([]);
+const TablaTurnosService = () => {
+  const [turnosService, setTurnosService] = useState([]);
   const [actualizarTabla, setActualizarTabla] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -53,21 +53,25 @@ const TablaTurnosEvaluacion = () => {
         accessorKey: 'hora_fin',
         header: 'Hora de fin',
       },
+      {
+        accessorKey: 'frecuencia_km',
+        header: 'Kilómetros',
+      },
     ],
     [],
   );
 
   const traerTurnos = useCallback(() => {
-    getTurnosEvaluacion(idTecnico)
+    getTurnosService(idTecnico)
       .then((response) => {
-        setTurnosEvaluacion(response.data);
+        setTurnosService(response.data);
         setLoading(false);
       })
       .catch((error) => {
         setAlertType('Error');
         setAlertTitle('Error de servidor');
         setAlertMessage(
-          'Error en el servidor. Por favor, vuelva a intentarlo nuevamente. Si el error persiste, comuníquese con el área técnica de KarU. ✉ insomia.autotech@gmail.com',
+          'Error en el servidor. Por favor, vuelva a intentarlo nuevamente. Si el error persiste, comuníquese con el área técnica de KarU. ✉: insomia.autotech@gmail.com',
         );
       });
   }, []);
@@ -116,7 +120,7 @@ const TablaTurnosEvaluacion = () => {
           setOpenChecklist(true);
         }}
       >
-        Realizar evaluación
+        Realizar service
       </Button>
     </Box>
   );
@@ -165,7 +169,7 @@ const TablaTurnosEvaluacion = () => {
       </Box>
       <MaterialReactTable
         columns={columnas}
-        data={turnosEvaluacion}
+        data={turnosService}
         state={{ isLoading: loading }}
         positionActionsColumn="last"
         enableRowActions
@@ -220,4 +224,4 @@ const TablaTurnosEvaluacion = () => {
   );
 };
 
-export default TablaTurnosEvaluacion;
+export default TablaTurnosService;
