@@ -20,6 +20,14 @@ import SucursalService from '../services/sucursal-service';
 import PopUpConfirmDisable from './PopUpConfirmDisable';
 
 const styles = {
+  barraSuperior: {
+    display: 'flex',
+    alignItems: 'center',
+    '& > :not(style)': { m: 1 },
+  },
+  divider: {
+    bgcolor: 'text.primary',
+  },
   header: {
     marginTop: 20,
   },
@@ -93,13 +101,7 @@ const ListadoSucursales = () => {
 
   return (
     <Box>
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          '& > :not(style)': { m: 1 },
-        }}
-      >
+      <Box sx={styles.barraSuperior}>
         <InputLabel>Seleccionar categoría:</InputLabel>
         <Select
           value={optionCategory}
@@ -118,7 +120,7 @@ const ListadoSucursales = () => {
           onChange={Filter}
         />
 
-        <Divider orientation="vertical" variant="middle" sx={{ bgcolor: 'text.primary' }} flexItem />
+        <Divider orientation="vertical" variant="middle" sx={styles.divider} flexItem />
 
         <InputLabel>Posee taller:</InputLabel>
         <Select
@@ -130,7 +132,7 @@ const ListadoSucursales = () => {
           <MenuItem value="no">No</MenuItem>
         </Select>
 
-        <Divider orientation="vertical" variant="middle" sx={{ bgcolor: 'text.primary' }} flexItem />
+        <Divider orientation="vertical" variant="middle" sx={styles.divider} flexItem />
 
         <InputLabel>Estado:</InputLabel>
         <Select
@@ -143,7 +145,7 @@ const ListadoSucursales = () => {
         </Select>
       </Box>
 
-      <Divider style={{ borderColor: '#ccc' }} />
+      <Divider sx={styles.divider} />
 
       <Table size="small" style={styles.header}>
         <TableHead>
