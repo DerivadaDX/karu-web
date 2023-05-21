@@ -7,11 +7,10 @@ import DialogContentText from '@mui/material/DialogContentText';
 import IconButton from '@mui/material/IconButton';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import PropTypes from 'prop-types';
-import {
-  DialogTitle,
-} from '@mui/material';
+import { DialogTitle } from '@mui/material';
+import SucursalService from '../services/sucursal-service';
 
-const PopUpConfirmDisable = ({ id, onDisableSubsidiary }) => {
+const PopUpConfirmDisable = ({ id, onDelete }) => {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -23,15 +22,11 @@ const PopUpConfirmDisable = ({ id, onDisableSubsidiary }) => {
   };
 
   const handleConfirm = () => {
-    fetch(`http://localhost:8000/v1/sucursal/${id}/`, {
-      method: 'delete',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ activa: false }),
-    })
+    SucursalService.deshabilitarSucursal(id)
       .then((response) => {
-        if (response.ok) {
+        if (response.status === 204) {
           // La solicitud se realizó correctamente, puedes mostrar un mensaje de éxito
-          onDisableSubsidiary(id);
+          onDelete(id);
         }
       });
 
@@ -71,7 +66,7 @@ const PopUpConfirmDisable = ({ id, onDisableSubsidiary }) => {
 
 PopUpConfirmDisable.propTypes = {
   id: PropTypes.number.isRequired,
-  onDisableSubsidiary: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
 };
 
 export default PopUpConfirmDisable;
