@@ -46,7 +46,11 @@ export default function TurnoForm() {
   const [alertMessage, setAlertMessage] = React.useState('');
 
   function getContent() {
-    return <DatosForm setIsPatenteValid={setIsPatenteValid} />;
+    return (
+      <DatosForm
+        setIsPatenteValid={setIsPatenteValid}
+      />
+    );
   }
 
   const handleNext = () => {

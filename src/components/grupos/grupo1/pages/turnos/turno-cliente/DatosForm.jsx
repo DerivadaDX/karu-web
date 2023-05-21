@@ -94,7 +94,7 @@ const Talleres = () => {
 
 const today = dayjs();
 const tomorrow = dayjs().add(1, 'day');
-const limite = dayjs().add(30, 'day');
+const limite = dayjs().add(31, 'day');
 
 /// //////////////////////Para traer la disponibilidad de un taller
 
@@ -263,41 +263,157 @@ const TipoDeTurno = () => {
   );
 };
 
-// Esto se muestra solo en caso de que ponga service
-class Kilometraje extends React.Component {
-  // eslint-disable-next-line react/state-in-constructor
-  state = { kilometros: '' };
+// // Esto se muestra solo en caso de que ponga service
+// class Kilometraje extends React.Component {
+//   // eslint-disable-next-line react/state-in-constructor
+//   state = { kilometros: '' };
 
-  updateNumber = (e) => {
+//   updateNumber = (e) => {
+//     const val = e.target.value;
+
+//     if (e.target.validity.valid) {
+//       this.setState({ kilometros: e.target.value });
+//       if (val > 200000) {
+//         turno.frecuencia_km = 200000;
+//       } else {
+//         turno.frecuencia_km = Math.ceil(val / 5000) * 5000;
+//       }
+//       // console.log('frecuencia_km cargado en el json:', turno.frecuencia_km);
+//     } else if (val === '') this.setState({ kilometros: val });
+//   };
+
+//   render() {
+//     return (
+//       <FormControl fullWidth>
+//         <FormLabel id="demo-radio-buttons-group-label">Kilometraje actual:</FormLabel>
+//         <input
+//           required
+//           type="tel"
+//           // eslint-disable-next-line react/destructuring-assignment
+//           value={this.state.kilometros}
+//           onChange={this.updateNumber}
+//           pattern="[1-9][0-9]*"
+//         />
+//       </FormControl>
+//     );
+//   }
+// }
+// class Kilometraje extends React.Component {
+//   // eslint-disable-next-line react/state-in-constructor
+//   state = {
+//     kilometros: '',
+//     showInvalidKmAlert: false,
+//   };
+
+//   updateNumber = (e) => {
+//     const val = e.target.value;
+
+//     if (e.target.validity.valid) {
+//       const isValidKm = isKmValid(val);
+//       if (isValidKm) {
+//         this.setState({ kilometros: val, showInvalidKmAlert: false });
+//         if (val > 200000) {
+//           turno.frecuencia_km = 200000;
+//         } else {
+//           turno.frecuencia_km = Math.ceil(val / 5000) * 5000;
+//         }
+//       } else {
+//         this.setState({ kilometros: val, showInvalidKmAlert: true });
+//         // eslint-disable-next-line react/destructuring-assignment
+//         this.props.handleInvalidKmAlert();
+//       }
+//     } else if (val === '') {
+//       this.setState({ kilometros: val });
+//     }
+//   };
+
+//   render() {
+//     const { kilometros, showInvalidKmAlert } = this.state;
+
+//     return (
+//       <FormControl fullWidth>
+//         <FormLabel id="demo-radio-buttons-group-label">Kilometraje actual:</FormLabel>
+//         <input
+//           required
+//           type="tel"
+//           value={kilometros}
+//           onChange={this.updateNumber}
+//           pattern="[1-9][0-9]*"
+//         />
+//         {showInvalidKmAlert && (
+//           <Alert severity="error">Invalid kilometer value.
+// Please enter a value between 5000 and 200000.</Alert>
+//         )}
+//       </FormControl>
+//     );
+//   }
+// }
+
+function isKilometroValid(kilometros) {
+  return kilometros >= 5000 && kilometros <= 200000;
+}
+
+const Kilometraje = () => {
+  const [kilometros, setKilometros] = useState('');
+
+  const [isKmValido, setIsKmValido] = useState(true);
+
+  // const updateNumber = (e) => {
+  //   const val = e.target.value;
+
+  //   if (e.target.validity.valid) {
+  //     if (isKilometroValid(val)) {
+  //       setKilometros(val);
+  //       setIsKmValido(true);
+  //       if (val > 200000) {
+  //         turno.frecuencia_km = 200000;
+  //       } else {
+  //         turno.frecuencia_km = Math.ceil(val / 5000) * 5000;
+  //       }
+  //     } else {
+  //       setKilometros(val);
+  //       setIsKmValido(false);
+  //     }
+  //   } else if (val === '') {
+  //     setKilometros(val);
+  //   }
+  // };
+  const updateNumber = (e) => {
     const val = e.target.value;
 
     if (e.target.validity.valid) {
-      this.setState({ kilometros: e.target.value });
-      if (val > 200000) {
-        turno.frecuencia_km = 200000;
+      if (isKilometroValid(val)) {
+        setIsKmValido(true);
       } else {
-        turno.frecuencia_km = Math.ceil(val / 5000) * 5000;
+        setIsKmValido(false);
       }
-      // console.log('frecuencia_km cargado en el json:', turno.frecuencia_km);
-    } else if (val === '') this.setState({ kilometros: val });
+    } else if (val === '') {
+      setKilometros(val);
+    }
+    setKilometros(val);
+    if (val > 200000) {
+      turno.frecuencia_km = 200000;
+    } else {
+      turno.frecuencia_km = Math.ceil(val / 5000) * 5000;
+    }
   };
 
-  render() {
-    return (
-      <FormControl fullWidth>
-        <FormLabel id="demo-radio-buttons-group-label">Kilometraje actual:</FormLabel>
-        <input
-          required
-          type="tel"
-          // eslint-disable-next-line react/destructuring-assignment
-          value={this.state.kilometros}
-          onChange={this.updateNumber}
-          pattern="[1-9][0-9]*"
-        />
-      </FormControl>
-    );
-  }
-}
+  return (
+    <FormControl fullWidth>
+      <FormLabel id="demo-radio-buttons-group-label">Kilometraje actual:</FormLabel>
+      <TextField
+        required
+        type="tel"
+        value={kilometros}
+        onChange={updateNumber}
+        pattern="[1-9][0-9]*"
+      />
+      {!isKmValido && (
+        <Alert severity="error">Atención: el mínimo es 5000 y el máximo 200000. Cualquier valor por debajo del mínimo será tomado como 5000 y cualquiera por encima del máximo como 200000.</Alert>
+      )}
+    </FormControl>
+  );
+};
 
 function isPatenteValida(patente) {
   const pattern = /^([A-Z]{3}\d{3}|[A-Z]{2}\d{3}[A-Z]{2})$/;
