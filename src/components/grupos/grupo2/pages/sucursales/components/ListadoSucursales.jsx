@@ -10,7 +10,7 @@ import FormLabel from '@mui/material/FormLabel';
 import { Divider } from '@mui/material';
 import { useEffect, useState } from 'react';
 import Title from '../../../../../common/Title';
-import SucursalService from '../../../services/sucursal-service';
+import SucursalService from '../services/sucursal-service';
 import PopUpConfirmDisable from './PopUpConfirmDisable';
 
 const styles = {
