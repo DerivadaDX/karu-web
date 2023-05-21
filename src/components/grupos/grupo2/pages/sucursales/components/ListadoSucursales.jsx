@@ -9,7 +9,6 @@ import CheckBoxOutlinedIcon from '@mui/icons-material/CheckBoxOutlined';
 import CheckBoxOutlineBlankOutlinedIcon from '@mui/icons-material/CheckBoxOutlineBlankOutlined';
 import FormLabel from '@mui/material/FormLabel';
 import { Divider } from '@mui/material';
-import Title from '../../../../../common/Title';
 import SucursalService from '../services/sucursal-service';
 import PopUpConfirmDisable from './PopUpConfirmDisable';
 
@@ -102,7 +101,6 @@ const ListadoSucursales = () => {
 
   return (
     <>
-      <Title>Listado de Sucursales</Title>
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <FormLabel style={{ marginBottom: 10 }}>Seleccionar categoría:</FormLabel>
         <select
