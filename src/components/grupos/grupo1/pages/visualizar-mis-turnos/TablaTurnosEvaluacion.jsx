@@ -11,6 +11,9 @@ import Alerts from '../../components/common/Alerts';
 import { getTurnosEvaluacion } from '../../services/services-tecnicos';
 import Popup from '../../components/common/DialogPopup';
 
+import ChecklistEvaluacion from '../checklist-evaluacion/Checklist';
+import LittleHeader from '../../components/common/LittleHeader';
+
 const idTecnico = 5;
 
 const TablaTurnosEvaluacion = () => {
@@ -23,7 +26,7 @@ const TablaTurnosEvaluacion = () => {
   const [detalle, setDetalle] = useState([]);
 
   // Para abrir el popup con la checklist
-  const [idTurno, setIdTurno] = useState(0);
+  const [idTurnoEvaluacion, setIdTurnoEvaluacion] = useState(0);
   const [openChecklist, setOpenChecklist] = useState(false);
 
   // alertas de la API
@@ -124,7 +127,7 @@ const TablaTurnosEvaluacion = () => {
         variant="contained"
         color="secondary"
         onClick={() => {
-          setIdTurno(row.original.id_turno);
+          setIdTurnoEvaluacion(row.original.id_turno);
           setOpenChecklist(true);
         }}
       >
@@ -210,11 +213,11 @@ const TablaTurnosEvaluacion = () => {
         </Box>
       </Popup>
       <Popup
-        title="Checklist"
+        title={<LittleHeader titulo="Evaluación Técnica" subtitulo="Checklist" />}
         openDialog={openChecklist}
         setOpenDialog={setOpenChecklist}
       >
-        Checklist
+        <ChecklistEvaluacion />
       </Popup>
     </>
   );
