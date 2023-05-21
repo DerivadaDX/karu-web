@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { useEffect, useState } from 'react';
+
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -10,14 +12,14 @@ import DineroHelper from '../helpers/dinero-helper';
 import FechaHelper from '../helpers/fecha-helper';
 
 const PopUpDetalleMovimiento = ({ movimientoId }) => {
-  const [mostrarPopUp, setMostrarPopUp] = React.useState(false);
-  const [movimiento, setMovimiento] = React.useState({});
+  const [mostrarPopUp, setMostrarPopUp] = useState(false);
+  const [movimiento, setMovimiento] = useState({});
 
   const cambiarVisibilidadPopUp = () => {
     setMostrarPopUp(!mostrarPopUp);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     MovimientoService.obtenerMovimientoPorId(movimientoId)
       .then((response) => setMovimiento(response.data));
   }, []);
