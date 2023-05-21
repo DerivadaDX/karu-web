@@ -1,33 +1,25 @@
 import React, { useEffect, useState } from 'react';
 
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
+import {
+  Box,
+  Divider,
+  InputLabel,
+  MenuItem,
+  Select,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  TextField,
+} from '@mui/material';
 import CheckBoxOutlinedIcon from '@mui/icons-material/CheckBoxOutlined';
 import CheckBoxOutlineBlankOutlinedIcon from '@mui/icons-material/CheckBoxOutlineBlankOutlined';
-import FormLabel from '@mui/material/FormLabel';
-import { Divider } from '@mui/material';
+
 import SucursalService from '../services/sucursal-service';
 import PopUpConfirmDisable from './PopUpConfirmDisable';
 
 const styles = {
-  input: {
-    paddingTop: 10,
-    paddingBottom: 10,
-    paddingRight: 5,
-    paddingLeft: 5,
-    marginBottom: 10,
-    marginRight: 10,
-  },
-  select: {
-    fontSize: 10,
-    padding: 13,
-    marginLeft: 10,
-    marginRight: 10,
-    marginBottom: 10,
-  },
   header: {
     marginTop: 20,
   },
@@ -75,7 +67,7 @@ const ListadoSucursales = () => {
     if (optionHasWorkshop === 'no') {
       return record.posee_taller === false;
     }
-    return true; // No se aplica ningún filtro
+    return true;
   };
 
   const filterByEnabled = (record) => {
@@ -85,7 +77,7 @@ const ListadoSucursales = () => {
     if (optionEnabled === 'no') {
       return record.activa === false;
     }
-    return true; // No se aplica ningún filtro
+    return true;
   };
 
   const actualizarSucursalBorrada = (id) => {
@@ -100,47 +92,59 @@ const ListadoSucursales = () => {
   const filteredRecords = records.filter(filterByWorkshop).filter(filterByEnabled);
 
   return (
-    <>
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        <FormLabel style={{ marginBottom: 10 }}>Seleccionar categoría:</FormLabel>
-        <select
-          style={{ ...styles.select, width: 100 }}
+    <Box>
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          '& > :not(style)': { m: 1 },
+        }}
+      >
+        <InputLabel>Seleccionar categoría:</InputLabel>
+        <Select
           value={optionCategory}
           onChange={(event) => setOptionCategory(event.target.value)}
         >
-          <option value="id">ID</option>
-          <option value="nombre">Nombre</option>
-          <option value="provincia">Provincia</option>
-          <option value="localidad">Localidad</option>
-          <option value="calle">Calle</option>
-        </select>
+          <MenuItem value="id">ID</MenuItem>
+          <MenuItem value="nombre">Nombre</MenuItem>
+          <MenuItem value="provincia">Provincia</MenuItem>
+          <MenuItem value="localidad">Localidad</MenuItem>
+          <MenuItem value="calle">Calle</MenuItem>
+        </Select>
 
-        <input type="text" style={styles.input} onChange={Filter} placeholder="Buscar..." />
-        <Divider style={{ borderColor: '#ccc' }} orientation="vertical" flexItem />
+        <TextField
+          label="Buscar..."
+          variant="outlined"
+          onChange={Filter}
+        />
 
-        <FormLabel style={{ marginBottom: 10, marginLeft: 10 }}>Taller:</FormLabel>
-        <select
-          style={{ ...styles.select, width: 80 }}
+        <Divider orientation="vertical" variant="middle" sx={{ bgcolor: 'text.primary' }} flexItem />
+
+        <InputLabel>Posee taller:</InputLabel>
+        <Select
           value={optionHasWorkshop}
           onChange={(event) => setOptionHasWorkshop(event.target.value)}
         >
-          <option value="todas">Todas</option>
-          <option value="si">Sí</option>
-          <option value="no">No</option>
-        </select>
+          <MenuItem value="todas">Todas</MenuItem>
+          <MenuItem value="si">Sí</MenuItem>
+          <MenuItem value="no">No</MenuItem>
+        </Select>
 
-        <FormLabel style={{ marginBottom: 10 }}>Habilitada:</FormLabel>
-        <select
-          style={{ ...styles.select, width: 80 }}
+        <Divider orientation="vertical" variant="middle" sx={{ bgcolor: 'text.primary' }} flexItem />
+
+        <InputLabel>Estado:</InputLabel>
+        <Select
           value={optionEnabled}
           onChange={(event) => setOptionEnabled(event.target.value)}
         >
-          <option value="todas">Todas</option>
-          <option value="si">Sí</option>
-          <option value="no">No</option>
-        </select>
-      </div>
+          <MenuItem value="todas">Todas</MenuItem>
+          <MenuItem value="si">Habilitadas</MenuItem>
+          <MenuItem value="no">Deshabilitadas</MenuItem>
+        </Select>
+      </Box>
+
       <Divider style={{ borderColor: '#ccc' }} />
+
       <Table size="small" style={styles.header}>
         <TableHead>
           <TableRow>
@@ -184,7 +188,7 @@ const ListadoSucursales = () => {
           ))}
         </TableBody>
       </Table>
-    </>
+    </Box>
   );
 };
 
