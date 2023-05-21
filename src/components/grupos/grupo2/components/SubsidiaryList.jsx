@@ -42,7 +42,7 @@ const SubsidiaryList = () => {
     SucursalService.obtenerSucursales()
       .then((response) => {
         setSubsidiaries(response.data);
-        setRecords(response.data);
+        setRecords(response.data.sort((a, b) => a.id - b.id));
       });
   }, []);
 
