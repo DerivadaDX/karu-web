@@ -138,7 +138,7 @@ const CrearSucursal = () => {
               required
             />
             <FormControlLabel
-              onChange={(event) => setPoseeTaller(event.target.value)}
+              onChange={(event) => setPoseeTaller(event.target.checked)}
               value={poseeTaller}
               id="posee_taller"
               control={<Checkbox />}
