@@ -15,25 +15,35 @@ const styles = {
     p: 2,
     display: 'flex',
     flexDirection: 'column',
-    height: 200,
   },
+};
+
+styles.paperSuperior = {
+  ...styles.paper,
+  height: 200,
+};
+
+styles.paperInferior = {
+  ...styles.paper,
+  overflow: 'auto',
+  maxHeight: '60vh',
 };
 
 const CheckingAccount = () => (
   <Container maxWidth="lg" sx={styles.container}>
     <Grid container spacing={3}>
       <Grid item xs={12} md={4} lg={3}>
-        <Paper sx={styles.paper}>
+        <Paper sx={styles.paperSuperior}>
           <Balance />
         </Paper>
       </Grid>
       <Grid item xs={12} md={8} lg={9}>
-        <Paper sx={styles.paper}>
+        <Paper sx={styles.paperSuperior}>
           <Subsidiary />
         </Paper>
       </Grid>
       <Grid item xs={12}>
-        <Paper sx={styles.paper}>
+        <Paper sx={styles.paperInferior}>
           <Orders />
         </Paper>
       </Grid>
