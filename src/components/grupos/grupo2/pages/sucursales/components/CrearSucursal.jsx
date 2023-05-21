@@ -7,11 +7,12 @@ import {
   Dialog,
   DialogActions,
   DialogTitle,
+  FormControlLabel,
   Paper,
   Stack,
+  TextField,
 } from '@mui/material';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
+import AddIcon from '@mui/icons-material/Add';
 import SucursalService from '../services/sucursal-service';
 
 const CrearSucursal = () => {
@@ -61,7 +62,8 @@ const CrearSucursal = () => {
   return (
     <Box>
       <Button variant="contained" onClick={cambiarVisibilidadPopUpCrearSucursal}>
-        Crear
+        <AddIcon />
+        Crear sucursal
       </Button>
       <Dialog open={mostrarPopUpCrearSucursal} onClose={cambiarVisibilidadPopUpCrearSucursal}>
         <Dialog open={mostrarPopUpCreacionExitosa} onClose={cambiarVisibilidadPopUpCreacionExitosa}>
