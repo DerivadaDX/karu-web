@@ -2,7 +2,7 @@ import React from 'react';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import StoreIcon from '@mui/icons-material/Store';
 import CuentaCorriente from './pages/cuenta-corriente/CuentaCorriente';
-import Sucursales from './pages/Sucursales';
+import Sucursales from './pages/sucursales/Sucursales';
 
 const GROUP_2_PAGES_CONFIG = [
   {

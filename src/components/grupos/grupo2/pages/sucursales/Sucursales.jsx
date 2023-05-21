@@ -2,7 +2,7 @@ import * as React from 'react';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import ListadoSucursales from '../components/ListadoSucursales';
+import ListadoSucursales from './components/ListadoSucursales';
 
 const styles = {
   container: {

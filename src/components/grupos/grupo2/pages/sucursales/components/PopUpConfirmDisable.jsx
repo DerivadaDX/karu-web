@@ -8,7 +8,7 @@ import IconButton from '@mui/material/IconButton';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import PropTypes from 'prop-types';
 import { DialogTitle } from '@mui/material';
-import SucursalService from '../services/sucursal-service';
+import SucursalService from '../../../services/sucursal-service';
 
 const PopUpConfirmDisable = ({ id, onDelete }) => {
   const [open, setOpen] = React.useState(false);
