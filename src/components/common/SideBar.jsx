@@ -95,7 +95,9 @@ const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
       <List component="nav">
         <ListItemButton onClick={toggleAdministrationMenu}>
           <ListItemIcon>
-            <AdminPanelSettingsIcon />
+            <Tooltip title="Administración" placement="right">
+              <AdminPanelSettingsIcon />
+            </Tooltip>
           </ListItemIcon>
           <ListItemText primary="Administración" />
           {openAdminMenu ? <ExpandLess /> : <ExpandMore />}
@@ -108,7 +110,9 @@ const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
         </Collapse>
         <ListItemButton onClick={toggleTechnicalAreaMenu}>
           <ListItemIcon>
-            <EngineeringIcon />
+            <Tooltip title="Área técnica" placement="right">
+              <EngineeringIcon />
+            </Tooltip>
           </ListItemIcon>
           <ListItemText primary="Área técnica" />
           {openTechnicalMenu ? <ExpandLess /> : <ExpandMore />}
@@ -120,9 +124,11 @@ const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
         </Collapse>
         <ListItemButton onClick={toggleCommercialAreaMenu}>
           <ListItemIcon>
-            <LocalAtmIcon />
+            <Tooltip title="Área comercial" placement="right">
+              <LocalAtmIcon />
+            </Tooltip>
           </ListItemIcon>
-          <ListItemText primary="Comercial" />
+          <ListItemText primary="Área comercial" />
           {openCommercialMenu ? <ExpandLess /> : <ExpandMore />}
         </ListItemButton>
         <Collapse in={openCommercialMenu} timeout="auto" unmountOnExit>
