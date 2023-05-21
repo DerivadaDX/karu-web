@@ -1,5 +1,4 @@
-/* eslint-disable import/no-extraneous-dependencies */
-import * as React from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Typography from '@mui/material/Typography';
 

@@ -1,4 +1,5 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
+
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -8,7 +9,6 @@ import CheckBoxOutlinedIcon from '@mui/icons-material/CheckBoxOutlined';
 import CheckBoxOutlineBlankOutlinedIcon from '@mui/icons-material/CheckBoxOutlineBlankOutlined';
 import FormLabel from '@mui/material/FormLabel';
 import { Divider } from '@mui/material';
-import { useEffect, useState } from 'react';
 import Title from '../../../../../common/Title';
 import SucursalService from '../services/sucursal-service';
 import PopUpConfirmDisable from './PopUpConfirmDisable';
