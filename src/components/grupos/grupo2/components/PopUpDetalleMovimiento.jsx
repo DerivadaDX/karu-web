@@ -34,16 +34,15 @@ const PopUpDetalleMovimiento = ({ movimientoId }) => {
       >
         <DialogTitle id="alert-dialog-title">
           Número de operación:
-          {' '}
-          {movimiento.numero_operacion}
+          {` ${movimiento.numero_operacion}`}
         </DialogTitle>
         <DialogContent>
           <Stack spacing={3}>
             <TextField
               disabled
               id="standard-disabled"
-              label="Fecha en que se realizo"
-              defaultValue={FechaHelper.formatearFechaStringComoDiaMesAño(movimiento.fecha)}
+              label="Fecha en que se realizó"
+              defaultValue={FechaHelper.formatearComoFechaHora(movimiento.fecha)}
               variant="standard"
             />
             <TextField
