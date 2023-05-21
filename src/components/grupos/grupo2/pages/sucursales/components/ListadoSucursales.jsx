@@ -34,22 +34,24 @@ const styles = {
 };
 
 const ListadoSucursales = () => {
-  const [subsidiaries, setSubsidiaries] = useState([]);
+  const [sucursales, setSucursales] = useState([]);
   const [records, setRecords] = useState([]);
+
+  const [valorCategoriaAFiltrar, setValorCategoriaAFiltrar] = useState('id');
+  const [valorFiltroPoseeTaller, setValorFiltroPoseeTaller] = useState('todas');
+  const [valorFiltroEstado, setValorFiltroEstado] = useState('todas');
 
   useEffect(() => {
     SucursalService.obtenerSucursales()
       .then((response) => {
-        setSubsidiaries(response.data);
-        setRecords(response.data.sort((a, b) => a.id - b.id));
+        const sucursalesOrdenadasPorIdAsc = response.data.sort((a, b) => a.id - b.id);
+
+        setSucursales(sucursalesOrdenadasPorIdAsc);
+        setRecords(sucursalesOrdenadasPorIdAsc);
       });
   }, []);
 
-  const [optionCategory, setOptionCategory] = useState('id');
-  const [optionHasWorkshop, setOptionHasWorkshop] = useState('todas');
-  const [optionEnabled, setOptionEnabled] = useState('todas');
-
-  const Filter = (event) => {
+  const filtrarPorCategoria = (event) => {
     const options = {
       id: 'id',
       nombre: 'nombre',
@@ -58,54 +60,63 @@ const ListadoSucursales = () => {
       calle: 'calle',
     };
 
-    const prop = options[optionCategory] || 'id';
+    const prop = options[valorCategoriaAFiltrar] || 'id';
 
     if (prop === 'id') {
-      setRecords(subsidiaries.filter((f) => f[prop].toString().includes(event.target.value)));
+      setRecords(sucursales.filter((f) => f[prop].toString().includes(event.target.value)));
     } else {
       const valueToSearch = event.target.value.toLowerCase();
-      setRecords(subsidiaries.filter((f) => f[prop].toLowerCase().includes(valueToSearch)));
+      setRecords(sucursales.filter((f) => f[prop].toLowerCase().includes(valueToSearch)));
     }
   };
 
-  const filterByWorkshop = (record) => {
-    if (optionHasWorkshop === 'si') {
+  const filtrarPorPoseeTaller = (record) => {
+    if (valorFiltroPoseeTaller === 'si') {
       return record.posee_taller === true;
     }
-    if (optionHasWorkshop === 'no') {
+
+    if (valorFiltroPoseeTaller === 'no') {
       return record.posee_taller === false;
     }
+
     return true;
   };
 
-  const filterByEnabled = (record) => {
-    if (optionEnabled === 'si') {
+  const filtrarPorEstado = (record) => {
+    if (valorFiltroEstado === 'si') {
       return record.activa === true;
     }
-    if (optionEnabled === 'no') {
+
+    if (valorFiltroEstado === 'no') {
       return record.activa === false;
     }
+
     return true;
   };
 
   const actualizarSucursalBorrada = (id) => {
-    setRecords((prevRecords) => prevRecords.map((record) => {
+    const actualizarSucursalDeshabilitada = (record) => {
       if (record.id === id) {
         return { ...record, activa: false };
       }
+
       return record;
-    }));
+    };
+
+    setRecords((prevRecords) => prevRecords.map(actualizarSucursalDeshabilitada));
   };
 
-  const filteredRecords = records.filter(filterByWorkshop).filter(filterByEnabled);
+  const recordsFiltrados = records
+    .filter(filtrarPorPoseeTaller)
+    .filter(filtrarPorEstado);
 
   return (
     <Box>
       <Box sx={styles.barraSuperior}>
         <InputLabel>Seleccionar categoría:</InputLabel>
         <Select
-          value={optionCategory}
-          onChange={(event) => setOptionCategory(event.target.value)}
+          value={valorCategoriaAFiltrar}
+          onChange={(event) => setValorCategoriaAFiltrar(event.target.value)}
         >
           <MenuItem value="id">ID</MenuItem>
           <MenuItem value="nombre">Nombre</MenuItem>
@@ -117,15 +128,15 @@ const ListadoSucursales = () => {
         <TextField
           label="Buscar..."
           variant="outlined"
-          onChange={Filter}
+          onChange={filtrarPorCategoria}
         />
 
         <Divider orientation="vertical" variant="middle" sx={styles.divider} flexItem />
 
         <InputLabel>Posee taller:</InputLabel>
         <Select
-          value={optionHasWorkshop}
-          onChange={(event) => setOptionHasWorkshop(event.target.value)}
+          value={valorFiltroPoseeTaller}
+          onChange={(event) => setValorFiltroPoseeTaller(event.target.value)}
         >
           <MenuItem value="todas">Todas</MenuItem>
           <MenuItem value="si">Sí</MenuItem>
@@ -136,8 +147,8 @@ const ListadoSucursales = () => {
 
         <InputLabel>Estado:</InputLabel>
         <Select
-          value={optionEnabled}
-          onChange={(event) => setOptionEnabled(event.target.value)}
+          value={valorFiltroEstado}
+          onChange={(event) => setValorFiltroEstado(event.target.value)}
         >
           <MenuItem value="todas">Todas</MenuItem>
           <MenuItem value="si">Habilitadas</MenuItem>
@@ -163,7 +174,7 @@ const ListadoSucursales = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {filteredRecords.map((subsidiary) => (
+          {recordsFiltrados.map((subsidiary) => (
             <TableRow key={subsidiary.id}>
               <TableCell>{subsidiary.id}</TableCell>
               <TableCell>{subsidiary.nombre}</TableCell>
