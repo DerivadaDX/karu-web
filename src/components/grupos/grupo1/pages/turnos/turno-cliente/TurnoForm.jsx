@@ -16,6 +16,7 @@ import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
+import Alert from '@mui/material/Alert';
 import DatosForm from './DatosForm';
 import turno from '../turno.json';
 
@@ -33,14 +34,20 @@ const Copyright = () => (
 
 const steps = ['Formulario para sacar un turno'];
 
-function getContent() {
-  return <DatosForm />;
-}
-
 const theme = createTheme();
 
 export default function TurnoForm() {
   const [activeStep, setActiveStep] = React.useState(0);
+
+  const [isPatenteValid, setIsPatenteValid] = React.useState(true);
+
+  const [showAlert, setShowAlert] = React.useState(false);
+
+  const [alertMessage, setAlertMessage] = React.useState('');
+
+  function getContent() {
+    return <DatosForm setIsPatenteValid={setIsPatenteValid} />;
+  }
 
   const handleNext = () => {
     setActiveStep(activeStep + 1);
@@ -50,18 +57,18 @@ export default function TurnoForm() {
     let completo = true;
 
     if (turno.fecha_inicio === '' || turno.hora_inicio === '' || turno.taller_id === ''
-            || turno.patente === '' || turno.tipo === ''
-            || (turno.tipo === 'service' && turno.frecuencia_km === null)) {
+      || turno.patente === '' || turno.tipo === ''
+      || (turno.tipo === 'service' && turno.frecuencia_km === null)) {
       completo = false;
     }
     return completo;
   }
 
   async function handleSubmit(e) {
+    e.preventDefault();
     try {
-      if (isDatosCompletos()) {
-        e.preventDefault();
-        const response = await axios({
+      if (isDatosCompletos() && isPatenteValid) {
+        await axios({
           method: 'post',
           url: 'https://autotech2.onrender.com/turnos/turnos-create/',
           data: {
@@ -78,14 +85,21 @@ export default function TurnoForm() {
         });
         // console.log('Se crea el turno con:', turno);
         handleNext();
-        return response;
+        // return response;
+      } else {
+        setAlertMessage('Complete todos los campos y verifique errores, por favor.');
       }
-      alert('Complete todos los campos, por favor.');
     } catch (error) {
-      alert('Surgió un error, vuelva a intentar.');
+      setAlertMessage('Surgió un error, vuelva a intentar.');
       // console.log(error.response.data);
     }
+
+    setShowAlert(true);
   }
+
+  const handleCloseAlert = () => {
+    setShowAlert(false);
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -136,9 +150,14 @@ export default function TurnoForm() {
                   sx={{ mt: 3, ml: 1 }}
                 >
                   Enviar Datos
-                  {/* console.log(turno) */ }
+                  {/* console.log(turno) */}
                 </Button>
               </Box>
+              {showAlert && (
+                <Alert severity="error" onClose={handleCloseAlert}>
+                  {alertMessage}
+                </Alert>
+              )}
             </form>
           )}
         </Paper>

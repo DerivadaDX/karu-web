@@ -12,6 +12,7 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import Stack from '@mui/material/Stack';
+import Alert from '@mui/material/Alert';
 // Calendario
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -298,24 +299,38 @@ class Kilometraje extends React.Component {
   }
 }
 
+function isPatenteValida(patente) {
+  const pattern = /^([A-Z]{3}\d{3}|[A-Z]{2}\d{3}[A-Z]{2})$/;
+  return pattern.test(patente);
+}
+
 const Patente = () => {
+  const [isValid, setIsValid] = useState(true);
+
   const handleChange = (event) => {
     const { value } = event.target;
-    turno.patente = value;
-    // console.log('Patente cargada en el json:', turno.patente);
+    if (isPatenteValida(value)) {
+      setIsValid(true);
+      turno.patente = value;
+    } else {
+      setIsValid(false);
+    }
   };
 
   return (
-    <TextField
-      required
-      id="patente"
-      name="patente"
-      label="Patente"
-      fullWidth
-      variant="outlined"
-      inputProps={{ minLength: 6, maxLength: 7 }}
-      onChange={handleChange}
-    />
+    <>
+      <TextField
+        required
+        id="patente"
+        name="patente"
+        label="Patente"
+        fullWidth
+        variant="outlined"
+        inputProps={{ minLength: 6, maxLength: 7 }}
+        onChange={handleChange}
+      />
+      {!isValid && <Alert severity="error">Patente inválida. Ejemplos de patentes válidas: AA111AA o ABC123</Alert>}
+    </>
   );
 };
 
