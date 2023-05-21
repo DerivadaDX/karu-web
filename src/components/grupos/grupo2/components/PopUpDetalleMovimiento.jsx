@@ -3,12 +3,10 @@ import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import {
-  DialogTitle, Stack, TextField,
-} from '@mui/material';
+import { DialogTitle, Stack, TextField } from '@mui/material';
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
-import { getMovimiento } from '../services/services';
+import MovimientoService from '../services/movimiento-service';
 
 const formatStringDate = (stringDate) => {
   const date = new Date(Date.parse(stringDate));
@@ -34,7 +32,8 @@ const PopUpDetalleMovimiento = ({ movimientoId }) => {
   };
 
   useEffect(() => {
-    getMovimiento(movimientoId).then((response) => setMovimiento(response.data));
+    MovimientoService.obtenerMovimientoPorId(movimientoId)
+      .then((response) => setMovimiento(response.data));
   }, []);
 
   return (

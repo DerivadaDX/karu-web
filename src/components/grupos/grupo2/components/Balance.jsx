@@ -5,7 +5,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
-import { getBalance } from '../services/services';
+import CuentaService from '../services/cuenta-service';
 import formatAsCurrency from '../helpers/currencyHelper';
 
 const CODIGO_CUENTA = '0000000000000000000001';
@@ -26,7 +26,8 @@ const Balance = () => {
   const [balance, setBalance] = useState([]);
 
   useEffect(() => {
-    getBalance(CODIGO_CUENTA).then((response) => setBalance(response.data));
+    CuentaService.obtenerSaldoActual(CODIGO_CUENTA)
+      .then((response) => setBalance(response.data));
   }, []);
 
   return (

@@ -9,7 +9,7 @@ import FormLabel from '@mui/material/FormLabel';
 import { Divider } from '@mui/material';
 import { useEffect, useState } from 'react';
 import Title from '../../../common/Title';
-import { getSubsidiaryList } from '../services/services';
+import SucursalService from '../services/sucursal-service';
 
 const styles = {
   input: {
@@ -37,14 +37,15 @@ const styles = {
 };
 
 const SubsidiaryList = () => {
-  const [subsidiaries, setsubsidiaries] = useState([]);
+  const [subsidiaries, setSubsidiaries] = useState([]);
   const [records, setRecords] = useState([]);
 
   useEffect(() => {
-    getSubsidiaryList().then((response) => {
-      setsubsidiaries(response.data);
-      setRecords(response.data);
-    });
+    SucursalService.obtenerSucursales()
+      .then((response) => {
+        setSubsidiaries(response.data);
+        setRecords(response.data);
+      });
   }, []);
 
   const [optionCategory, setOptionCategory] = useState('id');

@@ -15,7 +15,7 @@ import LocalAtmIcon from '@mui/icons-material/LocalAtm';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import Collapse from '@mui/material/Collapse';
-import { Tooltip } from '@mui/material';
+import { Box, Tooltip } from '@mui/material';
 import PropTypes from 'prop-types';
 import TooltipCus from '../grupos/grupo1/components/common/Tooltip';
 import GROUP_1_PAGES_CONFIG from '../grupos/grupo1/pagesConfig';
@@ -38,7 +38,11 @@ const styles = {
 const buildCollapsableMenu = (menuItemConfig) => {
   const iconIsTooltip = menuItemConfig.icon.name === TooltipCus.name;
   const icon = !iconIsTooltip
-    ? (<Tooltip title={menuItemConfig.name} placement="right">{menuItemConfig.icon}</Tooltip>)
+    ? (
+      <Tooltip title={menuItemConfig.name} placement="right">
+        <Box>{menuItemConfig.icon}</Box>
+      </Tooltip>
+    )
     : menuItemConfig.icon;
 
   return (
@@ -96,14 +100,14 @@ const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
         <ListItemButton onClick={toggleAdministrationMenu}>
           <ListItemIcon>
             <Tooltip title="Administración" placement="right">
-              <AdminPanelSettingsIcon />
+              <Box><AdminPanelSettingsIcon /></Box>
             </Tooltip>
           </ListItemIcon>
           <ListItemText primary="Administración" />
           {openAdminMenu ? <ExpandLess /> : <ExpandMore />}
         </ListItemButton>
         <Collapse in={openAdminMenu} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
+          <List component="Box" disablePadding>
             {GROUP_2_PAGES_CONFIG.map(buildCollapsableMenu)}
             {GROUP_4_PAGES_CONFIG.map(buildCollapsableMenu)}
           </List>
@@ -111,28 +115,28 @@ const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
         <ListItemButton onClick={toggleTechnicalAreaMenu}>
           <ListItemIcon>
             <Tooltip title="Área técnica" placement="right">
-              <EngineeringIcon />
+              <Box><EngineeringIcon /></Box>
             </Tooltip>
           </ListItemIcon>
           <ListItemText primary="Área técnica" />
           {openTechnicalMenu ? <ExpandLess /> : <ExpandMore />}
         </ListItemButton>
         <Collapse in={openTechnicalMenu} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
+          <List component="Box" disablePadding>
             {GROUP_1_PAGES_CONFIG.map(buildCollapsableMenu)}
           </List>
         </Collapse>
         <ListItemButton onClick={toggleCommercialAreaMenu}>
           <ListItemIcon>
             <Tooltip title="Área comercial" placement="right">
-              <LocalAtmIcon />
+              <Box><LocalAtmIcon /></Box>
             </Tooltip>
           </ListItemIcon>
           <ListItemText primary="Área comercial" />
           {openCommercialMenu ? <ExpandLess /> : <ExpandMore />}
         </ListItemButton>
         <Collapse in={openCommercialMenu} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
+          <List component="Box" disablePadding>
             {GROUP_3_PAGES_CONFIG.map(buildCollapsableMenu)}
           </List>
         </Collapse>

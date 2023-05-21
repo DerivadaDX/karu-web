@@ -5,7 +5,7 @@ import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import { useEffect, useState } from 'react';
 import Title from '../../../common/Title';
-import { getSubsidiary } from '../services/services';
+import SucursalService from '../services/sucursal-service';
 
 const ID_SUCURSAL = 1;
 
@@ -19,7 +19,8 @@ const Subsidiary = () => {
   const [subsidiary, setSubsidiary] = useState([]);
 
   useEffect(() => {
-    getSubsidiary(ID_SUCURSAL).then((response) => setSubsidiary(response.data));
+    SucursalService.obtenerSucursalPorId(ID_SUCURSAL)
+      .then((response) => setSubsidiary(response.data));
   }, []);
 
   return (
