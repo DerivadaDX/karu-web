@@ -16,7 +16,8 @@ import Alert from '@mui/material/Alert';
 // Calendario
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+// import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import dayjs from 'dayjs';
 import 'dayjs/locale/es';
 import { format } from 'date-fns';
@@ -54,7 +55,7 @@ const Talleres = () => {
       [name]: value,
     }));
     turno.taller_id = value;
-    // console.log('Id del taller, json:', turno.taller_id);
+    console.log(turno.taller_id);
   };
 
   return (
@@ -104,8 +105,6 @@ const fetchAgendaData = async (idTaller) => {
   try {
     const response = await axios.get(agendaEndPoint);
     disponibilidad = response.data;
-
-    // console.log('El json:', disponibilidad);
   } catch (error) {
     // console.error(error);
   }
@@ -116,35 +115,33 @@ const isFeriadoIsMas30Dias = (date) => {
     return true;
   }
 
-  const actual = format(new Date(date), 'dd/MM/yyyy');
-  const hoy = format(new Date(today), 'dd/MM/yyyy');
+  const actual = format(new Date(date), 'yyyy-MM-dd');
+  const hoy = format(new Date(today), 'yyyy-MM-dd');
   let isFeriado = false;
 
   // eslint-disable-next-line no-restricted-syntax
   for (const dia in feriados) { if (actual === feriados[dia]) { isFeriado = true; } }
   return isFeriado || date > limite || actual === hoy;
 };
-/// //////////////////////////////////////////////////////////////////////////
+/// //////////Calendario, validaciones
 
 const DateValidationShouldDisableDate = () => {
   const [dia, setDia] = React.useState(tomorrow);
   fetchAgendaData(turno.taller_id);
 
   return (
-    // Para que ponga las cosas del calendario en español: adapterLocale="es"
-    // Problema: desfasa el calendario, porque arranca desde L y está para arrancar desde Sunday
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Box>
         <Stack spacing={3} width={300}>
           <Grid container spacing={3}>
             <Grid item xs={12} md={10}>
-              <DatePicker
+              <MobileDatePicker
                 required
+                label="Fechas"
+                value={dia}
                 disablePast
-                defaultValue={tomorrow}
                 shouldDisableDate={isFeriadoIsMas30Dias}
                 views={['year', 'month', 'day']}
-                value={dia}
                 onChange={(newValue) => {
                   setDia(newValue);
                   turno.fecha_inicio = format(new Date(newValue), 'yyyy-MM-dd');
@@ -168,6 +165,55 @@ const DateValidationShouldDisableDate = () => {
     </LocalizationProvider>
   );
 };
+//   return (
+//     <LocalizationProvider dateAdapter={AdapterDayjs}>
+//       <Box>
+//         <Stack spacing={3} width={300}>
+//           <Grid container spacing={3}>
+//             <Grid item xs={12} md={10}>
+//               <FormControl required>
+//                 <InputLabel>Fechas</InputLabel>
+//                 <Select
+//                   label="Fechas"
+//                   fullWidth
+//                   value={dia}
+//                   onChange={(e) => {
+//                     const newValue = e.target.value;
+//                     setDia(newValue);
+//                     turno.fecha_inicio = format(new Date(newValue), 'yyyy-MM-dd');
+//                     turno.fecha_fin = format(new Date(newValue), 'yyyy-MM-dd');
+//                   }}
+//                 >
+//                   {disponibilidad
+//                     && disponibilidad.dias_y_horarios
+//                     && disponibilidad.dias_y_horarios.map((item) => (
+//                       <MenuItem
+//                         key={item.dia}
+//                         value={item.dia}
+//                         disabled={isFeriadoIsMas30Dias(item.dia)}
+//                       >
+//                         {format(new Date(item.dia), 'yyyy-MM-dd')}
+//                       </MenuItem>
+//                     ))}
+//                 </Select>
+//               </FormControl>
+//             </Grid>
+//             <Grid item xs={12} md={10}>
+//               {turno.fecha_inicio !== ''
+//                 && (
+//                   <Hora
+//                     required
+//                     fecha={turno.fecha_inicio}
+//                     dias_y_horarios={disponibilidad.dias_y_horarios}
+//                   />
+//                 )}
+//             </Grid>
+//           </Grid>
+//         </Stack>
+//       </Box>
+//     </LocalizationProvider>
+//   );
+// };
 
 // eslint-disable-next-line camelcase
 const Hora = ({ dias_y_horarios, fecha }) => {
@@ -179,7 +225,6 @@ const Hora = ({ dias_y_horarios, fecha }) => {
     turno.hora_inicio = `${parseInt(selectedValue, 10)}:00:00`;
     h = parseInt(selectedValue, 10) + 1;
     turno.hora_fin = `${h}:00:00`;
-    // console.log('Hora inicio:', turno.hora_inicio, '| Hora fin:', turno.hora_fin);
   };
 
   let h;
@@ -231,7 +276,6 @@ const TipoDeTurno = () => {
   const guardarCambio = (event) => {
     const { value } = event.target;
     turno.tipo = value;
-    // console.log('Tipo de turno cargado en el json:', turno.tipo);
   };
 
   return (
@@ -263,94 +307,13 @@ const TipoDeTurno = () => {
   );
 };
 
-// // Esto se muestra solo en caso de que ponga service
-// class Kilometraje extends React.Component {
-//   // eslint-disable-next-line react/state-in-constructor
-//   state = { kilometros: '' };
-
-//   updateNumber = (e) => {
-//     const val = e.target.value;
-
-//     if (e.target.validity.valid) {
-//       this.setState({ kilometros: e.target.value });
-//       if (val > 200000) {
-//         turno.frecuencia_km = 200000;
-//       } else {
-//         turno.frecuencia_km = Math.ceil(val / 5000) * 5000;
-//       }
-//       // console.log('frecuencia_km cargado en el json:', turno.frecuencia_km);
-//     } else if (val === '') this.setState({ kilometros: val });
-//   };
-
-//   render() {
-//     return (
-//       <FormControl fullWidth>
-//         <FormLabel id="demo-radio-buttons-group-label">Kilometraje actual:</FormLabel>
-//         <input
-//           required
-//           type="tel"
-//           // eslint-disable-next-line react/destructuring-assignment
-//           value={this.state.kilometros}
-//           onChange={this.updateNumber}
-//           pattern="[1-9][0-9]*"
-//         />
-//       </FormControl>
-//     );
-//   }
-// }
-// class Kilometraje extends React.Component {
-//   // eslint-disable-next-line react/state-in-constructor
-//   state = {
-//     kilometros: '',
-//     showInvalidKmAlert: false,
-//   };
-
-//   updateNumber = (e) => {
-//     const val = e.target.value;
-
-//     if (e.target.validity.valid) {
-//       const isValidKm = isKmValid(val);
-//       if (isValidKm) {
-//         this.setState({ kilometros: val, showInvalidKmAlert: false });
-//         if (val > 200000) {
-//           turno.frecuencia_km = 200000;
-//         } else {
-//           turno.frecuencia_km = Math.ceil(val / 5000) * 5000;
-//         }
-//       } else {
-//         this.setState({ kilometros: val, showInvalidKmAlert: true });
-//         // eslint-disable-next-line react/destructuring-assignment
-//         this.props.handleInvalidKmAlert();
-//       }
-//     } else if (val === '') {
-//       this.setState({ kilometros: val });
-//     }
-//   };
-
-//   render() {
-//     const { kilometros, showInvalidKmAlert } = this.state;
-
-//     return (
-//       <FormControl fullWidth>
-//         <FormLabel id="demo-radio-buttons-group-label">Kilometraje actual:</FormLabel>
-//         <input
-//           required
-//           type="tel"
-//           value={kilometros}
-//           onChange={this.updateNumber}
-//           pattern="[1-9][0-9]*"
-//         />
-//         {showInvalidKmAlert && (
-//           <Alert severity="error">Invalid kilometer value.
-// Please enter a value between 5000 and 200000.</Alert>
-//         )}
-//       </FormControl>
-//     );
-//   }
-// }
-
 function isKilometroValid(kilometros) {
   return kilometros >= 5000 && kilometros <= 200000;
+}
+
+function isKmNros(km) {
+  const pattern = /^\d{1,6}$/;
+  return pattern.test(km);
 }
 
 const Kilometraje = () => {
@@ -358,26 +321,6 @@ const Kilometraje = () => {
 
   const [isKmValido, setIsKmValido] = useState(true);
 
-  // const updateNumber = (e) => {
-  //   const val = e.target.value;
-
-  //   if (e.target.validity.valid) {
-  //     if (isKilometroValid(val)) {
-  //       setKilometros(val);
-  //       setIsKmValido(true);
-  //       if (val > 200000) {
-  //         turno.frecuencia_km = 200000;
-  //       } else {
-  //         turno.frecuencia_km = Math.ceil(val / 5000) * 5000;
-  //       }
-  //     } else {
-  //       setKilometros(val);
-  //       setIsKmValido(false);
-  //     }
-  //   } else if (val === '') {
-  //     setKilometros(val);
-  //   }
-  // };
   const updateNumber = (e) => {
     const val = e.target.value;
 
@@ -387,10 +330,12 @@ const Kilometraje = () => {
       } else {
         setIsKmValido(false);
       }
+      if (isKmNros(val)) {
+        setKilometros(val);
+      }
     } else if (val === '') {
       setKilometros(val);
     }
-    setKilometros(val);
     if (val > 200000) {
       turno.frecuencia_km = 200000;
     } else {
@@ -405,8 +350,8 @@ const Kilometraje = () => {
         required
         type="tel"
         value={kilometros}
-        onChange={updateNumber}
         pattern="[1-9][0-9]*"
+        onChange={updateNumber}
       />
       {!isKmValido && (
         <Alert severity="error">Atención: el mínimo es 5000 y el máximo 200000. Cualquier valor por debajo del mínimo será tomado como 5000 y cualquiera por encima del máximo como 200000.</Alert>
