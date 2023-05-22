@@ -13,6 +13,9 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "@types/node": "^20.2.3",
+    "@types/react": "^18.2.6",
+    "@types/react-dom": "^18.2.4",
     "axios": "^1.4.0",
     "date-fns": "^2.30.0",
     "dayjs": "^1.11.7",
@@ -26,6 +29,8 @@
     "react-router-dom": "^6.11.0",
     "react-scripts": "5.0.1",
     "sort-by": "^1.2.0",
+    "typescript": "^5.0.4",
+    "universal-cookie": "^4.0.4",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -33,7 +38,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint:check": "eslint --ext .js --ext .jsx .",
+    "lint:check": "eslint --ext .js --ext .jsx --ext .ts --ext .tsx .",
     "lint:fix": "npm run lint:check -- --fix"
   },
   "eslintConfig": {
