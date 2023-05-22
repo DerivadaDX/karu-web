@@ -65,7 +65,7 @@ export const SimpleTabTurnos = () => {
         >
           <Tab label="Pendientes" {...allyProps(0)} />
           <Tab label="Pendientes de aprobación" {...allyProps(1)} />
-          <Tab label="En Progreso" {...allyProps(2)} />
+          <Tab label="En Proceso" {...allyProps(2)} />
           <Tab label="Terminados" {...allyProps(3)} />
         </Tabs>
       </Box>

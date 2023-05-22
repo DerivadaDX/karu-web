@@ -8,15 +8,13 @@ import MaterialReactTable from 'material-react-table';
 import { Button, Box, DialogActions } from '@mui/material';
 import { getDetalleTurno } from '../../services/services-Turnos';
 import Alerts from '../../components/common/Alerts';
-import { getTurnosEvaluacion } from '../../services/services-tecnicos';
+import { getTurnosReparacion } from '../../services/services-tecnicos';
 import Popup from '../../components/common/DialogPopup';
-import ChecklistEvaluacion from '../checklist-evaluacion/Checklist';
-import LittleHeader from '../../components/common/LittleHeader';
 
 const idTecnico = 5;
 
-const TablaTurnosEvaluacion = () => {
-  const [turnosEvaluacion, setTurnosEvaluacion] = useState([]);
+const TablaTurnosReparacion = () => {
+  const [turnosReparacion, setTurnosReparacion] = useState([]);
   const [actualizarTabla, setActualizarTabla] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -25,7 +23,7 @@ const TablaTurnosEvaluacion = () => {
   const [detalle, setDetalle] = useState([]);
 
   // Para abrir el popup con la checklist
-  const [idTurnoEvaluacion, setIdTurnoEvaluacion] = useState(0);
+  const [idTurno, setIdTurno] = useState(0);
   const [openChecklist, setOpenChecklist] = useState(false);
 
   // alertas de la API
@@ -52,6 +50,10 @@ const TablaTurnosEvaluacion = () => {
         header: 'Hora de inicio',
       },
       {
+        accessorKey: 'fecha_fin',
+        header: 'Fecha de fin',
+      },
+      {
         accessorKey: 'hora_fin',
         header: 'Hora de fin',
       },
@@ -60,16 +62,16 @@ const TablaTurnosEvaluacion = () => {
   );
 
   const traerTurnos = useCallback(() => {
-    getTurnosEvaluacion(idTecnico)
+    getTurnosReparacion(idTecnico)
       .then((response) => {
-        setTurnosEvaluacion(response.data);
+        setTurnosReparacion(response.data);
         setLoading(false);
       })
       .catch((error) => {
         setAlertType('Error');
         setAlertTitle('Error de servidor');
         setAlertMessage(
-          'Error en el servidor. Por favor, vuelva a intentarlo nuevamente. Si el error persiste, comuníquese con el área técnica de KarU. ✉ insomia.autotech@gmail.com',
+          'Error en el servidor. Por favor, vuelva a intentarlo nuevamente. Si el error persiste, comuníquese con el área técnica de KarU. ✉: insomia.autotech@gmail.com',
         );
       });
   }, []);
@@ -95,18 +97,6 @@ const TablaTurnosEvaluacion = () => {
       });
   };
 
-  const noData = () => (
-    <Box
-      sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-    >
-      <Alerts
-        title="No hay turnos asignados"
-        description="No hay turnos asignados para usted en este momento. Consulte con su supervisor a cargo."
-        alertType="info"
-      />
-    </Box>
-  );
-
   const renderRowActions = ({ row }) => (
     <Box
       style={{ display: 'flex', flexWrap: 'nowrap', gap: '0.5rem' }}
@@ -126,12 +116,24 @@ const TablaTurnosEvaluacion = () => {
         variant="contained"
         color="secondary"
         onClick={() => {
-          setIdTurnoEvaluacion(row.original.id_turno);
+          setIdTurno(row.original.id_turno);
           setOpenChecklist(true);
         }}
       >
-        Realizar evaluación
+        Realizar reparación
       </Button>
+    </Box>
+  );
+
+  const noData = () => (
+    <Box
+      sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+    >
+      <Alerts
+        title="No hay turnos asignados"
+        description="No hay turnos asignados para usted en este momento. Consulte con su supervisor a cargo."
+        alertType="info"
+      />
     </Box>
   );
 
@@ -167,7 +169,7 @@ const TablaTurnosEvaluacion = () => {
       </Box>
       <MaterialReactTable
         columns={columnas}
-        data={turnosEvaluacion}
+        data={turnosReparacion}
         state={{ isLoading: loading }}
         positionActionsColumn="last"
         enableRowActions
@@ -212,26 +214,14 @@ const TablaTurnosEvaluacion = () => {
         </Box>
       </Popup>
       <Popup
-        title={(
-          <LittleHeader
-            titulo="Evaluación Técnica"
-            subtitulo="Checklist"
-            descripcion="Aclaración: el puntaje indica la gravedad de las fallas, cuanto más alto, mayor es la gravedad. Ej.: si el puntaje es 0, entonces la parte evaluada está en perfectas condiciones. De 5 en adelante es porque la parte tiene fallas."
-          />
-)}
+        title="Checklist"
         openDialog={openChecklist}
         setOpenDialog={setOpenChecklist}
       >
-        <ChecklistEvaluacion
-          idTurnoPadre={idTurnoEvaluacion}
-          open={openChecklist}
-          setOpen={setOpenChecklist}
-          actualizar={actualizarTabla}
-          setActualizar={setActualizarTabla}
-        />
+        Checklist
       </Popup>
     </>
   );
 };
 
-export default TablaTurnosEvaluacion;
+export default TablaTurnosReparacion;

@@ -166,6 +166,25 @@ const TablaTurnosPendientesDeAprobacion = () => {
     </Box>
   );
 
+  const filaDetalle = (llave, valor) => {
+    if (llave === 'papeles_en_regla') {
+      return null;
+    }
+    return (
+      <>
+        <span>
+          <strong>
+            {llave}
+            :
+            {' '}
+          </strong>
+        </span>
+        <span>{valor}</span>
+
+      </>
+    );
+  };
+
   return (
     <>
       <Box
@@ -239,21 +258,13 @@ const TablaTurnosPendientesDeAprobacion = () => {
         setOpenDialog={setVerMas}
         botonRetorno="Atras"
       >
-        {Object.entries(detalleTurno).map(([key, value]) => (
-          <div key={key}>
-            <span>
-              <strong>
-                {key}
-                :
-                {' '}
-              </strong>
-            </span>
-            <span>
-              {value}
-              {' '}
-            </span>
-          </div>
-        ))}
+        {
+              Object.entries(detalleTurno).map(([key, value]) => (
+                <div key={key}>
+                  {filaDetalle(key, value)}
+                </div>
+              ))
+}
         <Box>
           <DialogActions>
             <Button
