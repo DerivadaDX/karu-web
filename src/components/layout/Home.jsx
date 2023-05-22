@@ -20,8 +20,8 @@ const Home = () => (
       </Typography>
     </Box>
     <Box component="section">
-      <Grid xs={12} container justifyContent="center">
-        <Grid item>
+      <Grid container justifyContent="center">
+        <Grid item xs={12}>
           <img src={HomeImage} alt="example" style={styles.image} />
         </Grid>
       </Grid>
