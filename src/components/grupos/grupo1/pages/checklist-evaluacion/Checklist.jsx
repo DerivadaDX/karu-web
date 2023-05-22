@@ -178,7 +178,7 @@ const ChecklistEvaluacion = (props) => {
 
       <Divider sx={{ color: 'silver' }} />
 
-      <Container maxWidth="xxl" sx={{ mb: 2 }}>
+      <Container maxWidth="xxl" sx={{ mb: 1 }}>
         <MaterialReactTable
           columns={columnas}
           data={evaluaciones}
@@ -218,20 +218,19 @@ const ChecklistEvaluacion = (props) => {
           }}
           tableInstanceRef={tableInstanceRef}
         />
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <TextField
+            id="standard-multiline-static"
+            placeholder="Comentarios"
+            multiline
+            rows={5}
+            variant="outlined"
+            color="secondary"
+            sx={{ width: '80rem', mt: 1 }}
+            onChange={handleChangeComment}
+          />
+        </Box>
       </Container>
-
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <TextField
-          id="standard-multiline-static"
-          placeholder="Comentarios"
-          multiline
-          rows={5}
-          variant="outlined"
-          color="secondary"
-          sx={{ width: '50em' }}
-          onChange={handleChangeComment}
-        />
-      </Box>
       {/* Botones que estan en la base del popup */}
       <Box sx={{
         display: 'flex', justifyContent: 'center', alignItems: 'center',
