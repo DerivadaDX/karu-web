@@ -1,5 +1,4 @@
-import * as React from 'react';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -7,9 +6,9 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import PopUpDetalleMovimiento from './PopUpDetalleMovimiento';
-import DineroHelper from '../../../helpers/dinero-helper';
-import MovimientoService from '../../../services/movimiento-service';
-import FechaHelper from '../../../helpers/fecha-helper';
+import MovimientoService from '../services/movimiento-service';
+import DineroHelper from '../helpers/dinero-helper';
+import FechaHelper from '../helpers/fecha-helper';
 
 const CODIGO_CUENTA = '0000000000000000000001';
 

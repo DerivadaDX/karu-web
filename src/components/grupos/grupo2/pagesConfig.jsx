@@ -2,7 +2,7 @@ import React from 'react';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import StoreIcon from '@mui/icons-material/Store';
 import CuentaCorriente from './pages/cuenta-corriente/CuentaCorriente';
-import SubsidiariesPage from './pages/SubsidiariesPage';
+import Sucursales from './pages/sucursales/Sucursales';
 
 const GROUP_2_PAGES_CONFIG = [
   {
@@ -13,11 +13,11 @@ const GROUP_2_PAGES_CONFIG = [
     page: <CuentaCorriente />,
   },
   {
-    id: 'g2-Subsidiaries',
+    id: 'g2-Sucursales',
     name: 'Sucursales',
-    href: '/subsidiaries',
+    href: '/sucursales',
     icon: <StoreIcon />,
-    page: <SubsidiariesPage />,
+    page: <Sucursales />,
   },
 ];
 

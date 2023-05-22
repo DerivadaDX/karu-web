@@ -9,6 +9,10 @@ import Tab from '@mui/material/Tab';
 import { useState } from 'react';
 
 import TablaTurnosEvaluacion from './TablaTurnosEvaluacion';
+import TablaTurnosReparacion from './TablaTurnosReparacion';
+import TablaTurnosService from './TablaTurnosService';
+import TablaTurnosParticulares from './TablaTurnosParticulares';
+import TablaTurnosTerminados from './TablaTurnosTerminados';
 
 const TabPanel = (props) => {
   const {
@@ -54,8 +58,8 @@ export const TabMisTurnos = () => {
     <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'silver' }}>
         <Tabs value={value} onChange={handleChange} aria-label="scrollable auto tabs example" indicatorColor="secondary" variant="scrollable" scrollButtons="auto">
-          <Tab label="Evaluacion" {...allyProps(0)} />
-          <Tab label="Reparacion" {...allyProps(1)} />
+          <Tab label="Evaluación" {...allyProps(0)} />
+          <Tab label="Reparación" {...allyProps(1)} />
           <Tab label="Service" {...allyProps(2)} />
           <Tab label="Particular" {...allyProps(3)} />
           <Tab label="Terminado" {...allyProps(4)} />
@@ -65,16 +69,16 @@ export const TabMisTurnos = () => {
         <TablaTurnosEvaluacion />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Tabla turnos por reparacion
+        <TablaTurnosReparacion />
       </TabPanel>
       <TabPanel value={value} index={2}>
-        Tabla turnos por service
+        <TablaTurnosService />
       </TabPanel>
       <TabPanel value={value} index={3}>
-        Tabla turnos particulares
+        <TablaTurnosParticulares />
       </TabPanel>
       <TabPanel value={value} index={4}>
-        Tabla turnos terminados
+        <TablaTurnosTerminados />
       </TabPanel>
     </Box>
   );

@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable camelcase */
 /* eslint-disable no-use-before-define */
 /* eslint-disable react/prop-types */
@@ -16,7 +17,6 @@ import Alert from '@mui/material/Alert';
 // Calendario
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-// import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import dayjs from 'dayjs';
 import 'dayjs/locale/es';
@@ -29,8 +29,9 @@ import InputLabel from '@mui/material/InputLabel';
 import feriados from './feriados.json';
 import disponibilidad from './disponibilidad.json';
 import turno from '../turno.json';
+import localidadTaller from './localidadTaller.json';
 
-/// //////////////////////////////////////////Taller select
+// Taller select
 const tallerAPI = axios.create({
   baseURL: 'https://autotech2.onrender.com/talleres_admin/',
 });
@@ -55,7 +56,9 @@ const Talleres = () => {
       [name]: value,
     }));
     turno.taller_id = value;
-    console.log(turno.taller_id);
+    const localidad = talleres.find((taller) => taller.id_taller === value)?.localidad;
+    localidadTaller.localidad = localidad;
+    console.log(localidad);
   };
 
   return (
@@ -91,13 +94,13 @@ const Talleres = () => {
     </Box>
   );
 };
-/// ///////////////////////////////////Fin taller select
+// Fin taller select
 
 const today = dayjs();
 const tomorrow = dayjs().add(1, 'day');
 const limite = dayjs().add(31, 'day');
 
-/// //////////////////////Para traer la disponibilidad de un taller
+// Para traer la disponibilidad de un taller
 
 const fetchAgendaData = async (idTaller) => {
   const agendaEndPoint = `https://autotech2.onrender.com/turnos/dias-horarios-disponibles/${idTaller}/`;
@@ -115,15 +118,15 @@ const isFeriadoIsMas30Dias = (date) => {
     return true;
   }
 
-  const actual = format(new Date(date), 'yyyy-MM-dd');
-  const hoy = format(new Date(today), 'yyyy-MM-dd');
+  const actual = format(new Date(date), 'dd/MM/yyyy');
+  const hoy = format(new Date(today), 'dd/MM/yyyy');
   let isFeriado = false;
 
   // eslint-disable-next-line no-restricted-syntax
   for (const dia in feriados) { if (actual === feriados[dia]) { isFeriado = true; } }
   return isFeriado || date > limite || actual === hoy;
 };
-/// //////////Calendario, validaciones
+// Calendario, validaciones
 
 const DateValidationShouldDisableDate = () => {
   const [dia, setDia] = React.useState(tomorrow);
@@ -138,10 +141,12 @@ const DateValidationShouldDisableDate = () => {
               <MobileDatePicker
                 required
                 label="Fechas"
-                value={dia}
+                format="DD/MM/YYYY"
+                defaultValue={tomorrow}
                 disablePast
                 shouldDisableDate={isFeriadoIsMas30Dias}
                 views={['year', 'month', 'day']}
+                value={dia}
                 onChange={(newValue) => {
                   setDia(newValue);
                   turno.fecha_inicio = format(new Date(newValue), 'yyyy-MM-dd');
@@ -165,55 +170,6 @@ const DateValidationShouldDisableDate = () => {
     </LocalizationProvider>
   );
 };
-//   return (
-//     <LocalizationProvider dateAdapter={AdapterDayjs}>
-//       <Box>
-//         <Stack spacing={3} width={300}>
-//           <Grid container spacing={3}>
-//             <Grid item xs={12} md={10}>
-//               <FormControl required>
-//                 <InputLabel>Fechas</InputLabel>
-//                 <Select
-//                   label="Fechas"
-//                   fullWidth
-//                   value={dia}
-//                   onChange={(e) => {
-//                     const newValue = e.target.value;
-//                     setDia(newValue);
-//                     turno.fecha_inicio = format(new Date(newValue), 'yyyy-MM-dd');
-//                     turno.fecha_fin = format(new Date(newValue), 'yyyy-MM-dd');
-//                   }}
-//                 >
-//                   {disponibilidad
-//                     && disponibilidad.dias_y_horarios
-//                     && disponibilidad.dias_y_horarios.map((item) => (
-//                       <MenuItem
-//                         key={item.dia}
-//                         value={item.dia}
-//                         disabled={isFeriadoIsMas30Dias(item.dia)}
-//                       >
-//                         {format(new Date(item.dia), 'yyyy-MM-dd')}
-//                       </MenuItem>
-//                     ))}
-//                 </Select>
-//               </FormControl>
-//             </Grid>
-//             <Grid item xs={12} md={10}>
-//               {turno.fecha_inicio !== ''
-//                 && (
-//                   <Hora
-//                     required
-//                     fecha={turno.fecha_inicio}
-//                     dias_y_horarios={disponibilidad.dias_y_horarios}
-//                   />
-//                 )}
-//             </Grid>
-//           </Grid>
-//         </Stack>
-//       </Box>
-//     </LocalizationProvider>
-//   );
-// };
 
 // eslint-disable-next-line camelcase
 const Hora = ({ dias_y_horarios, fecha }) => {

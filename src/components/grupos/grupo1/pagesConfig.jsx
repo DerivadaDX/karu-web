@@ -1,14 +1,13 @@
 import React from 'react';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import PersonSearchIcon from '@mui/icons-material/PersonSearch';
-import FactCheckIcon from '@mui/icons-material/FactCheck';
 import ListAltIcon from '@mui/icons-material/ListAlt';
+import ContactMailIcon from '@mui/icons-material/ContactMail';
 import TooltipCus from './components/common/Tooltip';
 import VisualizacionFiltroBusqueda from './pages/visualizacion-tecnicos/VisualizacionFiltroBusqueda';
 import Dashboard from './pages/dashboard/Dashboard';
 import MisTurnos from './pages/visualizar-mis-turnos/MisTurnos';
 import AgendaTaller from './pages/visualizar-agenda/AgendaTaller';
-import Checklist from './pages/checklist-evaluacion/Checklist';
 import TurnoForm from './pages/turnos/turno-cliente/TurnoForm';
 
 const GROUP_1_PAGES_CONFIG = [
@@ -41,17 +40,10 @@ const GROUP_1_PAGES_CONFIG = [
     page: <MisTurnos />,
   },
   {
-    id: 'g1-ChecklistEvaluaciones',
-    name: 'Evaluación',
-    href: '/checklist-evaluaciones',
-    icon: <TooltipCus icon={<FactCheckIcon />} title="Evaluación" />,
-    page: <Checklist />,
-  },
-  {
     id: 'g1-TurnosCliente',
     name: 'Turnos cliente',
     href: '/turnos-form',
-    icon: <TooltipCus icon={<FactCheckIcon />} title="Evaluación" />,
+    icon: <TooltipCus icon={<ContactMailIcon />} title="Turnos cliente" />,
     page: <TurnoForm />,
   },
 
