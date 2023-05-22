@@ -203,8 +203,8 @@ const Cotizar = () => {
     const marcaMatch = user.marca.toLowerCase().includes(searchMarca.toLowerCase());
     const modeloMatch = user.modelo.toLowerCase().includes(searchModelo.toLowerCase());
     const kilometrajeMatch = user.kilometraje.toString().includes(searchKilometraje);
-    const combustibleMatch = user.combustible.toString().includes(searchCombustible);
-    const importadoMatch = user.importado.toString().includes(searchImportado);
+    const combustibleMatch = user.combustible.toLowerCase().includes(searchCombustible);
+    const importadoMatch = user.importado.toLowerCase().includes(searchImportado);
     return marcaMatch && modeloMatch && anioMatch && kilometrajeMatch && combustibleMatch && importadoMatch;
   });
 
