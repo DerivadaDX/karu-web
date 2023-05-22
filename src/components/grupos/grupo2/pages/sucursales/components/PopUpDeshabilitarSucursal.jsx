@@ -10,6 +10,7 @@ import {
   DialogTitle,
   IconButton,
   Tooltip,
+  Typography,
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
@@ -50,7 +51,11 @@ const PopUpDeshabilitarSucursal = ({ sucursal, onDelete }) => {
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            ¿Estás seguro de que deseas deshabilitar esta sucursal?
+            Se va a deshabilitar la sucursal:
+            <Typography variant="body1" fontWeight="bold" component="span">
+              {` ${sucursal.nombre}`}
+            </Typography>
+            . ¿Desea continuar?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
