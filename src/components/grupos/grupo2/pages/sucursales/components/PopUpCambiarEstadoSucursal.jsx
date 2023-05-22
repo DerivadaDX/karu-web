@@ -14,6 +14,7 @@ import {
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import SucursalService from '../services/sucursal-service';
 
 const PopUpCambiarEstadoSucursal = ({ sucursal, onSuccess }) => {
@@ -47,9 +48,13 @@ const PopUpCambiarEstadoSucursal = ({ sucursal, onSuccess }) => {
 
   return (
     <Box>
-      <IconButton aria-label="delete" onClick={cambiarVisibilidadPopUp}>
+      <IconButton onClick={cambiarVisibilidadPopUp}>
         <Tooltip title={nombreOperacion} placement="right">
-          <RemoveCircleIcon color="error" />
+          {
+            sucursal.activa
+              ? <RemoveCircleIcon color="error" />
+              : <AddCircleIcon color="success" />
+          }
         </Tooltip>
       </IconButton>
       <Dialog
