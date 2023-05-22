@@ -14,9 +14,10 @@ import {
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import SucursalService from '../services/sucursal-service';
 
-const PopUpDeshabilitarSucursal = ({ sucursal, onDelete }) => {
+const PopUpCambiarEstadoSucursal = ({ sucursal, onSuccess }) => {
   const [mostrarPopUp, setMostrarPopUp] = useState(false);
 
   const cambiarVisibilidadPopUp = () => {
@@ -27,17 +28,33 @@ const PopUpDeshabilitarSucursal = ({ sucursal, onDelete }) => {
     SucursalService.deshabilitarSucursal(sucursal.id)
       .then((response) => {
         if (response.status === 204) {
-          onDelete(sucursal.id);
+          onSuccess(sucursal.id);
         }
       })
       .finally(cambiarVisibilidadPopUp);
   };
 
+  const habilitarSucursal = () => {
+    SucursalService.habilitarSucursal(sucursal.id)
+      .then((response) => {
+        if (response.status === 200 && response.data.activa === true) {
+          onSuccess(sucursal.id);
+        }
+      })
+      .finally(cambiarVisibilidadPopUp);
+  };
+
+  const nombreOperacion = sucursal.activa ? 'Deshabilitar' : 'Habilitar';
+
   return (
     <Box>
-      <IconButton aria-label="delete" onClick={cambiarVisibilidadPopUp}>
-        <Tooltip title="Deshabilitar" placement="right">
-          <RemoveCircleIcon color="error" />
+      <IconButton onClick={cambiarVisibilidadPopUp}>
+        <Tooltip title={nombreOperacion} placement="right">
+          {
+            sucursal.activa
+              ? <RemoveCircleIcon color="error" />
+              : <AddCircleIcon color="success" />
+          }
         </Tooltip>
       </IconButton>
       <Dialog
@@ -47,11 +64,11 @@ const PopUpDeshabilitarSucursal = ({ sucursal, onDelete }) => {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          Deshabilitar sucursal
+          {`${nombreOperacion} sucursal`}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Se va a deshabilitar la sucursal:
+            {`Se va a ${nombreOperacion.toLowerCase()} la sucursal:`}
             <Typography variant="body1" fontWeight="bold" component="span">
               {` ${sucursal.nombre}`}
             </Typography>
@@ -62,7 +79,7 @@ const PopUpDeshabilitarSucursal = ({ sucursal, onDelete }) => {
           <Button onClick={cambiarVisibilidadPopUp}>
             Cancelar
           </Button>
-          <Button onClick={deshabilitarSucursal} variant="contained" autoFocus>
+          <Button onClick={sucursal.activa ? deshabilitarSucursal : habilitarSucursal} variant="contained" autoFocus>
             Confirmar
           </Button>
         </DialogActions>
@@ -71,9 +88,10 @@ const PopUpDeshabilitarSucursal = ({ sucursal, onDelete }) => {
   );
 };
 
-PopUpDeshabilitarSucursal.propTypes = {
-  sucursal: PropTypes.shape.isRequired,
-  onDelete: PropTypes.func.isRequired,
+PopUpCambiarEstadoSucursal.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
+  sucursal: PropTypes.object.isRequired,
+  onSuccess: PropTypes.func.isRequired,
 };
 
-export default PopUpDeshabilitarSucursal;
+export default PopUpCambiarEstadoSucursal;
