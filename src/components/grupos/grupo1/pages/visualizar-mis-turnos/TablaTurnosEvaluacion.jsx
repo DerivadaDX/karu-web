@@ -217,7 +217,13 @@ const TablaTurnosEvaluacion = () => {
         openDialog={openChecklist}
         setOpenDialog={setOpenChecklist}
       >
-        <ChecklistEvaluacion />
+        <ChecklistEvaluacion
+          idTurnoPadre={idTurnoEvaluacion}
+          open={openChecklist}
+          setOpen={setOpenChecklist}
+          actualizar={actualizarTabla}
+          setActualizarTabla={setActualizarTabla}
+        />
       </Popup>
     </>
   );

@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
 import {
@@ -20,17 +21,25 @@ import Alerts from '../../components/common/Alerts';
 import { getChecklistEvaluaciones, postRegistroEvaluaciones } from '../../services/services-checklist';
 import evaluacion from './evaluacion.json';
 import Popup from '../../components/common/DialogPopup';
+import LittleHeader from '../../components/common/LittleHeader';
 
-const ChecklistEvaluacion = () => {
+const ChecklistEvaluacion = (props) => {
+  const {
+    idTurnoPadre, open, setOpen, actualizar, setActualizar,
+  } = props;
   const [evaluaciones, setEvaluaciones] = useState([]);
   const [loading, setLoading] = useState(true);
   const [resError, setResError] = useState([]);
+  // Para los popups de confirmacion y manejo de errores
   const [crearEvaluacion, setCrearEvaluacion] = useState(false);
-  const [openDialog, setOpenDialog] = useState(false);
+  const [openNoSeleccion, setOpenNoSeleccion] = useState(false);
+  const [openConfirmarEvaluacion, setOpenConfirmarEvaluacion] = useState(false);
+  const [openEvaluacionEnviada, setOpenEvaluacionEnviada] = useState(false);
+  // Para que se mantengan seteados los valores de los sliders al cambiar de página
   const [valoresSlider, setValoresSlider] = useState({});
-  const idTurno = 1;
-  evaluacion.id_turno = idTurno;
+  evaluacion.id_turno = idTurnoPadre;
   const msjErrorDefault = 'Ha ocurrido un error, disculpe las molestias. Intente nuevamente. Si el error persiste comunicarse con soporte: soporte-tecnico@KarU.com';
+  const tableInstanceRef = useRef(null);
 
   const [valoresEvaluacion, setValoresEvaluacion] = useState({
     puntaje: 0,
@@ -41,6 +50,10 @@ const ChecklistEvaluacion = () => {
   const [alertType, setAlertType] = useState('');
   const [alertMessage, setAlertMessage] = useState('');
   const [alertTitle, setAlertTitle] = useState('');
+  // Alerta de la api post
+  const [alertError, setAlertError] = useState('');
+  const [alertMensaje, setAlertmensaje] = useState('');
+  const [alertTitulo, setAlertTitulo] = useState('');
 
   const traerChecklist = () => {
     getChecklistEvaluaciones()
@@ -71,6 +84,17 @@ const ChecklistEvaluacion = () => {
     ],
     [],
   );
+  // Controla que todas las filas hayan sido seleccionadas, si hay alguna sin seleccionar
+  // Se abrirá un popup explicando que hay filas sin seleccionar
+  const handleCheckAllRows = () => {
+    const isAllRowsSelected = tableInstanceRef.current?.getIsAllRowsSelected();
+    if (isAllRowsSelected) {
+      console.log('Todas las filas estan seleccionadas');
+      setOpenConfirmarEvaluacion(true);
+    } else {
+      setOpenNoSeleccion(true);
+    }
+  };
 
   const handleChangeScore = (event, index) => {
     const nuevoValorSlider = event.target.value;
@@ -121,20 +145,21 @@ const ChecklistEvaluacion = () => {
   };
 
   async function handleSubmit(event) {
-    setCrearEvaluacion(true);
     if (crearEvaluacion) {
       postRegistroEvaluaciones()
         .then((response) => {
           console.log(response.status);
+          setOpenConfirmarEvaluacion(true);
+          setActualizar(true);
         })
         .catch((error) => {
           console.log(error.response.status);
           setResError(error.response.data.error);
           console.log(resError);
-          setAlertMessage(
+          setAlertmensaje(
             resError,
           );
-          setAlertType('error');
+          setAlertError('error');
           setAlertTitle('Error de servidor');
         });
     }
@@ -146,12 +171,13 @@ const ChecklistEvaluacion = () => {
 
   return (
     <>
+      {/*
       <Box mt="5px">
         <Box display="flex">
-          <Header titulo="Evaluaciones" subtitulo="Checklist" />
+          <Header titulo="Evaluación" subtitulo="Checklist" />
         </Box>
       </Box>
-
+        */}
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <Alerts alertType={alertType} description={alertMessage} title={alertTitle} />
       </Box>
@@ -197,6 +223,7 @@ const ChecklistEvaluacion = () => {
           muiSelectCheckboxProps={{
             color: 'secondary',
           }}
+          tableInstanceRef={tableInstanceRef}
         />
       </Container>
 
@@ -212,7 +239,7 @@ const ChecklistEvaluacion = () => {
           onChange={handleChangeComment}
         />
       </Box>
-
+      {/* Botones que estan en la base del popup */}
       <Box sx={{
         display: 'flex', justifyContent: 'center', alignItems: 'center',
       }}
@@ -222,26 +249,70 @@ const ChecklistEvaluacion = () => {
           type="submit"
           sx={{ mt: 3, ml: 1 }}
           color="secondary"
-          onClick={() => { setOpenDialog(true); }}
+          onClick={() => {
+            handleCheckAllRows();
+          }}
         >
           Terminar evaluación
         </Button>
+        <Button
+          variant="contained"
+          type="submit"
+          sx={{ mt: 3, ml: 1 }}
+          color="error"
+          onClick={() => {
+            setOpen(false);
+          }}
+        >
+          Cancelar
+        </Button>
       </Box>
-
+      {/* Popup para mostrar en caso de que no haya seleccionado ningun item */}
       <Popup
-        title="Terminar evaluación"
-        openDialog={openDialog}
-        setOpenDialog={setOpenDialog}
-        description="¿Está seguro que desea enviar la evaluación? No se podrá modificar una vez realizada."
+        title={<LittleHeader titulo="Checklist incompleta" />}
+        openDialog={openNoSeleccion}
+        setOpenDialog={setOpenNoSeleccion}
+        description="No ha seleccionado todas las checkboxes correspondientes. Por favor, verifique que haya revisado todas las tareas para registrar la evaluación."
       >
-        <Box>
+        <Box sx={{
+          display: 'flex', justifyContent: 'center', alignItems: 'center',
+        }}
+        >
           <DialogActions>
             <Button
               color="secondary"
               variant="outlined"
               onClick={() => {
+                setOpenNoSeleccion(false);
+              }}
+            >
+              Aceptar
+            </Button>
+          </DialogActions>
+        </Box>
+      </Popup>
+      {/* Popup cuando estan todas las rows seleccionadas para confirmar evaluacion */}
+      <Popup
+        title={<LittleHeader titulo="Evaluación Terminada" />}
+        openDialog={openConfirmarEvaluacion}
+        setOpenDialog={setOpenConfirmarEvaluacion}
+        description="¿Está seguro que desea enviar la evaluación? No se podrá modificar una vez realizada."
+      >
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Alerts alertType={alertError} description={alertMensaje} title={alertTitulo} />
+        </Box>
+        <Box sx={{
+          display: 'flex', justifyContent: 'center', alignItems: 'center',
+        }}
+        >
+          <DialogActions>
+            <Button
+              color="secondary"
+              variant="outlined"
+              onClick={() => {
+                setCrearEvaluacion(true);
                 handleSubmit();
-                setOpenDialog(false);
+                // setOpenConfirmarEvaluacion(false);
               }}
             >
               Enviar
@@ -250,10 +321,36 @@ const ChecklistEvaluacion = () => {
               color="error"
               variant="outlined"
               onClick={() => {
-                setOpenDialog(false);
+                setOpenConfirmarEvaluacion(false);
               }}
             >
               Cancelar
+            </Button>
+          </DialogActions>
+        </Box>
+      </Popup>
+      {/* Popup confirmando que se envio de la evaluación */}
+      <Popup
+        title={<LittleHeader titulo="Evaluación cargada exitosamente." />}
+        openDialog={openEvaluacionEnviada}
+        setOpenDialog={setOpenEvaluacionEnviada}
+        description="La evaluación realizada se ha enviado existosamente."
+      >
+        <Box sx={{
+          display: 'flex', justifyContent: 'center', alignItems: 'center',
+        }}
+        >
+          <DialogActions>
+            <Button
+              color="secondary"
+              variant="outlined"
+              onClick={() => {
+                setOpenEvaluacionEnviada(false);
+                setOpenConfirmarEvaluacion(false);
+                setOpen(false);
+              }}
+            >
+              Aceptar
             </Button>
           </DialogActions>
         </Box>
