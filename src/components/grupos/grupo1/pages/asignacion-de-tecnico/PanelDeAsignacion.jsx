@@ -194,20 +194,11 @@ const AsignacionDeTecnicos = ({
         <DataGrid
           rows={tecnicosData.filter((item) => tecnicosDisponibles.includes(item.id))}
           columns={[
-            { field: 'id', headerName: 'ID', width: 70 },
-            { field: 'nombre', headerName: 'Nombre', width: 280 },
-            { field: 'dni', headerName: 'DNI', width: 130 },
-            { field: 'categoria', headerName: 'Categoría', width: 130 },
+            { field: 'id', headerName: 'ID', width: 170 },
+            { field: 'nombre', headerName: 'Nombre', width: 380 },
+            { field: 'dni', headerName: 'DNI', width: 230 },
+            { field: 'categoria', headerName: 'Categoría', width: 230 },
             { field: 'taller', headerName: 'Taller', width: 130 },
-            {
-              field: 'fullName',
-              headerName: 'Filtro',
-              description:
-                'This column has a value getter and is not sortable.',
-              sortable: false,
-              width: 300,
-              valueGetter: (params) => `${params.row.nombre || ''}`,
-            },
           ]}
           disableMultipleSelection
           checkboxSelection={false}
