@@ -1,5 +1,8 @@
 import { Home } from '@mui/icons-material';
+import DriveEtaIcon from '@mui/icons-material/DriveEta';
+
 import React from 'react';
+import Cotizar from './components/cotizar/Cotizar';
 
 const GROUP_3_PAGES_CONFIG = [
   {
@@ -8,6 +11,13 @@ const GROUP_3_PAGES_CONFIG = [
     href: '/home',
     icon: <Home />,
     page: null,
+  },
+  {
+    id: 'g3-Cotizar vehiculos',
+    name: 'Cotizar vehiculos',
+    href: '/cotizar',
+    icon: <DriveEtaIcon />,
+    page: <Cotizar />,
   },
 ];
 
