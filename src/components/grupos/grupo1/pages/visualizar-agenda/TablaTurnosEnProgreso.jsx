@@ -75,7 +75,7 @@ const TablaTurnosEnProgreso = () => {
         setActualizarTabla(true); // Para actualizar la tabla despues de cancelar turno
       })
       .catch((error) => {
-        setResFinalizar(error.message);
+        setResFinalizar(error.response.data);
       });
   };
 
