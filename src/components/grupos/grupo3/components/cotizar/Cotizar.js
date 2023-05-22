@@ -9,34 +9,6 @@ import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
 
-/* agrego */
-import { useAccordionButton } from 'react-bootstrap/AccordionButton';
-import { AccordionContext } from 'react-bootstrap';
-
-/* ----Agregue esto---- */
-const ContextAwareToggle = ({ children, eventKey, callback }) => {
-  const { activeEventKey } = useContext(AccordionContext);// (AccordionContext);
-
-  const decoratedOnClick = useAccordionButton(
-    eventKey,
-    () => callback && callback(eventKey),
-  );
-
-  const isCurrentEventKey = activeEventKey === eventKey;
-
-  return (
-    <Button
-      variant="primary"
-      // type="button"
-      style={{ backgroundColor: isCurrentEventKey ? 'pink' : 'lavender' }}
-      onClick={decoratedOnClick}
-    >
-      {children}
-    </Button>
-  );
-};
-/* ---------------- */
-
 const Cotizar = () => {
   // setear los hooks useState
   const [users, setUsers] = useState([]);
@@ -309,25 +281,9 @@ const Cotizar = () => {
 
                     </Link>
                   </td>
-                  {/* <Accordion defaultActiveKey="0">
-
-                                        <ContextAwareToggle eventKey="0">Cotizar</ContextAwareToggle>
-
-                                        <Accordion.Collapse eventKey="0">
-                                        <td colSpan={2}>Hello! I'm the body</td>
-                                        </Accordion.Collapse>
-                                    </Accordion> */}
                 </tr>
               ))}
 
-              {/* paga tener 2 datos en uno
-                            <tr>
-                                <td>3</td>
-                                <td colSpan={2}>Larry the Bird</td>
-                                <td>@twitter</td>
-                                <td>Si</td>
-                                <Button variant="primary">Cotizar</Button>{' '}
-                            </tr> */}
             </tbody>
           </Table>
         </div>
