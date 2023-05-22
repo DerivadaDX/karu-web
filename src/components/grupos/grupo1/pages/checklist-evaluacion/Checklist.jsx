@@ -14,11 +14,12 @@ import {
 import {
   useState, useEffect, useMemo, React, useRef,
 } from 'react';
+import axios from 'axios';
 import MaterialReactTable from 'material-react-table';
 import Slider from '@mui/material/Slider';
 import Header from '../../components/common/Header';
 import Alerts from '../../components/common/Alerts';
-import { getChecklistEvaluaciones, postRegistroEvaluaciones } from '../../services/services-checklist';
+import { getChecklistEvaluaciones } from '../../services/services-checklist';
 import evaluacion from './evaluacion.json';
 import Popup from '../../components/common/DialogPopup';
 import LittleHeader from '../../components/common/LittleHeader';
@@ -31,7 +32,7 @@ const ChecklistEvaluacion = (props) => {
   const [loading, setLoading] = useState(true);
   const [resError, setResError] = useState([]);
   // Para los popups de confirmacion y manejo de errores
-  const [crearEvaluacion, setCrearEvaluacion] = useState(false);
+
   const [openNoSeleccion, setOpenNoSeleccion] = useState(false);
   const [openConfirmarEvaluacion, setOpenConfirmarEvaluacion] = useState(false);
   const [openEvaluacionEnviada, setOpenEvaluacionEnviada] = useState(false);
@@ -144,25 +145,23 @@ const ChecklistEvaluacion = (props) => {
     );
   };
 
+  const url = 'https://autotech2.onrender.com/evaluaciones/registros/crear/';
+  const handleEnviarEvaluacion = () => {
+    axios.post(url, evaluacion)
+      .then(() => {
+        setOpenEvaluacionEnviada(true);
+        setOpenConfirmarEvaluacion(false);
+        setActualizar(true);
+      })
+      .catch(() => {
+        setAlertmensaje('Ha ocurrido un error.');
+        setAlertError('error');
+        setAlertTitulo('Error de servidor');
+      });
+  };
+
   async function handleSubmit(event) {
-    if (crearEvaluacion) {
-      postRegistroEvaluaciones()
-        .then((response) => {
-          console.log(response.status);
-          setOpenConfirmarEvaluacion(true);
-          setActualizar(true);
-        })
-        .catch((error) => {
-          console.log(error.response.status);
-          setResError(error.response.data.error);
-          console.log(resError);
-          setAlertmensaje(
-            resError,
-          );
-          setAlertError('error');
-          setAlertTitle('Error de servidor');
-        });
-    }
+    handleEnviarEvaluacion();
   }
 
   useEffect(() => {
@@ -171,13 +170,6 @@ const ChecklistEvaluacion = (props) => {
 
   return (
     <>
-      {/*
-      <Box mt="5px">
-        <Box display="flex">
-          <Header titulo="Evaluación" subtitulo="Checklist" />
-        </Box>
-      </Box>
-        */}
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <Alerts alertType={alertType} description={alertMessage} title={alertTitle} />
       </Box>
@@ -193,7 +185,6 @@ const ChecklistEvaluacion = (props) => {
           enableRowSelection
           positionActionsColumn="last"
           enableRowActions
-          enableSelectAll={false}
           renderRowActions={renderRowActions}
           displayColumnDefOptions={{
             'mrt-row-actions': {
@@ -264,7 +255,7 @@ const ChecklistEvaluacion = (props) => {
             setOpen(false);
           }}
         >
-          Cancelar
+          Cerrar
         </Button>
       </Box>
       {/* Popup para mostrar en caso de que no haya seleccionado ningun item */}
@@ -310,9 +301,7 @@ const ChecklistEvaluacion = (props) => {
               color="secondary"
               variant="outlined"
               onClick={() => {
-                setCrearEvaluacion(true);
                 handleSubmit();
-                // setOpenConfirmarEvaluacion(false);
               }}
             >
               Enviar
@@ -324,7 +313,7 @@ const ChecklistEvaluacion = (props) => {
                 setOpenConfirmarEvaluacion(false);
               }}
             >
-              Cancelar
+              Cerrar
             </Button>
           </DialogActions>
         </Box>

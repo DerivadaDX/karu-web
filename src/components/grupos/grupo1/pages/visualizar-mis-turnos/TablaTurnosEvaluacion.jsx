@@ -14,7 +14,7 @@ import Popup from '../../components/common/DialogPopup';
 import ChecklistEvaluacion from '../checklist-evaluacion/Checklist';
 import LittleHeader from '../../components/common/LittleHeader';
 
-const idTecnico = 5;
+const idTecnico = 7;
 
 const TablaTurnosEvaluacion = () => {
   const [turnosEvaluacion, setTurnosEvaluacion] = useState([]);
