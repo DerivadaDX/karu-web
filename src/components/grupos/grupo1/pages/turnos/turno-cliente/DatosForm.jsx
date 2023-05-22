@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable camelcase */
 /* eslint-disable no-use-before-define */
 /* eslint-disable react/prop-types */
@@ -29,6 +30,7 @@ import InputLabel from '@mui/material/InputLabel';
 import feriados from './feriados.json';
 import disponibilidad from './disponibilidad.json';
 import turno from '../turno.json';
+import localidadTaller from './localidadTaller.json';
 
 /// //////////////////////////////////////////Taller select
 const tallerAPI = axios.create({
@@ -55,7 +57,9 @@ const Talleres = () => {
       [name]: value,
     }));
     turno.taller_id = value;
-    console.log(turno.taller_id);
+    const localidad = talleres.find((taller) => taller.id_taller === value)?.localidad;
+    localidadTaller.localidad = localidad;
+    console.log(localidad);
   };
 
   return (
@@ -115,8 +119,8 @@ const isFeriadoIsMas30Dias = (date) => {
     return true;
   }
 
-  const actual = format(new Date(date), 'yyyy-MM-dd');
-  const hoy = format(new Date(today), 'yyyy-MM-dd');
+  const actual = format(new Date(date), 'dd/MM/yyyy');
+  const hoy = format(new Date(today), 'dd/MM/yyyy');
   let isFeriado = false;
 
   // eslint-disable-next-line no-restricted-syntax
@@ -138,10 +142,12 @@ const DateValidationShouldDisableDate = () => {
               <MobileDatePicker
                 required
                 label="Fechas"
-                value={dia}
+                format="DD/MM/YYYY"
+                defaultValue={tomorrow}
                 disablePast
                 shouldDisableDate={isFeriadoIsMas30Dias}
                 views={['year', 'month', 'day']}
+                value={dia}
                 onChange={(newValue) => {
                   setDia(newValue);
                   turno.fecha_inicio = format(new Date(newValue), 'yyyy-MM-dd');
