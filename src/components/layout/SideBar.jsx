@@ -35,6 +35,12 @@ const styles = {
   },
 };
 
+const filtrarElementosSoloUrl = (menuItemConfig) => {
+  const esSoloUrl = menuItemConfig.soloUrl === true;
+
+  return !esSoloUrl;
+};
+
 const buildCollapsableMenu = (menuItemConfig) => {
   const iconIsTooltip = menuItemConfig.icon.name === TooltipCus.name;
   const icon = !iconIsTooltip
@@ -108,8 +114,8 @@ const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
         </ListItemButton>
         <Collapse in={openAdminMenu} timeout="auto" unmountOnExit>
           <List component="Box" disablePadding>
-            {GROUP_2_PAGES_CONFIG.map(buildCollapsableMenu)}
-            {GROUP_4_PAGES_CONFIG.map(buildCollapsableMenu)}
+            {GROUP_2_PAGES_CONFIG.filter(filtrarElementosSoloUrl).map(buildCollapsableMenu)}
+            {GROUP_4_PAGES_CONFIG.filter(filtrarElementosSoloUrl).map(buildCollapsableMenu)}
           </List>
         </Collapse>
         <ListItemButton onClick={toggleTechnicalAreaMenu}>
@@ -123,7 +129,7 @@ const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
         </ListItemButton>
         <Collapse in={openTechnicalMenu} timeout="auto" unmountOnExit>
           <List component="Box" disablePadding>
-            {GROUP_1_PAGES_CONFIG.map(buildCollapsableMenu)}
+            {GROUP_1_PAGES_CONFIG.filter(filtrarElementosSoloUrl).map(buildCollapsableMenu)}
           </List>
         </Collapse>
         <ListItemButton onClick={toggleCommercialAreaMenu}>
@@ -137,7 +143,7 @@ const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
         </ListItemButton>
         <Collapse in={openCommercialMenu} timeout="auto" unmountOnExit>
           <List component="Box" disablePadding>
-            {GROUP_3_PAGES_CONFIG.map(buildCollapsableMenu)}
+            {GROUP_3_PAGES_CONFIG.filter(filtrarElementosSoloUrl).map(buildCollapsableMenu)}
           </List>
         </Collapse>
       </List>

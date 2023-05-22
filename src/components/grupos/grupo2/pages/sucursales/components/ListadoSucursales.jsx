@@ -17,7 +17,7 @@ import CheckBoxOutlinedIcon from '@mui/icons-material/CheckBoxOutlined';
 import CheckBoxOutlineBlankOutlinedIcon from '@mui/icons-material/CheckBoxOutlineBlankOutlined';
 
 import SucursalService from '../services/sucursal-service';
-import PopUpConfirmDisable from './PopUpConfirmDisable';
+import PopUpDeshabilitarSucursal from './PopUpDeshabilitarSucursal';
 import CrearSucursal from './CrearSucursal';
 
 const styles = {
@@ -51,8 +51,6 @@ const ListadoSucursales = () => {
         setRecords(sucursalesOrdenadasPorIdAsc);
       });
   };
-
-  useEffect(obtenerSucursales, []);
 
   const filtrarPorCategoria = (event) => {
     const options = {
@@ -112,6 +110,8 @@ const ListadoSucursales = () => {
   const recordsFiltrados = records
     .filter(filtrarPorPoseeTaller)
     .filter(filtrarPorEstado);
+
+  useEffect(obtenerSucursales, []);
 
   return (
     <Box>
@@ -181,26 +181,26 @@ const ListadoSucursales = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {recordsFiltrados.map((subsidiary) => (
-            <TableRow key={subsidiary.id}>
-              <TableCell>{subsidiary.id}</TableCell>
-              <TableCell>{subsidiary.nombre}</TableCell>
-              <TableCell>{subsidiary.provincia}</TableCell>
-              <TableCell>{subsidiary.localidad}</TableCell>
-              <TableCell>{subsidiary.codigo_postal}</TableCell>
-              <TableCell>{subsidiary.calle}</TableCell>
-              <TableCell>{subsidiary.numero}</TableCell>
+          {recordsFiltrados.map((sucursal) => (
+            <TableRow key={sucursal.id}>
+              <TableCell>{sucursal.id}</TableCell>
+              <TableCell>{sucursal.nombre}</TableCell>
+              <TableCell>{sucursal.provincia}</TableCell>
+              <TableCell>{sucursal.localidad}</TableCell>
+              <TableCell>{sucursal.codigo_postal}</TableCell>
+              <TableCell>{sucursal.calle}</TableCell>
+              <TableCell>{sucursal.numero}</TableCell>
               <TableCell>
-                {subsidiary.posee_taller
+                {sucursal.posee_taller
                   ? <CheckBoxOutlinedIcon />
                   : <CheckBoxOutlineBlankOutlinedIcon />}
               </TableCell>
-              <TableCell style={{ color: subsidiary.activa ? 'green' : 'red' }}>
-                {subsidiary.activa ? 'Hab.' : 'Deshab.'}
+              <TableCell style={{ color: sucursal.activa ? 'green' : 'red' }}>
+                {sucursal.activa ? 'Hab.' : 'Deshab.'}
               </TableCell>
               <TableCell>
-                <PopUpConfirmDisable
-                  id={subsidiary.id}
+                <PopUpDeshabilitarSucursal
+                  sucursal={sucursal}
                   onDelete={actualizarSucursalBorrada}
                 />
               </TableCell>
