@@ -25,9 +25,9 @@ y la garantia extendida del check que tenemos que hacer
 const NuevaPagina = () => {
   const idVendedor = 'Id del Vendedor';
 
-  const {
-    updateNombreC, updateEmail, updatePatente, updateGarantiaExtendida,
-  } = useContext(AppContext);
+  // const {
+  //  updateNombreC, updateEmail, updatePatente, updateGarantiaExtendida,
+  // } = useContext(AppContext);
   const [nombreC, setNombreC] = useState('');
   const [email, setEmail] = useState('');
   const [garantiaExtendida, setGarantiaExtendida] = useState(false);
@@ -59,10 +59,17 @@ const NuevaPagina = () => {
             tiene que estar adentro del handleSubmit, no anda por el Link
             aca afuera tira error */
       /* agrego- 16-05 */
-      updateNombreC(nombreC);
-      updateEmail(email);
-      updatePatente(productSelected.patente);
-      updateGarantiaExtendida(garantiaExtendida);
+      // updateNombreC(nombreC);
+      // updateEmail(email);
+      // updatePatente(productSelected.patente);
+      // updateGarantiaExtendida(garantiaExtendida);
+      const infoCotizacion = {
+        nombreC,
+        email,
+        garantiaExtendida,
+        patente: productSelected.patente,
+      };
+      sessionStorage.setItem('cotizacion', JSON.stringify(infoCotizacion));
       /* no hace fata darle clic,x eso uso navigate() */
       navigate('/boleta-cotizacion');
     }
