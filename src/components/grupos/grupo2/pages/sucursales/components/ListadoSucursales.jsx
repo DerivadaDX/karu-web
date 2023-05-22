@@ -1,32 +1,33 @@
 import React, { useEffect, useState } from 'react';
 
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
+import {
+  Box,
+  Divider,
+  InputLabel,
+  MenuItem,
+  Select,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  TextField,
+} from '@mui/material';
 import CheckBoxOutlinedIcon from '@mui/icons-material/CheckBoxOutlined';
 import CheckBoxOutlineBlankOutlinedIcon from '@mui/icons-material/CheckBoxOutlineBlankOutlined';
-import FormLabel from '@mui/material/FormLabel';
-import { Divider } from '@mui/material';
+
 import SucursalService from '../services/sucursal-service';
 import PopUpConfirmDisable from './PopUpConfirmDisable';
+import CrearSucursal from './CrearSucursal';
 
 const styles = {
-  input: {
-    paddingTop: 10,
-    paddingBottom: 10,
-    paddingRight: 5,
-    paddingLeft: 5,
-    marginBottom: 10,
-    marginRight: 10,
+  barraSuperior: {
+    display: 'flex',
+    alignItems: 'center',
+    '& > :not(style)': { m: 1 },
   },
-  select: {
-    fontSize: 10,
-    padding: 13,
-    marginLeft: 10,
-    marginRight: 10,
-    marginBottom: 10,
+  divider: {
+    bgcolor: 'text.primary',
   },
   header: {
     marginTop: 20,
@@ -34,22 +35,26 @@ const styles = {
 };
 
 const ListadoSucursales = () => {
-  const [subsidiaries, setSubsidiaries] = useState([]);
+  const [sucursales, setSucursales] = useState([]);
   const [records, setRecords] = useState([]);
 
-  useEffect(() => {
+  const [valorCategoriaAFiltrar, setValorCategoriaAFiltrar] = useState('id');
+  const [valorFiltroPoseeTaller, setValorFiltroPoseeTaller] = useState('todas');
+  const [valorFiltroEstado, setValorFiltroEstado] = useState('todas');
+
+  const obtenerSucursales = () => {
     SucursalService.obtenerSucursales()
       .then((response) => {
-        setSubsidiaries(response.data);
-        setRecords(response.data.sort((a, b) => a.id - b.id));
+        const sucursalesOrdenadasPorIdAsc = response.data.sort((a, b) => a.id - b.id);
+
+        setSucursales(sucursalesOrdenadasPorIdAsc);
+        setRecords(sucursalesOrdenadasPorIdAsc);
       });
-  }, []);
+  };
 
-  const [optionCategory, setOptionCategory] = useState('id');
-  const [optionHasWorkshop, setOptionHasWorkshop] = useState('todas');
-  const [optionEnabled, setOptionEnabled] = useState('todas');
+  useEffect(obtenerSucursales, []);
 
-  const Filter = (event) => {
+  const filtrarPorCategoria = (event) => {
     const options = {
       id: 'id',
       nombre: 'nombre',
@@ -58,89 +63,108 @@ const ListadoSucursales = () => {
       calle: 'calle',
     };
 
-    const prop = options[optionCategory] || 'id';
+    const prop = options[valorCategoriaAFiltrar] || 'id';
 
     if (prop === 'id') {
-      setRecords(subsidiaries.filter((f) => f[prop].toString().includes(event.target.value)));
+      setRecords(sucursales.filter((f) => f[prop].toString().includes(event.target.value)));
     } else {
       const valueToSearch = event.target.value.toLowerCase();
-      setRecords(subsidiaries.filter((f) => f[prop].toLowerCase().includes(valueToSearch)));
+      setRecords(sucursales.filter((f) => f[prop].toLowerCase().includes(valueToSearch)));
     }
   };
 
-  const filterByWorkshop = (record) => {
-    if (optionHasWorkshop === 'si') {
+  const filtrarPorPoseeTaller = (record) => {
+    if (valorFiltroPoseeTaller === 'si') {
       return record.posee_taller === true;
     }
-    if (optionHasWorkshop === 'no') {
+
+    if (valorFiltroPoseeTaller === 'no') {
       return record.posee_taller === false;
     }
-    return true; // No se aplica ningún filtro
+
+    return true;
   };
 
-  const filterByEnabled = (record) => {
-    if (optionEnabled === 'si') {
+  const filtrarPorEstado = (record) => {
+    if (valorFiltroEstado === 'si') {
       return record.activa === true;
     }
-    if (optionEnabled === 'no') {
+
+    if (valorFiltroEstado === 'no') {
       return record.activa === false;
     }
-    return true; // No se aplica ningún filtro
+
+    return true;
   };
 
   const actualizarSucursalBorrada = (id) => {
-    setRecords((prevRecords) => prevRecords.map((record) => {
+    const actualizarSucursalDeshabilitada = (record) => {
       if (record.id === id) {
         return { ...record, activa: false };
       }
+
       return record;
-    }));
+    };
+
+    setRecords((prevRecords) => prevRecords.map(actualizarSucursalDeshabilitada));
   };
 
-  const filteredRecords = records.filter(filterByWorkshop).filter(filterByEnabled);
+  const recordsFiltrados = records
+    .filter(filtrarPorPoseeTaller)
+    .filter(filtrarPorEstado);
 
   return (
-    <>
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        <FormLabel style={{ marginBottom: 10 }}>Seleccionar categoría:</FormLabel>
-        <select
-          style={{ ...styles.select, width: 100 }}
-          value={optionCategory}
-          onChange={(event) => setOptionCategory(event.target.value)}
+    <Box>
+      <Box sx={styles.barraSuperior}>
+        <InputLabel>Seleccionar categoría:</InputLabel>
+        <Select
+          value={valorCategoriaAFiltrar}
+          onChange={(event) => setValorCategoriaAFiltrar(event.target.value)}
         >
-          <option value="id">ID</option>
-          <option value="nombre">Nombre</option>
-          <option value="provincia">Provincia</option>
-          <option value="localidad">Localidad</option>
-          <option value="calle">Calle</option>
-        </select>
+          <MenuItem value="id">ID</MenuItem>
+          <MenuItem value="nombre">Nombre</MenuItem>
+          <MenuItem value="provincia">Provincia</MenuItem>
+          <MenuItem value="localidad">Localidad</MenuItem>
+          <MenuItem value="calle">Calle</MenuItem>
+        </Select>
 
-        <input type="text" style={styles.input} onChange={Filter} placeholder="Buscar..." />
-        <Divider style={{ borderColor: '#ccc' }} orientation="vertical" flexItem />
+        <TextField
+          label="Buscar..."
+          variant="outlined"
+          onChange={filtrarPorCategoria}
+        />
 
-        <FormLabel style={{ marginBottom: 10, marginLeft: 10 }}>Taller:</FormLabel>
-        <select
-          style={{ ...styles.select, width: 80 }}
-          value={optionHasWorkshop}
-          onChange={(event) => setOptionHasWorkshop(event.target.value)}
+        <Divider orientation="vertical" variant="middle" sx={styles.divider} flexItem />
+
+        <InputLabel>Posee taller:</InputLabel>
+        <Select
+          value={valorFiltroPoseeTaller}
+          onChange={(event) => setValorFiltroPoseeTaller(event.target.value)}
         >
-          <option value="todas">Todas</option>
-          <option value="si">Sí</option>
-          <option value="no">No</option>
-        </select>
+          <MenuItem value="todas">Todas</MenuItem>
+          <MenuItem value="si">Sí</MenuItem>
+          <MenuItem value="no">No</MenuItem>
+        </Select>
 
-        <FormLabel style={{ marginBottom: 10 }}>Habilitada:</FormLabel>
-        <select
-          style={{ ...styles.select, width: 80 }}
-          value={optionEnabled}
-          onChange={(event) => setOptionEnabled(event.target.value)}
+        <Divider orientation="vertical" variant="middle" sx={styles.divider} flexItem />
+
+        <InputLabel>Estado:</InputLabel>
+        <Select
+          value={valorFiltroEstado}
+          onChange={(event) => setValorFiltroEstado(event.target.value)}
         >
-          <option value="todas">Todas</option>
-          <option value="si">Sí</option>
-          <option value="no">No</option>
-        </select>
-      </div>
-      <Divider style={{ borderColor: '#ccc' }} />
+          <MenuItem value="todas">Todas</MenuItem>
+          <MenuItem value="si">Habilitadas</MenuItem>
+          <MenuItem value="no">Deshabilitadas</MenuItem>
+        </Select>
+
+        <Divider orientation="vertical" variant="middle" sx={styles.divider} flexItem />
+
+        <CrearSucursal onCreate={obtenerSucursales} />
+      </Box>
+
+      <Divider sx={styles.divider} />
+
       <Table size="small" style={styles.header}>
         <TableHead>
           <TableRow>
@@ -157,7 +181,7 @@ const ListadoSucursales = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {filteredRecords.map((subsidiary) => (
+          {recordsFiltrados.map((subsidiary) => (
             <TableRow key={subsidiary.id}>
               <TableCell>{subsidiary.id}</TableCell>
               <TableCell>{subsidiary.nombre}</TableCell>
@@ -184,7 +208,7 @@ const ListadoSucursales = () => {
           ))}
         </TableBody>
       </Table>
-    </>
+    </Box>
   );
 };
 
