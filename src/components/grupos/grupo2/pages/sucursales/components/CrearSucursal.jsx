@@ -12,10 +12,11 @@ import {
   Stack,
   TextField,
 } from '@mui/material';
+import PropTypes from 'prop-types';
 import AddIcon from '@mui/icons-material/Add';
 import SucursalService from '../services/sucursal-service';
 
-const CrearSucursal = () => {
+const CrearSucursal = ({ onCreate }) => {
   const [mostrarPopUpCrearSucursal, setMostrarPopUpCrearSucursal] = useState(false);
   const [mostrarPopUpCreacionExitosa, setMostrarPopUpCreacionExitosa] = useState(false);
 
@@ -36,6 +37,7 @@ const CrearSucursal = () => {
   const cambiarVisibilidadPopUpCreacionExitosa = () => {
     setMostrarPopUpCreacionExitosa(false);
     setMostrarPopUpCrearSucursal(false);
+    onCreate();
   };
 
   const crearSucursal = (evento) => {
@@ -162,6 +164,10 @@ const CrearSucursal = () => {
       </Dialog>
     </Box>
   );
+};
+
+CrearSucursal.propTypes = {
+  onCreate: PropTypes.func.isRequired,
 };
 
 export default CrearSucursal;

@@ -42,7 +42,7 @@ const ListadoSucursales = () => {
   const [valorFiltroPoseeTaller, setValorFiltroPoseeTaller] = useState('todas');
   const [valorFiltroEstado, setValorFiltroEstado] = useState('todas');
 
-  useEffect(() => {
+  const obtenerSucursales = () => {
     SucursalService.obtenerSucursales()
       .then((response) => {
         const sucursalesOrdenadasPorIdAsc = response.data.sort((a, b) => a.id - b.id);
@@ -50,7 +50,9 @@ const ListadoSucursales = () => {
         setSucursales(sucursalesOrdenadasPorIdAsc);
         setRecords(sucursalesOrdenadasPorIdAsc);
       });
-  }, []);
+  };
+
+  useEffect(obtenerSucursales, []);
 
   const filtrarPorCategoria = (event) => {
     const options = {
@@ -158,7 +160,7 @@ const ListadoSucursales = () => {
 
         <Divider orientation="vertical" variant="middle" sx={styles.divider} flexItem />
 
-        <CrearSucursal />
+        <CrearSucursal onCreate={obtenerSucursales} />
       </Box>
 
       <Divider sx={styles.divider} />
