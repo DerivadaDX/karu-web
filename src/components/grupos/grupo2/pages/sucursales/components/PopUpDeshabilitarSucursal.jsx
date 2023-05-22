@@ -57,7 +57,7 @@ const PopUpDeshabilitarSucursal = ({ id, onDelete }) => {
           <Button onClick={cambiarVisibilidadPopUp}>
             Cancelar
           </Button>
-          <Button onClick={deshabilitarSucursal} autoFocus>
+          <Button onClick={deshabilitarSucursal} variant="contained" autoFocus>
             Confirmar
           </Button>
         </DialogActions>
