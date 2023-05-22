@@ -9,6 +9,7 @@ import {
   DialogContentText,
   DialogTitle,
   IconButton,
+  Tooltip,
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
@@ -34,7 +35,9 @@ const PopUpDeshabilitarSucursal = ({ id, onDelete }) => {
   return (
     <Box>
       <IconButton aria-label="delete" onClick={cambiarVisibilidadPopUp}>
-        <RemoveCircleIcon color="error" />
+        <Tooltip title="Deshabilitar" placement="right">
+          <RemoveCircleIcon color="error" />
+        </Tooltip>
       </IconButton>
       <Dialog
         open={mostrarPopUp}
