@@ -21,7 +21,7 @@ const Home = () => (
     </Box>
     <Box component="section">
       <Grid container justifyContent="center">
-        <Grid item xs={12}>
+        <Grid item>
           <img src={HomeImage} alt="example" style={styles.image} />
         </Grid>
       </Grid>
