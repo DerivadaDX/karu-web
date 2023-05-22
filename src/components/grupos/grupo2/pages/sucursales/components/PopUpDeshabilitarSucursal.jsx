@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import {
+  Box,
   Button,
   Dialog,
   DialogActions,
@@ -14,14 +15,10 @@ import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import SucursalService from '../services/sucursal-service';
 
 const PopUpDeshabilitarSucursal = ({ id, onDelete }) => {
-  const [open, setOpen] = useState(false);
+  const [mostrarPopUp, setMostrarPopUp] = useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
+  const cambiarVisibilidadPopUp = () => {
+    setMostrarPopUp(!mostrarPopUp);
   };
 
   const handleConfirm = () => {
@@ -32,17 +29,17 @@ const PopUpDeshabilitarSucursal = ({ id, onDelete }) => {
         }
       });
 
-    handleClose();
+    cambiarVisibilidadPopUp();
   };
 
   return (
-    <div>
-      <IconButton aria-label="delete" onClick={handleClickOpen}>
+    <Box>
+      <IconButton aria-label="delete" onClick={cambiarVisibilidadPopUp}>
         <RemoveCircleIcon />
       </IconButton>
       <Dialog
-        open={open}
-        onClose={handleClose}
+        open={mostrarPopUp}
+        onClose={cambiarVisibilidadPopUp}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
@@ -55,13 +52,15 @@ const PopUpDeshabilitarSucursal = ({ id, onDelete }) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancelar</Button>
+          <Button onClick={cambiarVisibilidadPopUp}>
+            Cancelar
+          </Button>
           <Button onClick={handleConfirm} autoFocus>
             Confirmar
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </Box>
   );
 };
 
