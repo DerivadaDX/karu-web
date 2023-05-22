@@ -216,7 +216,7 @@ const TablaTurnosEvaluacion = () => {
           <LittleHeader
             titulo="Evaluación Técnica"
             subtitulo="Checklist"
-            descripcion="Aclaración: el puntaje indica la gravedad de las fallas, cuanto más alto, mayor es la gravedad. Ej.: si el puntaje es 0 entonces la parte evaluada está en perfectas condiciones. De 5 en adelante es porque la parte tiene fallas."
+            descripcion="Aclaración: el puntaje indica la gravedad de las fallas, cuanto más alto, mayor es la gravedad. Ej.: si el puntaje es 0, entonces la parte evaluada está en perfectas condiciones. De 5 en adelante es porque la parte tiene fallas."
           />
 )}
         openDialog={openChecklist}
