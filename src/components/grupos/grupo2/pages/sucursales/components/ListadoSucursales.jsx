@@ -52,8 +52,6 @@ const ListadoSucursales = () => {
       });
   };
 
-  useEffect(obtenerSucursales, []);
-
   const filtrarPorCategoria = (event) => {
     const options = {
       id: 'id',
@@ -112,6 +110,8 @@ const ListadoSucursales = () => {
   const recordsFiltrados = records
     .filter(filtrarPorPoseeTaller)
     .filter(filtrarPorEstado);
+
+  useEffect(obtenerSucursales, []);
 
   return (
     <Box>
@@ -181,26 +181,26 @@ const ListadoSucursales = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {recordsFiltrados.map((subsidiary) => (
-            <TableRow key={subsidiary.id}>
-              <TableCell>{subsidiary.id}</TableCell>
-              <TableCell>{subsidiary.nombre}</TableCell>
-              <TableCell>{subsidiary.provincia}</TableCell>
-              <TableCell>{subsidiary.localidad}</TableCell>
-              <TableCell>{subsidiary.codigo_postal}</TableCell>
-              <TableCell>{subsidiary.calle}</TableCell>
-              <TableCell>{subsidiary.numero}</TableCell>
+          {recordsFiltrados.map((sucursal) => (
+            <TableRow key={sucursal.id}>
+              <TableCell>{sucursal.id}</TableCell>
+              <TableCell>{sucursal.nombre}</TableCell>
+              <TableCell>{sucursal.provincia}</TableCell>
+              <TableCell>{sucursal.localidad}</TableCell>
+              <TableCell>{sucursal.codigo_postal}</TableCell>
+              <TableCell>{sucursal.calle}</TableCell>
+              <TableCell>{sucursal.numero}</TableCell>
               <TableCell>
-                {subsidiary.posee_taller
+                {sucursal.posee_taller
                   ? <CheckBoxOutlinedIcon />
                   : <CheckBoxOutlineBlankOutlinedIcon />}
               </TableCell>
-              <TableCell style={{ color: subsidiary.activa ? 'green' : 'red' }}>
-                {subsidiary.activa ? 'Hab.' : 'Deshab.'}
+              <TableCell style={{ color: sucursal.activa ? 'green' : 'red' }}>
+                {sucursal.activa ? 'Hab.' : 'Deshab.'}
               </TableCell>
               <TableCell>
                 <PopUpDeshabilitarSucursal
-                  id={subsidiary.id}
+                  id={sucursal.id}
                   onDelete={actualizarSucursalBorrada}
                 />
               </TableCell>
