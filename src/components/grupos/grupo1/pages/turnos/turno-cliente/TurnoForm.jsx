@@ -1,3 +1,4 @@
+/* eslint-disable no-trailing-spaces */
 /* eslint-disable no-alert */
 /* eslint-disable consistent-return */
 /* eslint-disable react/function-component-definition */
@@ -12,7 +13,6 @@ import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
-import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
@@ -20,18 +20,6 @@ import Alert from '@mui/material/Alert';
 import DatosForm from './DatosForm';
 import turno from '../turno.json';
 import localidadTaller from './localidadTaller.json';
-
-const Copyright = () => (
-  <Typography variant="body2" color="text.secondary" align="center">
-    {'Copyright © '}
-    <Link color="inherit" href="/">
-      Autotech
-    </Link>
-    {' '}
-    {new Date().getFullYear()}
-    .
-  </Typography>
-);
 
 const steps = ['Formulario para sacar un turno'];
 
@@ -88,15 +76,12 @@ export default function TurnoForm() {
             estado: turno.estado,
           },
         });
-        // console.log('Se crea el turno con:', turno);
         handleNext();
-        // return response;
       } else {
         setAlertMessage('Complete todos los campos y verifique errores, por favor.');
       }
     } catch (error) {
       setAlertMessage('Surgió un error, vuelva a intentar.');
-      // console.log(error.response.data);
     }
 
     setShowAlert(true);
@@ -144,11 +129,17 @@ export default function TurnoForm() {
               <Typography variant="subtitle1">
                 Por favor, recuerde asistir con cédula verde al taller. Gracias.
                 En breve recibirá un mail con la información detallada:
-                Día
+                <br />
+                Día:
+                <br />
                 {turno.fecha_inicio}
-                , hora
+                <br />
+                Hora:
+                <br />
                 {turno.hora_inicio}
-                en el taller de
+                <br />
+                Taller:
+                <br />
                 {localidadTaller.localidad}
               </Typography>
             </>
@@ -162,7 +153,6 @@ export default function TurnoForm() {
                   sx={{ mt: 3, ml: 1 }}
                 >
                   Enviar Datos
-                  {/* console.log(turno) */}
                 </Button>
               </Box>
               {showAlert && (
@@ -173,7 +163,6 @@ export default function TurnoForm() {
             </form>
           )}
         </Paper>
-        <Copyright />
       </Container>
     </ThemeProvider>
   );
