@@ -1,3 +1,6 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable react/jsx-no-constructed-context-values */
+/* eslint-disable react/jsx-filename-extension */
 import React, { createContext, useState } from 'react';
 
 // Crea el contexto

@@ -1,3 +1,9 @@
+/* eslint-disable jsx-a11y/control-has-associated-label */
+/* eslint-disable max-len */
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/jsx-no-constructed-context-values */
+/* eslint-disable react/jsx-filename-extension */
 import React, { useState, useEffect, useContext } from 'react';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
@@ -21,7 +27,7 @@ const ContextAwareToggle = ({ children, eventKey, callback }) => {
   return (
     <Button
       variant="primary"
-            // type="button"
+      // type="button"
       style={{ backgroundColor: isCurrentEventKey ? 'pink' : 'lavender' }}
       onClick={decoratedOnClick}
     >

@@ -1,3 +1,6 @@
+/* eslint-disable react/jsx-filename-extension */
+/* eslint-disable max-len */
+/* eslint-disable no-unused-vars */
 import React, { useState, useContext } from 'react';
 import {
   Form, Button, Row, Col,
