@@ -19,6 +19,7 @@ import axios from 'axios';
 import Alert from '@mui/material/Alert';
 import DatosForm from './DatosForm';
 import turno from '../turno.json';
+import localidadTaller from './localidadTaller.json';
 
 const Copyright = () => (
   <Typography variant="body2" color="text.secondary" align="center">
@@ -142,6 +143,13 @@ export default function TurnoForm() {
               </Typography>
               <Typography variant="subtitle1">
                 Por favor, recuerde asistir con cédula verde al taller. Gracias.
+                En breve recibirá un mail con la información detallada:
+                Día
+                {turno.fecha_inicio}
+                , hora
+                {turno.hora_inicio}
+                en el taller de
+                {localidadTaller.localidad}
               </Typography>
             </>
           ) : (
