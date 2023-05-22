@@ -21,15 +21,14 @@ const PopUpDeshabilitarSucursal = ({ id, onDelete }) => {
     setMostrarPopUp(!mostrarPopUp);
   };
 
-  const handleConfirm = () => {
+  const deshabilitarSucursal = () => {
     SucursalService.deshabilitarSucursal(id)
       .then((response) => {
         if (response.status === 204) {
           onDelete(id);
         }
-      });
-
-    cambiarVisibilidadPopUp();
+      })
+      .finally(cambiarVisibilidadPopUp);
   };
 
   return (
@@ -55,7 +54,7 @@ const PopUpDeshabilitarSucursal = ({ id, onDelete }) => {
           <Button onClick={cambiarVisibilidadPopUp}>
             Cancelar
           </Button>
-          <Button onClick={handleConfirm} autoFocus>
+          <Button onClick={deshabilitarSucursal} autoFocus>
             Confirmar
           </Button>
         </DialogActions>
