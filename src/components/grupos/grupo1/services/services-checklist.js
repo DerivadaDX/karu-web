@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import axios from 'axios';
 
 const url = 'https://autotech2.onrender.com/evaluaciones';
