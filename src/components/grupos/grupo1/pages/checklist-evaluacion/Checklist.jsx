@@ -109,7 +109,6 @@ const ChecklistEvaluacion = (props) => {
       [index]: nuevoValorSlider,
     }));
     evaluacion.id_task_puntaje[index] = value;
-    console.log('json: ', evaluacion);
   };
 
   const handleChangeComment = (event) => {
@@ -150,7 +149,6 @@ const ChecklistEvaluacion = (props) => {
     axios.post(url, evaluacion)
       .then(() => {
         setOpenEvaluacionEnviada(true);
-        setOpenConfirmarEvaluacion(false);
         setActualizar(true);
       })
       .catch(() => {
@@ -170,6 +168,10 @@ const ChecklistEvaluacion = (props) => {
 
   return (
     <>
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <Alerts alertType={alertType} description={alertMessage} title={alertTitle} />
+      </Box>
+
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <Alerts alertType={alertType} description={alertMessage} title={alertTitle} />
       </Box>
@@ -334,8 +336,6 @@ const ChecklistEvaluacion = (props) => {
               color="secondary"
               variant="outlined"
               onClick={() => {
-                setOpenEvaluacionEnviada(false);
-                setOpenConfirmarEvaluacion(false);
                 setOpen(false);
               }}
             >

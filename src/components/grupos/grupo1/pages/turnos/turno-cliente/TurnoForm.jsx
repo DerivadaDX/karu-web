@@ -128,17 +128,17 @@ export default function TurnoForm() {
               </Typography>
               <Typography variant="subtitle1">
                 Por favor, recuerde asistir con cédula verde al taller. Gracias.
-                En breve recibirá un mail con la información detallada.
+                En breve recibirá un mail con la información detallada:
                 <br />
-                Día
+                Día:
                 <br />
                 {turno.fecha_inicio}
                 <br />
-                Hora
+                Hora:
                 <br />
                 {turno.hora_inicio}
                 <br />
-                Taller
+                Taller:
                 <br />
                 {localidadTaller.localidad}
               </Typography>
