@@ -150,7 +150,6 @@ const ChecklistEvaluacion = (props) => {
     axios.post(url, evaluacion)
       .then(() => {
         setOpenEvaluacionEnviada(true);
-        setOpenConfirmarEvaluacion(false);
         setActualizar(true);
       })
       .catch(() => {
@@ -334,8 +333,6 @@ const ChecklistEvaluacion = (props) => {
               color="secondary"
               variant="outlined"
               onClick={() => {
-                setOpenEvaluacionEnviada(false);
-                setOpenConfirmarEvaluacion(false);
                 setOpen(false);
               }}
             >
