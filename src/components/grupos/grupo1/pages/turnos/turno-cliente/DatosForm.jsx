@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable camelcase */
 /* eslint-disable no-use-before-define */
 /* eslint-disable react/prop-types */
@@ -12,10 +13,11 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import Stack from '@mui/material/Stack';
+import Alert from '@mui/material/Alert';
 // Calendario
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import dayjs from 'dayjs';
 import 'dayjs/locale/es';
 import { format } from 'date-fns';
@@ -27,8 +29,9 @@ import InputLabel from '@mui/material/InputLabel';
 import feriados from './feriados.json';
 import disponibilidad from './disponibilidad.json';
 import turno from '../turno.json';
+import localidadTaller from './localidadTaller.json';
 
-/// //////////////////////////////////////////Taller select
+// Taller select
 const tallerAPI = axios.create({
   baseURL: 'https://autotech2.onrender.com/talleres_admin/',
 });
@@ -53,7 +56,9 @@ const Talleres = () => {
       [name]: value,
     }));
     turno.taller_id = value;
-    // console.log('Id del taller, json:', turno.taller_id);
+    const localidad = talleres.find((taller) => taller.id_taller === value)?.localidad;
+    localidadTaller.localidad = localidad;
+    console.log(localidad);
   };
 
   return (
@@ -89,13 +94,13 @@ const Talleres = () => {
     </Box>
   );
 };
-/// ///////////////////////////////////Fin taller select
+// Fin taller select
 
 const today = dayjs();
 const tomorrow = dayjs().add(1, 'day');
-const limite = dayjs().add(30, 'day');
+const limite = dayjs().add(31, 'day');
 
-/// //////////////////////Para traer la disponibilidad de un taller
+// Para traer la disponibilidad de un taller
 
 const fetchAgendaData = async (idTaller) => {
   const agendaEndPoint = `https://autotech2.onrender.com/turnos/dias-horarios-disponibles/${idTaller}/`;
@@ -103,8 +108,6 @@ const fetchAgendaData = async (idTaller) => {
   try {
     const response = await axios.get(agendaEndPoint);
     disponibilidad = response.data;
-
-    // console.log('El json:', disponibilidad);
   } catch (error) {
     // console.error(error);
   }
@@ -123,24 +126,24 @@ const isFeriadoIsMas30Dias = (date) => {
   for (const dia in feriados) { if (actual === feriados[dia]) { isFeriado = true; } }
   return isFeriado || date > limite || actual === hoy;
 };
-/// //////////////////////////////////////////////////////////////////////////
+// Calendario, validaciones
 
 const DateValidationShouldDisableDate = () => {
   const [dia, setDia] = React.useState(tomorrow);
   fetchAgendaData(turno.taller_id);
 
   return (
-    // Para que ponga las cosas del calendario en español: adapterLocale="es"
-    // Problema: desfasa el calendario, porque arranca desde L y está para arrancar desde Sunday
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Box>
         <Stack spacing={3} width={300}>
           <Grid container spacing={3}>
             <Grid item xs={12} md={10}>
-              <DatePicker
+              <MobileDatePicker
                 required
-                disablePast
+                label="Fechas"
+                format="DD/MM/YYYY"
                 defaultValue={tomorrow}
+                disablePast
                 shouldDisableDate={isFeriadoIsMas30Dias}
                 views={['year', 'month', 'day']}
                 value={dia}
@@ -178,7 +181,6 @@ const Hora = ({ dias_y_horarios, fecha }) => {
     turno.hora_inicio = `${parseInt(selectedValue, 10)}:00:00`;
     h = parseInt(selectedValue, 10) + 1;
     turno.hora_fin = `${h}:00:00`;
-    // console.log('Hora inicio:', turno.hora_inicio, '| Hora fin:', turno.hora_fin);
   };
 
   let h;
@@ -230,7 +232,6 @@ const TipoDeTurno = () => {
   const guardarCambio = (event) => {
     const { value } = event.target;
     turno.tipo = value;
-    // console.log('Tipo de turno cargado en el json:', turno.tipo);
   };
 
   return (
@@ -262,60 +263,91 @@ const TipoDeTurno = () => {
   );
 };
 
-// Esto se muestra solo en caso de que ponga service
-class Kilometraje extends React.Component {
-  // eslint-disable-next-line react/state-in-constructor
-  state = { kilometros: '' };
+function isKilometroValid(kilometros) {
+  return kilometros >= 5000 && kilometros <= 200000;
+}
 
-  updateNumber = (e) => {
+function isKmNros(km) {
+  const pattern = /^\d{1,6}$/;
+  return pattern.test(km);
+}
+
+const Kilometraje = () => {
+  const [kilometros, setKilometros] = useState('');
+
+  const [isKmValido, setIsKmValido] = useState(true);
+
+  const updateNumber = (e) => {
     const val = e.target.value;
 
     if (e.target.validity.valid) {
-      this.setState({ kilometros: e.target.value });
-      if (val > 200000) {
-        turno.frecuencia_km = 200000;
+      if (isKilometroValid(val)) {
+        setIsKmValido(true);
       } else {
-        turno.frecuencia_km = Math.ceil(val / 5000) * 5000;
+        setIsKmValido(false);
       }
-      // console.log('frecuencia_km cargado en el json:', turno.frecuencia_km);
-    } else if (val === '') this.setState({ kilometros: val });
-  };
-
-  render() {
-    return (
-      <FormControl fullWidth>
-        <FormLabel id="demo-radio-buttons-group-label">Kilometraje actual:</FormLabel>
-        <input
-          required
-          type="tel"
-          // eslint-disable-next-line react/destructuring-assignment
-          value={this.state.kilometros}
-          onChange={this.updateNumber}
-          pattern="[1-9][0-9]*"
-        />
-      </FormControl>
-    );
-  }
-}
-
-const Patente = () => {
-  const handleChange = (event) => {
-    const { value } = event.target;
-    turno.patente = value;
-    // console.log('Patente cargada en el json:', turno.patente);
+      if (isKmNros(val)) {
+        setKilometros(val);
+      }
+    } else if (val === '') {
+      setKilometros(val);
+    }
+    if (val > 200000) {
+      turno.frecuencia_km = 200000;
+    } else {
+      turno.frecuencia_km = Math.ceil(val / 5000) * 5000;
+    }
   };
 
   return (
-    <TextField
-      required
-      id="patente"
-      name="patente"
-      label="Patente"
-      fullWidth
-      variant="outlined"
-      inputProps={{ minLength: 6, maxLength: 7 }}
-      onChange={handleChange}
-    />
+    <FormControl fullWidth>
+      <FormLabel id="demo-radio-buttons-group-label">Kilometraje actual:</FormLabel>
+      <TextField
+        required
+        type="tel"
+        value={kilometros}
+        pattern="[1-9][0-9]*"
+        onChange={updateNumber}
+      />
+      {!isKmValido && (
+        <Alert severity="error">Atención: el mínimo es 5000 y el máximo 200000. Cualquier valor por debajo del mínimo será tomado como 5000 y cualquiera por encima del máximo como 200000.</Alert>
+      )}
+    </FormControl>
+  );
+};
+
+function isPatenteValida(patente) {
+  const pattern = /^([A-Z]{3}\d{3}|[A-Z]{2}\d{3}[A-Z]{2})$/;
+  return pattern.test(patente);
+}
+
+const Patente = () => {
+  const [isValid, setIsValid] = useState(true);
+
+  const handleChange = (event) => {
+    const { value } = event.target;
+    if (isPatenteValida(value)) {
+      setIsValid(true);
+      turno.patente = value;
+    } else {
+      setIsValid(false);
+    }
+  };
+
+  return (
+    <>
+      <TextField
+        required
+        id="patente"
+        name="patente"
+        label="Patente"
+        fullWidth
+        variant="outlined"
+        inputProps={{ minLength: 6, maxLength: 7 }}
+        onChange={handleChange}
+      />
+      {!isValid && <Alert severity="error">Patente inválida. Ejemplos de patentes válidas: AA111AA o ABC123</Alert>}
+    </>
   );
 };
 
