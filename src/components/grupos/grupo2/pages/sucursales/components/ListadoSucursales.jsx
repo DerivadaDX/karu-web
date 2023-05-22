@@ -17,7 +17,7 @@ import CheckBoxOutlinedIcon from '@mui/icons-material/CheckBoxOutlined';
 import CheckBoxOutlineBlankOutlinedIcon from '@mui/icons-material/CheckBoxOutlineBlankOutlined';
 
 import SucursalService from '../services/sucursal-service';
-import PopUpConfirmDisable from './PopUpConfirmDisable';
+import PopUpDeshabilitarSucursal from './PopUpDeshabilitarSucursal';
 import CrearSucursal from './CrearSucursal';
 
 const styles = {
@@ -199,7 +199,7 @@ const ListadoSucursales = () => {
                 {subsidiary.activa ? 'Hab.' : 'Deshab.'}
               </TableCell>
               <TableCell>
-                <PopUpConfirmDisable
+                <PopUpDeshabilitarSucursal
                   id={subsidiary.id}
                   onDelete={actualizarSucursalBorrada}
                 />

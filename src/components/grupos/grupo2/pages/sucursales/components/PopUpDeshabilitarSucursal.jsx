@@ -1,18 +1,20 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import IconButton from '@mui/material/IconButton';
-import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  IconButton,
+} from '@mui/material';
 import PropTypes from 'prop-types';
-import { DialogTitle } from '@mui/material';
+import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import SucursalService from '../services/sucursal-service';
 
-const PopUpConfirmDisable = ({ id, onDelete }) => {
-  const [open, setOpen] = React.useState(false);
+const PopUpDeshabilitarSucursal = ({ id, onDelete }) => {
+  const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -26,12 +28,10 @@ const PopUpConfirmDisable = ({ id, onDelete }) => {
     SucursalService.deshabilitarSucursal(id)
       .then((response) => {
         if (response.status === 204) {
-          // La solicitud se realizó correctamente, puedes mostrar un mensaje de éxito
           onDelete(id);
         }
       });
 
-    // Cierra el diálogo después de confirmar la deshabilitación
     handleClose();
   };
 
@@ -65,9 +65,9 @@ const PopUpConfirmDisable = ({ id, onDelete }) => {
   );
 };
 
-PopUpConfirmDisable.propTypes = {
+PopUpDeshabilitarSucursal.propTypes = {
   id: PropTypes.number.isRequired,
   onDelete: PropTypes.func.isRequired,
 };
 
-export default PopUpConfirmDisable;
+export default PopUpDeshabilitarSucursal;
