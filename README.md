@@ -1,4 +1,8 @@
-# KarU Web
+<div align="center">
+
+  # KarU Web · ![ci status](https://github.com/DerivadaDX/karu-web/actions/workflows/ci.yml/badge.svg)
+
+</div>
 
 ## Primeros pasos
 
