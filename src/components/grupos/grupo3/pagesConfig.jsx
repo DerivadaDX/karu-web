@@ -15,8 +15,9 @@ const GROUP_3_PAGES_CONFIG = [
   {
     id: 'g3-nuevaPagina',
     href: '/cotizar/:productId',
-    soloRuta: true,
+    icon: <DriveEtaIcon />,
     page: <NuevaPagina />,
+    soloUrl: true,
   },
 ];
 
