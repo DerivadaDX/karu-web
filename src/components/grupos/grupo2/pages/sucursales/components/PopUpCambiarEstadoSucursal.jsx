@@ -37,7 +37,7 @@ const PopUpCambiarEstadoSucursal = ({ sucursal, onSuccess }) => {
   const habilitarSucursal = () => {
     SucursalService.habilitarSucursal(sucursal.id)
       .then((response) => {
-        if (response.status === 200 && response.status.activa === true) {
+        if (response.status === 200 && response.data.activa === true) {
           onSuccess(sucursal.id);
         }
       })
@@ -89,7 +89,8 @@ const PopUpCambiarEstadoSucursal = ({ sucursal, onSuccess }) => {
 };
 
 PopUpCambiarEstadoSucursal.propTypes = {
-  sucursal: PropTypes.shape.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  sucursal: PropTypes.object.isRequired,
   onSuccess: PropTypes.func.isRequired,
 };
 
