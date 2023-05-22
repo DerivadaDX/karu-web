@@ -1,8 +1,8 @@
 import React from 'react';
 import StoreIcon from '@mui/icons-material/Store';
-// eslint-disable-next-line import/no-unresolved
 import LoginForm from './pages/login/LoginForm.tsx';
 import RegisterForm from './pages/register/RegisterForm.tsx';
+import Mfa from './pages/mfa/Mfa.tsx';
 
 const GROUP_4_PAGES_CONFIG = [
   {
@@ -20,8 +20,14 @@ const GROUP_4_PAGES_CONFIG = [
     icon: <StoreIcon />,
     page: <RegisterForm />,
     soloUrl: true,
-    // icon: <AccountBalanceWalletIcon />,
-    // page: <CheckingAccount />,
+  },
+  {
+    id: 'g4-mfa',
+    name: 'Multifactor',
+    href: '/mfa',
+    icon: <StoreIcon />,
+    page: <Mfa />,
+    soloUrl: true,
   },
   // {
   //   id: 'g4-Home',
