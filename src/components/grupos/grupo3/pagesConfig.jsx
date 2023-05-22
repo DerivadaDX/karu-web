@@ -19,6 +19,12 @@ const GROUP_3_PAGES_CONFIG = [
     icon: <DriveEtaIcon />,
     page: <Cotizar />,
   },
+  {
+    id: 'g3-nuevaPagina',
+    href: '/cotizar/:productId',
+    soloRuta: true,
+    page: <NuevaPagina />,
+  },
 ];
 
 export default GROUP_3_PAGES_CONFIG;
