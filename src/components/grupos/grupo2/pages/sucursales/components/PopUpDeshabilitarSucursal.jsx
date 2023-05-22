@@ -34,7 +34,7 @@ const PopUpDeshabilitarSucursal = ({ id, onDelete }) => {
   return (
     <Box>
       <IconButton aria-label="delete" onClick={cambiarVisibilidadPopUp}>
-        <RemoveCircleIcon />
+        <RemoveCircleIcon color="error" />
       </IconButton>
       <Dialog
         open={mostrarPopUp}
