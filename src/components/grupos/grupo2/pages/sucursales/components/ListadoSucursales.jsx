@@ -95,16 +95,17 @@ const ListadoSucursales = () => {
     return true;
   };
 
-  const actualizarSucursalBorrada = (id) => {
-    const actualizarSucursalDeshabilitada = (record) => {
-      if (record.id === id) {
-        return { ...record, activa: false };
-      }
+  const actualizarEstadoDeSucursal = (id) => {
+    const cambiarEstadoDeSucursal = (sucursal) => {
+      const esLaSucursalActualizada = sucursal.id === id;
+      const retVal = esLaSucursalActualizada
+        ? { ...sucursal, activa: !sucursal.activa }
+        : sucursal;
 
-      return record;
+      return retVal;
     };
 
-    setRecords((prevRecords) => prevRecords.map(actualizarSucursalDeshabilitada));
+    setRecords((prevRecords) => prevRecords.map(cambiarEstadoDeSucursal));
   };
 
   const recordsFiltrados = records
@@ -201,7 +202,7 @@ const ListadoSucursales = () => {
               <TableCell>
                 <PopUpCambiarEstadoSucursal
                   sucursal={sucursal}
-                  onDelete={actualizarSucursalBorrada}
+                  onSuccess={actualizarEstadoDeSucursal}
                 />
               </TableCell>
             </TableRow>
