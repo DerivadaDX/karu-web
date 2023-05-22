@@ -12,13 +12,13 @@ import { Link } from 'react-router-dom';
 const Cotizar = () => {
   // setear los hooks useState
   const [users, setUsers] = useState([]);
-  const [search, setSearch] = useState('');// valores del input
-  const [searchModelo, setSearchModelo] = useState('');
+  // valores del input
+  const [searchAnio, setSearchAnio] = useState('');
   const [searchMarca, setSearchMarca] = useState('');
-  /* const [search, setSearch] = useState("")
-    const [search, setSearch] = useState("")
-    const [search, setSearch] = useState("")
-    const [search, setSearch] = useState("") */
+  const [searchModelo, setSearchModelo] = useState('');
+  const [searchKilometraje, setKilometraje] = useState('');
+  const [searchCombustible, setSearchCombustible] = useState('');
+  const [searchImportado, setImportado] = useState('');
 
   // función para traer los datos de la API
   const URL = 'https://jsonplaceholder.typicode.com/users';// sacar datos de un json
@@ -167,9 +167,20 @@ const Cotizar = () => {
   };
   // función de búsqueda
   const searcher = (e) => {
-    setSearch(e.target.value);
-    setSearchModelo(e.target.value);
-    setSearchMarca(e.target.value);
+    const { name, value } = e.target;
+    if (name === 'searchMarca') {
+      setSearchMarca(value);
+    } else if (name === 'searchModelo') {
+      setSearchModelo(value);
+    } else if (name === 'searchAnio') {
+      setSearchAnio(value);
+    } else if (name === 'searchKilometraje') {
+      setKilometraje(value);
+    } else if (name === 'searchCombustible') {
+      setSearchCombustible(value);
+    } else if (name === 'searchImportado') {
+      setImportado(value);
+    }
   };
   // metodo de filtrado 1
   /*  let results = []
@@ -183,22 +194,19 @@ const Cotizar = () => {
     } */
 
   // metodo de filtrado 2   -recomendado- filtra por modelo o marca
-  // const results = !search ? users : users.filter((dato)=> dato.name.toLowerCase().includes(search.toLocaleLowerCase()))
-
   /* sirve solo que hago prueba
     const results = !search ? users : users.filter((dato) => dato.modelo.toLowerCase().includes(search.toLocaleLowerCase()) || dato.marca.toLowerCase().includes(search.toLocaleLowerCase()))
 */
 
-  /* prueba 21-05 */
-  const resultsModelo = !searchModelo ? users : users.filter((dato) => dato.modelo.toLowerCase().includes(searchModelo.toLocaleLowerCase()));
-  const resultsMarca = !searchMarca ? users : users.filter((dato) => dato.marca.toLowerCase().includes(searchMarca.toLocaleLowerCase()));
-  // const resultsKilometraje = !search ? users : users.filter((dato) => dato.kilometraje.toLowerCase().includes(search.toLocaleLowerCase()));
-  const resultsCombustible = !search ? users : users.filter((dato) => dato.combustible.toLowerCase().includes(search.toLocaleLowerCase()));
-  const resultsImportado = !search ? users : users.filter((dato) => dato.importado.toLowerCase().includes(search.toLocaleLowerCase()));
-  // const resultsAnio = !search ? users : users.filter((dato) => dato.anio.toLowerCase().includes(search.toLocaleLowerCase()));
-
-  const results = !search ? users : users.filter((dato) => dato.modelo.toLowerCase().includes(search.toLocaleLowerCase()));
-  /* ------------------------------ */
+  const results = users.filter((user) => {
+    const anioMatch = user.anio.toString().includes(searchAnio);
+    const marcaMatch = user.marca.toLowerCase().includes(searchMarca.toLowerCase());
+    const modeloMatch = user.modelo.toLowerCase().includes(searchModelo.toLowerCase());
+    const kilometrajeMatch = user.kilometraje.toString().includes(searchKilometraje);
+    const combustibleMatch = user.combustible.toString().includes(searchCombustible);
+    const importadoMatch = user.importado.toString().includes(searchImportado);
+    return marcaMatch && modeloMatch && anioMatch && kilometrajeMatch && combustibleMatch && importadoMatch;
+  });
 
   // pruebo useEffect de abajo
   /* useEffect( ()=> {
@@ -217,8 +225,6 @@ const Cotizar = () => {
       <h1 id="titulo-formulario">Cotizar Vehículos</h1>
       {/* filtro */}
       <div>
-        <input value={search} onChange={searcher} type="text" placeholder="Search" className="form-control" />
-
         {/* tabla */}
         <div>
           <Table striped bordered hover responsive="xl" size="sm">
@@ -237,28 +243,76 @@ const Cotizar = () => {
               </tr>
             </thead>
 
-            {/* Prueba 21-05 */}
+            {/* buscadores por categoria */}
             <thead>
               <tr>
                 <th />
                 <th />
-                <th><input value={searchModelo} onChange={searcher} type="text" placeholder="Buscar por año" className="form-control" /></th>
-                <th><input value={searchMarca} onChange={searcher} type="text" placeholder="Buscar por Marca" className="form-control" /></th>
-                <th><input value={search} onChange={searcher} type="text" placeholder="Buscar por modelo" className="form-control" /></th>
-                <th><input value={search} onChange={searcher} type="text" placeholder="Buscar por Kilometraje" className="form-control" /></th>
-                <th><input value={search} onChange={searcher} type="text" placeholder="Buscar por Combustible" className="form-control" /></th>
-                <th><input value={search} onChange={searcher} type="text" placeholder="Buscar por Importado" className="form-control" /></th>
+                <th>
+                  <input
+                    name="searchAnio"
+                    value={searchAnio}
+                    onChange={searcher}
+                    type="text"
+                    placeholder="Buscar por Año"
+                    className="form-control"
+                  />
+                </th>
+                <th>
+                  <input
+                    name="searchMarca"
+                    value={searchMarca}
+                    onChange={searcher}
+                    type="text"
+                    placeholder="Buscar por Marca"
+                    className="form-control"
+                  />
+                </th>
+                <th>
+                  <input
+                    name="searchModelo"
+                    value={searchModelo}
+                    onChange={searcher}
+                    type="text"
+                    placeholder="Buscar por Modelo"
+                    className="form-control"
+                  />
+                </th>
+                <th>
+                  <input
+                    name="searchKilometraje"
+                    value={searchKilometraje}
+                    onChange={searcher}
+                    type="text"
+                    placeholder="Buscar por Kilometraje"
+                    className="form-control"
+                  />
+                </th>
+                <th>
+                  <input
+                    name="searchCombustible"
+                    value={searchCombustible}
+                    onChange={searcher}
+                    type="text"
+                    placeholder="Buscar por Combustible"
+                    className="form-control"
+                  />
+                </th>
+                <th>
+                  <input
+                    name="searchImportado"
+                    value={searchImportado}
+                    onChange={searcher}
+                    type="text"
+                    placeholder="Buscar por Importado"
+                    className="form-control"
+                  />
+                </th>
               </tr>
             </thead>
             {/*------------------------*/}
 
             <tbody>
-              {/* { results.map( (user) => (
-                    <tr key={user.id}>
-                        <td>{user.name}</td>
-                        <td>{user.username}</td>
-                    </tr>
-                ))} */}
               {results.map((user) => (
                 <tr key={user.id}>
                   <td>{user.patente}</td>
@@ -275,15 +329,11 @@ const Cotizar = () => {
                     {/* ---------- Agrego consegui patente  -------*/}
                     {/* ---------- interpolacion de varieables  -------*/}
                     <Link to={`/cotizar/${user.id}`}>
-                      {/* -------- ---------------*/}
-
                       <Button variant="primary">Cotizar </Button>
-
                     </Link>
                   </td>
                 </tr>
               ))}
-
             </tbody>
           </Table>
         </div>
