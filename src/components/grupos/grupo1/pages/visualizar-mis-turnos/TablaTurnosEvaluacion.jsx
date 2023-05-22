@@ -10,7 +10,6 @@ import { getDetalleTurno } from '../../services/services-Turnos';
 import Alerts from '../../components/common/Alerts';
 import { getTurnosEvaluacion } from '../../services/services-tecnicos';
 import Popup from '../../components/common/DialogPopup';
-
 import ChecklistEvaluacion from '../checklist-evaluacion/Checklist';
 import LittleHeader from '../../components/common/LittleHeader';
 
@@ -217,7 +216,13 @@ const TablaTurnosEvaluacion = () => {
         openDialog={openChecklist}
         setOpenDialog={setOpenChecklist}
       >
-        <ChecklistEvaluacion />
+        <ChecklistEvaluacion
+          idTurnoPadre={idTurnoEvaluacion}
+          open={openChecklist}
+          setOpen={setOpenChecklist}
+          actualizar={actualizarTabla}
+          setActualizar={setActualizarTabla}
+        />
       </Popup>
     </>
   );

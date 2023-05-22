@@ -13,7 +13,7 @@ export default function Popup(props) {
   return (
     <Dialog
       open={openDialog}
-      maxWidth="md"
+      maxWidth="lg"
       onClose={() => setOpenDialog(false)}
     >
       <DialogTitle id="alert-dialog-title">

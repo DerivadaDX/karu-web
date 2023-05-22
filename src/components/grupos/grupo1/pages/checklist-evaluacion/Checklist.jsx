@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
 import {
@@ -11,25 +12,35 @@ import {
   TextField,
 } from '@mui/material';
 import {
-  useState, useEffect, useMemo, React,
+  useState, useEffect, useMemo, React, useRef,
 } from 'react';
+import axios from 'axios';
 import MaterialReactTable from 'material-react-table';
 import Slider from '@mui/material/Slider';
 import Header from '../../components/common/Header';
 import Alerts from '../../components/common/Alerts';
-import { getChecklistEvaluaciones, postRegistroEvaluaciones } from '../../services/services-checklist';
+import { getChecklistEvaluaciones } from '../../services/services-checklist';
 import evaluacion from './evaluacion.json';
 import Popup from '../../components/common/DialogPopup';
+import LittleHeader from '../../components/common/LittleHeader';
 
-const ChecklistEvaluacion = () => {
+const ChecklistEvaluacion = (props) => {
+  const {
+    idTurnoPadre, open, setOpen, actualizar, setActualizar,
+  } = props;
   const [evaluaciones, setEvaluaciones] = useState([]);
   const [loading, setLoading] = useState(true);
   const [resError, setResError] = useState([]);
-  const [crearEvaluacion, setCrearEvaluacion] = useState(false);
-  const [openSnackbar, setOpenSnackbar] = useState(false);
-  const [openDialog, setOpenDialog] = useState(false);
-  const idTurno = 1;
+  // Para los popups de confirmacion y manejo de errores
+
+  const [openNoSeleccion, setOpenNoSeleccion] = useState(false);
+  const [openConfirmarEvaluacion, setOpenConfirmarEvaluacion] = useState(false);
+  const [openEvaluacionEnviada, setOpenEvaluacionEnviada] = useState(false);
+  // Para que se mantengan seteados los valores de los sliders al cambiar de página
+  const [valoresSlider, setValoresSlider] = useState({});
+  evaluacion.id_turno = idTurnoPadre;
   const msjErrorDefault = 'Ha ocurrido un error, disculpe las molestias. Intente nuevamente. Si el error persiste comunicarse con soporte: soporte-tecnico@KarU.com';
+  const tableInstanceRef = useRef(null);
 
   const [valoresEvaluacion, setValoresEvaluacion] = useState({
     puntaje: 0,
@@ -40,6 +51,10 @@ const ChecklistEvaluacion = () => {
   const [alertType, setAlertType] = useState('');
   const [alertMessage, setAlertMessage] = useState('');
   const [alertTitle, setAlertTitle] = useState('');
+  // Alerta de la api post
+  const [alertError, setAlertError] = useState('');
+  const [alertMensaje, setAlertmensaje] = useState('');
+  const [alertTitulo, setAlertTitulo] = useState('');
 
   const traerChecklist = () => {
     getChecklistEvaluaciones()
@@ -70,16 +85,30 @@ const ChecklistEvaluacion = () => {
     ],
     [],
   );
+  // Controla que todas las filas hayan sido seleccionadas, si hay alguna sin seleccionar
+  // Se abrirá un popup explicando que hay filas sin seleccionar
+  const handleCheckAllRows = () => {
+    const isAllRowsSelected = tableInstanceRef.current?.getIsAllRowsSelected();
+    if (isAllRowsSelected) {
+      console.log('Todas las filas estan seleccionadas');
+      setOpenConfirmarEvaluacion(true);
+    } else {
+      setOpenNoSeleccion(true);
+    }
+  };
 
   const handleChangeScore = (event, index) => {
+    const nuevoValorSlider = event.target.value;
     const { name, value } = event.target;
     setValoresEvaluacion((prevState) => ({
       ...prevState,
       [name]: value,
     }));
+    setValoresSlider((prevValoresSlider) => ({
+      ...prevValoresSlider,
+      [index]: nuevoValorSlider,
+    }));
     evaluacion.id_task_puntaje[index] = value;
-    evaluacion.id_turno = idTurno;
-    console.log('json: ', evaluacion);
   };
 
   const handleChangeComment = (event) => {
@@ -92,51 +121,45 @@ const ChecklistEvaluacion = () => {
     console.log('Comentario ', evaluacion.detalle);
   };
 
-  const renderRowActions = ({ row }) => (
-    <Box
-      style={{ display: 'flex', flexWrap: 'nowrap', gap: '0.5rem' }}
-      sx={{ height: '3.5em', marginLeft: '0.2rem', marginRight: '0.2rem' }}
-    >
-      <Slider
-        aria-label="Puntaje máximo"
-        defaultValue={0}
-        size="small"
-        valueLabelDisplay="auto"
-        step={5}
-        min={0}
-        max={row.original.puntaje_max}
-        className="pt-5"
-        color="secondary"
-        onChange={(event) => handleChangeScore(event, row.original.id_task)}
-      />
-    </Box>
-  );
+  const renderRowActions = ({ row }) => {
+    const valorSlider = valoresSlider[row.original.id_task] || 0;
+    return (
+      <Box
+        style={{ display: 'flex', flexWrap: 'nowrap', gap: '0.5rem' }}
+        sx={{ height: '3.5em', marginLeft: '0.2rem', marginRight: '0.2rem' }}
+      >
+        <Slider
+          aria-label="Puntaje máximo"
+          size="small"
+          valueLabelDisplay="on"
+          value={valorSlider}
+          step={5}
+          min={0}
+          max={row.original.puntaje_max}
+          className="pt-5"
+          color="secondary"
+          onChange={(event) => handleChangeScore(event, row.original.id_task)}
+        />
+      </Box>
+    );
+  };
 
-  const handleCloseSnackbar = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setOpenSnackbar(false);
+  const url = 'https://autotech2.onrender.com/evaluaciones/registros/crear/';
+  const handleEnviarEvaluacion = () => {
+    axios.post(url, evaluacion)
+      .then(() => {
+        setOpenEvaluacionEnviada(true);
+        setActualizar(true);
+      })
+      .catch(() => {
+        setAlertmensaje('Ha ocurrido un error.');
+        setAlertError('error');
+        setAlertTitulo('Error de servidor');
+      });
   };
 
   async function handleSubmit(event) {
-    setCrearEvaluacion(true);
-    if (crearEvaluacion) {
-      postRegistroEvaluaciones()
-        .then((response) => {
-          console.log(response.status);
-        })
-        .catch((error) => {
-          console.log(error.response.status);
-          setResError(error.response.data.error);
-          console.log(resError);
-          setAlertMessage(
-            resError,
-          );
-          setAlertType('error');
-          setAlertTitle('Error de servidor');
-        });
-    }
+    handleEnviarEvaluacion();
   }
 
   useEffect(() => {
@@ -145,10 +168,8 @@ const ChecklistEvaluacion = () => {
 
   return (
     <>
-      <Box mt="5px">
-        <Box display="flex">
-          <Header titulo="Evaluaciones" subtitulo="Checklist" />
-        </Box>
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <Alerts alertType={alertType} description={alertMessage} title={alertTitle} />
       </Box>
 
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -166,7 +187,6 @@ const ChecklistEvaluacion = () => {
           enableRowSelection
           positionActionsColumn="last"
           enableRowActions
-          enableSelectAll={false}
           renderRowActions={renderRowActions}
           displayColumnDefOptions={{
             'mrt-row-actions': {
@@ -195,8 +215,8 @@ const ChecklistEvaluacion = () => {
           }}
           muiSelectCheckboxProps={{
             color: 'secondary',
-            required: true,
           }}
+          tableInstanceRef={tableInstanceRef}
         />
       </Container>
 
@@ -212,7 +232,7 @@ const ChecklistEvaluacion = () => {
           onChange={handleChangeComment}
         />
       </Box>
-
+      {/* Botones que estan en la base del popup */}
       <Box sx={{
         display: 'flex', justifyContent: 'center', alignItems: 'center',
       }}
@@ -222,27 +242,68 @@ const ChecklistEvaluacion = () => {
           type="submit"
           sx={{ mt: 3, ml: 1 }}
           color="secondary"
-          onClick={setOpenDialog}
+          onClick={() => {
+            handleCheckAllRows();
+          }}
         >
-          Crear evaluación
+          Terminar evaluación
+        </Button>
+        <Button
+          variant="contained"
+          type="submit"
+          sx={{ mt: 3, ml: 1 }}
+          color="error"
+          onClick={() => {
+            setOpen(false);
+          }}
+        >
+          Cerrar
         </Button>
       </Box>
-
+      {/* Popup para mostrar en caso de que no haya seleccionado ningun item */}
       <Popup
-        title="Terminar evaluación"
-        setOpenDialog={setOpenDialog}
-        openDialog={openDialog}
+        title={<LittleHeader titulo="Checklist incompleta" />}
+        openDialog={openNoSeleccion}
+        setOpenDialog={setOpenNoSeleccion}
+        description="No ha seleccionado todas las checkboxes correspondientes. Por favor, verifique que haya revisado todas las tareas para registrar la evaluación."
+      >
+        <Box sx={{
+          display: 'flex', justifyContent: 'center', alignItems: 'center',
+        }}
+        >
+          <DialogActions>
+            <Button
+              color="secondary"
+              variant="outlined"
+              onClick={() => {
+                setOpenNoSeleccion(false);
+              }}
+            >
+              Aceptar
+            </Button>
+          </DialogActions>
+        </Box>
+      </Popup>
+      {/* Popup cuando estan todas las rows seleccionadas para confirmar evaluacion */}
+      <Popup
+        title={<LittleHeader titulo="Evaluación Terminada" />}
+        openDialog={openConfirmarEvaluacion}
+        setOpenDialog={setOpenConfirmarEvaluacion}
         description="¿Está seguro que desea enviar la evaluación? No se podrá modificar una vez realizada."
       >
-        <Box>
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Alerts alertType={alertError} description={alertMensaje} title={alertTitulo} />
+        </Box>
+        <Box sx={{
+          display: 'flex', justifyContent: 'center', alignItems: 'center',
+        }}
+        >
           <DialogActions>
             <Button
               color="secondary"
               variant="outlined"
               onClick={() => {
                 handleSubmit();
-                setOpenDialog(false);
-                setOpenSnackbar(true);
               }}
             >
               Enviar
@@ -251,19 +312,38 @@ const ChecklistEvaluacion = () => {
               color="error"
               variant="outlined"
               onClick={() => {
-                setOpenDialog(false);
+                setOpenConfirmarEvaluacion(false);
               }}
             >
-              Cancelar
+              Cerrar
             </Button>
           </DialogActions>
         </Box>
       </Popup>
-      <Snackbar
-        autoHideDuration={4000}
-        open={openSnackbar}
-        onClose={handleCloseSnackbar}
-      />
+      {/* Popup confirmando que se envio de la evaluación */}
+      <Popup
+        title={<LittleHeader titulo="Evaluación cargada exitosamente." />}
+        openDialog={openEvaluacionEnviada}
+        setOpenDialog={setOpenEvaluacionEnviada}
+        description="La evaluación realizada se ha enviado existosamente."
+      >
+        <Box sx={{
+          display: 'flex', justifyContent: 'center', alignItems: 'center',
+        }}
+        >
+          <DialogActions>
+            <Button
+              color="secondary"
+              variant="outlined"
+              onClick={() => {
+                setOpen(false);
+              }}
+            >
+              Aceptar
+            </Button>
+          </DialogActions>
+        </Box>
+      </Popup>
     </>
   );
 };
