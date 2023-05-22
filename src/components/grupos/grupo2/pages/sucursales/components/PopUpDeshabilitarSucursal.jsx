@@ -15,7 +15,7 @@ import PropTypes from 'prop-types';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import SucursalService from '../services/sucursal-service';
 
-const PopUpDeshabilitarSucursal = ({ id, onDelete }) => {
+const PopUpDeshabilitarSucursal = ({ sucursal, onDelete }) => {
   const [mostrarPopUp, setMostrarPopUp] = useState(false);
 
   const cambiarVisibilidadPopUp = () => {
@@ -23,10 +23,10 @@ const PopUpDeshabilitarSucursal = ({ id, onDelete }) => {
   };
 
   const deshabilitarSucursal = () => {
-    SucursalService.deshabilitarSucursal(id)
+    SucursalService.deshabilitarSucursal(sucursal.id)
       .then((response) => {
         if (response.status === 204) {
-          onDelete(id);
+          onDelete(sucursal.id);
         }
       })
       .finally(cambiarVisibilidadPopUp);
@@ -67,7 +67,7 @@ const PopUpDeshabilitarSucursal = ({ id, onDelete }) => {
 };
 
 PopUpDeshabilitarSucursal.propTypes = {
-  id: PropTypes.number.isRequired,
+  sucursal: PropTypes.shape.isRequired,
   onDelete: PropTypes.func.isRequired,
 };
 

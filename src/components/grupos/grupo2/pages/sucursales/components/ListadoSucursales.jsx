@@ -200,7 +200,7 @@ const ListadoSucursales = () => {
               </TableCell>
               <TableCell>
                 <PopUpDeshabilitarSucursal
-                  id={sucursal.id}
+                  sucursal={sucursal}
                   onDelete={actualizarSucursalBorrada}
                 />
               </TableCell>
