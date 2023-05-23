@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable no-unused-vars */
 import {
@@ -27,6 +28,9 @@ const TablaTurnosEvaluacion = () => {
   // Para abrir el popup con la checklist
   const [idTurnoEvaluacion, setIdTurnoEvaluacion] = useState(0);
   const [openChecklist, setOpenChecklist] = useState(false);
+
+  // Para controlar la hora
+  const [noEsDateActual, setNoEsDateActual] = useState(false);
 
   // alertas de la API
   const [alertType, setAlertType] = useState('');
@@ -107,6 +111,38 @@ const TablaTurnosEvaluacion = () => {
     </Box>
   );
 
+  const controlarTiempo = ({ row }) => {
+    const today = new Date();
+    const anio = today.getFullYear();
+    const mes = String(today.getMonth() + 1).padStart(2, '0');
+    const dia = String(today.getDate()).padStart(2, '0');
+    // const dateActual = `${anio}-${mes}-${dia}`;
+
+    let horas = today.getHours();
+    let minutos = today.getMinutes();
+    let segundos = today.getSeconds();
+
+    horas = (`0${horas}`).slice(-2);
+    minutos = (`0${minutos}`).slice(-2);
+    segundos = (`0${segundos}`).slice(-2);
+    // const timeActual = `${horas}:${minutos}:${segundos}`;
+
+    const dateActual = '2023-05-23';
+    const timeActual = '11:00:00';
+
+    if (dateActual < row.original.fecha_inicio) {
+      setNoEsDateActual(true);
+    } else if (dateActual === row.original.fecha_inicio) {
+      if (timeActual >= row.original.hora_inicio) {
+        console.log('Aca tenes que abrir la checklist');
+        setIdTurnoEvaluacion(row.original.id_turno);
+        setOpenChecklist(true);
+      } else {
+        setNoEsDateActual(true);
+      }
+    }
+  };
+
   const renderRowActions = ({ row }) => (
     <Box
       style={{ display: 'flex', flexWrap: 'nowrap', gap: '0.5rem' }}
@@ -126,8 +162,9 @@ const TablaTurnosEvaluacion = () => {
         variant="contained"
         color="secondary"
         onClick={() => {
-          setIdTurnoEvaluacion(row.original.id_turno);
-          setOpenChecklist(true);
+          controlarTiempo({ row });
+          // setIdTurnoEvaluacion(row.original.id_turno);
+          // setOpenChecklist(true);
         }}
       >
         Realizar evaluación
@@ -185,6 +222,27 @@ const TablaTurnosEvaluacion = () => {
         }}
       />
       <Popup
+        title={<LittleHeader titulo="Atención" />}
+        openDialog={noEsDateActual}
+        setOpenDialog={setNoEsDateActual}
+        description="Todavía no puede realizar el turno. Debe esperar la fecha y la hora del mismo para poder dar inicio."
+      >
+        <Box>
+          <DialogActions>
+            <Button
+              color="primary"
+              variant="outlined"
+              sx={{ marginTop: '10px' }}
+              onClick={() => {
+                setNoEsDateActual(false);
+              }}
+            >
+              Cerrar
+            </Button>
+          </DialogActions>
+        </Box>
+      </Popup>
+      <Popup
         title="Detalle del Turno"
         openDialog={openVerMas}
         setOpenDialog={setOpenVerMas}
@@ -216,11 +274,22 @@ const TablaTurnosEvaluacion = () => {
           <LittleHeader
             titulo="Evaluación Técnica"
             subtitulo="Checklist"
-            descripcion="Aclaración: el puntaje indica la gravedad de las fallas, cuanto más alto, mayor es la gravedad. Ej.: si el puntaje es 0, entonces la parte evaluada está en perfectas condiciones. De 5 en adelante es porque la parte tiene fallas."
           />
 )}
         openDialog={openChecklist}
         setOpenDialog={setOpenChecklist}
+        description={(
+          <>
+            <strong>Aclaración</strong>
+            <p>
+              El puntaje indica la gravedad de las fallas,
+              cuanto más alto, mayor es la gravedad.
+              Ej.: si el puntaje es 0, entonces la parte evaluada
+              está en perfectas condiciones. De 5 en adelante es porque la parte tiene fallas.
+
+            </p>
+          </>
+)}
       >
         <ChecklistEvaluacion
           idTurnoPadre={idTurnoEvaluacion}
