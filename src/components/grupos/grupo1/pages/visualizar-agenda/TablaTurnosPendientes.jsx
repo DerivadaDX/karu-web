@@ -11,9 +11,10 @@ import Snackbar from '@mui/material/Snackbar';
 import DialogActions from '@mui/material/DialogActions';
 import Alerts from '../../components/common/Alerts';
 import Popup from '../../components/common/DialogPopup';
+import LittleHeader from '../../components/common/LittleHeader';
+import DetalleTurno from '../../components/common/DetalleTurno';
 
 import {
-  getDetalleTurno,
   getCancelarTurno,
   getTurnosPendientes,
 } from '../../services/services-Turnos';
@@ -26,8 +27,10 @@ const TablaTurnosPendientes = () => {
   const [turnosPendientes, setTurnosPendientes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [openDialog, setOpenDialog] = useState(false);
+
   const [openVerMas, setVerMas] = useState(false);
-  const [detalleTurno, setDetalleTurno] = useState([]);
+  const [rowDetalle, setRowDetalle] = useState({});
+
   const [resCancelar, setResCancelar] = useState([]);
   const [idTurnoCancelar, setIdTurnoCancelar] = useState(0);
   const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -100,21 +103,6 @@ const TablaTurnosPendientes = () => {
     }
   }, [traerTurnos, actualizarTabla]);
 
-  const obtenerDetalle = (idTurno) => {
-    getDetalleTurno(idTurno)
-      .then((response) => {
-        setDetalleTurno(response.data);
-      })
-      .catch((error) => {
-        setVerMas(false);
-        setAlertType('error');
-        setAlertTitle('Error de servidor');
-        setAlertMessage(
-          'Error al mostrar el detalle. Por favor, reacargue la página y vuelva a intentarlo nuevamente.',
-        );
-      });
-  };
-
   const cancelarTurno = (idTurno) => {
     getCancelarTurno(idTurno)
       .then((response) => {
@@ -142,7 +130,7 @@ const TablaTurnosPendientes = () => {
         variant="contained"
         sx={{ fontSize: '0.9em', backgroundColor: 'rgba(51,51,51,0.75)' }}
         onClick={() => {
-          obtenerDetalle(row.original.id_turno);
+          setRowDetalle(row.original);
           setVerMas(true);
         }}
       >
@@ -206,25 +194,6 @@ const TablaTurnosPendientes = () => {
     </Tooltip>
   );
 
-  const filaDetalle = (llave, valor) => {
-    if (llave === 'papeles_en_regla') {
-      return null;
-    }
-    return (
-      <>
-        <span>
-          <strong>
-            {llave}
-            :
-            {' '}
-          </strong>
-        </span>
-        <span>{valor}</span>
-
-      </>
-    );
-  };
-
   return (
     <>
       <Box
@@ -258,7 +227,7 @@ const TablaTurnosPendientes = () => {
       />
 
       <Popup
-        title="Cancelar Turno"
+        title={<LittleHeader titulo="Cancelar turno" />}
         openDialog={openDialog}
         setOpenDialog={setOpenDialog}
         description="¿Está seguro que desea cancelar el turno? No se podrá modificar la acción una vez realizada."
@@ -295,31 +264,11 @@ const TablaTurnosPendientes = () => {
         onClose={handleCloseSnackbar}
       />
       <Popup
-        title="Detalle del Turno"
+        title={<LittleHeader titulo="Detalle de turno" />}
         openDialog={openVerMas}
         setOpenDialog={setVerMas}
       >
-        {
-              Object.entries(detalleTurno).map(([key, value]) => (
-                <div key={key}>
-                  {filaDetalle(key, value)}
-                </div>
-              ))
-}
-        <Box>
-          <DialogActions>
-            <Button
-              color="primary"
-              variant="outlined"
-              sx={{ marginTop: '10px' }}
-              onClick={() => {
-                setVerMas(false);
-              }}
-            >
-              Atras
-            </Button>
-          </DialogActions>
-        </Box>
+        <DetalleTurno openDialog={openVerMas} setOpenDialog={setVerMas} row={rowDetalle} />
       </Popup>
       <Popup
         title="Asignar Turno a un Técnico"

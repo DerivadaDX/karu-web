@@ -6,11 +6,12 @@ import {
 } from 'react';
 
 import MaterialReactTable from 'material-react-table';
-import { Button, Box, DialogActions } from '@mui/material';
-import { getDetalleTurno } from '../../services/services-Turnos';
+import { Button, Box } from '@mui/material';
 import Alerts from '../../components/common/Alerts';
 import { getTurnosTerminados } from '../../services/services-tecnicos';
 import Popup from '../../components/common/DialogPopup';
+import LittleHeader from '../../components/common/LittleHeader';
+import DetalleTurno from '../../components/common/DetalleTurno';
 
 const idTecnico = 5;
 
@@ -21,7 +22,7 @@ const TablaTurnosTerminados = () => {
 
   // Para ver los detalles del turno antes de realizarlo
   const [openVerMas, setOpenVerMas] = useState(false);
-  const [detalle, setDetalle] = useState([]);
+  const [rowDetalle, setRowDetalle] = useState({});
 
   // Para abrir el popup con la checklist
   const [idTurno, setIdTurno] = useState(0);
@@ -87,21 +88,6 @@ const TablaTurnosTerminados = () => {
     setAlertType('');
   }, [traerTurnos, actualizarTabla]);
 
-  const obtenerDetalle = (idTurnoRow) => {
-    getDetalleTurno(idTurnoRow)
-      .then((response) => {
-        setDetalle(response.data);
-      })
-      .catch((error) => {
-        setOpenVerMas(false);
-        setAlertType('error');
-        setAlertTitle('Error de servidor');
-        setAlertMessage(
-          'Error al mostrar el detalle. Por favor, vuelva a intentarlo nuevamente. Si el problema persiste, comuníquese con el área técnica de KarU. ✉: insomia.autotech@gmail.com',
-        );
-      });
-  };
-
   const renderRowActions = ({ row }) => (
     <Box
       style={{ display: 'flex', flexWrap: 'nowrap', gap: '0.5rem' }}
@@ -111,7 +97,7 @@ const TablaTurnosTerminados = () => {
         variant="contained"
         sx={{ fontSize: '0.9em', backgroundColor: 'rgba(51,51,51,0.75)' }}
         onClick={() => {
-          obtenerDetalle(row.original.id_turno);
+          setRowDetalle(row.original);
           setOpenVerMas(true);
         }}
       >
@@ -131,25 +117,6 @@ const TablaTurnosTerminados = () => {
       />
     </Box>
   );
-
-  const filaDetalle = (llave, valor) => {
-    if (llave === 'papeles_en_regla') {
-      return null;
-    }
-    return (
-      <>
-        <span>
-          <strong>
-            {llave}
-            :
-            {' '}
-          </strong>
-        </span>
-        <span>{valor}</span>
-
-      </>
-    );
-  };
 
   return (
     <>
@@ -182,31 +149,11 @@ const TablaTurnosTerminados = () => {
         }}
       />
       <Popup
-        title="Detalle del Turno"
+        title={<LittleHeader titulo="Detalle de turno" />}
         openDialog={openVerMas}
         setOpenDialog={setOpenVerMas}
       >
-        {
-              Object.entries(detalle).map(([key, value]) => (
-                <div key={key}>
-                  {filaDetalle(key, value)}
-                </div>
-              ))
-}
-        <Box>
-          <DialogActions>
-            <Button
-              color="primary"
-              variant="outlined"
-              sx={{ marginTop: '10px' }}
-              onClick={() => {
-                setOpenVerMas(false);
-              }}
-            >
-              Atrás
-            </Button>
-          </DialogActions>
-        </Box>
+        <DetalleTurno openDialog={openVerMas} setOpenDialog={setOpenVerMas} row={rowDetalle} />
       </Popup>
       <Popup
         title="Checklist"

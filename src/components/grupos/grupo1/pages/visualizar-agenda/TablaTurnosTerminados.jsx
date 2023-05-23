@@ -7,13 +7,16 @@ import MaterialReactTable from 'material-react-table';
 import { getTurnosTerminados, getDetalleTurno } from '../../services/services-Turnos';
 import Alerts from '../../components/common/Alerts';
 import Popup from '../../components/common/DialogPopup';
+import LittleHeader from '../../components/common/LittleHeader';
+import DetalleTurno from '../../components/common/DetalleTurno';
 
 const idTaller = 'S002';
 
 const TablaTurnosTerminados = () => {
   const [turnosTerminados, setTurnosTerminados] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [detalleTurno, setDetalleTurno] = useState([]);
+
+  const [rowDetalle, setRowDetalle] = useState({});
   const [openVerMas, setVerMas] = useState(false);
 
   // alertas de la API
@@ -48,21 +51,6 @@ const TablaTurnosTerminados = () => {
     }
   }, []);
 
-  const obtenerDetalle = (idTurno) => {
-    getDetalleTurno(idTurno).then((response) => {
-      setDetalleTurno(response.data);
-      // console.log(detalleTurno);
-    })
-      .catch((error) => {
-        setVerMas(false);
-        setAlertType('error');
-        setAlertTitle('Error de servidor');
-        setAlertMessage(
-          'Error al mostrar el detalle. Por favor, recargue la página y  vuelva a intentarlo nuevamente.',
-        );
-      });
-  };
-
   const columnas = useMemo(
     () => [
       {
@@ -72,10 +60,6 @@ const TablaTurnosTerminados = () => {
       {
         accessorKey: 'patente',
         header: 'Patente',
-      },
-      {
-        accessorKey: 'estado',
-        header: 'Estado',
       },
       {
         accessorKey: 'tipo',
@@ -120,7 +104,7 @@ const TablaTurnosTerminados = () => {
         sx={{ fontSize: '1em' }}
         onClick={() => {
           // console.log('Ver mas', row.original.id_turno);
-          obtenerDetalle(row.original.id_turno);
+          setRowDetalle(row.original);
           setVerMas(true);
         }}
       >
@@ -140,25 +124,6 @@ const TablaTurnosTerminados = () => {
       />
     </Box>
   );
-
-  const filaDetalle = (llave, valor) => {
-    if (llave === 'papeles_en_regla') {
-      return null;
-    }
-    return (
-      <>
-        <span>
-          <strong>
-            {llave}
-            :
-            {' '}
-          </strong>
-        </span>
-        <span>{valor}</span>
-
-      </>
-    );
-  };
 
   return (
     <>
@@ -191,31 +156,11 @@ const TablaTurnosTerminados = () => {
         }}
       />
       <Popup
-        title="Detalle del Turno"
+        title={<LittleHeader titulo="Detalle de turno" />}
         openDialog={openVerMas}
         setOpenDialog={setVerMas}
       >
-        {
-              Object.entries(detalleTurno).map(([key, value]) => (
-                <div key={key}>
-                  {filaDetalle(key, value)}
-                </div>
-              ))
-}
-        <Box>
-          <DialogActions>
-            <Button
-              color="primary"
-              variant="outlined"
-              sx={{ marginTop: '10px' }}
-              onClick={() => {
-                setVerMas(false);
-              }}
-            >
-              Atras
-            </Button>
-          </DialogActions>
-        </Box>
+        <DetalleTurno openDialog={openVerMas} setOpenDialog={setVerMas} row={rowDetalle} />
       </Popup>
     </>
   );

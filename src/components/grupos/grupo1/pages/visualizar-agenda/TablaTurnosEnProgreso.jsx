@@ -14,15 +14,19 @@ import {
 } from '../../services/services-Turnos';
 import Alerts from '../../components/common/Alerts';
 import Popup from '../../components/common/DialogPopup';
+import DetalleTurno from '../../components/common/DetalleTurno';
+import LittleHeader from '../../components/common/LittleHeader';
 
 const idTaller = 'S002';
 
 const TablaTurnosEnProgreso = () => {
   const [turnosEnProceso, setTurnosEnProceso] = useState([]);
   const [loading, setLoading] = useState(true);
+  // Para el detalle del turno
   const [openVerMas, setVerMas] = useState(false);
+  const [rowDetalle, setRowDetalle] = useState({});
+
   const [openFinalizar, setOpenFinalizar] = useState(false);
-  const [detalleTurno, setDetalleTurno] = useState([]);
   const [resFinalizar, setResFinalizar] = useState([]);
   const [idTurnoFinalizar, setIdTurnoFinalizar] = useState(0);
   const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -53,21 +57,6 @@ const TablaTurnosEnProgreso = () => {
     setActualizarTabla(false); // Reiniciar el estado de actualizarTabla
   }, [traerTurnos, actualizarTabla]);
 
-  const obtenerDetalle = (idTurno) => {
-    getDetalleTurno(idTurno)
-      .then((response) => {
-        setDetalleTurno(response.data);
-      })
-      .catch((error) => {
-        setVerMas(false);
-        setAlertType('error');
-        setAlertTitle('Error de servidor');
-        setAlertMessage(
-          'Error al mostrar el detalle. Por favor, vuelva a intentarlo nuevamente.',
-        );
-      });
-  };
-
   const finalizarTurno = (idTurno) => {
     patchFinalizarTurno(idTurno)
       .then((response) => {
@@ -95,10 +84,6 @@ const TablaTurnosEnProgreso = () => {
       {
         accessorKey: 'patente',
         header: 'Patente',
-      },
-      {
-        accessorKey: 'estado',
-        header: 'Estado',
       },
       {
         accessorKey: 'tipo',
@@ -134,7 +119,7 @@ const TablaTurnosEnProgreso = () => {
         sx={{ fontSize: '0.9em', backgroundColor: 'rgba(51,51,51,0.75)' }}
         onClick={() => {
           // console.log('Ver más', row.original.id_turno);
-          obtenerDetalle(row.original.id_turno);
+          setRowDetalle(row.original);
           setVerMas(true);
         }}
       >
@@ -165,25 +150,6 @@ const TablaTurnosEnProgreso = () => {
       />
     </Box>
   );
-
-  const filaDetalle = (llave, valor) => {
-    if (llave === 'papeles_en_regla') {
-      return null;
-    }
-    return (
-      <>
-        <span>
-          <strong>
-            {llave}
-            :
-            {' '}
-          </strong>
-        </span>
-        <span>{valor}</span>
-
-      </>
-    );
-  };
 
   return (
     <>
@@ -216,7 +182,7 @@ const TablaTurnosEnProgreso = () => {
         }}
       />
       <Popup
-        title="Finalizar Turno"
+        title={<LittleHeader titulo="Finalizar turno" />}
         openDialog={openFinalizar}
         setOpenDialog={setOpenFinalizar}
         description="¿Está seguro que desea finalizar el turno? No se podrá modificar la acción una vez realizada."
@@ -255,32 +221,11 @@ const TablaTurnosEnProgreso = () => {
       />
 
       <Popup
-        title="Detalle del Turno"
+        title={<LittleHeader titulo="Detalle de turno" />}
         openDialog={openVerMas}
         setOpenDialog={setVerMas}
-        botonRetorno="Atras"
       >
-        {
-              Object.entries(detalleTurno).map(([key, value]) => (
-                <div key={key}>
-                  {filaDetalle(key, value)}
-                </div>
-              ))
-}
-        <Box>
-          <DialogActions>
-            <Button
-              color="primary"
-              variant="outlined"
-              sx={{ marginTop: '10px' }}
-              onClick={() => {
-                setVerMas(false);
-              }}
-            >
-              Atras
-            </Button>
-          </DialogActions>
-        </Box>
+        <DetalleTurno openDialog={openVerMas} setOpenDialog={setVerMas} row={rowDetalle} />
       </Popup>
     </>
   );
