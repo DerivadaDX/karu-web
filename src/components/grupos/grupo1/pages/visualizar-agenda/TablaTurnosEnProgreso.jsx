@@ -55,6 +55,7 @@ const TablaTurnosEnProgreso = () => {
   useEffect(() => {
     traerTurnos();
     setActualizarTabla(false); // Reiniciar el estado de actualizarTabla
+    setAlertType('');
   }, [traerTurnos, actualizarTabla]);
 
   const finalizarTurno = (idTurno) => {

@@ -42,6 +42,7 @@ const TablaTurnosTerminados = () => {
   useEffect(() => {
     try {
       traerTurnos();
+      setAlertType('');
     } catch (error) {
       setAlertType('error');
       setAlertTitle('Error de servidor');

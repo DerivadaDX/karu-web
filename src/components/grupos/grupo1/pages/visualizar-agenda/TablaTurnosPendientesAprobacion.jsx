@@ -62,6 +62,7 @@ const TablaTurnosPendientesDeAprobacion = () => {
       );
     }
     setActualizarTabla(false); // Reiniciar el estado de actualizarTabla
+    setAlertType('');
   }, [traerTurnos, actualizarTabla]);
 
   const cancelarTurno = (idTurno) => {

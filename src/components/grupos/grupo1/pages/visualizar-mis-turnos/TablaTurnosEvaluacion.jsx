@@ -102,7 +102,7 @@ const TablaTurnosEvaluacion = () => {
     const anio = today.getFullYear();
     const mes = String(today.getMonth() + 1).padStart(2, '0');
     const dia = String(today.getDate()).padStart(2, '0');
-    // const dateActual = `${anio}-${mes}-${dia}`;
+    const dateActual = `${anio}-${mes}-${dia}`;
 
     let horas = today.getHours();
     let minutos = today.getMinutes();
@@ -111,10 +111,10 @@ const TablaTurnosEvaluacion = () => {
     horas = (`0${horas}`).slice(-2);
     minutos = (`0${minutos}`).slice(-2);
     segundos = (`0${segundos}`).slice(-2);
-    // const timeActual = `${horas}:${minutos}:${segundos}`;
+    const timeActual = `${horas}:${minutos}:${segundos}`;
 
-    const dateActual = '2023-05-23';
-    const timeActual = '11:00:00';
+    // const dateActual = '2023-05-23';
+    // const timeActual = '11:00:00';
 
     if (dateActual < row.original.fecha_inicio) {
       setNoEsDateActual(true);
