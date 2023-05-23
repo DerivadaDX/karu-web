@@ -94,6 +94,7 @@ const TablaTurnosPendientes = () => {
     try {
       traerTurnos();
       setActualizarTabla(false); // Reiniciar el estado de actualizarTabla
+      setAlertType('');
     } catch (error) {
       setAlertType('error');
       setAlertTitle('Error de servidor');
