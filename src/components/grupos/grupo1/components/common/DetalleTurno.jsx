@@ -26,6 +26,18 @@ export default function DetalleTurno(props) {
     }
   };
 
+  const definirTipo = (tipo) => {
+    if (tipo === 'evaluacion') {
+      return ('Evaluación');
+    } if (tipo === 'service') {
+      return ('Service');
+    } if (tipo === 'extraordinario') {
+      return ('Extraordinario');
+    } if (tipo === 'reparacion') {
+      return ('Reparación');
+    }
+  };
+
   return (
     <>
       <Stack spacing={1}>
@@ -40,7 +52,7 @@ export default function DetalleTurno(props) {
           disabled
           id="standard-disabled"
           label="Tipo de turno"
-          defaultValue={row.tipo}
+          defaultValue={definirTipo(row.tipo)}
           variant="standard"
         />
         <TextField
