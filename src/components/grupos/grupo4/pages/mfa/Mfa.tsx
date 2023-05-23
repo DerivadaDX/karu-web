@@ -27,7 +27,7 @@ const Mfa = () => {
       const Loggeduser = JSON.stringify({ username, password });
       cookie.set("user", Loggeduser, { maxAge: 300 });
       login();
-      navigate("/home");
+      navigate("/http://localhost:3000/");
     }
   }, [isValidToken]);
 

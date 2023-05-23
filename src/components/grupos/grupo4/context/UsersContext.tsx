@@ -312,7 +312,7 @@ export const UserContextProvider = ({ children }: props) => {
     changePasswordMessageError,
     showSpanChangePasswordError,
   };
-
+  
   return (
     <UserContext.Provider value={providerValue}>
       {children}

@@ -21,7 +21,7 @@ const LoginForm = () => {
       navigate('/authToken');
     }
   }, [isValidUser]);
-
+  console.log("USERNAME: ", username)
   const handleSubmit = async (e: any): Promise<void> => {
     e.preventDefault();
     if (await authUser({ username, password })) {
