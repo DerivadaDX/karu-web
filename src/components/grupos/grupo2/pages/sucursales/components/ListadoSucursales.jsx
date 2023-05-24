@@ -1,34 +1,15 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
 import {
-  Box, Typography,
+  Box,
+  Typography,
 } from '@mui/material';
 import CheckBoxOutlinedIcon from '@mui/icons-material/CheckBoxOutlined';
 import CheckBoxOutlineBlankOutlinedIcon from '@mui/icons-material/CheckBoxOutlineBlankOutlined';
 import MaterialReactTable from 'material-react-table';
 
 import SucursalService from '../services/sucursal-service';
-
-const renderCheckTieneTaller = ({ row }) => (
-  row.original.posee_taller
-    ? <CheckBoxOutlinedIcon />
-    : <CheckBoxOutlineBlankOutlinedIcon />
-);
-
-const renderEstadoSucursal = ({ row }) => {
-  const sucursalActiva = row.original.activa;
-
-  return (
-    <Typography
-      variant="body1"
-      component="span"
-      sx={{ fontWeight: 'bold' }}
-      color={(theme) => (sucursalActiva ? theme.palette.success.main : theme.palette.error.main)}
-    >
-      {sucursalActiva ? 'Hab.' : 'Deshab.'}
-    </Typography>
-  );
-};
+import PopUpCambiarEstadoSucursal from './PopUpCambiarEstadoSucursal';
 
 const ListadoSucursales = () => {
   const [sucursales, setSucursales] = useState([]);
@@ -42,7 +23,50 @@ const ListadoSucursales = () => {
       });
   };
 
-  useEffect(obtenerSucursales, []);
+  const actualizarEstadoDeSucursal = (id) => {
+    const cambiarEstadoDeSucursal = (sucursal) => {
+      const esLaSucursalActualizada = sucursal.id === id;
+      const retVal = esLaSucursalActualizada
+        ? { ...sucursal, activa: !sucursal.activa }
+        : sucursal;
+
+      return retVal;
+    };
+
+    setSucursales((prevRecords) => prevRecords.map(cambiarEstadoDeSucursal));
+  };
+
+  const renderCheckTieneTaller = ({ row }) => (
+    row.original.posee_taller
+      ? <CheckBoxOutlinedIcon />
+      : <CheckBoxOutlineBlankOutlinedIcon />
+  );
+
+  const renderEstadoSucursal = ({ row }) => {
+    const sucursalActiva = row.original.activa;
+
+    return (
+      <Typography
+        variant="body1"
+        component="span"
+        sx={{ fontWeight: 'bold' }}
+        color={(theme) => (sucursalActiva ? theme.palette.success.main : theme.palette.error.main)}
+      >
+        {sucursalActiva ? 'Hab.' : 'Deshab.'}
+      </Typography>
+    );
+  };
+
+  const renderAccionesFila = ({ row }) => {
+    const sucursal = row.original;
+
+    return (
+      <PopUpCambiarEstadoSucursal
+        sucursal={sucursal}
+        onSuccess={actualizarEstadoDeSucursal}
+      />
+    );
+  };
 
   const columnas = useMemo(
     () => [
@@ -88,23 +112,18 @@ const ListadoSucursales = () => {
     [],
   );
 
+  useEffect(obtenerSucursales, []);
+
   return (
-    <Box>
+    <Box id="ListadoSucursales">
       <MaterialReactTable
         columns={columnas}
         data={sucursales}
         state={{ isLoading: cargando }}
+        enableRowActions
         positionActionsColumn="last"
+        renderRowActions={renderAccionesFila}
         defaultColumn={{ minSize: 10, maxSize: 100 }}
-        muiTopToolbarProps={{
-          sx: {
-            display: 'flex',
-            flexWrap: 'inherit',
-            justifyContent: 'flex-end',
-            overflow: 'auto',
-            maxHeight: '200px',
-          },
-        }}
       />
     </Box>
   );
