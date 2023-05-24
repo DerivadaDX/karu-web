@@ -8,23 +8,27 @@ import Snackbar from '@mui/material/Snackbar';
 import MaterialReactTable from 'material-react-table';
 import {
   getTurnosPendientesDeAprobacion,
-  getDetalleTurno,
   getCancelarTurno,
 } from '../../services/services-Turnos';
 import Alerts from '../../components/common/Alerts';
 import Popup from '../../components/common/DialogPopup';
+import LittleHeader from '../../components/common/LittleHeader';
+import DetalleTurno from '../../components/common/DetalleTurno';
 
 const idTaller = 'S002';
 
 const TablaTurnosPendientesDeAprobacion = () => {
   const [turnosPendientesDeAprobacion, setTurnosPendientesDeAprobacion] = useState([]);
   const [loading, setLoading] = useState(true);
+  // Para ver el detalle del turno
   const [openVerMas, setVerMas] = useState(false);
+  const [rowDetalle, setRowDetalle] = useState({});
+
   const [openCancel, setOpenCancel] = useState(false);
-  const [detalleTurno, setDetalleTurno] = useState([]);
   const [resCancelar, setResCancelar] = useState([]);
   const [idTurnoCancelar, setIdTurnoCancelar] = useState(0);
   const [openSnackbar, setOpenSnackbar] = useState(false);
+
   const [actualizarTabla, setActualizarTabla] = useState(false);
 
   // alertas de la API
@@ -58,23 +62,8 @@ const TablaTurnosPendientesDeAprobacion = () => {
       );
     }
     setActualizarTabla(false); // Reiniciar el estado de actualizarTabla
+    setAlertType('');
   }, [traerTurnos, actualizarTabla]);
-
-  const obtenerDetalle = (idTurno) => {
-    getDetalleTurno(idTurno)
-      .then((response) => {
-        setDetalleTurno(response.data);
-        // console.log(detalleTurno);
-      })
-      .catch((error) => {
-        setVerMas(false);
-        setAlertType('error');
-        setAlertTitle('Error de servidor');
-        setAlertMessage(
-          'Error al mostrar el detalle. Por favor, reacargue la página y vuelva a intentarlo nuevamente.',
-        );
-      });
-  };
 
   const cancelarTurno = (idTurno) => {
     getCancelarTurno(idTurno)
@@ -133,7 +122,7 @@ const TablaTurnosPendientesDeAprobacion = () => {
         variant="contained"
         sx={{ fontSize: '0.9em', backgroundColor: 'rgba(51,51,51,0.75)' }}
         onClick={() => {
-          obtenerDetalle(row.original.id_turno);
+          setRowDetalle(row.original);
           setVerMas(true);
         }}
       >
@@ -216,7 +205,7 @@ const TablaTurnosPendientesDeAprobacion = () => {
         }}
       />
       <Popup
-        title="Cancelar Turno"
+        title={<LittleHeader titulo="Cancelar turno" />}
         openDialog={openCancel}
         setOpenDialog={setOpenCancel}
         description="¿Está seguro que desea cancelar el turno? No se podrá modificar la acción una vez realizada."
@@ -253,32 +242,12 @@ const TablaTurnosPendientesDeAprobacion = () => {
         onClose={handleCloseSnackbar}
       />
       <Popup
-        title="Detalle del Turno"
+        title={<LittleHeader titulo="Detalle de turno" />}
         openDialog={openVerMas}
         setOpenDialog={setVerMas}
         botonRetorno="Atras"
       >
-        {
-              Object.entries(detalleTurno).map(([key, value]) => (
-                <div key={key}>
-                  {filaDetalle(key, value)}
-                </div>
-              ))
-}
-        <Box>
-          <DialogActions>
-            <Button
-              color="primary"
-              variant="outlined"
-              sx={{ marginTop: '10px' }}
-              onClick={() => {
-                setVerMas(false);
-              }}
-            >
-              Atras
-            </Button>
-          </DialogActions>
-        </Box>
+        <DetalleTurno openDialog={openVerMas} setOpenDialog={setVerMas} row={rowDetalle} />
       </Popup>
     </>
   );
