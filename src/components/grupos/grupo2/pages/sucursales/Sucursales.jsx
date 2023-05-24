@@ -1,11 +1,12 @@
-import * as React from 'react';
+import React from 'react';
 
 import {
   Box,
   Paper,
 } from '@mui/material';
-import ListadoSucursales from './components/ListadoSucursales';
+
 import Encabezado from '../common/Encabezado';
+import ListadoSucursales from './components/ListadoSucursales';
 
 const styles = {
   paper: {
