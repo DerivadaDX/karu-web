@@ -1,32 +1,25 @@
 import * as React from 'react';
 
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
+import {
+  Box,
+  Paper,
+} from '@mui/material';
 import ListadoSucursales from './components/ListadoSucursales';
+import Encabezado from '../common/Encabezado';
 
 const styles = {
-  container: {
-    mt: 4,
-    mb: 4,
-  },
   paper: {
-    p: 2,
-    display: 'flex',
-    flexDirection: 'column',
+    padding: 2,
   },
 };
 
 const Sucursales = () => (
-  <Container maxWidth="lg" sx={styles.container}>
-    <Grid container spacing={3}>
-      <Grid item xs={12}>
-        <Paper sx={styles.paper}>
-          <ListadoSucursales />
-        </Paper>
-      </Grid>
-    </Grid>
-  </Container>
+  <Box>
+    <Encabezado titulo="Sucursales" subtitulo="Alta, baja y modificación de sucursales" />
+    <Paper sx={styles.paper} elevation={5}>
+      <ListadoSucursales />
+    </Paper>
+  </Box>
 );
 
 export default Sucursales;
