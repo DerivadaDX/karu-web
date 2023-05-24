@@ -1,4 +1,8 @@
-# KarU Web
+<div align="center">
+
+  # KarU Web · ![ci status](https://github.com/DerivadaDX/karu-web/actions/workflows/ci.yml/badge.svg)
+
+</div>
 
 ## Primeros pasos
 
@@ -52,6 +56,11 @@ const GROUP_2_PAGES_CONFIG = [
     // Componente de la página que se debe cargar al hacer click
     // en el elemento del menú
     page: <Componente />,
+
+    // Indica si esta configuración es solo de una ruta.
+    // Si es true no se va a crear un elemento en el menú lateral.
+    // Si es false o no está definido, se va a agregar un elemento en el menú lateral.
+    soloUrl: true,
   },
 ];
 ```
