@@ -27,7 +27,7 @@ const PopUpCambiarEstadoSucursal = ({ sucursal, onSuccess }) => {
   const deshabilitarSucursal = () => {
     SucursalService.deshabilitarSucursal(sucursal.id)
       .then((response) => {
-        if (response.status === 204) {
+        if (response.status === 200 && !response.data.activa) {
           onSuccess(sucursal.id);
         }
       })
