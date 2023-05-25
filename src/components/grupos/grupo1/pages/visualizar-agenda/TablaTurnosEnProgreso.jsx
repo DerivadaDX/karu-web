@@ -102,10 +102,6 @@ const TablaTurnosEnProgreso = (props) => {
         accessorKey: 'tecnico_id',
         header: 'Tecnico id',
       },
-      {
-        accessorKey: 'nombre_tecnico',
-        header: 'Nombre del Tecnico',
-      },
     ],
     [],
   );

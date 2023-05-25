@@ -85,10 +85,6 @@ const TablaTurnosTerminados = (props) => {
         accessorKey: 'tecnico_id',
         header: 'Tecnico id',
       },
-      {
-        accessorKey: 'nombre_completo',
-        header: 'Nombre del Tecnico',
-      },
     ],
     [],
   );

@@ -95,6 +95,18 @@ const TablaTurnosCancelados = (props) => {
       >
         Ver más
       </Button>
+      <Button
+        variant="contained"
+        color="secondary"
+        sx={{ fontSize: '1em' }}
+        onClick={() => {
+          // console.log('Ver mas', row.original.id_turno);
+          setRowDetalle(row.original);
+          setVerMas(true);
+        }}
+      >
+        Ver más
+      </Button>
     </Box>
   );
 
