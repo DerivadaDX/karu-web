@@ -65,7 +65,7 @@ const PopUpDetalleMovimiento = ({ movimientoId }) => {
               disabled
               id="standard-disabled"
               label="Monto"
-              defaultValue={DineroHelper.formatearComoDinero(movimiento.monto)}
+              defaultValue={DineroHelper.formatearComoDinero(Math.abs(movimiento.monto))}
               variant="standard"
             />
             <TextField
