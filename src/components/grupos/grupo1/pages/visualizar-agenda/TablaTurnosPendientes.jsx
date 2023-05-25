@@ -197,25 +197,6 @@ const TablaTurnosPendientes = (props) => {
     </Tooltip>
   );
 
-  const filaDetalle = (llave, valor) => {
-    if (llave === 'papeles_en_regla') {
-      return null;
-    }
-    return (
-      <>
-        <span>
-          <strong>
-            {llave}
-            :
-            {' '}
-          </strong>
-        </span>
-        <span>{valor}</span>
-
-      </>
-    );
-  };
-
   return (
     <>
       <Box
