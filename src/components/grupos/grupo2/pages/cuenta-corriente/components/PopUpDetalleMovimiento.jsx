@@ -95,7 +95,7 @@ const PopUpDetalleMovimiento = ({ movimiento }) => {
 
 PopUpDetalleMovimiento.propTypes = {
   movimiento: PropTypes.shape({
-    numero_operacion: PropTypes.number,
+    numero_operacion: PropTypes.string,
     fecha: PropTypes.string,
     tipo: PropTypes.string,
     nombre_persona: PropTypes.string,
