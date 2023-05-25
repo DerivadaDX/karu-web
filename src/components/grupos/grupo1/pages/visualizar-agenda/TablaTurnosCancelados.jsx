@@ -19,6 +19,9 @@ const TablaTurnosCancelados = (props) => {
   const [rowDetalle, setRowDetalle] = useState({});
   const [openVerMas, setVerMas] = useState(false);
 
+  // Para reprogramar turno
+  const [openReprogramar, setOpenReprogramar] = useState(false);
+
   // alertas de la API
   const [alertType, setAlertType] = useState('');
   const [alertMessage, setAlertMessage] = useState('');
@@ -97,15 +100,14 @@ const TablaTurnosCancelados = (props) => {
       </Button>
       <Button
         variant="contained"
-        color="secondary"
+        color="primary"
         sx={{ fontSize: '1em' }}
         onClick={() => {
-          // console.log('Ver mas', row.original.id_turno);
-          setRowDetalle(row.original);
-          setVerMas(true);
+          // setRowDetalle(row.original);
+          setOpenReprogramar(true);
         }}
       >
-        Ver más
+        Reprogramar
       </Button>
     </Box>
   );
@@ -158,6 +160,13 @@ const TablaTurnosCancelados = (props) => {
         setOpenDialog={setVerMas}
       >
         <DetalleTurno openDialog={openVerMas} setOpenDialog={setVerMas} row={rowDetalle} />
+      </Popup>
+      <Popup
+        title={<LittleHeader titulo="Reprogramar turno" />}
+        openDialog={openReprogramar}
+        setOpenDialog={setOpenReprogramar}
+      >
+        Reasignar turno
       </Popup>
     </>
   );
