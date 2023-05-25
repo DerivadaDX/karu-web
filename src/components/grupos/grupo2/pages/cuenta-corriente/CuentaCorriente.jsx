@@ -6,10 +6,10 @@ import {
   Paper,
 } from '@mui/material';
 
+import Encabezado from '../common/Encabezado';
 import EstadoCuenta from './components/EstadoCuenta';
 import ListadoMovimientos from './components/ListadoMovimientos';
 import InformacionSucursal from './components/InformacionSucursal';
-import Encabezado from '../common/Encabezado';
 
 const styles = {
   paper: {
