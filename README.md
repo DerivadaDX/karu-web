@@ -94,14 +94,14 @@ Por ejemplo, el nombre de una rama para implementar el inicio de sesión en el s
 ## Integración continua
 
 El repositorio cuenta con un workflow de integración continua que sirve para comprobar que el código subido pase unas validaciones.
-Si el código no pasa las validaciones, no está apto para ser mergeado con `dev` o `main`.
+Si el código no pasa las validaciones no permitirá completar el merge hacia `dev` o `main`.
 
 Las validaciones que ejecuta son dos:
 
 1. Que no hayan errores de linting por medio del script `lint:check`
 2. Que el código se puede buildear por medio del script `build`
 
-Estas validaciones se ejecutan cada vez que se hace push a cualquier rama y cuando se hacen pull requests hacia `dev` o `main`.
+Estas validaciones se ejecutan cada vez que se hacen pull requests hacia `dev` o `main` y cuando se hace push hacia ellas.
 
 ## Bases y condiciones
 
