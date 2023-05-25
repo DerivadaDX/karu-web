@@ -9,6 +9,7 @@ import Dashboard from './pages/dashboard/Dashboard';
 import MisTurnos from './pages/visualizar-mis-turnos/MisTurnos';
 import AgendaTaller from './pages/visualizar-agenda/AgendaTaller';
 import TurnoForm from './pages/turnos/turno-cliente/TurnoForm';
+import ChecklistReparacion from './pages/checklist-reparacion/ChecklistReparacion';
 
 const GROUP_1_PAGES_CONFIG = [
   {
@@ -45,6 +46,13 @@ const GROUP_1_PAGES_CONFIG = [
     href: '/turnos-form',
     icon: <TooltipCus icon={<ContactMailIcon />} title="Turnos cliente" />,
     page: <TurnoForm />,
+  },
+  {
+    id: 'g1-CheckListReparacion',
+    name: 'Checklist reparación',
+    href: '/checklist-reparacion',
+    icon: <TooltipCus icon={<ListAltIcon />} title="Checklist repración" />,
+    page: <ChecklistReparacion />,
   },
 
 ];
