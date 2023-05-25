@@ -115,7 +115,7 @@ const ListadoSucursales = () => {
   useEffect(obtenerSucursales, []);
 
   return (
-    <Box id="ListadoSucursales">
+    <Box>
       <MaterialReactTable
         columns={columnas}
         data={sucursales}
