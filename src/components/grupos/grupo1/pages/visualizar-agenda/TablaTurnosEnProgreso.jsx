@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable no-unused-vars */
 import {
@@ -10,16 +11,15 @@ import Snackbar from '@mui/material/Snackbar';
 import {
   getTurnosEnProceso,
   patchFinalizarTurno,
-  getDetalleTurno,
 } from '../../services/services-Turnos';
 import Alerts from '../../components/common/Alerts';
 import Popup from '../../components/common/DialogPopup';
 import DetalleTurno from '../../components/common/DetalleTurno';
 import LittleHeader from '../../components/common/LittleHeader';
 
-const idTaller = 'S002';
+const TablaTurnosEnProgreso = (props) => {
+  const { idTaller } = props;
 
-const TablaTurnosEnProgreso = () => {
   const [turnosEnProceso, setTurnosEnProceso] = useState([]);
   const [loading, setLoading] = useState(true);
   // Para el detalle del turno
@@ -103,7 +103,7 @@ const TablaTurnosEnProgreso = () => {
         header: 'Tecnico id',
       },
       {
-        accessorKey: 'nombre_completo',
+        accessorKey: 'nombre_tecnico',
         header: 'Nombre del Tecnico',
       },
     ],
