@@ -56,11 +56,9 @@ const ListadoMovimientos = () => {
     );
   };
 
-  const renderAccionesFila = ({ row }) => {
-    const movimiento = row.original;
-
-    return <PopUpDetalleMovimiento movimientoId={movimiento.id} />;
-  };
+  const renderAccionesFila = ({ row }) => (
+    <PopUpDetalleMovimiento movimiento={row.original} />
+  );
 
   const columnas = useMemo(
     () => [
