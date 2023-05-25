@@ -67,6 +67,10 @@ const TablaTurnosNoValidos = (props) => {
         header: 'Tipo de Turno',
       },
       {
+        accessorKey: 'estado',
+        header: 'Estado',
+      },
+      {
         accessorKey: 'fecha_inicio',
         header: 'Fecha Inicio',
       },
