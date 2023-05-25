@@ -1,22 +1,26 @@
 /* eslint-disable react/prop-types */
+/* eslint-disable no-shadow */
 /* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable no-unused-vars */
 import { useState, useEffect, useMemo } from 'react';
 import { Box, Button } from '@mui/material';
 import MaterialReactTable from 'material-react-table';
-import { getTurnosTerminados } from '../../services/services-Turnos';
+import { getTurnosCancelados } from '../../services/services-Turnos';
 import Alerts from '../../components/common/Alerts';
 import Popup from '../../components/common/DialogPopup';
 import LittleHeader from '../../components/common/LittleHeader';
 import DetalleTurno from '../../components/common/DetalleTurno';
 
-const TablaTurnosTerminados = (props) => {
+const TablaTurnosCancelados = (props) => {
   const { idTaller } = props;
-  const [turnosTerminados, setTurnosTerminados] = useState([]);
+  const [turnosCancelados, setTurnosCancelados] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const [rowDetalle, setRowDetalle] = useState({});
   const [openVerMas, setVerMas] = useState(false);
+
+  // Para reprogramar turno
+  const [openReprogramar, setOpenReprogramar] = useState(false);
 
   // alertas de la API
   const [alertType, setAlertType] = useState('');
@@ -24,9 +28,9 @@ const TablaTurnosTerminados = (props) => {
   const [alertTitle, setAlertTitle] = useState('');
 
   const traerTurnos = () => {
-    getTurnosTerminados(idTaller)
+    getTurnosCancelados(idTaller)
       .then((response) => {
-        setTurnosTerminados(response.data);
+        setTurnosCancelados(response.data);
         setLoading(false);
       })
       .catch((error) => {
@@ -73,18 +77,6 @@ const TablaTurnosTerminados = (props) => {
         accessorKey: 'hora_inicio',
         header: 'Hora Inicio',
       },
-      {
-        accessorKey: 'fecha_fin',
-        header: 'Fecha Fin',
-      },
-      {
-        accessorKey: 'hora_fin',
-        header: 'Hora fin',
-      },
-      {
-        accessorKey: 'tecnico_id',
-        header: 'Tecnico id',
-      },
     ],
     [],
   );
@@ -105,6 +97,17 @@ const TablaTurnosTerminados = (props) => {
         }}
       >
         Ver más
+      </Button>
+      <Button
+        variant="contained"
+        color="primary"
+        sx={{ fontSize: '1em' }}
+        onClick={() => {
+          // setRowDetalle(row.original);
+          setOpenReprogramar(true);
+        }}
+      >
+        Reprogramar
       </Button>
     </Box>
   );
@@ -134,7 +137,7 @@ const TablaTurnosTerminados = (props) => {
       </Box>
       <MaterialReactTable
         columns={columnas}
-        data={turnosTerminados}
+        data={turnosCancelados}
         state={{ isLoading: loading }}
         positionActionsColumn="last"
         enableRowActions
@@ -158,8 +161,15 @@ const TablaTurnosTerminados = (props) => {
       >
         <DetalleTurno openDialog={openVerMas} setOpenDialog={setVerMas} row={rowDetalle} />
       </Popup>
+      <Popup
+        title={<LittleHeader titulo="Reprogramar turno" />}
+        openDialog={openReprogramar}
+        setOpenDialog={setOpenReprogramar}
+      >
+        Reasignar turno
+      </Popup>
     </>
   );
 };
 
-export default TablaTurnosTerminados;
+export default TablaTurnosCancelados;
