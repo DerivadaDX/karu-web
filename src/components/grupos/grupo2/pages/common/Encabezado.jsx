@@ -8,7 +8,7 @@ import {
 import PropTypes from 'prop-types';
 
 const Encabezado = ({ titulo, subtitulo }) => (
-  <Box id="Encabezado" mb={1}>
+  <Box mb={1}>
     <Typography variant="h3" color={(theme) => theme.palette.text.primary} fontWeight="bold">
       {titulo}
     </Typography>
