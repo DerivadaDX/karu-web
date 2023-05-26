@@ -10,6 +10,7 @@ import Dashboard from './pages/dashboard/Dashboard';
 import MisTurnos from './pages/visualizar-mis-turnos/MisTurnos';
 import AgendaTaller from './pages/visualizar-agenda/AgendaTaller';
 import TurnoForm from './pages/turnos/turno-cliente/TurnoForm';
+import Services from './pages/services/Services';
 
 const GROUP_1_PAGES_CONFIG = [
   {
@@ -52,7 +53,7 @@ const GROUP_1_PAGES_CONFIG = [
     name: 'Services',
     href: '/services',
     icon: <TooltipCus icon={<DesignServicesIcon />} title="Services" />,
-    page: <TurnoForm />,
+    page: <Services />,
   },
 
 ];
