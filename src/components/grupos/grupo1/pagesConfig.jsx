@@ -3,6 +3,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import ContactMailIcon from '@mui/icons-material/ContactMail';
+import DesignServicesIcon from '@mui/icons-material/DesignServices';
 import TooltipCus from './components/common/Tooltip';
 import VisualizacionFiltroBusqueda from './pages/visualizacion-tecnicos/VisualizacionFiltroBusqueda';
 import Dashboard from './pages/dashboard/Dashboard';
@@ -44,6 +45,13 @@ const GROUP_1_PAGES_CONFIG = [
     name: 'Turnos cliente',
     href: '/turnos-form',
     icon: <TooltipCus icon={<ContactMailIcon />} title="Turnos cliente" />,
+    page: <TurnoForm />,
+  },
+  {
+    id: 'g1-Services',
+    name: 'Services',
+    href: '/services',
+    icon: <TooltipCus icon={<DesignServicesIcon />} title="Services" />,
     page: <TurnoForm />,
   },
 
