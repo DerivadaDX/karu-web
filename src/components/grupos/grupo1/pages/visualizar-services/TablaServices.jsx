@@ -1,3 +1,5 @@
+/* eslint-disable react/no-unstable-nested-components */
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-shadow */
 /* eslint-disable react/react-in-jsx-scope */
@@ -5,23 +7,21 @@
 import {
   useState, useEffect, useMemo, useCallback,
 } from 'react';
-import { Box, Button, IconButton } from '@mui/material';
+import { Box, Button, TableCell } from '@mui/material';
 import MaterialReactTable from 'material-react-table';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import Tooltip from '@mui/material/Tooltip';
 import Snackbar from '@mui/material/Snackbar';
 import DialogActions from '@mui/material/DialogActions';
-import ChecklistRtlIcon from '@mui/icons-material/ChecklistRtl';
-import CancelIcon from '@mui/icons-material/Cancel';
 import Alerts from '../../components/common/Alerts';
 import Popup from '../../components/common/DialogPopup';
 import LittleHeader from '../../components/common/LittleHeader';
 import DetalleTurno from '../../components/common/DetalleTurno';
 
 import {
-  getCancelarTurno,
-  getTurnosPendientes,
-} from '../../services/services-Turnos';
+  getServices,
+  putCambiarEstado,
+} from '../../services/services-services';
 
 const TablaServices = () => {
   const [services, setServices] = useState([]);
@@ -66,13 +66,35 @@ const TablaServices = () => {
       {
         accessorKey: 'activo',
         header: 'Activo',
+        Cell: ({ cell }) => (
+          <span style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: '100%',
+          }}
+          >
+            <p style={{
+              backgroundColor: cell.getValue() === true ? 'rgb(53, 122, 56)' : '#b71c1c',
+              padding: '0.4rem',
+              margin: '0px',
+              borderRadius: '5px',
+              width: '6.5rem',
+              textAlign: 'center',
+              color: 'white',
+            }}
+            >
+              {cell.getValue() === true ? 'Activo' : 'No activo' }
+            </p>
+          </span>
+        ),
       },
     ],
     [],
   );
 
-  const traerTurnos = useCallback(() => {
-    getTurnosPendientes('S002')
+  const traerServices = useCallback(() => {
+    getServices()
       .then((response) => {
         setServices(response.data);
         setLoading(false);
@@ -88,7 +110,7 @@ const TablaServices = () => {
 
   useEffect(() => {
     try {
-      traerTurnos();
+      traerServices();
       setActualizarTabla(false); // Reiniciar el estado de actualizarTabla
       setAlertType('');
     } catch (error) {
@@ -98,10 +120,10 @@ const TablaServices = () => {
         'Error al traer los services. Por favor, recargue la página y vuelva a intentarlo nuevamente.',
       );
     }
-  }, [traerTurnos, actualizarTabla]);
+  }, [traerServices, actualizarTabla]);
 
   const cancelarTurno = (idTurno) => {
-    getCancelarTurno(idTurno)
+    putCambiarEstado(idTurno)
       .then((response) => {
         setResActivar(response.data);
         // Para actualizar la tabla despues de activar o desactivar un service
@@ -148,14 +170,14 @@ const TablaServices = () => {
       </Button>
       <Button
         variant="contained"
-        color="error"
+        color="primary"
         sx={{ fontSize: '0.9em' }}
         onClick={() => {
           setOpenDialog(true);
           setIdServiceActivar(row.original.id_service);
         }}
       >
-        {row.original.frecuencia_km === 15000 ? 'Activar' : 'Desactivar'}
+        {row.original.activo === false ? 'Activar' : 'Desactivar'}
       </Button>
     </Box>
   );
@@ -209,7 +231,6 @@ const TablaServices = () => {
         data={services}
         state={{ isLoading: loading }}
         renderTopToolbarCustomActions={agregarService}
-        muiTableBodyCellProps={({ cell }) => ({ sx: { color: (cell.column.id === 'activo' ? 'green' : undefined) && (cell.getValue() === 'true' ? 'green' : 'red') } })}
         muiTopToolbarProps={{
           sx: {
             display: 'flex',
@@ -224,6 +245,13 @@ const TablaServices = () => {
         renderRowActions={renderRowActions}
         renderEmptyRowsFallback={noData}
         defaultColumn={{ minSize: 10, maxSize: 100 }}
+        muiTableHeadCellProps={{ align: 'center' }}
+        muiTableBodyCellProps={{ align: 'center' }}
+        displayColumnDefOptions={{
+          'mrt-row-actions': {
+            header: 'Acciones',
+          },
+        }}
       />
 
       <Popup
