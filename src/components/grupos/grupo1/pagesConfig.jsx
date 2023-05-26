@@ -3,12 +3,14 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import ContactMailIcon from '@mui/icons-material/ContactMail';
+import HandymanIcon from '@mui/icons-material/Handyman';
 import TooltipCus from './components/common/Tooltip';
 import VisualizacionFiltroBusqueda from './pages/visualizacion-tecnicos/VisualizacionFiltroBusqueda';
 import Dashboard from './pages/dashboard/Dashboard';
 import MisTurnos from './pages/visualizar-mis-turnos/MisTurnos';
 import AgendaTaller from './pages/visualizar-agenda/AgendaTaller';
 import TurnoForm from './pages/turnos/turno-cliente/TurnoForm';
+import Formulario from './pages/turnos/turno-reparaciones-venta/Formulario';
 
 const GROUP_1_PAGES_CONFIG = [
   {
@@ -45,6 +47,13 @@ const GROUP_1_PAGES_CONFIG = [
     href: '/turnos-form',
     icon: <TooltipCus icon={<ContactMailIcon />} title="Turnos cliente" />,
     page: <TurnoForm />,
+  },
+  {
+    id: 'g1-TurnoReparacionVenta',
+    name: 'Turnos de reparación',
+    href: '/turno-reparacion-venta',
+    icon: <TooltipCus icon={<HandymanIcon />} title="Turno de reparación" />,
+    page: <Formulario />,
   },
 
 ];
