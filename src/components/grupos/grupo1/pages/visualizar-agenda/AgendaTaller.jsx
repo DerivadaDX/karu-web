@@ -3,7 +3,7 @@ import { Box, Container, Divider } from '@mui/material';
 import Header from '../../components/common/Header';
 import { SimpleTabTurnos } from './SimpleTab';
 
-const idTaller = 'S002';
+const idTaller = 'T002';
 
 const AgendaTaller = () => (
 

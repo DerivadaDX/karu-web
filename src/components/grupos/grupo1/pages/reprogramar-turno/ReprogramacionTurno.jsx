@@ -83,20 +83,13 @@ const ReprogramacionTurno = (props) => {
     }}
     >
       <Box sx={{
-        marginTop: 8,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        border: '1px solid #cdcbcb',
-        borderRadius: '4px',
         p: 2,
-        backgroundColor: '#ffffff',
-        width: '25rem',
-        boxShadow: '4',
+        width: '22rem',
       }}
       >
-        <Typography component="h1" variant="h5">Reprogramar turno</Typography>
-        <Typography component="p" sx={{ mt: 1 }}>Por favor, elija un día y horario disponible.</Typography>
         <Box sx={{ mt: 1 }}>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DateCalendar
@@ -146,10 +139,10 @@ const ReprogramacionTurno = (props) => {
               type="submit"
               sx={{ mt: 3, ml: 1 }}
               style={{ backgroundColor: 'rgb(128, 19, 19)' }}
+              onClick={() => {
+                setOpen(false);
+              }}
             >
-              { /* onClick={() => {
-              setOpen(false);
-            }} */ }
               Cerrar
             </Button>
           </Box>
@@ -157,6 +150,7 @@ const ReprogramacionTurno = (props) => {
 
         {/* Pop up para confirmar el turno */}
         <Popup
+          title={<LittleHeader titulo="Crear turno" />}
           openDialog={openConfirmarTurno}
           setOpenDialog={setOpenConfirmarTurno}
           description="¿Está seguro que desea crear el turno? No se podrá modificar una vez creado."
