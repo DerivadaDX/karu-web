@@ -209,7 +209,7 @@ const TablaServices = () => {
         data={services}
         state={{ isLoading: loading }}
         renderTopToolbarCustomActions={agregarService}
-        muiTableBodyCellProps={({ cell }) => ({ sx: { color: (cell.column.id === 'activo') && (cell.getValue() === 'activo') ? 'green' : 'red' } })}
+        muiTableBodyCellProps={({ cell }) => ({ sx: { color: (cell.column.id === 'activo' ? 'green' : undefined) && (cell.getValue() === 'true' ? 'green' : 'red') } })}
         muiTopToolbarProps={{
           sx: {
             display: 'flex',
