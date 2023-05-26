@@ -10,6 +10,7 @@ import MisTurnos from './pages/visualizar-mis-turnos/MisTurnos';
 import AgendaTaller from './pages/visualizar-agenda/AgendaTaller';
 import TurnoForm from './pages/turnos/turno-cliente/TurnoForm';
 import ChecklistReparacion from './pages/checklist-reparacion/ChecklistReparacion';
+import ReprogramacionTurno from './pages/reprogramar-turno/ReprogramacionTurno';
 
 const GROUP_1_PAGES_CONFIG = [
   {
@@ -54,7 +55,13 @@ const GROUP_1_PAGES_CONFIG = [
     icon: <TooltipCus icon={<ListAltIcon />} title="Checklist repración" />,
     page: <ChecklistReparacion />,
   },
-
+  {
+    id: 'g1-ReprogramarTurno',
+    name: 'Reprogramar turno',
+    href: '/reprogramar-turno',
+    icon: <TooltipCus icon={<ListAltIcon />} title="Reprogramar turno" />,
+    page: <ReprogramacionTurno />,
+  },
 ];
 
 export default GROUP_1_PAGES_CONFIG;
