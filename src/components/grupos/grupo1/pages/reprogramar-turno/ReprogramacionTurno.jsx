@@ -32,7 +32,7 @@ const ReprogramacionTurno = (props) => {
     idTurnoPadre, open, setOpen, actualizar, setActualizar,
   } = props;
 
-  const [hora, setHora] = useState([]);
+  const [hora, setHora] = useState();
   const [fechaSeleccionada, setFechaSeleccionada] = useState(dayjs());
 
   const [openTurnoCreado, setOpenTurnoCreado] = useState(false);
@@ -53,14 +53,29 @@ const ReprogramacionTurno = (props) => {
 
   dayjs.tz.setDefault('America/Argentina/Buenos_Aires');
 
+  const limite = dayjs().add(31, 'day');
   const diaActual = dayjs();
 
-  const crearTurno = (idTurno) => {
+  const crearTurno = () => {
     setOpenConfirmarTurno(true);
   };
 
-  const handleSubmit = () => {
+  const url = 'https://autotech2.onrender.com/turnos/reprogramar-turno/';
+  const handleCrearTurno = () => {
+    axios.post(url, turno)
+      .then(() => {
+        setActualizar(true);
+      })
+      .catch(() => {
+        setAlertmensaje('Ha ocurrido un error.');
+        setAlertError('error');
+        setAlertTitulo('Error de servidor');
+      });
   };
+
+  async function handleSubmit() {
+    handleCrearTurno();
+  }
 
   const handleChangeHour = (event) => {
     const selectedValue = event.target.value;
