@@ -70,7 +70,7 @@ const FormularioCliente = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Quedaría verificar que haya también un km correcto
+    // Quedaría verificar que haya también un DNI correcto
     if (taller && patente && isValid && fecha && hora && kilometros && isKmValido) {
       setOpenPopupSeleccion(true);
     } else {
@@ -146,7 +146,7 @@ const FormularioCliente = () => {
           </Box>
           <Popup
             title="Error en datos requeridos."
-            description="Por favor complete todos los campos y verifique patente y kilometraje correctos."
+            description="Por favor complete todos los campos y verifique que la patente y el kilometraje sean correctos."
             openDialog={openPopupNoSeleccion}
             setOpenDialog={setOpenPopupNoSeleccion}
           >

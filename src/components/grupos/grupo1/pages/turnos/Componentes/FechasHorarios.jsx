@@ -28,15 +28,13 @@ const limite = dayjs().add(31, 'day');
 
 // Para traer la disponibilidad de un taller
 
-const fetchAgendaData = async (idTaller) => {
-  const agendaEndPoint = `https://autotech2.onrender.com/turnos/dias-horarios-disponibles/${idTaller}/`;
-
+const fetchAgendaData = async (endPoint, msjError) => {
   try {
-    const response = await axios.get(agendaEndPoint);
+    const response = await axios.get(endPoint);
     // eslint-disable-next-line no-import-assign
     disponibilidad = response.data;
   } catch (error) {
-    // console.error(error);
+    msjError(error.response.data);
   }
 };
 
@@ -50,10 +48,12 @@ const isFeriadoIsMas30Dias = (date) => {
   return isFeriado || date > limite || actual === hoy;
 };
 
-const Disponibilidad = ({ tallerId, setFecha, setHora }) => {
+const Disponibilidad = ({
+  endPoint, setFecha, setHora, msjError,
+}) => {
   const [dia, setDia] = React.useState(tomorrow);
 
-  fetchAgendaData(tallerId);
+  fetchAgendaData(endPoint, msjError);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
