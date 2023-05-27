@@ -33,6 +33,7 @@ const fetchAgendaData = async (endPoint, msjError) => {
     const response = await axios.get(endPoint);
     // eslint-disable-next-line no-import-assign
     disponibilidad = response.data;
+    msjError('');
   } catch (error) {
     msjError(error.response.data);
   }

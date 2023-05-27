@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 // import { FormControl, FormLabel } from '@mui/material';
@@ -14,7 +15,7 @@ import Popup from '../../../components/common/DialogPopup';
 
 const Formulario = () => {
   const [taller, setTaller] = useState();
-  const [patente, setPatente] = useState();
+  const [patenteReparacion, setPatente] = useState();
   const [fecha, setFecha] = useState();
   const [hora, setHora] = useState();
   // Para los mensajes de confirmar o avisar que complete todos los campos
@@ -23,13 +24,13 @@ const Formulario = () => {
   // Para validar la patente
   const [isValid, setIsValid] = useState(true);
 
-  const msjTurnoCreado = `Se ha creado el turno para la patente ${patente} el día ${fecha} a las ${hora} en el taller ${taller}.`;
+  const msjTurnoCreado = `Se ha creado el turno para la patente ${patenteReparacion} el día ${fecha} a las ${hora} en el taller ${taller}.`;
 
   const [msjError, setMsjError] = useState();
 
-  const origen = 'evaluacion';
+  const origenReparacion = 'evaluacion';
 
-  const endPointDisponibilidad = `https://autotech2.onrender.com/turnos/dias-horarios-disponibles-reparaciones/${taller}/${patente}/${origen}/`;
+  const endPointDisponibilidad = `https://autotech2.onrender.com/turnos/dias-horarios-disponibles-reparaciones/${taller}/${patenteReparacion}/${origenReparacion}/`;
 
   const guardarPatente = (event) => {
     const { value } = event.target;
@@ -40,20 +41,27 @@ const Formulario = () => {
       setIsValid(false);
     }
   };
-  // endpoint para crear el turno: https://autotech2.onrender.com/turnos/crear-turno-reparacion/
-  /* Recibe:
-  {
-  "patente": "AS123FD",
-  "fecha_inicio": "2023-10-23",
-  "hora_inicio": "12:00:00",
-  "taller_id": 10,
-  "origen":"extraordinario" en este caso sería "evaluacion"
-  } */
-  const handleSubmit = (event) => {
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    if (taller && patente && isValid && fecha && hora) {
-      setOpenPopupSeleccion(true);
-    } else {
+    try {
+      if (taller && patenteReparacion && isValid && fecha && hora) {
+        await axios({
+          method: 'post',
+          url: 'https://autotech2.onrender.com/turnos/crear-turno-reparacion/',
+          data: {
+            patente: patenteReparacion,
+            fecha_inicio: fecha,
+            hora_inicio: hora,
+            taller_id: taller,
+            origen: origenReparacion,
+          },
+        });
+        setOpenPopupSeleccion(true);
+      } else {
+        setOpenPopupNoSeleccion(true);
+      }
+    } catch (error) {
       setOpenPopupNoSeleccion(true);
     }
   };
@@ -88,7 +96,7 @@ const Formulario = () => {
             {!isValid && <Alerts alertType="warning" description="Ejemplos de patentes válidas: AA111AA o ABC123" title="Patente inválida" />}
             <Talleres setTallerSeleccionado={setTaller} />
             {/* eslint-disable-next-line max-len */}
-            {patente && taller && <Disponibilidad endPoint={endPointDisponibilidad} setFecha={setFecha} setHora={setHora} msjError={setMsjError} />}
+            {patenteReparacion && taller && <Disponibilidad endPoint={endPointDisponibilidad} setFecha={setFecha} setHora={setHora} msjError={setMsjError} />}
             {msjError && <Alerts alertType="error" description={msjError} title="No se encontró evaluación." />}
             <Button
               type="submit"
