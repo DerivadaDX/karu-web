@@ -50,7 +50,7 @@ const isFeriadoIsMas30Dias = (date) => {
   return isFeriado || date > limite || actual === hoy;
 };
 
-const Disponibilidad = ({ tallerId }) => {
+const Disponibilidad = ({ tallerId, setFecha, setHora }) => {
   const [dia, setDia] = React.useState(tomorrow);
 
   fetchAgendaData(tallerId);
@@ -78,6 +78,7 @@ const Disponibilidad = ({ tallerId }) => {
           value={dia}
           onChange={(newValue) => {
             setDia(newValue);
+            setFecha(format(new Date(newValue), 'yyyy-MM-dd'));
             turno.fecha_inicio = format(new Date(newValue), 'yyyy-MM-dd');
             turno.fecha_fin = format(new Date(newValue), 'yyyy-MM-dd');
           }}
@@ -97,6 +98,7 @@ const Disponibilidad = ({ tallerId }) => {
                   required
                   fecha={turno.fecha_inicio}
                   diasYhorarios={disponibilidad.dias_y_horarios}
+                  setHoraSeleccionada={setHora}
                 />
               </Box>
             )}
@@ -106,13 +108,14 @@ const Disponibilidad = ({ tallerId }) => {
   );
 };
 
-const Hora = ({ diasYhorarios, fecha }) => {
+const Hora = ({ diasYhorarios, fecha, setHoraSeleccionada }) => {
   const [hora, setHora] = React.useState('');
   let h;
 
   const handleHoraChange = (event) => {
     const selectedValue = event.target.value;
     setHora(selectedValue);
+    setHoraSeleccionada(`${parseInt(selectedValue, 10)}:00:00`);
     turno.hora_inicio = `${parseInt(selectedValue, 10)}:00:00`;
     h = parseInt(selectedValue, 10) + 1;
     turno.hora_fin = `${h}:00:00`;

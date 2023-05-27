@@ -22,8 +22,8 @@ const Formulario = () => {
   const [openPopupSeleccion, setOpenPopupSeleccion] = useState(false);
   // Para validar la patente
   const [isValid, setIsValid] = useState(true);
-
-  const msjTurnoCreado = `Se ha creado el turno para la patente ${patente} el día ${fecha} a las ${hora} en el taller ${taller}.`;
+  // Agregar kilometraje
+  const msjTurnoCreado = `Se ha creado el turno para la patente ${patente} el día ${fecha} a las ${hora} en el taller ${taller}. Recibirá un mail con los datos mencionados. Por facor, recuerde asistir con cédula verde. Gracias.`;
 
   const guardarPatente = (event) => {
     const { value } = event.target;
@@ -37,6 +37,7 @@ const Formulario = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    // Quedaría verificar que haya también un km correcto
     if (taller && patente && isValid && fecha && hora) {
       setOpenPopupSeleccion(true);
     } else {
@@ -57,7 +58,7 @@ const Formulario = () => {
           }}
         >
           <Typography component="h1" variant="h5" sx={{ marginBottom: 5 }}>
-            Reparación para Venta
+            Turno para Service
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
@@ -74,6 +75,17 @@ const Formulario = () => {
             {!isValid && <Alerts alertType="warning" description="Ejemplos de patentes válidas: AA111AA o ABC123" title="Patente inválida" />}
             <Talleres setTallerSeleccionado={setTaller} />
             {taller && <Disponibilidad tallerId={taller} setFecha={setFecha} setHora={setHora} />}
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="kilometraje"
+              label="Kilometraje"
+              name="kilometraje"
+              autoFocus
+              inputProps={{ minLength: 6, maxLength: 7 }}
+            // onChange={guardarKilometraje}
+            />
             <Button
               type="submit"
               fullWidth
@@ -81,12 +93,12 @@ const Formulario = () => {
               color="secondary"
               sx={{ mt: 3, mb: 2 }}
             >
-              Crear Turno
+              Reservar Turno
             </Button>
           </Box>
           <Popup
             title="Error en datos requeridos."
-            description="Por favor complete todos los campos y verifique que la patente sea correcta."
+            description="Por favor complete todos los campos y verifique patente y kilometraje correctos."
             openDialog={openPopupNoSeleccion}
             setOpenDialog={setOpenPopupNoSeleccion}
           >
@@ -102,7 +114,7 @@ const Formulario = () => {
             </Box>
           </Popup>
           <Popup
-            title="Turno creado con éxito."
+            title="Turno reservado con éxito."
             description={msjTurnoCreado}
             openDialog={openPopupSeleccion}
             setOpenDialog={setOpenPopupSeleccion}

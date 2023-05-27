@@ -35,7 +35,6 @@ const Talleres = ({ setTallerSeleccionado }) => {
     turno.taller_id = value;
     const localidad = talleres.find((taller) => taller.id_taller === value)?.localidad;
     localidadTaller.localidad = localidad;
-    console.log(localidad, value);
   };
 
   return (
