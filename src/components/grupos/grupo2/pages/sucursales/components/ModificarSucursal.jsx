@@ -47,30 +47,26 @@ const ModificarSucursal = ({ sucursalRow, onEdit }) => {
     evento.preventDefault();
 
     const sucursal = {
-      // eslint-disable-next-line object-shorthand
-      nombre: nombre,
-      // eslint-disable-next-line object-shorthand
-      calle: calle,
-      // eslint-disable-next-line object-shorthand
-      numero: numero,
-      // eslint-disable-next-line object-shorthand
+
+      nombre,
+      calle,
+      numero,
       codigo_postal: codigoPostal,
-      // eslint-disable-next-line object-shorthand
-      localidad: localidad,
-      // eslint-disable-next-line object-shorthand
-      provincia: provincia,
+      localidad,
+      provincia,
       posee_taller: poseeTaller,
-      // eslint-disable-next-line object-shorthand
-      activa: activa,
+      activa,
     };
 
     setDatosSucursal(sucursal);
   };
 
   useEffect(() => {
-    SucursalService.modificarSucursal(sucursalRow.id, datosSucursal)
-      .then(() => setMostrarPopUpModificacionExitosa(true))
-      .catch(() => setMostrarPopUpModificacionExitosa(false));
+    if (Object.keys(datosSucursal).length !== 0) {
+      SucursalService.modificarSucursal(sucursalRow.id, datosSucursal)
+        .then(() => setMostrarPopUpModificacionExitosa(true))
+        .catch(() => setMostrarPopUpModificacionExitosa(false));
+    }
   }, [datosSucursal]);
 
   return (
@@ -90,7 +86,7 @@ const ModificarSucursal = ({ sucursalRow, onEdit }) => {
           onClose={cambiarVisibilidadPopUpModificacionExitosa}
         >
           <DialogTitle id="alert-dialog-title">
-            Creación Exitosa!
+            Modificacion Exitosa!
           </DialogTitle>
           <DialogActions>
             <Button onClick={cambiarVisibilidadPopUpModificacionExitosa}>

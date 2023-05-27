@@ -24,12 +24,12 @@ const ListadoSucursales = () => {
   };
 
   const actualizarDatosDeSucursal = (id) => {
-    obtenerSucursales();
     const cambiarEstadoDeSucursal = (sucursal) => {
       const esLaSucursalActualizada = sucursal.id === id;
       const retVal = esLaSucursalActualizada
         ? { ...sucursal, activa: !sucursal.activa }
         : sucursal;
+      obtenerSucursales();
 
       return retVal;
     };
