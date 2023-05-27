@@ -50,6 +50,17 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
       .then(() => setMostrarPopUpModificacionExitosa(true));
   };
 
+  const recargarData = () => {
+    setNombre(sucursal.nombre);
+    setCalle(sucursal.calle);
+    setNumero(sucursal.numero);
+    setCodigoPostal(sucursal.codigo_postal);
+    setProvincia(sucursal.provincia);
+    setLocalidad(sucursal.localidad);
+    setPoseeTaller(sucursal.posee_taller);
+    setActiva(sucursal.activa);
+  };
+
   const cerrarComponente = () => {
     setMostrarPopUpModificacionExitosa(false);
     setMostrarPopUpModificarSucursal(false);
@@ -66,7 +77,10 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
 
       <Dialog
         open={mostrarPopUpModificarSucursal}
-        onClose={() => setMostrarPopUpModificarSucursal(false)}
+        onClose={() => {
+          setMostrarPopUpModificarSucursal(false);
+          recargarData();
+        }}
       >
         <Dialog
           open={mostrarPopUpModificacionExitosa}
