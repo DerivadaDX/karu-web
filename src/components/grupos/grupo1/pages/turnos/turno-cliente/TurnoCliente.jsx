@@ -18,6 +18,7 @@ const FormularioCliente = () => {
   const [fecha, setFecha] = useState();
   const [hora, setHora] = useState();
   const [kilometros, setKilometros] = useState('');
+  // const [dni, setDNI] = useState('');
   // Para los mensajes de confirmar o avisar que complete todos los campos
   const [openPopupNoSeleccion, setOpenPopupNoSeleccion] = useState(false);
   const [openPopupSeleccion, setOpenPopupSeleccion] = useState(false);
@@ -61,6 +62,12 @@ const FormularioCliente = () => {
     // }
   };
 
+  // Implementar función
+  const guardarDNI = (e) => {
+    const v = e.target.value;
+    return v;
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     // Quedaría verificar que haya también un km correcto
@@ -87,6 +94,17 @@ const FormularioCliente = () => {
             Turno para Service
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="dni"
+              label="DNI"
+              name="dni"
+              autoFocus
+              inputProps={{ minLength: 7, maxLength: 8 }}
+              onChange={guardarDNI}
+            />
             <TextField
               margin="normal"
               required
