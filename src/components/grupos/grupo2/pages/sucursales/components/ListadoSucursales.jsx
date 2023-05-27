@@ -9,7 +9,7 @@ import CheckBoxOutlineBlankOutlinedIcon from '@mui/icons-material/CheckBoxOutlin
 import MaterialReactTable from 'material-react-table';
 
 import SucursalService from '../services/sucursal-service';
-import PopUpCambiarEstadoSucursal from './PopUpCambiarEstadoSucursal';
+import CrearSucursal from './ModificarSucursal';
 
 const ListadoSucursales = () => {
   const [sucursales, setSucursales] = useState([]);
@@ -27,7 +27,16 @@ const ListadoSucursales = () => {
     const cambiarEstadoDeSucursal = (sucursal) => {
       const esLaSucursalActualizada = sucursal.id === id;
       const retVal = esLaSucursalActualizada
-        ? { ...sucursal, activa: !sucursal.activa }
+        ? {
+          ...sucursal,
+          activa: !sucursal.activa,
+          nombre: sucursal.nombre,
+          calle: sucursal.calle,
+          numero: sucursal.numero,
+          localidad: sucursal.localidad,
+          provincia: sucursal.provincia,
+          codigo_postal: sucursal.codigo_postal,
+        }
         : sucursal;
 
       return retVal;
@@ -61,9 +70,9 @@ const ListadoSucursales = () => {
     const sucursal = row.original;
 
     return (
-      <PopUpCambiarEstadoSucursal
-        sucursal={sucursal}
-        onSuccess={actualizarEstadoDeSucursal}
+      <CrearSucursal
+        sucursalRow={sucursal}
+        onEdit={actualizarEstadoDeSucursal}
       />
     );
   };
