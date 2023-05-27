@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-shadow */
 /* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable no-unused-vars */
 import {
@@ -15,9 +17,8 @@ import Popup from '../../components/common/DialogPopup';
 import LittleHeader from '../../components/common/LittleHeader';
 import DetalleTurno from '../../components/common/DetalleTurno';
 
-const idTaller = 'S002';
-
-const TablaTurnosPendientesDeAprobacion = () => {
+const TablaTurnosPendientesDeAprobacion = (props) => {
+  const { idTaller } = props;
   const [turnosPendientesDeAprobacion, setTurnosPendientesDeAprobacion] = useState([]);
   const [loading, setLoading] = useState(true);
   // Para ver el detalle del turno
@@ -154,25 +155,6 @@ const TablaTurnosPendientesDeAprobacion = () => {
       />
     </Box>
   );
-
-  const filaDetalle = (llave, valor) => {
-    if (llave === 'papeles_en_regla') {
-      return null;
-    }
-    return (
-      <>
-        <span>
-          <strong>
-            {llave}
-            :
-            {' '}
-          </strong>
-        </span>
-        <span>{valor}</span>
-
-      </>
-    );
-  };
 
   return (
     <>

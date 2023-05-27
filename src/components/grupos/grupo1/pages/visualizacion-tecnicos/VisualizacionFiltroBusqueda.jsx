@@ -294,6 +294,7 @@ const VisualizacionBusquedaTecnicos = () => {
                             <Table size="small" aria-label="purchases">
                               <TableHead>
                                 <TableRow>
+                                  <TableCell align="center">ID Turno</TableCell>
                                   <TableCell align="center">Patente</TableCell>
                                   <TableCell align="center">
                                     Fecha inicio
@@ -314,6 +315,9 @@ const VisualizacionBusquedaTecnicos = () => {
                                 {detalleTrabajos.map((detalle, idx) => (
                                   // eslint-disable-next-line react/no-array-index-key
                                   <TableRow key={idx}>
+                                    <TableCell align="center">
+                                      {detalle.id_turno}
+                                    </TableCell>
                                     <TableCell align="center">
                                       {detalle.patente}
                                     </TableCell>

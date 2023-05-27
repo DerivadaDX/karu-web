@@ -6,14 +6,8 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import { Box, Tabs } from '@mui/material';
 import Tab from '@mui/material/Tab';
-
 import { useState } from 'react';
-import TablaTurnosPendientes from './TablaTurnosPendientes';
-import TablaTurnosEnProgreso from './TablaTurnosEnProgreso';
-import TablaTurnosTerminados from './TablaTurnosTerminados';
-import TablaTurnosPendientesDeAprobacion from './TablaTurnosPendientesAprobacion';
-import TablaTurnosCancelados from './TablaTurnosCancelados';
-import TablaTurnosNoValidos from './TablaTurnosNoValidos';
+import TablaServices from './TablaServices';
 
 const TabPanel = (props) => {
   const {
@@ -48,7 +42,7 @@ function allyProps(index) {
   };
 }
 
-export const SimpleTabTurnos = (props) => {
+export const TabServices = (props) => {
   const [value, setValue] = useState(0);
   const { idTaller } = props;
 
@@ -67,31 +61,11 @@ export const SimpleTabTurnos = (props) => {
           variant="scrollable"
           scrollButtons="auto"
         >
-          <Tab label="Pendientes" {...allyProps(0)} />
-          <Tab label="Pendientes de aprobación" {...allyProps(1)} />
-          <Tab label="En Proceso" {...allyProps(2)} />
-          <Tab label="Terminados" {...allyProps(3)} />
-          <Tab label="Cancelados" {...allyProps(4)} />
-          <Tab label="No válidos" {...allyProps(5)} />
+          <Tab label="Services" {...allyProps(0)} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        <TablaTurnosPendientes idTaller={idTaller} />
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        <TablaTurnosPendientesDeAprobacion idTaller={idTaller} />
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        <TablaTurnosEnProgreso idTaller={idTaller} />
-      </TabPanel>
-      <TabPanel value={value} index={3}>
-        <TablaTurnosTerminados idTaller={idTaller} />
-      </TabPanel>
-      <TabPanel value={value} index={4}>
-        <TablaTurnosCancelados idTaller={idTaller} />
-      </TabPanel>
-      <TabPanel value={value} index={5}>
-        <TablaTurnosNoValidos idTaller={idTaller} />
+        <TablaServices />
       </TabPanel>
     </Box>
   );

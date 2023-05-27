@@ -4,6 +4,7 @@ import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import ContactMailIcon from '@mui/icons-material/ContactMail';
 import HandymanIcon from '@mui/icons-material/Handyman';
+import DesignServicesIcon from '@mui/icons-material/DesignServices';
 import TooltipCus from './components/common/Tooltip';
 import VisualizacionFiltroBusqueda from './pages/visualizacion-tecnicos/VisualizacionFiltroBusqueda';
 import Dashboard from './pages/dashboard/Dashboard';
@@ -11,6 +12,9 @@ import MisTurnos from './pages/visualizar-mis-turnos/MisTurnos';
 import AgendaTaller from './pages/visualizar-agenda/AgendaTaller';
 import TurnoForm from './pages/turnos/turno-cliente/TurnoForm';
 import Formulario from './pages/turnos/turno-reparaciones-venta/Formulario';
+import ChecklistReparacion from './pages/checklist-reparacion/ChecklistReparacion';
+import ReprogramacionTurno from './pages/reprogramar-turno/ReprogramacionTurno';
+import Services from './pages/visualizar-services/Services';
 
 const GROUP_1_PAGES_CONFIG = [
   {
@@ -55,7 +59,27 @@ const GROUP_1_PAGES_CONFIG = [
     icon: <TooltipCus icon={<HandymanIcon />} title="Turno de reparación" />,
     page: <Formulario />,
   },
-
+  {
+    id: 'g1-CheckListReparacion',
+    name: 'Checklist reparación',
+    href: '/checklist-reparacion',
+    icon: <TooltipCus icon={<ListAltIcon />} title="Checklist repración" />,
+    page: <ChecklistReparacion />,
+  },
+  {
+    id: 'g1-ReprogramarTurno',
+    name: 'Reprogramar turno',
+    href: '/reprogramar-turno',
+    icon: <TooltipCus icon={<ListAltIcon />} title="Reprogramar turno" />,
+    page: <ReprogramacionTurno />,
+  },
+  {
+    id: 'g1-Services',
+    name: 'Services',
+    href: '/services',
+    icon: <TooltipCus icon={<DesignServicesIcon />} title="Services" />,
+    page: <Services />,
+  },
 ];
 
 export default GROUP_1_PAGES_CONFIG;
