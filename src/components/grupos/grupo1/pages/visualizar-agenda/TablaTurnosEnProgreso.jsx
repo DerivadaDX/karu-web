@@ -177,6 +177,13 @@ const TablaTurnosEnProgreso = (props) => {
             maxHeight: '200px',
           },
         }}
+        muiTableHeadCellProps={{ align: 'center' }}
+        muiTableBodyCellProps={{ align: 'center' }}
+        displayColumnDefOptions={{
+          'mrt-row-actions': {
+            header: 'Acciones',
+          },
+        }}
       />
       <Popup
         title={<LittleHeader titulo="Finalizar turno" />}
