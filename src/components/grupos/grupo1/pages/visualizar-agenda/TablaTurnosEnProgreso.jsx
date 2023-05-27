@@ -11,6 +11,7 @@ import Snackbar from '@mui/material/Snackbar';
 import {
   getTurnosEnProceso,
   patchFinalizarTurno,
+  getCancelarTurno,
 } from '../../services/services-Turnos';
 import Alerts from '../../components/common/Alerts';
 import Popup from '../../components/common/DialogPopup';
@@ -29,6 +30,11 @@ const TablaTurnosEnProgreso = (props) => {
   const [openFinalizar, setOpenFinalizar] = useState(false);
   const [resFinalizar, setResFinalizar] = useState([]);
   const [idTurnoFinalizar, setIdTurnoFinalizar] = useState(0);
+
+  const [idTurnoCancelar, setIdTurnoCancelar] = useState(0);
+  const [resCancelar, setResCancelar] = useState([]);
+  const [openCancelar, setOpenCancelar] = useState(false);
+
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [actualizarTabla, setActualizarTabla] = useState(false);
 
@@ -66,6 +72,17 @@ const TablaTurnosEnProgreso = (props) => {
       })
       .catch((error) => {
         setResFinalizar(error.response.data);
+      });
+  };
+
+  const cancelarTurno = (idTurno) => {
+    getCancelarTurno(idTurno)
+      .then((response) => {
+        setResCancelar(response.data);
+        setActualizarTabla(true); // Para actualizar la tabla despues de cancelar turno
+      })
+      .catch((error) => {
+        setResCancelar(error.message);
       });
   };
 
@@ -115,7 +132,6 @@ const TablaTurnosEnProgreso = (props) => {
         variant="contained"
         sx={{ fontSize: '0.9em', backgroundColor: 'rgba(51,51,51,0.75)' }}
         onClick={() => {
-          // console.log('Ver más', row.original.id_turno);
           setRowDetalle(row.original);
           setVerMas(true);
         }}
@@ -125,6 +141,16 @@ const TablaTurnosEnProgreso = (props) => {
       <Button
         variant="contained"
         color="error"
+        onClick={() => {
+          setOpenCancelar(true);
+          setIdTurnoCancelar(row.original.id_turno);
+        }}
+      >
+        Cancelar
+      </Button>
+      <Button
+        variant="contained"
+        color="primary"
         onClick={() => {
           // console.log('Finalizar', row.original);
           setIdTurnoFinalizar(row.original.id_turno);
@@ -216,14 +242,49 @@ const TablaTurnosEnProgreso = (props) => {
           </DialogActions>
         </Box>
       </Popup>
-
       <Snackbar
         message={resFinalizar}
         autoHideDuration={4000}
         open={openSnackbar}
         onClose={handleCloseSnackbar}
       />
-
+      <Popup
+        title={<LittleHeader titulo="Cancelar turno" />}
+        openDialog={openCancelar}
+        setOpenDialog={setOpenCancelar}
+        description="¿Está seguro que desea cancelar el turno? No se podrá modificar la acción una vez realizada."
+      >
+        <Box>
+          <DialogActions>
+            <Button
+              color="primary"
+              variant="outlined"
+              onClick={() => {
+                cancelarTurno(idTurnoCancelar);
+                setOpenCancelar(false);
+                setOpenSnackbar(true);
+              }}
+            >
+              Aceptar
+            </Button>
+            <Button
+              color="error"
+              variant="outlined"
+              onClick={() => {
+                setOpenCancelar(false);
+              }}
+            >
+              Cancelar
+            </Button>
+          </DialogActions>
+        </Box>
+      </Popup>
+      <Snackbar
+        message={resCancelar}
+        autoHideDuration={4000}
+        open={openSnackbar}
+        onClose={handleCloseSnackbar}
+      />
       <Popup
         title={<LittleHeader titulo="Detalle de turno" />}
         openDialog={openVerMas}
