@@ -87,7 +87,7 @@ const TablaServices = () => {
               color: 'white',
             }}
             >
-              {cell.getValue() === true ? 'Activo' : 'No activo' }
+              {cell.getValue() === true ? 'Activo' : 'No activo'}
             </p>
           </span>
         ),
