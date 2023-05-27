@@ -13,9 +13,9 @@ import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 
 import axios from 'axios';
-import feriados from '../../pages/turnos/turno-cliente/feriados.json';
-import disponibilidad from '../../pages/turnos/turno-cliente/disponibilidad.json';
-import turno from '../../pages/turnos/turno.json';
+import feriados from '../turno-cliente/feriados.json';
+import disponibilidad from '../turno-cliente/disponibilidad.json';
+import turno from '../turno.json';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);

@@ -3,25 +3,38 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 // import { FormControl, FormLabel } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
-import Box from '@mui/material/Box';
+import { Box } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import Disponibilidad from '../../../components/common/FechasHorarios';
-import Talleres from '../../../components/common/Talleres';
+import Disponibilidad from '../Componentes/FechasHorarios';
+import Talleres from '../Componentes/Talleres';
+import ValidarPatente from '../Helpers/validar-patente';
+import Alerts from '../../../components/common/Alerts';
 
 const Formulario = () => {
   const [taller, setTaller] = useState();
+  const [patente, setPatente] = useState();
   // fecha y hora para pasarlo como props y setearlo en Disponibilidad
   // así ya no uso jsons y es más reutilizable y prolijo
   // const [fecha, setFecha] = useState();
   // const [hora, setHora] = useState();
+  const [isValid, setIsValid] = useState(true);
+
+  const guardarPatente = (event) => {
+    const { value } = event.target;
+    if (ValidarPatente.isPatenteValida(value)) {
+      setIsValid(true);
+      setPatente(value);
+    } else {
+      setIsValid(false);
+    }
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
     console.log({
-      patente: data.get('patente'),
       taller,
+      patente,
     });
   };
 
@@ -48,7 +61,10 @@ const Formulario = () => {
             label="Patente"
             name="patente"
             autoFocus
+            inputProps={{ minLength: 6, maxLength: 7 }}
+            onChange={guardarPatente}
           />
+          {!isValid && <Alerts alertType="warning" description="Ejemplos de patentes válidas: AA111AA o ABC123" title="Patente inválida" />}
           <Talleres setTallerSeleccionado={setTaller} />
           {taller && <Disponibilidad tallerId={taller} />}
           <Button
