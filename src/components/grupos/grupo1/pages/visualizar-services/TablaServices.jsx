@@ -7,7 +7,7 @@
 import {
   useState, useEffect, useMemo, useCallback,
 } from 'react';
-import { Box, Button, TableCell } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import MaterialReactTable from 'material-react-table';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import Tooltip from '@mui/material/Tooltip';
@@ -16,16 +16,19 @@ import DialogActions from '@mui/material/DialogActions';
 import Alerts from '../../components/common/Alerts';
 import Popup from '../../components/common/DialogPopup';
 import LittleHeader from '../../components/common/LittleHeader';
-import DetalleTurno from '../../components/common/DetalleTurno';
+import DetalleService from './DetalleService';
 
 import {
   getServices,
   putCambiarEstado,
 } from '../../services/services-services';
+import DetalleChecklist from './DetalleChecklist';
 
 const TablaServices = () => {
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  // abre popup de confirmar cambiar estado service
   const [openDialog, setOpenDialog] = useState(false);
 
   const [openVerMas, setVerMas] = useState(false);
@@ -37,7 +40,7 @@ const TablaServices = () => {
   const [actualizarTabla, setActualizarTabla] = useState(false);
 
   // Para abrir el formulario de asignacion
-  const [idServiceChecklist, setIdServiceChecklist] = useState(0);
+  const [serviceId, setServiceId] = useState({});
   const [openChecklist, setOpenChecklist] = useState(false);
 
   // alertas de la API
@@ -122,10 +125,10 @@ const TablaServices = () => {
     }
   }, [traerServices, actualizarTabla]);
 
-  const cancelarTurno = (idTurno) => {
-    putCambiarEstado(idTurno)
+  const activarService = (idService) => {
+    putCambiarEstado(idService)
       .then((response) => {
-        setResActivar(response.data);
+        setResActivar('Estado de service actualizado correctamente');
         // Para actualizar la tabla despues de activar o desactivar un service
         setActualizarTabla(true);
       })
@@ -163,7 +166,7 @@ const TablaServices = () => {
         size="small"
         onClick={() => {
           setOpenChecklist(true);
-          setIdServiceChecklist(row.original.id_service);
+          setServiceId(row.original.id_service);
         }}
       >
         Checklist
@@ -266,7 +269,7 @@ const TablaServices = () => {
               color="primary"
               variant="outlined"
               onClick={() => {
-                cancelarTurno(idServiceActivar);
+                activarService(idServiceActivar);
                 setOpenDialog(false);
                 setOpenSnackbar(true);
               }}
@@ -286,7 +289,7 @@ const TablaServices = () => {
         </Box>
       </Popup>
       <Snackbar
-        message={resActivar}
+        message={<span>{resActivar}</span>}
         autoHideDuration={4000}
         open={openSnackbar}
         onClose={handleCloseSnackbar}
@@ -296,7 +299,18 @@ const TablaServices = () => {
         openDialog={openVerMas}
         setOpenDialog={setVerMas}
       >
-        <DetalleTurno openDialog={openVerMas} setOpenDialog={setVerMas} row={rowDetalle} />
+        <DetalleService openDialog={openVerMas} setOpenDialog={setVerMas} row={rowDetalle} />
+      </Popup>
+      <Popup
+        title={<LittleHeader titulo="Checklist de service" />}
+        openDialog={openChecklist}
+        setOpenDialog={setOpenChecklist}
+      >
+        <DetalleChecklist
+          open={openChecklist}
+          setOpen={setOpenChecklist}
+          serviceId={serviceId}
+        />
       </Popup>
     </>
   );
