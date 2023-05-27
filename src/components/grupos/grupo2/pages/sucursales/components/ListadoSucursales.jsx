@@ -9,7 +9,7 @@ import CheckBoxOutlineBlankOutlinedIcon from '@mui/icons-material/CheckBoxOutlin
 import MaterialReactTable from 'material-react-table';
 
 import SucursalService from '../services/sucursal-service';
-import CrearSucursal from './ModificarSucursal';
+import ModificarSucursal from './ModificarSucursal';
 
 const ListadoSucursales = () => {
   const [sucursales, setSucursales] = useState([]);
@@ -18,7 +18,7 @@ const ListadoSucursales = () => {
   const obtenerSucursales = () => {
     SucursalService.obtenerSucursales()
       .then((response) => {
-        setSucursales(response.data);
+        setSucursales(response.data.sort((a, b) => a.id - b.id));
         setCargando(false);
       });
   };
@@ -62,7 +62,7 @@ const ListadoSucursales = () => {
     const sucursal = row.original;
 
     return (
-      <CrearSucursal
+      <ModificarSucursal
         sucursalRow={sucursal}
         onEdit={actualizarEstadoDeSucursal}
       />

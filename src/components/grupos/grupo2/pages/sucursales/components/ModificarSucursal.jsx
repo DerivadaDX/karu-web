@@ -28,8 +28,8 @@ const ModificarSucursal = ({ sucursalRow, onEdit }) => {
   const [codigoPostal, setCodigoPostal] = useState(sucursalRow.codigo_postal || '');
   const [localidad, setLocalidad] = useState(sucursalRow.localidad || '');
   const [provincia, setProvincia] = useState(sucursalRow.provincia || '');
-  const [poseeTaller, setPoseeTaller] = useState(false);
-  const [activa, setActiva] = useState(false);
+  const [poseeTaller, setPoseeTaller] = useState(sucursalRow.posee_taller || false);
+  const [activa, setActiva] = useState(sucursalRow.activa || false);
 
   const [datosSucursal, setDatosSucursal] = useState({});
 
@@ -165,16 +165,25 @@ const ModificarSucursal = ({ sucursalRow, onEdit }) => {
               id="posee_taller"
               value={poseeTaller}
               label="Cuenta con taller mecánico"
-              onChange={(event) => setPoseeTaller(event.target.checked)}
-              control={<Checkbox />}
+              control={(
+                <Checkbox
+                  checked={poseeTaller}
+                  onChange={(event) => setPoseeTaller(event.target.checked)}
+                  disabled={poseeTaller} // Deshabilitar el checkbox si poseeTaller es true
+                />
+              )}
               sx={{ marginTop: '2ch' }}
             />
             <FormControlLabel
               id="activa"
               value={activa}
               label="Se encuentra habilitada"
-              onChange={(event) => setActiva(event.target.checked)}
-              control={<Checkbox />}
+              control={(
+                <Checkbox
+                  checked={activa}
+                  onChange={(event) => setActiva(event.target.checked)}
+                />
+              )}
               sx={{ marginTop: '2ch' }}
             />
 
