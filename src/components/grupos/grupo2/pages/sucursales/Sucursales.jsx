@@ -7,6 +7,7 @@ import {
 
 import Encabezado from '../common/Encabezado';
 import ListadoSucursales from './components/ListadoSucursales';
+import PopUpCrearVendedor from '../vendedores/components/PopUpCrearVendedor';
 
 const styles = {
   paper: {
@@ -20,6 +21,7 @@ const Sucursales = () => (
     <Paper sx={styles.paper} elevation={5}>
       <ListadoSucursales />
     </Paper>
+    <PopUpCrearVendedor />
   </Box>
 );
 
