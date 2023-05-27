@@ -28,8 +28,8 @@ const ModificarSucursal = ({ sucursalRow, onEdit }) => {
   const [codigoPostal, setCodigoPostal] = useState(sucursalRow.codigo_postal || '');
   const [localidad, setLocalidad] = useState(sucursalRow.localidad || '');
   const [provincia, setProvincia] = useState(sucursalRow.provincia || '');
-  const [poseeTaller, setPoseeTaller] = useState(true);
-  const [activa, setActiva] = useState(true);
+  const [poseeTaller, setPoseeTaller] = useState(false);
+  const [activa, setActiva] = useState(false);
 
   const [datosSucursal, setDatosSucursal] = useState({});
 

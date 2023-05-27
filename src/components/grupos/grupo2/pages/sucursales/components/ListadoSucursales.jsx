@@ -24,19 +24,11 @@ const ListadoSucursales = () => {
   };
 
   const actualizarEstadoDeSucursal = (id) => {
+    obtenerSucursales();
     const cambiarEstadoDeSucursal = (sucursal) => {
       const esLaSucursalActualizada = sucursal.id === id;
       const retVal = esLaSucursalActualizada
-        ? {
-          ...sucursal,
-          activa: !sucursal.activa,
-          nombre: sucursal.nombre,
-          calle: sucursal.calle,
-          numero: sucursal.numero,
-          localidad: sucursal.localidad,
-          provincia: sucursal.provincia,
-          codigo_postal: sucursal.codigo_postal,
-        }
+        ? { ...sucursal, activa: !sucursal.activa }
         : sucursal;
 
       return retVal;
