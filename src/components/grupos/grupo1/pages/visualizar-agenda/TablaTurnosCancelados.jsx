@@ -10,6 +10,7 @@ import Alerts from '../../components/common/Alerts';
 import Popup from '../../components/common/DialogPopup';
 import LittleHeader from '../../components/common/LittleHeader';
 import DetalleTurno from '../../components/common/DetalleTurno';
+import ReprogramacionTurno from '../reprogramar-turno/ReprogramacionTurno';
 
 const TablaTurnosCancelados = (props) => {
   const { idTaller } = props;
@@ -21,6 +22,7 @@ const TablaTurnosCancelados = (props) => {
 
   // Para reprogramar turno
   const [openReprogramar, setOpenReprogramar] = useState(false);
+  const [idTurnoReprogramar, setTurnoReprogramar] = useState(0);
 
   // alertas de la API
   const [alertType, setAlertType] = useState('');
@@ -103,7 +105,7 @@ const TablaTurnosCancelados = (props) => {
         color="primary"
         sx={{ fontSize: '1em' }}
         onClick={() => {
-          // setRowDetalle(row.original);
+          setTurnoReprogramar(row.original.id_turno);
           setOpenReprogramar(true);
         }}
       >
@@ -153,6 +155,13 @@ const TablaTurnosCancelados = (props) => {
             maxHeight: '200px',
           },
         }}
+        muiTableHeadCellProps={{ align: 'center' }}
+        muiTableBodyCellProps={{ align: 'center' }}
+        displayColumnDefOptions={{
+          'mrt-row-actions': {
+            header: 'Acciones',
+          },
+        }}
       />
       <Popup
         title={<LittleHeader titulo="Detalle de turno" />}
@@ -166,7 +175,11 @@ const TablaTurnosCancelados = (props) => {
         openDialog={openReprogramar}
         setOpenDialog={setOpenReprogramar}
       >
-        Reasignar turno
+        <ReprogramacionTurno
+          idTurnoPadre={idTurnoReprogramar}
+          open={openReprogramar}
+          setOpen={setOpenReprogramar}
+        />
       </Popup>
     </>
   );

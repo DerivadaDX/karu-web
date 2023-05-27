@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable no-unused-vars */
 import {
@@ -12,9 +13,8 @@ import Popup from '../../components/common/DialogPopup';
 import DetalleTurno from '../../components/common/DetalleTurno';
 import LittleHeader from '../../components/common/LittleHeader';
 
-const idTecnico = 5;
-
-const TablaTurnosReparacion = () => {
+const TablaTurnosReparacion = (props) => {
+  const { idTecnico } = props;
   const [turnosReparacion, setTurnosReparacion] = useState([]);
   const [actualizarTabla, setActualizarTabla] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -150,6 +150,13 @@ const TablaTurnosReparacion = () => {
             justifyContent: 'flex-end',
             overflow: 'auto',
             maxHeight: '200px',
+          },
+        }}
+        muiTableHeadCellProps={{ align: 'center' }}
+        muiTableBodyCellProps={{ align: 'center' }}
+        displayColumnDefOptions={{
+          'mrt-row-actions': {
+            header: 'Acciones',
           },
         }}
       />
