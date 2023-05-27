@@ -227,6 +227,13 @@ const TablaTurnosPendientes = (props) => {
         renderRowActions={renderRowActions}
         renderEmptyRowsFallback={noData}
         defaultColumn={{ minSize: 10, maxSize: 100 }}
+        muiTableHeadCellProps={{ align: 'center' }}
+        muiTableBodyCellProps={{ align: 'center' }}
+        displayColumnDefOptions={{
+          'mrt-row-actions': {
+            header: 'Acciones',
+          },
+        }}
       />
 
       <Popup

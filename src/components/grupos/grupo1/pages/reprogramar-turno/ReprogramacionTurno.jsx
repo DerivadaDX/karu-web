@@ -32,7 +32,7 @@ const ReprogramacionTurno = (props) => {
     idTurnoPadre, open, setOpen, actualizar, setActualizar,
   } = props;
 
-  const [hora, setHora] = useState();
+  const [hora, setHora] = useState([]);
   const [fechaSeleccionada, setFechaSeleccionada] = useState(dayjs());
 
   const [openTurnoCreado, setOpenTurnoCreado] = useState(false);
