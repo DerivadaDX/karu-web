@@ -172,10 +172,6 @@ const ChecklistEvaluacion = (props) => {
         <Alerts alertType={alertType} description={alertMessage} title={alertTitle} />
       </Box>
 
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <Alerts alertType={alertType} description={alertMessage} title={alertTitle} />
-      </Box>
-
       <Divider sx={{ color: 'silver' }} />
 
       <Container maxWidth="xxl" sx={{ mb: 1 }}>
