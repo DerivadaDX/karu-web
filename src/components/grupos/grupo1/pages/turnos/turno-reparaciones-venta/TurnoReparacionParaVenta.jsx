@@ -36,6 +36,7 @@ const Formulario = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    // Quedaría verificar que haya también una fecha y un horario elegidos
     if (taller && patente && isValid) {
       setOpenPopupSeleccion(true);
     } else {
