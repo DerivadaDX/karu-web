@@ -10,10 +10,14 @@ import Disponibilidad from '../Componentes/FechasHorarios';
 import Talleres from '../Componentes/Talleres';
 import ValidarPatente from '../Helpers/validar-patente';
 import Alerts from '../../../components/common/Alerts';
+import Popup from '../../../components/common/DialogPopup';
 
 const Formulario = () => {
   const [taller, setTaller] = useState();
   const [patente, setPatente] = useState();
+  // Para los mensajes de confirmar o avisar que complete todos los campos
+  const [openPopupNoSeleccion, setOpenPopupNoSeleccion] = useState(false);
+  const [openPopupSeleccion, setOpenPopupSeleccion] = useState(false);
   // fecha y hora para pasarlo como props y setearlo en Disponibilidad
   // así ya no uso jsons y es más reutilizable y prolijo
   // const [fecha, setFecha] = useState();
@@ -32,6 +36,11 @@ const Formulario = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    if (taller && patente && isValid) {
+      setOpenPopupSeleccion(true);
+    } else {
+      setOpenPopupNoSeleccion(true);
+    }
     console.log({
       taller,
       patente,
@@ -71,11 +80,46 @@ const Formulario = () => {
             type="submit"
             fullWidth
             variant="contained"
+            color="secondary"
             sx={{ mt: 3, mb: 2 }}
           >
             Crear Turno
           </Button>
         </Box>
+        <Popup
+          title="Error en Asignación"
+          description="Por favor complete todos los campos y verifique que la patente sea correcta."
+          openDialog={openPopupNoSeleccion}
+          setOpenDialog={setOpenPopupNoSeleccion}
+        >
+          <Box
+            sx={{ margin: '15px', display: 'flex', justifyContent: 'center' }}
+          >
+            <Button
+              color="error"
+              onClick={() => setOpenPopupNoSeleccion(false)}
+            >
+              Cerrar
+            </Button>
+          </Box>
+        </Popup>
+        <Popup
+          title="Asignación completada"
+          description="Se ha creado el turno con éxito."
+          openDialog={openPopupSeleccion}
+          setOpenDialog={setOpenPopupSeleccion}
+        >
+          <Box
+            sx={{ margin: '15px', display: 'flex', justifyContent: 'center' }}
+          >
+            <Button
+              color="success"
+              onClick={() => setOpenPopupSeleccion(false)}
+            >
+              Cerrar
+            </Button>
+          </Box>
+        </Popup>
       </Box>
     </Container>
   );
