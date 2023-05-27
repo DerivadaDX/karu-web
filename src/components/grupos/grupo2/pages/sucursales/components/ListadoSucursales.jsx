@@ -23,7 +23,7 @@ const ListadoSucursales = () => {
       });
   };
 
-  const actualizarEstadoDeSucursal = (id) => {
+  const actualizarDatosDeSucursal = (id) => {
     obtenerSucursales();
     const cambiarEstadoDeSucursal = (sucursal) => {
       const esLaSucursalActualizada = sucursal.id === id;
@@ -64,7 +64,7 @@ const ListadoSucursales = () => {
     return (
       <ModificarSucursal
         sucursalRow={sucursal}
-        onEdit={actualizarEstadoDeSucursal}
+        onEdit={actualizarDatosDeSucursal}
       />
     );
   };

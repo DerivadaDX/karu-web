@@ -100,6 +100,11 @@ const ModificarSucursal = ({ sucursalRow, onEdit }) => {
         </Dialog>
 
         <Paper>
+          <DialogTitle
+            sx={{ textAlign: 'center', fontSize: '2rem' }}
+          >
+            Modificar Sucursal
+          </DialogTitle>
           <Stack
             component="form"
             onSubmit={modificarSucursal}
@@ -169,7 +174,7 @@ const ModificarSucursal = ({ sucursalRow, onEdit }) => {
                 <Checkbox
                   checked={poseeTaller}
                   onChange={(event) => setPoseeTaller(event.target.checked)}
-                  disabled={poseeTaller} // Deshabilitar el checkbox si poseeTaller es true
+                  disabled={sucursalRow.posee_taller}
                 />
               )}
               sx={{ marginTop: '2ch' }}
