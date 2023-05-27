@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-// import { FormControl, FormLabel } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 import { Box, Paper } from '@mui/material';
 import Typography from '@mui/material/Typography';
@@ -9,21 +8,25 @@ import Container from '@mui/material/Container';
 import Disponibilidad from '../Componentes/FechasHorarios';
 import Talleres from '../Componentes/Talleres';
 import ValidarPatente from '../Helpers/validar-patente';
+import ValidarKm from '../Helpers/validar-km';
 import Alerts from '../../../components/common/Alerts';
 import Popup from '../../../components/common/DialogPopup';
 
-const Formulario = () => {
+const FormularioCliente = () => {
   const [taller, setTaller] = useState();
   const [patente, setPatente] = useState();
   const [fecha, setFecha] = useState();
   const [hora, setHora] = useState();
+  const [kilometros, setKilometros] = useState('');
   // Para los mensajes de confirmar o avisar que complete todos los campos
   const [openPopupNoSeleccion, setOpenPopupNoSeleccion] = useState(false);
   const [openPopupSeleccion, setOpenPopupSeleccion] = useState(false);
   // Para validar la patente
   const [isValid, setIsValid] = useState(true);
+  // Para validar el km
+  const [isKmValido, setIsKmValido] = useState(true);
   // Agregar kilometraje
-  const msjTurnoCreado = `Se ha creado el turno para la patente ${patente} el día ${fecha} a las ${hora} en el taller ${taller}. Recibirá un mail con los datos mencionados. Por facor, recuerde asistir con cédula verde. Gracias.`;
+  const msjTurnoCreado = `Se ha creado el turno de service para ${patente} con ${kilometros} kilómetros para el día ${fecha} a las ${hora} en el taller ${taller}. Recibirá un mail con los datos mencionados. Por favor, recuerde asistir con cédula verde. Gracias.`;
 
   const guardarPatente = (event) => {
     const { value } = event.target;
@@ -35,10 +38,33 @@ const Formulario = () => {
     }
   };
 
+  const guardarKilometraje = (e) => {
+    const val = e.target.value;
+
+    if (e.target.validity.valid) {
+      if (ValidarKm.isKilometroValid(val)) {
+        setIsKmValido(true);
+      } else {
+        setIsKmValido(false);
+      }
+      if (ValidarKm.isKmNros(val)) {
+        setKilometros(val);
+      }
+    } else if (val === '') {
+      setKilometros(val);
+    }
+    // Hacer los redondeos a la hora de mandar al back para crear el turno
+    // if (val > 200000) {
+    //   setKilometros(200000);
+    // } else {
+    //   setKilometros(Math.ceil(val / 5000) * 5000);
+    // }
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     // Quedaría verificar que haya también un km correcto
-    if (taller && patente && isValid && fecha && hora) {
+    if (taller && patente && isValid && fecha && hora && kilometros && isKmValido) {
       setOpenPopupSeleccion(true);
     } else {
       setOpenPopupNoSeleccion(true);
@@ -79,13 +105,17 @@ const Formulario = () => {
               margin="normal"
               required
               fullWidth
+              value={kilometros}
               id="kilometraje"
               label="Kilometraje"
               name="kilometraje"
+              type="tel"
+              pattern="[1-9][0-9]*"
               autoFocus
-              inputProps={{ minLength: 6, maxLength: 7 }}
-            // onChange={guardarKilometraje}
+              inputProps={{ maxLength: 6 }}
+              onChange={guardarKilometraje}
             />
+            {!isKmValido && <Alerts alertType="warning" description="Coberturas válidas: de 5000 a 200000 km." title="Kilometraje inválido" />}
             <Button
               type="submit"
               fullWidth
@@ -136,4 +166,4 @@ const Formulario = () => {
   );
 };
 
-export default Formulario;
+export default FormularioCliente;

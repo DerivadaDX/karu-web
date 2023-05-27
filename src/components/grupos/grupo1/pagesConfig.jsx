@@ -10,7 +10,7 @@ import VisualizacionFiltroBusqueda from './pages/visualizacion-tecnicos/Visualiz
 import Dashboard from './pages/dashboard/Dashboard';
 import MisTurnos from './pages/visualizar-mis-turnos/MisTurnos';
 import AgendaTaller from './pages/visualizar-agenda/AgendaTaller';
-import TurnoForm from './pages/turnos/turno-cliente/TurnoForm';
+import FormularioCliente from './pages/turnos/turno-cliente/TurnoCliente';
 import Formulario from './pages/turnos/turno-reparaciones-venta/TurnoReparacionParaVenta';
 import ChecklistReparacion from './pages/checklist-reparacion/ChecklistReparacion';
 import ReprogramacionTurno from './pages/reprogramar-turno/ReprogramacionTurno';
@@ -50,7 +50,7 @@ const GROUP_1_PAGES_CONFIG = [
     name: 'Turnos cliente',
     href: '/turnos-form',
     icon: <TooltipCus icon={<ContactMailIcon />} title="Turnos cliente" />,
-    page: <TurnoForm />,
+    page: <FormularioCliente />,
   },
   {
     id: 'g1-TurnoReparacionVenta',
