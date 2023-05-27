@@ -1,53 +1,41 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import {
   Box,
   Button,
-  Checkbox,
   Dialog,
   DialogActions,
   DialogTitle,
   FormControlLabel,
+  IconButton,
   Paper,
   Stack,
+  Switch,
   TextField,
+  Tooltip,
 } from '@mui/material';
 import PropTypes from 'prop-types';
-import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
 import EditIcon from '@mui/icons-material/Edit';
+
 import SucursalService from '../services/sucursal-service';
 
-const ModificarSucursal = ({ sucursalRow, onEdit }) => {
+const ModificarSucursal = ({ sucursal, onEdit }) => {
   const [mostrarPopUpModificarSucursal, setMostrarPopUpModificarSucursal] = useState(false);
   const [mostrarPopUpModificacionExitosa, setMostrarPopUpModificacionExitosa] = useState(false);
 
-  const [nombre, setNombre] = useState(sucursalRow.nombre || '');
-  const [calle, setCalle] = useState(sucursalRow.calle || '');
-  const [numero, setNumero] = useState(sucursalRow.numero || '');
-  const [codigoPostal, setCodigoPostal] = useState(sucursalRow.codigo_postal || '');
-  const [localidad, setLocalidad] = useState(sucursalRow.localidad || '');
-  const [provincia, setProvincia] = useState(sucursalRow.provincia || '');
-  const [poseeTaller, setPoseeTaller] = useState(sucursalRow.posee_taller || false);
-  const [activa, setActiva] = useState(sucursalRow.activa || false);
-
-  const [datosSucursal, setDatosSucursal] = useState({});
-
-  const cambiarVisibilidadPopUpModificarSucursal = () => {
-    setMostrarPopUpModificarSucursal(!mostrarPopUpModificarSucursal);
-  };
-
-  const cambiarVisibilidadPopUpModificacionExitosa = () => {
-    setMostrarPopUpModificacionExitosa(false);
-    setMostrarPopUpModificarSucursal(false);
-    onEdit();
-  };
+  const [nombre, setNombre] = useState(sucursal.nombre || '');
+  const [calle, setCalle] = useState(sucursal.calle || '');
+  const [numero, setNumero] = useState(sucursal.numero || '');
+  const [codigoPostal, setCodigoPostal] = useState(sucursal.codigo_postal || '');
+  const [localidad, setLocalidad] = useState(sucursal.localidad || '');
+  const [provincia, setProvincia] = useState(sucursal.provincia || '');
+  const [poseeTaller, setPoseeTaller] = useState(sucursal.posee_taller || false);
+  const [activa, setActiva] = useState(sucursal.activa || false);
 
   const modificarSucursal = (evento) => {
     evento.preventDefault();
 
-    const sucursal = {
-
+    const datosSucursal = {
       nombre,
       calle,
       numero,
@@ -58,38 +46,37 @@ const ModificarSucursal = ({ sucursalRow, onEdit }) => {
       activa,
     };
 
-    setDatosSucursal(sucursal);
+    SucursalService.modificarSucursal(sucursal.id, datosSucursal)
+      .then(() => setMostrarPopUpModificacionExitosa(true));
   };
 
-  useEffect(() => {
-    if (Object.keys(datosSucursal).length !== 0) {
-      SucursalService.modificarSucursal(sucursalRow.id, datosSucursal)
-        .then(() => setMostrarPopUpModificacionExitosa(true))
-        .catch(() => setMostrarPopUpModificacionExitosa(false));
-    }
-  }, [datosSucursal]);
+  const cerrarComponente = () => {
+    setMostrarPopUpModificacionExitosa(false);
+    setMostrarPopUpModificarSucursal(false);
+    onEdit();
+  };
 
   return (
     <Box>
       <Tooltip title="Editar">
-        <IconButton onClick={cambiarVisibilidadPopUpModificarSucursal}>
+        <IconButton onClick={() => setMostrarPopUpModificarSucursal(true)}>
           <EditIcon />
         </IconButton>
       </Tooltip>
 
       <Dialog
         open={mostrarPopUpModificarSucursal}
-        onClose={cambiarVisibilidadPopUpModificarSucursal}
+        onClose={() => setMostrarPopUpModificarSucursal(false)}
       >
         <Dialog
           open={mostrarPopUpModificacionExitosa}
-          onClose={cambiarVisibilidadPopUpModificacionExitosa}
+          onClose={cerrarComponente}
         >
           <DialogTitle id="alert-dialog-title">
             Modificacion Exitosa!
           </DialogTitle>
           <DialogActions>
-            <Button onClick={cambiarVisibilidadPopUpModificacionExitosa}>
+            <Button onClick={cerrarComponente}>
               Cerrar
             </Button>
           </DialogActions>
@@ -165,27 +152,29 @@ const ModificarSucursal = ({ sucursalRow, onEdit }) => {
             <FormControlLabel
               id="posee_taller"
               value={poseeTaller}
-              label="Cuenta con taller mecánico"
+              label="Taller Mecánico"
+              labelPlacement="start"
               control={(
-                <Checkbox
+                <Switch
                   checked={poseeTaller}
                   onChange={(event) => setPoseeTaller(event.target.checked)}
-                  disabled={sucursalRow.posee_taller}
+                  disabled={sucursal.posee_taller}
                 />
               )}
-              sx={{ marginTop: '2ch' }}
+              sx={{ marginTop: '2ch', justifyContent: 'space-between', marginLeft: '0ch' }}
             />
             <FormControlLabel
               id="activa"
               value={activa}
-              label="Se encuentra habilitada"
+              label="Habilitada"
+              labelPlacement="start"
               control={(
-                <Checkbox
+                <Switch
                   checked={activa}
                   onChange={(event) => setActiva(event.target.checked)}
                 />
               )}
-              sx={{ marginTop: '2ch' }}
+              sx={{ marginTop: '2ch', justifyContent: 'space-between', marginLeft: '0ch' }}
             />
 
             <Button
@@ -203,8 +192,17 @@ const ModificarSucursal = ({ sucursalRow, onEdit }) => {
 };
 
 ModificarSucursal.propTypes = {
-  // eslint-disable-next-line react/forbid-prop-types
-  sucursalRow: PropTypes.object.isRequired,
+  sucursal: PropTypes.shape({
+    id: PropTypes.number,
+    nombre: PropTypes.string,
+    calle: PropTypes.string,
+    localidad: PropTypes.string,
+    provincia: PropTypes.string,
+    numero: PropTypes.number,
+    codigo_postal: PropTypes.string,
+    posee_taller: PropTypes.bool,
+    activa: PropTypes.bool,
+  }).isRequired,
   onEdit: PropTypes.func.isRequired,
 };
 

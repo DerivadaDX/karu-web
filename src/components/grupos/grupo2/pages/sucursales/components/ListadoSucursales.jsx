@@ -63,7 +63,7 @@ const ListadoSucursales = () => {
 
     return (
       <ModificarSucursal
-        sucursalRow={sucursal}
+        sucursal={sucursal}
         onEdit={actualizarDatosDeSucursal}
       />
     );
