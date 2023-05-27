@@ -11,7 +11,8 @@ const tallerAPI = axios.create({
   baseURL: 'https://autotech2.onrender.com/talleres_admin/',
 });
 
-const Talleres = () => {
+// eslint-disable-next-line react/prop-types
+const Talleres = ({ setTallerSeleccionado }) => {
   const [talleres, setTalleres] = useState([]);
 
   useEffect(() => {
@@ -30,27 +31,28 @@ const Talleres = () => {
       ...prevState,
       [name]: value,
     }));
+    setTallerSeleccionado(value);
     turno.taller_id = value;
     const localidad = talleres.find((taller) => taller.id_taller === value)?.localidad;
     localidadTaller.localidad = localidad;
-    console.log(localidad);
+    console.log(localidad, value);
   };
 
   return (
     <Box
       sx={{
         marginTop: 3,
-        marginBottom: 1,
+        marginBottom: 3,
         display: 'flex',
         flexDirection: 'column',
       }}
     >
       <div className="stock-container">
         <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-label">Talleres</InputLabel>
+          <InputLabel id="demo-simple-select-label">Taller</InputLabel>
           <Select
             required
-            label="Talleres"
+            label="Taller"
             type="text"
             name="taller"
             value={t.taller}

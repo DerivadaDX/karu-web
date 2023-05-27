@@ -69,7 +69,7 @@ const Disponibilidad = ({ tallerId }) => {
           margin="normal"
           fullWidth
           required
-          label="Fechas"
+          label="Fecha"
           format="DD/MM/YYYY"
           defaultValue={tomorrow}
           disablePast

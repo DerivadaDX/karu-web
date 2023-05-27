@@ -11,7 +11,7 @@ import Talleres from '../../../components/common/Talleres';
 
 const Formulario = () => {
   const [taller, setTaller] = useState();
-  // fecah y hora para pasarlo como props y setearlo en Disponibilidad
+  // fecha y hora para pasarlo como props y setearlo en Disponibilidad
   // así ya no uso jsons y es más reutilizable y prolijo
   // const [fecha, setFecha] = useState();
   // const [hora, setHora] = useState();
@@ -21,7 +21,7 @@ const Formulario = () => {
     const data = new FormData(event.currentTarget);
     console.log({
       patente: data.get('patente'),
-      taller: data.get('taller'),
+      taller,
     });
   };
 
@@ -37,7 +37,7 @@ const Formulario = () => {
         }}
       >
         <Typography component="h1" variant="h5">
-          Turno de Reparación para Venta
+          Reparación para Venta
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
@@ -49,20 +49,8 @@ const Formulario = () => {
             name="patente"
             autoFocus
           />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            type="number"
-            name="taller"
-            label="Talleres"
-            id="taller"
-            onChange={(event) => {
-              setTaller(event.target.value);
-            }}
-          />
+          <Talleres setTallerSeleccionado={setTaller} />
           {taller && <Disponibilidad tallerId={taller} />}
-          <Talleres />
           <Button
             type="submit"
             fullWidth
