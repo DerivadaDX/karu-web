@@ -1,3 +1,4 @@
+/* eslint-disable object-shorthand */
 /* eslint-disable react/jsx-filename-extension */
 /* eslint-disable max-len */
 /* eslint-disable no-unused-vars */
@@ -6,8 +7,10 @@ import {
   Form, Button, Row, Col,
 } from 'react-bootstrap';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
 import { products } from './products';
 import { AppContext } from './AppContext';
+
 /*
 cuanto presion el boton cotizar pongo un input donde tiene que rellenar esto datos
 *Sucursal : String ---> (se obtiene del auto logrado)
@@ -29,7 +32,7 @@ const NuevaPagina = () => {
   //  updateNombreC, updateEmail, updatePatente, updateGarantiaExtendida,
   // } = useContext(AppContext);
   const [nombreC, setNombreC] = useState('');
-  const [email, setEmail] = useState('');
+  const [mail, setMail] = useState('');
   const [garantiaExtendida, setGarantiaExtendida] = useState(false);
 
   const navigate = useNavigate();
@@ -65,10 +68,29 @@ const NuevaPagina = () => {
       // updateGarantiaExtendida(garantiaExtendida);
       const infoCotizacion = {
         nombreC,
-        email,
+        mail,
         garantiaExtendida,
         patente: productSelected.patente,
       };
+      // paso datos al back
+      const url = 'http://34.139.89.18:8080/api-gc/cotizaciones/save';
+      const cotizacionData = {
+        sucursal: 'S-01',
+        nombreCliente: nombreC,
+        patente: infoCotizacion.patente,
+        email: mail,
+        idVendedor: 123,
+        garantiaExtendida: garantiaExtendida,
+      };
+      axios.post(url, cotizacionData)
+        .then((response) => {
+          // Manejar la respuesta exitosa
+          console.log(response.data);
+        })
+        .catch((error) => {
+          // Manejar el error
+          console.error(error);
+        });
       sessionStorage.setItem('cotizacion', JSON.stringify(infoCotizacion));
       /* no hace fata darle clic,x eso uso navigate() */
       navigate('/boleta-cotizacion');
@@ -129,8 +151,8 @@ const NuevaPagina = () => {
             <Form.Control
               type="email"
               placeholder="Agregue el mail del cliente"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
+              value={mail}
+              onChange={(event) => setMail(event.target.value)}
               required
             />
 
