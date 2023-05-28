@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-
 import {
   Box,
   Button,
@@ -16,32 +15,41 @@ import {
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import EditIcon from '@mui/icons-material/Edit';
-
 import SucursalService from '../services/sucursal-service';
 
 const ModificarSucursal = ({ sucursal, onEdit }) => {
   const [mostrarPopUpModificarSucursal, setMostrarPopUpModificarSucursal] = useState(false);
   const [mostrarPopUpModificacionExitosa, setMostrarPopUpModificacionExitosa] = useState(false);
-
-  const [nombre, setNombre] = useState(sucursal.nombre || '');
-  const [calle, setCalle] = useState(sucursal.calle || '');
-  const [numero, setNumero] = useState(sucursal.numero || '');
-  const [codigoPostal, setCodigoPostal] = useState(sucursal.codigo_postal || '');
-  const [localidad, setLocalidad] = useState(sucursal.localidad || '');
-  const [provincia, setProvincia] = useState(sucursal.provincia || '');
   const [poseeTaller, setPoseeTaller] = useState(sucursal.posee_taller || false);
   const [activa, setActiva] = useState(sucursal.activa || false);
+
+  const [valoresDelFormulario, setValoresDelFormulario] = useState({
+    nombre: '',
+    calle: '',
+    numero: '',
+    localidad: '',
+    provincia: '',
+    codigo_postal: '',
+  });
+
+  const actualizarValor = (event) => {
+    const { name, value } = event.target;
+    setValoresDelFormulario((prevValues) => ({
+      ...prevValues,
+      [name]: value,
+    }));
+  };
 
   const modificarSucursal = (evento) => {
     evento.preventDefault();
 
     const datosSucursal = {
-      nombre,
-      calle,
-      numero,
-      codigo_postal: codigoPostal,
-      localidad,
-      provincia,
+      nombre: valoresDelFormulario.nombre,
+      calle: valoresDelFormulario.calle,
+      numero: valoresDelFormulario.numero,
+      codigo_postal: valoresDelFormulario.codigo_postal,
+      localidad: valoresDelFormulario.localidad,
+      provincia: valoresDelFormulario.provincia,
       posee_taller: poseeTaller,
       activa,
     };
@@ -51,14 +59,16 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
   };
 
   const recargarData = () => {
-    setNombre(sucursal.nombre);
-    setCalle(sucursal.calle);
-    setNumero(sucursal.numero);
-    setCodigoPostal(sucursal.codigo_postal);
-    setProvincia(sucursal.provincia);
-    setLocalidad(sucursal.localidad);
-    setPoseeTaller(sucursal.posee_taller);
-    setActiva(sucursal.activa);
+    setValoresDelFormulario({
+      nombre: sucursal.nombre,
+      calle: sucursal.calle,
+      numero: sucursal.numero,
+      codigo_postal: sucursal.codigo_postal,
+      localidad: sucursal.localidad,
+      provincia: sucursal.provincia,
+      posee_taller: sucursal.posee_taller,
+      activa: sucursal.activa,
+    });
   };
 
   const cerrarComponente = () => {
@@ -70,7 +80,11 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
   return (
     <Box>
       <Tooltip title="Editar">
-        <IconButton onClick={() => setMostrarPopUpModificarSucursal(true)}>
+        <IconButton onClick={() => {
+          setMostrarPopUpModificarSucursal(true);
+          recargarData();
+        }}
+        >
           <EditIcon />
         </IconButton>
       </Tooltip>
@@ -79,29 +93,13 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
         open={mostrarPopUpModificarSucursal}
         onClose={() => {
           setMostrarPopUpModificarSucursal(false);
-          recargarData();
         }}
       >
-        <Dialog
-          open={mostrarPopUpModificacionExitosa}
-          onClose={cerrarComponente}
-        >
-          <DialogTitle id="alert-dialog-title">
-            Modificacion Exitosa!
-          </DialogTitle>
-          <DialogActions>
-            <Button onClick={cerrarComponente}>
-              Cerrar
-            </Button>
-          </DialogActions>
-        </Dialog>
+        <DialogTitle sx={{ textAlign: 'center', fontSize: '2rem' }}>
+          Modificar Sucursal
+        </DialogTitle>
 
         <Paper>
-          <DialogTitle
-            sx={{ textAlign: 'center', fontSize: '2rem' }}
-          >
-            Modificar Sucursal
-          </DialogTitle>
           <Stack
             component="form"
             onSubmit={modificarSucursal}
@@ -109,27 +107,30 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
           >
             <TextField
               id="nombre"
-              value={nombre}
+              name="nombre"
+              value={valoresDelFormulario.nombre}
               label="Nombre"
-              onChange={(event) => setNombre(event.target.value)}
+              onChange={actualizarValor}
               variant="standard"
               margin="dense"
               required
             />
             <TextField
               id="calle"
-              value={calle}
+              name="calle"
+              value={valoresDelFormulario.calle}
               label="Calle"
-              onChange={(event) => setCalle(event.target.value)}
+              onChange={actualizarValor}
               variant="standard"
               margin="dense"
               required
             />
             <TextField
               id="numero"
-              value={numero}
+              name="numero"
+              value={valoresDelFormulario.numero}
               label="Altura"
-              onChange={(event) => setNumero(event.target.value)}
+              onChange={actualizarValor}
               variant="standard"
               margin="dense"
               type="number"
@@ -137,9 +138,10 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
             />
             <TextField
               id="codigo_postal"
-              value={codigoPostal}
+              name="codigo_postal"
+              value={valoresDelFormulario.codigo_postal}
               label="C.P."
-              onChange={(event) => setCodigoPostal(event.target.value)}
+              onChange={actualizarValor}
               variant="standard"
               margin="dense"
               type="number"
@@ -147,18 +149,20 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
             />
             <TextField
               id="localidad"
-              value={localidad}
+              name="localidad"
+              value={valoresDelFormulario.localidad}
               label="Localidad"
-              onChange={(event) => setLocalidad(event.target.value)}
+              onChange={actualizarValor}
               variant="standard"
               margin="dense"
               required
             />
             <TextField
               id="provincia"
-              value={provincia}
+              name="provincia"
+              value={valoresDelFormulario.provincia}
               label="Provincia"
-              onChange={(event) => setProvincia(event.target.value)}
+              onChange={actualizarValor}
               variant="standard"
               margin="dense"
               required
@@ -200,6 +204,20 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
             </Button>
           </Stack>
         </Paper>
+      </Dialog>
+
+      <Dialog
+        open={mostrarPopUpModificacionExitosa}
+        onClose={cerrarComponente}
+      >
+        <DialogTitle id="alert-dialog-title">
+          Modificacion Exitosa!
+        </DialogTitle>
+        <DialogActions>
+          <Button onClick={cerrarComponente}>
+            Cerrar
+          </Button>
+        </DialogActions>
       </Dialog>
     </Box>
   );
