@@ -308,6 +308,8 @@ const Cotizar = () => {
                     className="form-control"
                   />
                 </th>
+                <th />
+                <th />
               </tr>
             </thead>
             {/*------------------------*/}
