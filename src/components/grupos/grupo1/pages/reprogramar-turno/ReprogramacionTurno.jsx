@@ -51,11 +51,13 @@ const ReprogramacionTurno = (props) => {
       })
       .catch((error) => {
         if (error.response.data.includes('la patente ingresada ya tiene un turno')) {
+          setOpenConfirmarTurno(false);
           setOpenError(true);
           setAlertError('error');
           setAlertTitulo('Ha ocurrido un problema');
-          setAlertMensaje('Ya existe un turno para esa patente y tipo. Por cualquier inconveniente, comuniquese con insomnia.front@gmail.com');
+          setAlertMensaje('Ya existe un turno para esa patente y tipo de turno.');
         } else {
+          setOpenConfirmarTurno(false);
           setOpenError(true);
           setAlertError('error');
           setAlertTitulo('Ha ocurrido un error');
@@ -161,15 +163,6 @@ const ReprogramacionTurno = (props) => {
           setOpenDialog={setOpenConfirmarTurno}
           description="¿Está seguro que desea crear el turno? No se podrá modificar una vez creado."
         >
-          <Popup
-            openDialog={openError}
-            setOpenDialog={setOpenError}
-            title={<LittleHeader titulo="Ha ocurrido un problema" />}
-          >
-            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-              <Alerts alertType={alertError} description={alertMensaje} title={alertTitulo} />
-            </Box>
-          </Popup>
           <Box sx={{
             display: 'flex', justifyContent: 'center', alignItems: 'center',
           }}
@@ -194,6 +187,17 @@ const ReprogramacionTurno = (props) => {
                 Cerrar
               </Button>
             </DialogActions>
+          </Box>
+        </Popup>
+
+        {/* Popup para mostrar mensaje de error, cuando sea enviado el turno */}
+        <Popup
+          openDialog={openError}
+          setOpenDialog={setOpenError}
+          title={<LittleHeader titulo="Ha ocurrido un problema" />}
+        >
+          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <Alerts alertType={alertError} description={alertMensaje} title={alertTitulo} />
           </Box>
         </Popup>
 
