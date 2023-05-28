@@ -23,13 +23,22 @@ const ListadoSucursales = () => {
       });
   };
 
-  const actualizarDatosDeSucursal = (id) => {
+  const actualizarDatosDeSucursal = (sucursalActualizada) => {
     const cambiarEstadoDeSucursal = (sucursal) => {
-      const esLaSucursalActualizada = sucursal.id === id;
+      const esLaSucursalActualizada = sucursal.id === sucursalActualizada.id;
       const retVal = esLaSucursalActualizada
-        ? { ...sucursal, activa: !sucursal.activa }
+        ? {
+          ...sucursal,
+          activa: sucursalActualizada.activa,
+          nombre: sucursalActualizada.nombre,
+          numero: parseInt(sucursalActualizada.numero, 10),
+          calle: sucursalActualizada.calle,
+          codigo_postal: sucursalActualizada.codigo_postal,
+          provincia: sucursalActualizada.provincia,
+          localidad: sucursalActualizada.localidad,
+          posee_taller: sucursalActualizada.posee_taller,
+        }
         : sucursal;
-      obtenerSucursales();
 
       return retVal;
     };

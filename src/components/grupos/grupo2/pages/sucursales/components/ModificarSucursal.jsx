@@ -22,6 +22,7 @@ import SucursalService from '../services/sucursal-service';
 const ModificarSucursal = ({ sucursal, onEdit }) => {
   const [mostrarPopUpModificarSucursal, setMostrarPopUpModificarSucursal] = useState(false);
   const [mostrarPopUpModificacionExitosa, setMostrarPopUpModificacionExitosa] = useState(false);
+  const [dataActualizada, setDataActualizada] = useState();
   const [valoresDelFormulario, setValoresDelFormulario] = useState({
     nombre: '',
     calle: '',
@@ -46,6 +47,7 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
   const modificarSucursal = (evento) => {
     evento.preventDefault();
     const datosSucursal = {
+      id: sucursal.id,
       nombre: valoresDelFormulario.nombre,
       calle: valoresDelFormulario.calle,
       numero: valoresDelFormulario.numero,
@@ -55,6 +57,8 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
       posee_taller: valoresDelFormulario.poseeTaller,
       activa: valoresDelFormulario.activa,
     };
+
+    setDataActualizada(datosSucursal);
 
     SucursalService.modificarSucursal(sucursal.id, datosSucursal)
       .then(() => setMostrarPopUpModificacionExitosa(true));
@@ -76,7 +80,7 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
   const cerrarComponente = () => {
     setMostrarPopUpModificacionExitosa(false);
     setMostrarPopUpModificarSucursal(false);
-    onEdit();
+    onEdit(dataActualizada);
   };
 
   return (
