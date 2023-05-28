@@ -9,7 +9,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Popup from '../../components/common/DialogPopup';
 
-const idTaller = 'S002';
+const idTaller = 'T002';
 
 const AsignacionDeTecnicos = ({
   idTurnoPadre,

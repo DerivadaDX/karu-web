@@ -118,7 +118,6 @@ const ChecklistEvaluacion = (props) => {
       [name]: value,
     }));
     evaluacion.detalle = value;
-    console.log('Comentario ', evaluacion.detalle);
   };
 
   const renderRowActions = ({ row }) => {

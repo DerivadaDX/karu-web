@@ -19,7 +19,7 @@ import MaterialReactTable from 'material-react-table';
 import Slider from '@mui/material/Slider';
 import Header from '../../components/common/Header';
 import Alerts from '../../components/common/Alerts';
-import { getChecklistEvaluaciones } from '../../services/services-checklist';
+import { getChecklistReparacion } from '../../services/services-checklistReparacion';
 // import reparacion from './reparacion.json';
 import Popup from '../../components/common/DialogPopup';
 import LittleHeader from '../../components/common/LittleHeader';
@@ -54,20 +54,19 @@ const ChecklistReparacion = (props) => {
   const [alertError, setAlertError] = useState('');
   const [alertMensaje, setAlertmensaje] = useState('');
   const [alertTitulo, setAlertTitulo] = useState('');
+  const id = 128;
 
   const traerChecklist = () => {
-    getChecklistEvaluaciones()
+    getChecklistReparacion(id)
       .then((response) => {
         setEvaluaciones(response.data);
         setLoading(false);
         setAlertType('');
       })
-      .catch(() => {
-        setAlertMessage(
-          'Ha ocurrido un error, disculpe las molestias. Intente nuevamente más tarde. Si el error persiste comunicarse con soporte: soporte-tecnico@KarU.com',
-        );
+      .catch((error) => {
+        setAlertMessage(error.response.data.error);
         setAlertType('error');
-        setAlertTitle('Error de servidor');
+        setAlertTitle('Error');
       });
   };
 
@@ -104,20 +103,6 @@ const ChecklistReparacion = (props) => {
     }
   };
 
-  /* const handleChangeScore = (event, index) => {
-      const nuevoValorSlider = event.target.value;
-      const { name, value } = event.target;
-      setValoresReparacion((prevState) => ({
-        ...prevState,
-        [name]: value,
-      }));
-      setValoresSlider((prevValoresSlider) => ({
-        ...prevValoresSlider,
-        [index]: nuevoValorSlider,
-      }));
-      evaluacion.id_task_puntaje[index] = value;
-    };
-  */
   const handleChangeComment = (event) => {
     const { name, value } = event.target;
     setValoresReparacion((prevState) => ({
@@ -128,30 +113,6 @@ const ChecklistReparacion = (props) => {
     // console.log('Comentario ', reparacion.detalle);
   };
 
-  /*
-  const renderRowActions = ({ row }) => {
-    const valorSlider = valoresSlider[row.original.id_task] || 0;
-    return (
-      <Box
-        style={{ display: 'flex', flexWrap: 'nowrap', gap: '0.5rem' }}
-        sx={{ height: '3.5em', marginLeft: '0.2rem', marginRight: '0.2rem' }}
-      >
-        <Slider
-          aria-label="Puntaje máximo"
-          size="small"
-          valueLabelDisplay="on"
-          value={valorSlider}
-          step={5}
-          min={0}
-          max={row.original.puntaje_max}
-          className="pt-5"
-          color="secondary"
-          onChange={(event) => handleChangeScore(event, row.original.id_task)}
-        />
-      </Box>
-    );
-  };
-*/
   /* const handleEnviarReparacion = () => {
       axios.post(url, reparacion)
         .then(() => {
@@ -175,10 +136,6 @@ const ChecklistReparacion = (props) => {
 
   return (
     <>
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <Alerts alertType={alertType} description={alertMessage} title={alertTitle} />
-      </Box>
-
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <Alerts alertType={alertType} description={alertMessage} title={alertTitle} />
       </Box>
@@ -241,10 +198,10 @@ const ChecklistReparacion = (props) => {
           sx={{ mt: 3, ml: 1 }}
           color="secondary"
           onClick={() => {
-            handleCheckAllRows();
+            handleSubmit();
           }}
         >
-          Terminar reparación
+          Guardar
         </Button>
         <Button
           variant="contained"
@@ -259,48 +216,12 @@ const ChecklistReparacion = (props) => {
         </Button>
       </Box>
 
-      {/* Popup cuando estan todas las rows seleccionadas para confirmar evaluacion */}
-      <Popup
-        title={<LittleHeader titulo="Reparación Terminada" />}
-        openDialog={openConfirmarEvaluacion}
-        setOpenDialog={setOpenConfirmarEvaluacion}
-        description="¿Está seguro que desea enviar la reparación? No se podrá modificar una vez realizada."
-      >
-        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <Alerts alertType={alertError} description={alertMensaje} title={alertTitulo} />
-        </Box>
-        <Box sx={{
-          display: 'flex', justifyContent: 'center', alignItems: 'center',
-        }}
-        >
-          <DialogActions>
-            <Button
-              color="secondary"
-              variant="outlined"
-              onClick={() => {
-                handleSubmit();
-              }}
-            >
-              Enviar
-            </Button>
-            <Button
-              color="error"
-              variant="outlined"
-              onClick={() => {
-                setOpenConfirmarEvaluacion(false);
-              }}
-            >
-              Cerrar
-            </Button>
-          </DialogActions>
-        </Box>
-      </Popup>
       {/* Popup confirmando que se envio de la evaluación */}
       <Popup
-        title={<LittleHeader titulo="Reparación cargada exitosamente." />}
+        title={<LittleHeader titulo="Reparación guardada exitosamente." />}
         openDialog={openEvaluacionEnviada}
         setOpenDialog={setOpenEvaluacionEnviada}
-        description="La reparación realizada se ha enviado existosamente."
+        description="Se ha guardado las tareas hechas."
       >
         <Box sx={{
           display: 'flex', justifyContent: 'center', alignItems: 'center',

@@ -49,11 +49,18 @@ const ReprogramacionTurno = (props) => {
         setOpenTurnoCreado(true);
         setActualizar(true);
       })
-      .catch(() => {
-        setOpenError(true);
-        setAlertError('error');
-        setAlertTitulo('Error de servidor');
-        setAlertMensaje('Surgió un error, vuelva a intentar. En caso de que el problema persista, comuniquese con insomnia.front@gmail.com');
+      .catch((error) => {
+        if (error.response.data.includes('la patente ingresada ya tiene un turno')) {
+          setOpenError(true);
+          setAlertError('error');
+          setAlertTitulo('Ha ocurrido un problema');
+          setAlertMensaje('Ya existe un turno para esa patente y tipo. Por cualquier inconveniente, comuniquese con insomnia.front@gmail.com');
+        } else {
+          setOpenError(true);
+          setAlertError('error');
+          setAlertTitulo('Ha ocurrido un error');
+          setAlertMensaje('Si el problema persiste, comuniquese con insomnia.front@gmail.com');
+        }
       });
   };
 
@@ -157,7 +164,7 @@ const ReprogramacionTurno = (props) => {
           <Popup
             openDialog={openError}
             setOpenDialog={setOpenError}
-            title={<LittleHeader titulo="Ha ocurrido un error" />}
+            title={<LittleHeader titulo="Ha ocurrido un problema" />}
           >
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <Alerts alertType={alertError} description={alertMensaje} title={alertTitulo} />
