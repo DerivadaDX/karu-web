@@ -1,8 +1,11 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
 /* eslint-disable no-nested-ternary */
 import { useState, useEffect } from 'react';
 import Typography from '@mui/material/Typography';
-import { Input, Box, Button } from '@mui/material';
+import {
+  Input, Box, Button, CircularProgress, TablePagination,
+} from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
@@ -27,6 +30,13 @@ const VisualizacionBusquedaTecnicos = () => {
   const [detalleTrabajos, setDetalleTrabajos] = useState([]);
   const [mostrarInfo, setMostrarInfo] = useState(false);
   const [seleccionarFila, setSeleccionarFila] = useState(null);
+  const [cargando, setCargando] = useState(true);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(parseInt(localStorage.getItem('rowsPerPage'), 10) || 5);
+  const startIndex = page * rowsPerPage;
+  const endIndex = startIndex + rowsPerPage;
+  const displayedData = listaTecnicos.tecnicos
+  && listaTecnicos.tecnicos.slice(startIndex, endIndex);
 
   const [valoresBusqueda, setValoresBusqueda] = useState({
     nombre: '',
@@ -38,77 +48,83 @@ const VisualizacionBusquedaTecnicos = () => {
   const [alertType, setAlertType] = useState('');
   const [alertMessage, setAlertMessage] = useState('');
   const [alertTitle, setAlertTitle] = useState('');
+  const taller = 'T001';
+  const endPoint = `https://autotech2.onrender.com/tecnicos/filtro/?branch=${taller}&`;
 
-  const endPoint = 'https://autotech2.onrender.com/tecnicos/filtro/?branch=S002&';
-
-  const filtrarTecnicos = () => axios
-    .get(
-      `${endPoint}${
-        !(valoresBusqueda.nombre.length <= 0)
+  const filtrarTecnicos = () => {
+    setCargando(true);
+    axios
+      .get(
+        `${endPoint}${
+          !(valoresBusqueda.nombre.length <= 0)
         && !(valoresBusqueda.dni.length < 7 || valoresBusqueda.dni.length > 8)
         && !(valoresBusqueda.categoria.length <= 0)
-          ? `nombre_completo=${valoresBusqueda.nombre}&dni=${valoresBusqueda.dni}&categoria=${valoresBusqueda.categoria}&`
-          : !(valoresBusqueda.nombre.length <= 0)
-        && !(valoresBusqueda.dni.length < 7 || valoresBusqueda.dni.length > 8)
-            ? `nombre_completo=${valoresBusqueda.nombre}&dni=${valoresBusqueda.dni}`
+            ? `nombre_completo=${valoresBusqueda.nombre}&dni=${valoresBusqueda.dni}&categoria=${valoresBusqueda.categoria}&`
             : !(valoresBusqueda.nombre.length <= 0)
+        && !(valoresBusqueda.dni.length < 7 || valoresBusqueda.dni.length > 8)
+              ? `nombre_completo=${valoresBusqueda.nombre}&dni=${valoresBusqueda.dni}`
+              : !(valoresBusqueda.nombre.length <= 0)
         && !(valoresBusqueda.categoria.length <= 0)
-              ? `nombre_completo=${valoresBusqueda.nombre}&categoria=${valoresBusqueda.categoria}&`
-              : !(valoresBusqueda.dni.length < 7 || valoresBusqueda.dni.length > 8)
+                ? `nombre_completo=${valoresBusqueda.nombre}&categoria=${valoresBusqueda.categoria}&`
+                : !(valoresBusqueda.dni.length < 7 || valoresBusqueda.dni.length > 8)
               && !(valoresBusqueda.categoria.length <= 0)
-                ? `dni=${valoresBusqueda.dni}&categoria=${valoresBusqueda.categoria}`
-                : !(valoresBusqueda.nombre.length <= 0)
-                  ? `nombre_completo=${valoresBusqueda.nombre}&`
-                  : !(valoresBusqueda.dni.length < 7 || valoresBusqueda.dni.length > 8)
-                    ? `dni=${valoresBusqueda.dni}`
-                    : !(valoresBusqueda.categoria.length <= 0)
-                      ? `categoria=${valoresBusqueda.categoria}&`
-                      : ''
-      }`,
-    )
-    .then((response) => {
-      setTecnicos(response.data);
-      setAlertType('');
+                  ? `dni=${valoresBusqueda.dni}&categoria=${valoresBusqueda.categoria}`
+                  : !(valoresBusqueda.nombre.length <= 0)
+                    ? `nombre_completo=${valoresBusqueda.nombre}&`
+                    : !(valoresBusqueda.dni.length < 7 || valoresBusqueda.dni.length > 8)
+                      ? `dni=${valoresBusqueda.dni}`
+                      : !(valoresBusqueda.categoria.length <= 0)
+                        ? `categoria=${valoresBusqueda.categoria}&`
+                        : ''
+        }`,
+      )
+      .then((response) => {
+        setTecnicos(response.data);
+        setAlertType('');
+        setCargando(false);
+        const cantidadTecnicos = response.data.tecnicos.length;
 
-      const cantidadTecnicos = response.data.tecnicos.length;
-      console.log(cantidadTecnicos);
+        if (cantidadTecnicos === 0) {
+          setAlertMessage(
+            'No se han encontrado coincidencias sobre la búsqueda realizada.',
+          );
+          setAlertType('warning');
+          setAlertTitle('Sin coincidencias');
+        }
 
-      if (cantidadTecnicos === 0) {
+        if (mostrarInfo) {
+          setMostrarInfo(!mostrarInfo);
+        }
+      })
+      .catch((error) => {
         setAlertMessage(
-          'No se han encontrado coincidencias sobre la búsqueda realizada.',
+          'Ha ocurrido un error, disculpe las molestias. Intente nuevamente más tarde.',
         );
-        setAlertType('warning');
-        setAlertTitle('Sin coincidencias');
-      }
-
-      if (mostrarInfo) {
-        setMostrarInfo(!mostrarInfo);
-      }
-    })
-    .catch((error) => {
-      setAlertMessage(
-        'Ha ocurrido un error, disculpe las molestias. Intente nuevamente más tarde.',
-      );
-      setAlertType('error');
-      setAlertTitle('Error');
-      console.log(error);
-    });
+        setAlertType('error');
+        setAlertTitle('Error');
+        setCargando(false);
+      });
+  };
 
   /* Trae todos los tecnicos, cuando los campos estan vacios */
-  const traerTecnicos = () => axios
-    .get(`${endPoint}${''}`)
-    .then((response) => {
-      setTecnicos(response.data);
-      setAlertType('');
-    })
-    .catch((error) => {
-      setAlertMessage(
-        'Ha ocurrido un error, disculpe las molestias. Intente nuevamente más tarde.',
-      );
-      setAlertType('error');
-      setAlertTitle('Error');
-      console.log(error);
-    });
+  const traerTecnicos = () => {
+    setCargando(true);
+    axios
+      .get(`${endPoint}${''}`)
+      .then((response) => {
+        setTecnicos(response.data);
+        setAlertType('');
+        setCargando(false);
+      })
+      .catch((error) => {
+        setAlertMessage(
+          'Ha ocurrido un error, disculpe las molestias. Intente nuevamente más tarde.',
+        );
+        setAlertType('error');
+        setAlertTitle('Error');
+        setCargando(false);
+      });
+  };
 
   /* Toma los valores de los campos */
   const handleChange = (event) => {
@@ -128,7 +144,7 @@ const VisualizacionBusquedaTecnicos = () => {
   /* Se muestra el detalle de trabajos realizados */
   const endPointDetalle = 'https://autotech2.onrender.com/tecnicos/detalle';
   const mostrarDetalle = (id, index) => () => {
-    const ruta = `${endPointDetalle}${`/${id}/?branch=S002`}`;
+    const ruta = `${endPointDetalle}${`/${id}/?branch=${taller}`}`;
     return axios
       .get(ruta)
       .then((response) => {
@@ -145,20 +161,37 @@ const VisualizacionBusquedaTecnicos = () => {
       });
   };
 
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    const newRowsPerPage = parseInt(event.target.value, 10);
+    setRowsPerPage(newRowsPerPage);
+    setPage(0);
+    localStorage.setItem('rowsPerPage', newRowsPerPage.toString());
+  };
+
   useEffect(() => {
     filtrarTecnicos();
   }, []);
 
   return (
-    <Box className="background-color">
-      <span className="d-flex justify-content-center">
+    <Box>
+      <Box sx={{
+        display: 'flex', justifyContent: 'center', alignItems: 'center',
+      }}
+      >
         <Alerts
           alertType={alertType}
           description={alertMessage}
           title={alertTitle}
         />
-      </span>
-      <Box className="row d-flex justify-content-center">
+      </Box>
+      <Box sx={{
+        display: 'flex', justifyContent: 'center', alignItems: 'center',
+      }}
+      >
         <Box className="col-12 col-md-8 col-lg-6 col-xl-6">
           <Box className="card shadow-2-strong" sx={{ borderRadius: '1rem' }}>
             <Box className="card-body p-5 text-center row" elevation={5}>
@@ -174,6 +207,7 @@ const VisualizacionBusquedaTecnicos = () => {
                 placeholder="Buscar por Nombre"
                 className="form-control form-control-lg mb-2"
                 color="secondary"
+                autoFocus
               />
               <Input
                 type="text"
@@ -229,130 +263,159 @@ const VisualizacionBusquedaTecnicos = () => {
         </Box>
       </Box>
 
-      <TableContainer component={Paper} className="mt-5">
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell align="center">ID</TableCell>
-              <TableCell align="center">Nombre completo</TableCell>
-              <TableCell align="center">DNI</TableCell>
-              <TableCell align="center">Categoria</TableCell>
-              <TableCell align="center">Taller</TableCell>
-              <TableCell align="center">Trabajos realizados</TableCell>
-            </TableRow>
-          </TableHead>
-
-          <TableBody>
-            {listaTecnicos.tecnicos
-              && listaTecnicos.tecnicos.map((tecnicoObj, index) => (
-                <>
-                  <TableRow
-                    key={tecnicoObj.id_empleado}
-                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                    className={seleccionarFila === index ? 'seleccionado' : ''}
-                  >
-                    <TableCell align="center">
-                      {tecnicoObj.id_empleado}
-                    </TableCell>
-                    <TableCell align="center">
-                      {tecnicoObj.nombre_completo}
-                    </TableCell>
-                    <TableCell align="center">{tecnicoObj.dni}</TableCell>
-                    <TableCell align="center">{tecnicoObj.categoria}</TableCell>
-                    <TableCell align="center">{tecnicoObj.branch}</TableCell>
-                    <TableCell align="center">
-                      <IconButton
-                        aria-label="expand row"
-                        size="small"
-                        onClick={mostrarDetalle(tecnicoObj.id_empleado, index)}
-                      >
-                        {mostrarInfo && seleccionarFila === index ? (
-                          <KeyboardArrowUpIcon />
-                        ) : (
-                          <KeyboardArrowDownIcon />
-                        )}
-                      </IconButton>
-                    </TableCell>
+      <Box>
+        {cargando ? (
+          <Box sx={{
+            mt: '2rem', display: 'flex', justifyContent: 'center', alignItems: 'center',
+          }}
+          >
+            <CircularProgress
+              color="secondary"
+            />
+          </Box>
+        ) : (
+          <Box>
+            <TablePagination
+              component="div"
+              count={listaTecnicos.tecnicos.length}
+              page={page}
+              onPageChange={handleChangePage}
+              rowsPerPage={rowsPerPage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+              labelRowsPerPage="Datos por página"
+              sx={{
+                mt: '1rem',
+                border: '1px solid rgba(194, 193, 193, 0.51)',
+                borderRadius: '8px',
+                boxShadow: 1,
+              }}
+            />
+            <TableContainer component={Paper} sx={{ mt: '0.5rem' }}>
+              <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell align="center">ID</TableCell>
+                    <TableCell align="center">Nombre completo</TableCell>
+                    <TableCell align="center">DNI</TableCell>
+                    <TableCell align="center">Categoria</TableCell>
+                    <TableCell align="center">Taller</TableCell>
+                    <TableCell align="center">Trabajos realizados</TableCell>
                   </TableRow>
+                </TableHead>
 
-                  {seleccionarFila === index && (
-                    <TableRow>
-                      <TableCell
-                        style={{ paddingBottom: 0, paddingTop: 0 }}
-                        colSpan={6}
+                <TableBody>
+                  {displayedData.map((tecnicoObj, index) => (
+                    <>
+                      <TableRow
+                        key={tecnicoObj.id}
+                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                        className={seleccionarFila === index ? 'seleccionado' : ''}
                       >
-                        <Collapse in={mostrarInfo} timeout="auto" unmountOnExit>
-                          <Box sx={{ margin: 1 }}>
-                            <Typography
-                              variant="h6"
-                              gutterBottom
-                              component="div"
-                            >
-                              Detalle
-                            </Typography>
+                        <TableCell align="center">
+                          {tecnicoObj.id}
+                        </TableCell>
+                        <TableCell align="center">
+                          {tecnicoObj.nombre_completo}
+                        </TableCell>
+                        <TableCell align="center">{tecnicoObj.dni}</TableCell>
+                        <TableCell align="center">{tecnicoObj.categoria}</TableCell>
+                        <TableCell align="center">{tecnicoObj.branch}</TableCell>
+                        <TableCell align="center">
+                          <IconButton
+                            aria-label="expand row"
+                            size="small"
+                            onClick={mostrarDetalle(tecnicoObj.id, index)}
+                          >
+                            {mostrarInfo && seleccionarFila === index ? (
+                              <KeyboardArrowUpIcon />
+                            ) : (
+                              <KeyboardArrowDownIcon />
+                            )}
+                          </IconButton>
+                        </TableCell>
+                      </TableRow>
 
-                            <Table size="small" aria-label="purchases">
-                              <TableHead>
-                                <TableRow>
-                                  <TableCell align="center">ID Turno</TableCell>
-                                  <TableCell align="center">Patente</TableCell>
-                                  <TableCell align="center">
-                                    Fecha inicio
-                                  </TableCell>
-                                  <TableCell align="center">
-                                    Hora inicio
-                                  </TableCell>
-                                  <TableCell align="center">
-                                    Fecha fin
-                                  </TableCell>
-                                  <TableCell align="center">Hora fin</TableCell>
-                                  <TableCell align="center">Tipo</TableCell>
-                                  <TableCell align="center">Estado</TableCell>
-                                </TableRow>
-                              </TableHead>
+                      {seleccionarFila === index && (
+                      <TableRow>
+                        <TableCell
+                          style={{ paddingBottom: 0, paddingTop: 0 }}
+                          colSpan={6}
+                        >
+                          <Collapse in={mostrarInfo} timeout="auto" unmountOnExit>
+                            <Box sx={{ margin: 1 }}>
+                              <Typography
+                                variant="h6"
+                                gutterBottom
+                                component="div"
+                              >
+                                Detalle
+                              </Typography>
 
-                              <TableBody>
-                                {detalleTrabajos.map((detalle, idx) => (
-                                  // eslint-disable-next-line react/no-array-index-key
-                                  <TableRow key={idx}>
+                              <Table size="small" aria-label="purchases">
+                                <TableHead>
+                                  <TableRow>
+                                    <TableCell align="center">ID Turno</TableCell>
+                                    <TableCell align="center">Patente</TableCell>
                                     <TableCell align="center">
-                                      {detalle.id_turno}
+                                      Fecha inicio
                                     </TableCell>
                                     <TableCell align="center">
-                                      {detalle.patente}
+                                      Hora inicio
                                     </TableCell>
                                     <TableCell align="center">
-                                      {detalle.fecha_inicio}
+                                      Fecha fin
                                     </TableCell>
-                                    <TableCell align="center">
-                                      {detalle.hora_inicio}
-                                    </TableCell>
-                                    <TableCell align="center">
-                                      {detalle.fecha_fin}
-                                    </TableCell>
-                                    <TableCell align="center">
-                                      {detalle.hora_fin}
-                                    </TableCell>
-                                    <TableCell align="center">
-                                      {detalle.tipo}
-                                    </TableCell>
-                                    <TableCell align="center">
-                                      {detalle.estado}
-                                    </TableCell>
+                                    <TableCell align="center">Hora fin</TableCell>
+                                    <TableCell align="center">Tipo</TableCell>
+                                    <TableCell align="center">Estado</TableCell>
                                   </TableRow>
-                                ))}
-                              </TableBody>
-                            </Table>
-                          </Box>
-                        </Collapse>
-                      </TableCell>
-                    </TableRow>
-                  )}
-                </>
-              ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+                                </TableHead>
+
+                                <TableBody>
+                                  {detalleTrabajos.map((detalle, idx) => (
+                                  // eslint-disable-next-line react/no-array-index-key
+                                    <TableRow key={idx}>
+                                      <TableCell align="center">
+                                        {detalle.id_turno}
+                                      </TableCell>
+                                      <TableCell align="center">
+                                        {detalle.patente}
+                                      </TableCell>
+                                      <TableCell align="center">
+                                        {detalle.fecha_inicio}
+                                      </TableCell>
+                                      <TableCell align="center">
+                                        {detalle.hora_inicio}
+                                      </TableCell>
+                                      <TableCell align="center">
+                                        {detalle.fecha_fin}
+                                      </TableCell>
+                                      <TableCell align="center">
+                                        {detalle.hora_fin}
+                                      </TableCell>
+                                      <TableCell align="center">
+                                        {detalle.tipo}
+                                      </TableCell>
+                                      <TableCell align="center">
+                                        {detalle.estado}
+                                      </TableCell>
+                                    </TableRow>
+                                  ))}
+                                </TableBody>
+                              </Table>
+                            </Box>
+                          </Collapse>
+                        </TableCell>
+                      </TableRow>
+                      )}
+                    </>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Box>
+        )}
+      </Box>
     </Box>
   );
 };

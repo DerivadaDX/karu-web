@@ -13,7 +13,6 @@ import AgendaTaller from './pages/visualizar-agenda/AgendaTaller';
 import FormularioCliente from './pages/turnos/turno-cliente/TurnoCliente';
 import Formulario from './pages/turnos/turno-reparaciones-venta/TurnoReparacionParaVenta';
 import ChecklistReparacion from './pages/checklist-reparacion/ChecklistReparacion';
-import ReprogramacionTurno from './pages/reprogramar-turno/ReprogramacionTurno';
 import Services from './pages/visualizar-services/Services';
 
 const GROUP_1_PAGES_CONFIG = [
@@ -65,13 +64,6 @@ const GROUP_1_PAGES_CONFIG = [
     href: '/checklist-reparacion',
     icon: <TooltipCus icon={<ListAltIcon />} title="Checklist repración" />,
     page: <ChecklistReparacion />,
-  },
-  {
-    id: 'g1-ReprogramarTurno',
-    name: 'Reprogramar turno',
-    href: '/reprogramar-turno',
-    icon: <TooltipCus icon={<ListAltIcon />} title="Reprogramar turno" />,
-    page: <ReprogramacionTurno />,
   },
   {
     id: 'g1-Services',
