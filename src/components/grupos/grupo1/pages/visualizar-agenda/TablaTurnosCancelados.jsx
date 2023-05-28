@@ -171,7 +171,17 @@ const TablaTurnosCancelados = (props) => {
         <DetalleTurno openDialog={openVerMas} setOpenDialog={setVerMas} row={rowDetalle} />
       </Popup>
       <Popup
-        title={<LittleHeader titulo="Reprogramar turno" />}
+        title={(<LittleHeader titulo="Reprogramar turno" />)}
+        description={(
+          <>
+            <strong>Aclaración</strong>
+            <p>
+              Siempre debe seleccionar una fecha y hora,
+              <br />
+              por defecto no hay ninguna seleccionada.
+            </p>
+          </>
+        )}
         openDialog={openReprogramar}
         setOpenDialog={setOpenReprogramar}
       >
