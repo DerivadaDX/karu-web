@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+
 import {
   Box,
   Button,
@@ -13,6 +14,7 @@ import {
   TextField,
   Tooltip,
 } from '@mui/material';
+
 import PropTypes from 'prop-types';
 import EditIcon from '@mui/icons-material/Edit';
 import SucursalService from '../services/sucursal-service';
@@ -20,38 +22,38 @@ import SucursalService from '../services/sucursal-service';
 const ModificarSucursal = ({ sucursal, onEdit }) => {
   const [mostrarPopUpModificarSucursal, setMostrarPopUpModificarSucursal] = useState(false);
   const [mostrarPopUpModificacionExitosa, setMostrarPopUpModificacionExitosa] = useState(false);
-  const [poseeTaller, setPoseeTaller] = useState(sucursal.posee_taller || false);
-  const [activa, setActiva] = useState(sucursal.activa || false);
-
   const [valoresDelFormulario, setValoresDelFormulario] = useState({
     nombre: '',
     calle: '',
     numero: '',
     localidad: '',
     provincia: '',
-    codigo_postal: '',
+    codigoPostal: '',
+    poseeTaller: false,
+    activa: false,
   });
 
   const actualizarValor = (event) => {
-    const { name, value } = event.target;
+    const { name, value, checked } = event.target;
+
+    const newValue = name === 'activa' || name === 'poseeTaller' ? checked : value;
     setValoresDelFormulario((prevValues) => ({
       ...prevValues,
-      [name]: value,
+      [name]: newValue,
     }));
   };
 
   const modificarSucursal = (evento) => {
     evento.preventDefault();
-
     const datosSucursal = {
       nombre: valoresDelFormulario.nombre,
       calle: valoresDelFormulario.calle,
       numero: valoresDelFormulario.numero,
-      codigo_postal: valoresDelFormulario.codigo_postal,
+      codigo_postal: valoresDelFormulario.codigoPostal,
       localidad: valoresDelFormulario.localidad,
       provincia: valoresDelFormulario.provincia,
-      posee_taller: poseeTaller,
-      activa,
+      posee_taller: valoresDelFormulario.poseeTaller,
+      activa: valoresDelFormulario.activa,
     };
 
     SucursalService.modificarSucursal(sucursal.id, datosSucursal)
@@ -63,10 +65,10 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
       nombre: sucursal.nombre,
       calle: sucursal.calle,
       numero: sucursal.numero,
-      codigo_postal: sucursal.codigo_postal,
+      codigoPostal: sucursal.codigo_postal,
       localidad: sucursal.localidad,
       provincia: sucursal.provincia,
-      posee_taller: sucursal.posee_taller,
+      poseeTaller: sucursal.posee_taller,
       activa: sucursal.activa,
     });
   };
@@ -137,9 +139,9 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
               required
             />
             <TextField
-              id="codigo_postal"
-              name="codigo_postal"
-              value={valoresDelFormulario.codigo_postal}
+              id="codigoPostal"
+              name="codigoPostal"
+              value={valoresDelFormulario.codigoPostal}
               label="C.P."
               onChange={actualizarValor}
               variant="standard"
@@ -168,28 +170,30 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
               required
             />
             <FormControlLabel
-              id="posee_taller"
-              value={poseeTaller}
+              id="poseeTaller"
+              value={valoresDelFormulario.poseeTaller}
               label="Taller Mecánico"
               labelPlacement="start"
               control={(
                 <Switch
-                  checked={poseeTaller}
-                  onChange={(event) => setPoseeTaller(event.target.checked)}
+                  checked={valoresDelFormulario.poseeTaller}
+                  onChange={actualizarValor}
                   disabled={sucursal.posee_taller}
+                  name="poseeTaller"
                 />
               )}
               sx={{ marginTop: '2ch', justifyContent: 'space-between', marginLeft: '0ch' }}
             />
             <FormControlLabel
               id="activa"
-              value={activa}
+              value={valoresDelFormulario.activa}
               label="Habilitada"
               labelPlacement="start"
               control={(
                 <Switch
-                  checked={activa}
-                  onChange={(event) => setActiva(event.target.checked)}
+                  checked={valoresDelFormulario.activa}
+                  onChange={actualizarValor}
+                  name="activa"
                 />
               )}
               sx={{ marginTop: '2ch', justifyContent: 'space-between', marginLeft: '0ch' }}
