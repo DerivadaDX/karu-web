@@ -157,6 +157,7 @@ const ReprogramacionTurno = (props) => {
           <Popup
             openDialog={openError}
             setOpenDialog={setOpenError}
+            title={<LittleHeader titulo="Ha ocurrido un error" />}
           >
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <Alerts alertType={alertError} description={alertMensaje} title={alertTitulo} />
