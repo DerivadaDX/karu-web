@@ -18,7 +18,7 @@ const ListadoSucursales = () => {
   const obtenerSucursales = () => {
     SucursalService.obtenerSucursales()
       .then((response) => {
-        setSucursales(response.data.sort((a, b) => a.id - b.id));
+        setSucursales(response.data);
         setCargando(false);
       });
   };
@@ -83,6 +83,7 @@ const ListadoSucursales = () => {
       {
         accessorKey: 'id',
         header: 'ID',
+        defaultSortDesc: false,
       },
       {
         accessorKey: 'nombre',
@@ -134,6 +135,7 @@ const ListadoSucursales = () => {
         positionActionsColumn="last"
         renderRowActions={renderAccionesFila}
         defaultColumn={{ minSize: 10, maxSize: 100 }}
+        defaultSortBy={[{ id: 'id', desc: false }]}
       />
     </Box>
   );
