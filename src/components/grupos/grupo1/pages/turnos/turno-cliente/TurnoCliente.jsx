@@ -9,6 +9,7 @@ import Disponibilidad from '../Componentes/FechasHorarios';
 import Talleres from '../Componentes/Talleres';
 import ValidarPatente from '../Helpers/validar-patente';
 import ValidarKm from '../Helpers/validar-km';
+import ValidarDNI from '../Helpers/validar-dni';
 import Alerts from '../../../components/common/Alerts';
 import Popup from '../../../components/common/DialogPopup';
 
@@ -18,7 +19,7 @@ const FormularioCliente = () => {
   const [fecha, setFecha] = useState();
   const [hora, setHora] = useState();
   const [kilometros, setKilometros] = useState('');
-  // const [dni, setDNI] = useState('');
+  const [dni, setDNI] = useState('');
   // Para los mensajes de confirmar o avisar que complete todos los campos
   const [openPopupNoSeleccion, setOpenPopupNoSeleccion] = useState(false);
   const [openPopupSeleccion, setOpenPopupSeleccion] = useState(false);
@@ -26,8 +27,10 @@ const FormularioCliente = () => {
   const [isValid, setIsValid] = useState(true);
   // Para validar el km
   const [isKmValido, setIsKmValido] = useState(true);
-  // Agregar kilometraje
-  const msjTurnoCreado = `Se ha creado el turno de service para ${patente} con ${kilometros} kilómetros para el día ${fecha} a las ${hora} en el taller ${taller}. Recibirá un mail con los datos mencionados. Por favor, recuerde asistir con cédula verde. Gracias.`;
+  // Para validar el dni
+  const [isDNIValido, setIsDNIValido] = useState(true);
+
+  const msjTurnoCreado = `Se ha creado el turno de service para el DNI: ${dni}, patente ${patente} con ${kilometros} kilómetros para el día ${fecha} a las ${hora} en el taller ${taller}. Recibirá un mail con los datos mencionados. Por favor, recuerde asistir con cédula verde. Gracias.`;
 
   const guardarPatente = (event) => {
     const { value } = event.target;
@@ -54,28 +57,40 @@ const FormularioCliente = () => {
     } else if (val === '') {
       setKilometros(val);
     }
+  };
+
+  // Implementar función
+  const guardarDNI = (e) => {
+    const val = e.target.value;
+
+    if (e.target.validity.valid) {
+      if (ValidarDNI.isDNIvalido(val)) {
+        setIsDNIValido(true);
+      } else {
+        setIsDNIValido(false);
+      }
+      if (ValidarDNI.isDNINro(val)) {
+        setDNI(val);
+      }
+    } else if (val === '') {
+      setDNI(val);
+    }
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    // eslint-disable-next-line max-len
+    if (taller && patente && isValid && fecha && hora && kilometros && isKmValido && dni && isDNIValido) {
+      setOpenPopupSeleccion(true);
+    } else {
+      setOpenPopupNoSeleccion(true);
+    }
     // Hacer los redondeos a la hora de mandar al back para crear el turno
     // if (val > 200000) {
     //   setKilometros(200000);
     // } else {
     //   setKilometros(Math.ceil(val / 5000) * 5000);
     // }
-  };
-
-  // Implementar función
-  const guardarDNI = (e) => {
-    const v = e.target.value;
-    return v;
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // Quedaría verificar que haya también un DNI correcto
-    if (taller && patente && isValid && fecha && hora && kilometros && isKmValido) {
-      setOpenPopupSeleccion(true);
-    } else {
-      setOpenPopupNoSeleccion(true);
-    }
   };
 
   return (
@@ -98,13 +113,17 @@ const FormularioCliente = () => {
               margin="normal"
               required
               fullWidth
+              value={dni}
               id="dni"
               label="DNI"
               name="dni"
+              type="tel"
+              pattern="[1-9][0-9]*"
               autoFocus
-              inputProps={{ minLength: 7, maxLength: 8 }}
+              inputProps={{ maxLength: 8 }}
               onChange={guardarDNI}
             />
+            {!isDNIValido && <Alerts alertType="warning" description="El DNI debe contener ocho dígitos." title="DNI inválido" />}
             <TextField
               margin="normal"
               required
@@ -112,7 +131,6 @@ const FormularioCliente = () => {
               id="patente"
               label="Patente"
               name="patente"
-              autoFocus
               inputProps={{ minLength: 6, maxLength: 7 }}
               onChange={guardarPatente}
             />
@@ -129,7 +147,6 @@ const FormularioCliente = () => {
               name="kilometraje"
               type="tel"
               pattern="[1-9][0-9]*"
-              autoFocus
               inputProps={{ maxLength: 6 }}
               onChange={guardarKilometraje}
             />
@@ -146,7 +163,7 @@ const FormularioCliente = () => {
           </Box>
           <Popup
             title="Error en datos requeridos."
-            description="Por favor complete todos los campos y verifique que la patente y el kilometraje sean correctos."
+            description="Por favor complete todos los campos y verifique la correctitud del DNI, la patente y el kilometraje."
             openDialog={openPopupNoSeleccion}
             setOpenDialog={setOpenPopupNoSeleccion}
           >
