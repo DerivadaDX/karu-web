@@ -2,18 +2,21 @@ import React, { useEffect, useMemo, useState } from 'react';
 
 import {
   Box,
+  IconButton,
   Typography,
 } from '@mui/material';
 import CheckBoxOutlinedIcon from '@mui/icons-material/CheckBoxOutlined';
 import CheckBoxOutlineBlankOutlinedIcon from '@mui/icons-material/CheckBoxOutlineBlankOutlined';
 import MaterialReactTable from 'material-react-table';
-
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import { useNavigate } from 'react-router-dom';
 import SucursalService from '../services/sucursal-service';
 import PopUpCambiarEstadoSucursal from './PopUpCambiarEstadoSucursal';
 
 const ListadoSucursales = () => {
   const [sucursales, setSucursales] = useState([]);
   const [cargando, setCargando] = useState(true);
+  const navigate = useNavigate();
 
   const obtenerSucursales = () => {
     SucursalService.obtenerSucursales()
@@ -59,12 +62,14 @@ const ListadoSucursales = () => {
 
   const renderAccionesFila = ({ row }) => {
     const sucursal = row.original;
-
     return (
-      <PopUpCambiarEstadoSucursal
-        sucursal={sucursal}
-        onSuccess={actualizarEstadoDeSucursal}
-      />
+      <Box>
+        <PopUpCambiarEstadoSucursal
+          sucursal={sucursal}
+          onSuccess={actualizarEstadoDeSucursal}
+        />
+        <IconButton onClick={() => navigate(`/sucursales/${row.original.id}/vendedores`)}><PeopleAltIcon /></IconButton>
+      </Box>
     );
   };
 
