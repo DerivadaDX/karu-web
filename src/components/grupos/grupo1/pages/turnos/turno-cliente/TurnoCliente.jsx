@@ -9,7 +9,6 @@ import Disponibilidad from '../Componentes/FechasHorarios';
 import Talleres from '../Componentes/Talleres';
 import ValidarPatente from '../Helpers/validar-patente';
 import ValidarKm from '../Helpers/validar-km';
-import ValidarDNI from '../Helpers/validar-dni';
 import Alerts from '../../../components/common/Alerts';
 import Popup from '../../../components/common/DialogPopup';
 
@@ -19,7 +18,6 @@ const FormularioCliente = () => {
   const [fecha, setFecha] = useState();
   const [hora, setHora] = useState();
   const [kilometros, setKilometros] = useState('');
-  const [dni, setDNI] = useState('');
   // Para los mensajes de confirmar o avisar que complete todos los campos
   const [openPopupNoSeleccion, setOpenPopupNoSeleccion] = useState(false);
   const [openPopupSeleccion, setOpenPopupSeleccion] = useState(false);
@@ -27,10 +25,14 @@ const FormularioCliente = () => {
   const [isValid, setIsValid] = useState(true);
   // Para validar el km
   const [isKmValido, setIsKmValido] = useState(true);
-  // Para validar el dni
-  const [isDNIValido, setIsDNIValido] = useState(true);
 
-  const msjTurnoCreado = `Se ha creado el turno de service para el DNI: ${dni}, patente ${patente} con ${kilometros} kilómetros para el día ${fecha} a las ${hora} en el taller ${taller}. Recibirá un mail con los datos mencionados. Por favor, recuerde asistir con cédula verde. Gracias.`;
+  const msjTurnoCreado = `Se ha creado el turno de service para la patente ${patente} con ${kilometros} kilómetros para el día ${fecha} a las ${hora} en el taller ${taller}. Recibirá un mail con los datos mencionados. Por favor, recuerde asistir con cédula verde. Gracias.`;
+
+  const [msjError, setMsjError] = useState();
+
+  const marca = 'generico';
+  const modelo = 'generico';
+  const endPointDisponibilidad = `https://autotech2.onrender.com/turnos/dias-horarios-disponibles-service/${taller}/${marca}/${modelo}/${kilometros}/`;
 
   const guardarPatente = (event) => {
     const { value } = event.target;
@@ -59,28 +61,11 @@ const FormularioCliente = () => {
     }
   };
 
-  // Implementar función
-  const guardarDNI = (e) => {
-    const val = e.target.value;
-
-    if (e.target.validity.valid) {
-      if (ValidarDNI.isDNIvalido(val)) {
-        setIsDNIValido(true);
-      } else {
-        setIsDNIValido(false);
-      }
-      if (ValidarDNI.isDNINro(val)) {
-        setDNI(val);
-      }
-    } else if (val === '') {
-      setDNI(val);
-    }
-  };
-
+  // Endpoint: 'https://autotech2.onrender.com/turnos/crear-turno-service/'
   const handleSubmit = (event) => {
     event.preventDefault();
     // eslint-disable-next-line max-len
-    if (taller && patente && isValid && fecha && hora && kilometros && isKmValido && dni && isDNIValido) {
+    if (taller && patente && isValid && fecha && hora && kilometros && isKmValido) {
       setOpenPopupSeleccion(true);
     } else {
       setOpenPopupNoSeleccion(true);
@@ -113,21 +98,7 @@ const FormularioCliente = () => {
               margin="normal"
               required
               fullWidth
-              value={dni}
-              id="dni"
-              label="DNI"
-              name="dni"
-              type="tel"
-              pattern="[1-9][0-9]*"
               autoFocus
-              inputProps={{ maxLength: 8 }}
-              onChange={guardarDNI}
-            />
-            {!isDNIValido && <Alerts alertType="warning" description="El DNI debe contener ocho dígitos." title="DNI inválido" />}
-            <TextField
-              margin="normal"
-              required
-              fullWidth
               id="patente"
               label="Patente"
               name="patente"
@@ -136,7 +107,9 @@ const FormularioCliente = () => {
             />
             {!isValid && <Alerts alertType="warning" description="Ejemplos de patentes válidas: AA111AA o ABC123" title="Patente inválida" />}
             <Talleres setTallerSeleccionado={setTaller} />
-            {taller && <Disponibilidad tallerId={taller} setFecha={setFecha} setHora={setHora} />}
+            {/* eslint-disable-next-line max-len */}
+            {taller && <Disponibilidad endPoint={endPointDisponibilidad} setFecha={setFecha} setHora={setHora} msjError={setMsjError} />}
+            {msjError && <Alerts alertType="error" description={msjError} title="No se encontró patente?." />}
             <TextField
               margin="normal"
               required
