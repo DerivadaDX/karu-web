@@ -53,7 +53,7 @@ const Boleta = (props) => {
   const cotizacion = JSON.parse(rawValue);
 
   /* declara una variable de estado para almacenar la fecha actual */
-  const [fechaActual, setFechaActual] = useState(new Date());
+  const [fecha, setFechaActual] = useState(new Date());
 
   const sucursal = 'Surcusal del vendedor';
   const numeroCotizacion = '890';
@@ -75,24 +75,24 @@ const Boleta = (props) => {
           <Col xs={6}>
             <h4>
               Sucursal:
-              <span id="resultado">{sucursal}</span>
+              <span id="resultado">{cotizacion.sucursal}</span>
             </h4>
             <h4>
               Número de cotización:
-              <span id="resultado">{numeroCotizacion}</span>
+              <span id="resultado">{cotizacion.numeroCotizacion}</span>
             </h4>
             <h4>
               ID del vendedor:
               <span id="resultado">
                 {' '}
-                {idVendedor}
+                {cotizacion.idVendedor}
               </span>
             </h4>
           </Col>
           <Col xs={6}>
             <h4>
               ID:
-              <span id="resultado">{id}</span>
+              <span id="resultado">{cotizacion.id}</span>
             </h4>
             <h4>
               Patente:
@@ -100,7 +100,7 @@ const Boleta = (props) => {
             </h4>
             <h4>
               Nombre del cliente:
-              <span id="resultado">{cotizacion.nombreC}</span>
+              <span id="resultado">{cotizacion.nombreCliente}</span>
             </h4>
           </Col>
         </Row>
@@ -108,7 +108,8 @@ const Boleta = (props) => {
           <Col xs={6}>
             <h4>
               Fecha:
-              <span id="resultado">{fechaActual.toLocaleDateString()}</span>
+              {/* cotizacion.fechaActual.toLocaleDateString() */}
+              <span id="resultado">{cotizacion.fecha}</span>
             </h4>
           </Col>
         </Row>
@@ -116,7 +117,6 @@ const Boleta = (props) => {
           <thead>
             <tr>
               <th>Precio Base</th>
-              <th>Precio Traslado</th>
               <th>Importe IVA</th>
               <th>Gastos Administrativos</th>
               <th>Gastos Garantía</th>
@@ -126,16 +126,17 @@ const Boleta = (props) => {
           </thead>
           <tbody>
             <tr>
-              <td>{precioBase}</td>
-              <td>{precioTraslado}</td>
-              <td>{importeIVA}</td>
+              <td>{cotizacion.precioBase}</td>
+              <td>{cotizacion.importeIVA}</td>
+
+              {/* dividir los datos de gastos administrrativos */}
               <td>{gastosAdministrativos}</td>
+
               <td>{gastosGarantia}</td>
               <td>
                 {cotizacion.garantiaExtendida ? 'Sí' : 'No'}
-                {cotizacion.garantiaExtendida}
               </td>
-              <td>{total}</td>
+              <td>{cotizacion.total}</td>
             </tr>
           </tbody>
         </Table>

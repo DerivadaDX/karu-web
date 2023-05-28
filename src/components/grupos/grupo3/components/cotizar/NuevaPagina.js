@@ -33,7 +33,7 @@ const NuevaPagina = () => {
   // } = useContext(AppContext);
   const [nombreC, setNombreC] = useState('');
   const [mail, setMail] = useState('');
-  const [garantiaExtendida, setGarantiaExtendida] = useState(false);
+  const [garantiaCheck, setGarantiaExtendida] = useState(false);
 
   const navigate = useNavigate();
 
@@ -66,32 +66,38 @@ const NuevaPagina = () => {
       // updateEmail(email);
       // updatePatente(productSelected.patente);
       // updateGarantiaExtendida(garantiaExtendida);
-      const infoCotizacion = {
-        nombreC,
-        mail,
-        garantiaExtendida,
-        patente: productSelected.patente,
-      };
+
       // paso datos al back
       const url = 'http://34.139.89.18:8080/api-gc/cotizaciones/save';
       const cotizacionData = {
         sucursal: 'S-01',
         nombreCliente: nombreC,
-        patente: infoCotizacion.patente,
+        patente: productSelected.patente, // infoCotizacion.patente,
         email: mail,
         idVendedor: 123,
-        garantiaExtendida: garantiaExtendida,
+        garantiaExtendida: garantiaCheck,
       };
       axios.post(url, cotizacionData)
         .then((response) => {
           // Manejar la respuesta exitosa
           console.log(response.data);
+          /* const infoCotizacion = {
+            nombreC,
+            mail,
+            garantiaExtendida,
+            patente: productSelected.patente,
+            datos: response.data,
+          }; */
+          // paso datos al storage
+          const infoCotizacion = response.data;
+          sessionStorage.setItem('cotizacion', JSON.stringify(infoCotizacion));
         })
         .catch((error) => {
           // Manejar el error
           console.error(error);
         });
-      sessionStorage.setItem('cotizacion', JSON.stringify(infoCotizacion));
+
+      // sessionStorage.setItem('cotizacion', JSON.stringify(infoCotizacion));
       /* no hace fata darle clic,x eso uso navigate() */
       navigate('/boleta-cotizacion');
     }
@@ -194,7 +200,7 @@ const NuevaPagina = () => {
         <Form.Group className="mb-3" controlId="checkGarantia">
           <Form.Check
             label="Garantía extendida"
-            checked={garantiaExtendida}
+            checked={garantiaCheck}
             onChange={(event) => setGarantiaExtendida(event.target.checked)}
           />
         </Form.Group>
