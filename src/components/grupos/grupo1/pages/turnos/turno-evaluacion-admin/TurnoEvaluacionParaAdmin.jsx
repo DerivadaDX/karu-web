@@ -64,6 +64,8 @@ const FormularioEvaluacionAdmin = () => {
       }
     } catch (error) {
       setOpenPopupNoSeleccion(true);
+      // console.log(error.response.data);
+      // error: la patente ingresada ya tiene un turno del mismo tipo para ese mismo dia
     }
   };
 
