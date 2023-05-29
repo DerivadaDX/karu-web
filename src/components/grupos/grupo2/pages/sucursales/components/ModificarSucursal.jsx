@@ -14,19 +14,18 @@ import {
   TextField,
   Tooltip,
 } from '@mui/material';
-
-import PropTypes from 'prop-types';
 import EditIcon from '@mui/icons-material/Edit';
+import PropTypes from 'prop-types';
+
 import SucursalService from '../services/sucursal-service';
 
 const ModificarSucursal = ({ sucursal, onEdit }) => {
   const [mostrarPopUpModificarSucursal, setMostrarPopUpModificarSucursal] = useState(false);
   const [mostrarPopUpModificacionExitosa, setMostrarPopUpModificacionExitosa] = useState(false);
-  const [dataActualizada, setDataActualizada] = useState();
   const [valoresDelFormulario, setValoresDelFormulario] = useState({
     nombre: '',
     calle: '',
-    numero: '',
+    numero: 0,
     localidad: '',
     provincia: '',
     codigoPostal: '',
@@ -34,38 +33,10 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
     activa: false,
   });
 
-  const actualizarValor = (event) => {
-    const { name, value, checked } = event.target;
-
-    const newValue = name === 'activa' || name === 'poseeTaller' ? checked : value;
-    setValoresDelFormulario((prevValues) => ({
-      ...prevValues,
-      [name]: newValue,
-    }));
-  };
-
-  const modificarSucursal = (evento) => {
-    evento.preventDefault();
-    const datosSucursal = {
-      id: sucursal.id,
-      nombre: valoresDelFormulario.nombre,
-      calle: valoresDelFormulario.calle,
-      numero: valoresDelFormulario.numero,
-      codigo_postal: valoresDelFormulario.codigoPostal,
-      localidad: valoresDelFormulario.localidad,
-      provincia: valoresDelFormulario.provincia,
-      posee_taller: valoresDelFormulario.poseeTaller,
-      activa: valoresDelFormulario.activa,
-    };
-
-    setDataActualizada(datosSucursal);
-
-    SucursalService.modificarSucursal(sucursal.id, datosSucursal)
-      .then(() => setMostrarPopUpModificacionExitosa(true));
-  };
-
-  const recargarData = () => {
+  const mostrarYCargarFormulario = () => {
+    setMostrarPopUpModificarSucursal(true);
     setValoresDelFormulario({
+      id: sucursal.id,
       nombre: sucursal.nombre,
       calle: sucursal.calle,
       numero: sucursal.numero,
@@ -77,29 +48,66 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
     });
   };
 
-  const cerrarComponente = () => {
-    setMostrarPopUpModificacionExitosa(false);
-    setMostrarPopUpModificarSucursal(false);
-    onEdit(dataActualizada);
+  const cambiarVisibilidadDePopUpModificarSucursal = () => {
+    setMostrarPopUpModificarSucursal(!mostrarPopUpModificarSucursal);
+  };
+
+  const cambiarVisibilidadDePopUpModificacionExitosa = () => {
+    setMostrarPopUpModificacionExitosa(!mostrarPopUpModificacionExitosa);
+  };
+
+  const actualizarValorDeFormulario = (event) => {
+    const { name, value, checked } = event.target;
+
+    const cambioUnCheckbox = name === 'activa' || name === 'poseeTaller';
+    const valorNuevo = cambioUnCheckbox ? checked : value;
+
+    setValoresDelFormulario((valoresActuales) => ({
+      ...valoresActuales,
+      [name]: valorNuevo,
+    }));
+  };
+
+  const modificarSucursal = (event) => {
+    event.preventDefault();
+
+    const datosSucursal = {
+      nombre: valoresDelFormulario.nombre,
+      calle: valoresDelFormulario.calle,
+      numero: valoresDelFormulario.numero,
+      codigo_postal: valoresDelFormulario.codigoPostal,
+      localidad: valoresDelFormulario.localidad,
+      provincia: valoresDelFormulario.provincia,
+      posee_taller: valoresDelFormulario.poseeTaller,
+      activa: valoresDelFormulario.activa,
+    };
+
+    SucursalService.modificarSucursal(sucursal.id, datosSucursal)
+      .then(cambiarVisibilidadDePopUpModificacionExitosa);
+  };
+
+  const finalizarModificacion = () => {
+    const nuevosDatosSucursal = {
+      id: sucursal.id,
+      ...valoresDelFormulario,
+    };
+
+    cambiarVisibilidadDePopUpModificacionExitosa();
+    cambiarVisibilidadDePopUpModificarSucursal();
+    onEdit(nuevosDatosSucursal);
   };
 
   return (
     <Box>
       <Tooltip title="Editar">
-        <IconButton onClick={() => {
-          setMostrarPopUpModificarSucursal(true);
-          recargarData();
-        }}
-        >
+        <IconButton onClick={mostrarYCargarFormulario}>
           <EditIcon />
         </IconButton>
       </Tooltip>
 
       <Dialog
         open={mostrarPopUpModificarSucursal}
-        onClose={() => {
-          setMostrarPopUpModificarSucursal(false);
-        }}
+        onClose={cambiarVisibilidadDePopUpModificarSucursal}
       >
         <DialogTitle sx={{ textAlign: 'center', fontSize: '2rem' }}>
           Modificar Sucursal
@@ -116,7 +124,7 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
               name="nombre"
               value={valoresDelFormulario.nombre}
               label="Nombre"
-              onChange={actualizarValor}
+              onChange={actualizarValorDeFormulario}
               variant="standard"
               margin="dense"
               required
@@ -126,7 +134,7 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
               name="calle"
               value={valoresDelFormulario.calle}
               label="Calle"
-              onChange={actualizarValor}
+              onChange={actualizarValorDeFormulario}
               variant="standard"
               margin="dense"
               required
@@ -136,7 +144,7 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
               name="numero"
               value={valoresDelFormulario.numero}
               label="Altura"
-              onChange={actualizarValor}
+              onChange={actualizarValorDeFormulario}
               variant="standard"
               margin="dense"
               type="number"
@@ -147,7 +155,7 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
               name="codigoPostal"
               value={valoresDelFormulario.codigoPostal}
               label="C.P."
-              onChange={actualizarValor}
+              onChange={actualizarValorDeFormulario}
               variant="standard"
               margin="dense"
               type="number"
@@ -158,7 +166,7 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
               name="localidad"
               value={valoresDelFormulario.localidad}
               label="Localidad"
-              onChange={actualizarValor}
+              onChange={actualizarValorDeFormulario}
               variant="standard"
               margin="dense"
               required
@@ -168,39 +176,47 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
               name="provincia"
               value={valoresDelFormulario.provincia}
               label="Provincia"
-              onChange={actualizarValor}
+              onChange={actualizarValorDeFormulario}
               variant="standard"
               margin="dense"
               required
             />
             <FormControlLabel
               id="poseeTaller"
+              name="poseeTaller"
               value={valoresDelFormulario.poseeTaller}
-              label="Taller Mecánico"
+              label="¿Posee taller mecánico?"
               labelPlacement="start"
               control={(
                 <Switch
                   checked={valoresDelFormulario.poseeTaller}
-                  onChange={actualizarValor}
+                  onChange={actualizarValorDeFormulario}
                   disabled={sucursal.posee_taller}
-                  name="poseeTaller"
                 />
               )}
-              sx={{ marginTop: '2ch', justifyContent: 'space-between', marginLeft: '0ch' }}
+              sx={{
+                marginTop: '2ch',
+                justifyContent: 'space-between',
+                marginLeft: '0ch',
+              }}
             />
             <FormControlLabel
               id="activa"
+              name="activa"
               value={valoresDelFormulario.activa}
-              label="Habilitada"
+              label="¿Está habilitada?"
               labelPlacement="start"
               control={(
                 <Switch
                   checked={valoresDelFormulario.activa}
-                  onChange={actualizarValor}
-                  name="activa"
+                  onChange={actualizarValorDeFormulario}
                 />
               )}
-              sx={{ marginTop: '2ch', justifyContent: 'space-between', marginLeft: '0ch' }}
+              sx={{
+                marginTop: '2ch',
+                justifyContent: 'space-between',
+                marginLeft: '0ch',
+              }}
             />
 
             <Button
@@ -216,13 +232,13 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
 
       <Dialog
         open={mostrarPopUpModificacionExitosa}
-        onClose={cerrarComponente}
+        onClose={finalizarModificacion}
       >
         <DialogTitle id="alert-dialog-title">
-          Modificacion Exitosa!
+          ¡Modificación exitosa!
         </DialogTitle>
         <DialogActions>
-          <Button onClick={cerrarComponente}>
+          <Button onClick={finalizarModificacion}>
             Cerrar
           </Button>
         </DialogActions>
