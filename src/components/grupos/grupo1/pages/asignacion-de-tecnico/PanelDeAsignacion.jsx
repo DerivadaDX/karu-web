@@ -9,7 +9,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Popup from '../../components/common/DialogPopup';
 
-const idTaller = 'S002';
+const idTaller = 'T002';
 
 const AsignacionDeTecnicos = ({
   idTurnoPadre,
@@ -103,7 +103,7 @@ const AsignacionDeTecnicos = ({
       .then((data) => {
         if (typeof data === 'object' && Array.isArray(data.tecnicos)) {
           const rows = data.tecnicos.map((tecnicosItem) => ({
-            id: tecnicosItem.id_empleado,
+            id: tecnicosItem.id,
             nombre: tecnicosItem.nombre_completo,
             dni: tecnicosItem.dni,
             categoria: tecnicosItem.categoria,
