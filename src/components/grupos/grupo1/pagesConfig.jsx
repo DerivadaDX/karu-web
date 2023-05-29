@@ -5,6 +5,7 @@ import ListAltIcon from '@mui/icons-material/ListAlt';
 import ContactMailIcon from '@mui/icons-material/ContactMail';
 import HandymanIcon from '@mui/icons-material/Handyman';
 import DesignServicesIcon from '@mui/icons-material/DesignServices';
+import GarageIcon from '@mui/icons-material/Garage';
 import RateReviewIcon from '@mui/icons-material/RateReview';
 import ReviewsIcon from '@mui/icons-material/Reviews';
 import TooltipCus from './components/common/Tooltip';
@@ -12,6 +13,7 @@ import VisualizacionFiltroBusqueda from './pages/visualizacion-tecnicos/Visualiz
 import Dashboard from './pages/dashboard/Dashboard';
 import MisTurnos from './pages/visualizar-mis-turnos/MisTurnos';
 import AgendaTaller from './pages/visualizar-agenda/AgendaTaller';
+import Talleres from './pages/talleres/Talleres';
 import FormularioCliente from './pages/turnos/turno-service-cliente/TurnoCliente';
 import Formulario from './pages/turnos/turno-reparacion/TurnoReparacion';
 import ChecklistReparacion from './pages/checklist-reparacion/ChecklistReparacion';
@@ -83,6 +85,13 @@ const GROUP_1_PAGES_CONFIG = [
     href: '/services',
     icon: <TooltipCus icon={<DesignServicesIcon />} title="Services" />,
     page: <Services />,
+  },
+  {
+    id: 'g1-Talleres',
+    name: 'Talleres',
+    href: '/talleres',
+    icon: <TooltipCus icon={<GarageIcon />} title="Talleres" />,
+    page: <Talleres />,
   },
   {
     id: 'g1-TurnoEvaluacionAdmin',
