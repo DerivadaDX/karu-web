@@ -99,6 +99,7 @@ const ReprogramacionTurno = (props) => {
             setFecha={setFecha}
             setHora={setHora}
             msjError={setErrorMsj}
+            limite={45}
           />
 
           {/* Botones que estan en la base del popup */}
