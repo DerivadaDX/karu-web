@@ -47,6 +47,8 @@ const PopUpCrearVendedor = () => {
   const [cuit, setCuit] = useState('');
   const [email, setEmail] = useState('');
   const [fechaDeIngreso, setFechaDeIngreso] = useState(null);
+  const [cuitIsValid, setCuitIsValid] = useState(true);
+  const [fechaDeIngresoIsValid, setfechaDeIngresoIsValid] = useState(false);
 
   const cambiarVisibilidadPopUpCrearVendedor = () => {
     setMostrarPopUpCrearVendedor(!mostrarPopUpCrearVendedor);
@@ -55,6 +57,12 @@ const PopUpCrearVendedor = () => {
   const cambiarVisibilidadPopUpCreacionExitosa = () => {
     setMostrarPopUpCreacionExitosa(false);
     setMostrarPopUpCrearVendedor(false);
+  };
+  const handleValidation = (e) => {
+    setCuit(e.target.value);
+    const cuitRegex = /^(20|23|24|27|30|33|34)(-\d{8}-\d)$/;
+    console.log(cuitRegex.test(e.target.value));
+    setCuitIsValid(cuitRegex.test(e.target.value));
   };
 
   return (
@@ -116,15 +124,15 @@ const PopUpCrearVendedor = () => {
               name="cuit"
               id="cuit"
               label="cuit"
-              placeholder="00-00000000-0"
               variant="standard"
               margin="dense"
-              required
-              onChange={(event) => setCuit(event.target.value)}
+              error={!cuitIsValid}
+              onChange={(event) => handleValidation(event)}
               InputProps={{
                 inputComponent: cuitComponent,
                 minLength: 8,
               }}
+              required
             />
 
             <DatePicker
@@ -132,12 +140,12 @@ const PopUpCrearVendedor = () => {
               value={fechaDeIngreso}
               label="Fecha de Ingreso"
               type="date"
-              onChange={(date) => setFechaDeIngreso(date)}
+              onChange={(date) => { setFechaDeIngreso(date); setfechaDeIngresoIsValid(true); }}
               slotProps={{ textField: { variant: 'standard', margin: 'dense' } }}
-              required
 
             />
             <Button
+              disabled={!cuitIsValid && !fechaDeIngresoIsValid}
               type="submit"
               variant="contained"
               sx={{ marginTop: '2ch' }}
