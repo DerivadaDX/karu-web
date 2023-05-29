@@ -67,7 +67,6 @@ const FormularioCliente = () => {
     }
   };
 
-  // Endpoint: 'https://autotech2.onrender.com/turnos/crear-turno-service/'
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -91,7 +90,6 @@ const FormularioCliente = () => {
         setOpenPopupNoSeleccion(true);
       }
     } catch (error) {
-      console.log(error.response);
       setOpenPopupNoSeleccion(true);
     }
   };
