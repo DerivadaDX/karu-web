@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -14,33 +15,36 @@ import Popup from '../../../components/common/DialogPopup';
 
 const FormularioCliente = () => {
   const [taller, setTaller] = useState();
-  const [patente, setPatente] = useState();
+  const [patenteTurno, setPatente] = useState();
   const [fecha, setFecha] = useState();
   const [hora, setHora] = useState();
+  // Para mostrar en la pantalla lo que pone el cliente
   const [kilometros, setKilometros] = useState('');
+  // Para crear el turno, redondeado
+  const [frecuenciaKm, setFrecuenciaKM] = useState('');
   // Para los mensajes de confirmar o avisar que complete todos los campos
   const [openPopupNoSeleccion, setOpenPopupNoSeleccion] = useState(false);
   const [openPopupSeleccion, setOpenPopupSeleccion] = useState(false);
   // Para validar la patente
-  const [isValid, setIsValid] = useState(true);
+  const [isPatenteValida, setIsPatenteValida] = useState(true);
   // Para validar el km
   const [isKmValido, setIsKmValido] = useState(true);
 
-  const msjTurnoCreado = `Se ha creado el turno de service para la patente ${patente} con ${kilometros} kilómetros para el día ${fecha} a las ${hora} en el taller ${taller}. Recibirá un mail con los datos mencionados. Por favor, recuerde asistir con cédula verde. Gracias.`;
+  const msjTurnoCreado = `Se ha creado el turno de service para la patente ${patenteTurno} con ${kilometros} kilómetros para el día ${fecha} a las ${hora} en el taller ${taller}. Recibirá un mail con los datos mencionados. Por favor, recuerde asistir con cédula verde. Gracias.`;
 
-  const [msjError, setMsjError] = useState();
+  const [msjError, setMsjError] = useState('');
 
   const marca = 'generico';
   const modelo = 'generico';
-  const endPointDisponibilidad = `https://autotech2.onrender.com/turnos/dias-horarios-disponibles-service/${taller}/${marca}/${modelo}/${kilometros}/`;
+  const endPointDisponibilidad = `https://autotech2.onrender.com/turnos/dias-horarios-disponibles-service/${taller}/${marca}/${modelo}/${frecuenciaKm}/`;
 
   const guardarPatente = (event) => {
     const { value } = event.target;
     if (ValidarPatente.isPatenteValida(value)) {
-      setIsValid(true);
+      setIsPatenteValida(true);
       setPatente(value);
     } else {
-      setIsValid(false);
+      setIsPatenteValida(false);
     }
   };
 
@@ -55,6 +59,8 @@ const FormularioCliente = () => {
       }
       if (ValidarKm.isKmNros(val)) {
         setKilometros(val);
+        const km = ValidarKm.redondearKm(val);
+        setFrecuenciaKM(km);
       }
     } else if (val === '') {
       setKilometros(val);
@@ -62,20 +68,32 @@ const FormularioCliente = () => {
   };
 
   // Endpoint: 'https://autotech2.onrender.com/turnos/crear-turno-service/'
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // eslint-disable-next-line max-len
-    if (taller && patente && isValid && fecha && hora && kilometros && isKmValido) {
-      setOpenPopupSeleccion(true);
-    } else {
+    try {
+      if (msjError !== '') {
+        setOpenPopupNoSeleccion(true);
+      } else if (
+        taller && patenteTurno && isPatenteValida && fecha && hora && frecuenciaKm && isKmValido) {
+        await axios({
+          method: 'post',
+          url: 'https://autotech2.onrender.com/turnos/crear-turno-service/',
+          data: {
+            patente: patenteTurno,
+            fecha_inicio: fecha,
+            hora_inicio: hora,
+            frecuencia_km: frecuenciaKm,
+            taller_id: taller,
+          },
+        });
+        setOpenPopupSeleccion(true);
+      } else {
+        setOpenPopupNoSeleccion(true);
+      }
+    } catch (error) {
+      console.log(error.response);
       setOpenPopupNoSeleccion(true);
     }
-    // Hacer los redondeos a la hora de mandar al back para crear el turno
-    // if (val > 200000) {
-    //   setKilometros(200000);
-    // } else {
-    //   setKilometros(Math.ceil(val / 5000) * 5000);
-    // }
   };
 
   return (
@@ -105,11 +123,7 @@ const FormularioCliente = () => {
               inputProps={{ minLength: 6, maxLength: 7 }}
               onChange={guardarPatente}
             />
-            {!isValid && <Alerts alertType="warning" description="Ejemplos de patentes válidas: AA111AA o ABC123" title="Patente inválida" />}
-            <Talleres setTallerSeleccionado={setTaller} />
-            {/* eslint-disable-next-line max-len */}
-            {taller && <Disponibilidad endPoint={endPointDisponibilidad} setFecha={setFecha} setHora={setHora} msjError={setMsjError} />}
-            {msjError && <Alerts alertType="error" description={msjError} title="No se encontró patente?." />}
+            {!isPatenteValida && <Alerts alertType="warning" description="Ejemplos de patentes válidas: AA111AA o ABC123" title="Patente inválida" />}
             <TextField
               margin="normal"
               required
@@ -124,6 +138,18 @@ const FormularioCliente = () => {
               onChange={guardarKilometraje}
             />
             {!isKmValido && <Alerts alertType="warning" description="Coberturas válidas: de 5000 a 200000 km." title="Kilometraje inválido" />}
+            <Talleres setTallerSeleccionado={setTaller} />
+            {patenteTurno
+              && frecuenciaKm && taller
+              && (
+                <Disponibilidad
+                  endPoint={endPointDisponibilidad}
+                  setFecha={setFecha}
+                  setHora={setHora}
+                  msjError={setMsjError}
+                />
+              )}
+            {msjError && <Alerts alertType="error" description={msjError} title="No se encontró service." />}
             <Button
               type="submit"
               fullWidth
