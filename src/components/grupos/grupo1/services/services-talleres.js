@@ -10,9 +10,12 @@ const getSucursalesActivas = async () => axios.get(`${url}/sucursales-validas-ac
 
 const getDetalleSucursal = async (idTaller) => axios.get(`${url}/sucursales-validas-activas/${idTaller}`);
 
+const getSucursalesSinTaller = async () => axios.get(`${url}/sucursales-sin-taller/`);
+
 export {
   getTalleres,
   crearTaller,
   getSucursalesActivas,
   getDetalleSucursal,
+  getSucursalesSinTaller,
 };

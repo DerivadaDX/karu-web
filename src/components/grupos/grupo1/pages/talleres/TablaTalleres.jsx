@@ -21,6 +21,7 @@ import {
   getSucursalesActivas,
 } from '../../services/services-talleres';
 import DetalleSucursal from './DetalleSucursal';
+import AltaTaller from './AltaTaller';
 
 const TablaTalleres = () => {
   const [talleres, setTalleres] = useState([]);
@@ -41,6 +42,8 @@ const TablaTalleres = () => {
   // Para actualizar la tabla luego de que haya algun cambio
   const [actualizarTabla, setActualizarTabla] = useState(false);
 
+  // Para crear un taller nuevo
+  const [openAltaTaller, setOpenAltaTaller] = useState(false);
   // Alertas de la API
   const [alertType, setAlertType] = useState('');
   const [alertMessage, setAlertMessage] = useState('');
@@ -173,7 +176,7 @@ const TablaTalleres = () => {
           },
         }}
         onClick={() => {
-          // console.log('Agregar service');
+          setOpenAltaTaller(true);
         }}
       >
         Nuevo Taller
@@ -239,6 +242,18 @@ const TablaTalleres = () => {
           open={openDetalleSucursal}
           setOpen={setOpenDetalleSucursal}
           tallerId={idTallerSucursal}
+        />
+      </Popup>
+      <Popup
+        title={<LittleHeader titulo="Alta de taller" />}
+        openDialog={openAltaTaller}
+        setOpenDialog={setOpenAltaTaller}
+      >
+        <AltaTaller
+          open={openAltaTaller}
+          setOpen={setOpenAltaTaller}
+          setActualizar={setActualizarTabla}
+          actualizar={actualizarTabla}
         />
       </Popup>
     </>

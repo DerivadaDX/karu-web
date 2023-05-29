@@ -16,7 +16,7 @@ export default function DetalleTaller(props) {
 
   return (
     <>
-      <Stack spacing={1}>
+      <Stack spacing={1} width={250}>
         <TextField
           disabled
           id="standard-disabled"
@@ -65,6 +65,8 @@ export default function DetalleTaller(props) {
           label="Mail"
           defaultValue={row.mail}
           variant="standard"
+          multiline
+          rows={1}
         />
         <TextField
           disabled
@@ -88,7 +90,10 @@ export default function DetalleTaller(props) {
           variant="standard"
         />
       </Stack>
-      <Box>
+      <Box sx={{
+        display: 'flex', justifyContent: 'center', alignItems: 'center',
+      }}
+      >
         <DialogActions>
           <Button
             color="primary"
