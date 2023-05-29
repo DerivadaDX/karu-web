@@ -13,9 +13,9 @@ import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 
 import axios from 'axios';
-import feriados from '../turno-cliente/feriados.json';
+import feriados from '../turno-service-cliente/feriados.json';
 // Para el refactor, reemplazar estos dos jsons por variables
-import disponibilidad from '../turno-cliente/disponibilidad.json';
+import disponibilidad from '../turno-service-cliente/disponibilidad.json';
 import turno from '../turno.json';
 
 dayjs.extend(utc);

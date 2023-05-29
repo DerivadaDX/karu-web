@@ -12,7 +12,7 @@ import ValidarPatente from '../Helpers/validar-patente';
 import Alerts from '../../../components/common/Alerts';
 import Popup from '../../../components/common/DialogPopup';
 
-const FormularioEvaluacionAdmin = () => {
+const FormularioEvaluacionCliente = () => {
   const [taller, setTaller] = useState();
   const [patenteTurno, setPatente] = useState();
   const [fecha, setFecha] = useState();
@@ -23,7 +23,7 @@ const FormularioEvaluacionAdmin = () => {
   // Para validar la patente
   const [isPatenteValida, setIsPatenteValida] = useState(true);
 
-  const msjTurnoCreado = `Se ha creado el turno de evaluación para la patente ${patenteTurno} para el día ${fecha} a las ${hora} en el taller ${taller}. Gracias.`;
+  const msjTurnoCreado = `Se ha creado el turno de evaluación para la patente ${patenteTurno} para el día ${fecha} a las ${hora} en el taller ${taller}. En breve recibirá un mail con todos los datos. Recuerde asistir con cédula verde. Gracias.`;
 
   const [msjError, setMsjError] = useState('');
 
@@ -48,7 +48,7 @@ const FormularioEvaluacionAdmin = () => {
         taller && patenteTurno && isPatenteValida && fecha && hora) {
         await axios({
           method: 'post',
-          url: 'https://autotech2.onrender.com/turnos/crear-turno-evaluacion-presencial/',
+          url: 'https://autotech2.onrender.com/turnos/crear-turno-evaluacion-web/',
           data: {
             patente: patenteTurno,
             fecha_inicio: fecha,
@@ -78,7 +78,7 @@ const FormularioEvaluacionAdmin = () => {
           }}
         >
           <Typography component="h1" variant="h5" sx={{ marginBottom: 5 }}>
-            Turno para Evaluación (Administrativos)
+            Turno para Evaluación
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
@@ -155,4 +155,4 @@ const FormularioEvaluacionAdmin = () => {
   );
 };
 
-export default FormularioEvaluacionAdmin;
+export default FormularioEvaluacionCliente;
