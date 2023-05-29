@@ -5,6 +5,7 @@ import ListAltIcon from '@mui/icons-material/ListAlt';
 import ContactMailIcon from '@mui/icons-material/ContactMail';
 import HandymanIcon from '@mui/icons-material/Handyman';
 import DesignServicesIcon from '@mui/icons-material/DesignServices';
+import RateReviewIcon from '@mui/icons-material/RateReview';
 import TooltipCus from './components/common/Tooltip';
 import VisualizacionFiltroBusqueda from './pages/visualizacion-tecnicos/VisualizacionFiltroBusqueda';
 import Dashboard from './pages/dashboard/Dashboard';
@@ -15,6 +16,7 @@ import Formulario from './pages/turnos/turno-reparaciones-venta/TurnoReparacionP
 import ChecklistReparacion from './pages/checklist-reparacion/ChecklistReparacion';
 import ReprogramacionTurno from './pages/reprogramar-turno/ReprogramacionTurno';
 import Services from './pages/visualizar-services/Services';
+import FormularioAdmin from './pages/turnos/turno-evaluacion-admin/TurnoEvaluacionParaAdmin';
 
 const GROUP_1_PAGES_CONFIG = [
   {
@@ -79,6 +81,13 @@ const GROUP_1_PAGES_CONFIG = [
     href: '/services',
     icon: <TooltipCus icon={<DesignServicesIcon />} title="Services" />,
     page: <Services />,
+  },
+  {
+    id: 'g1-TurnoEvaluacion',
+    name: 'Turnos de evaluación',
+    href: '/turno-evaluación-admin',
+    icon: <TooltipCus icon={<RateReviewIcon />} title="Turno de evaluación" />,
+    page: <FormularioAdmin />,
   },
 ];
 
