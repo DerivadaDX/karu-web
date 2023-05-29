@@ -14,9 +14,7 @@ import timezone from 'dayjs/plugin/timezone';
 
 import axios from 'axios';
 import feriados from '../turno-service-cliente/feriados.json';
-// Para el refactor, reemplazar estos dos jsons por variables
 import disponibilidad from '../turno-service-cliente/disponibilidad.json';
-import turno from '../turno.json';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -43,6 +41,7 @@ const Disponibilidad = ({
   endPoint, setFecha, setHora, msjError, limite,
 }) => {
   const [dia, setDia] = React.useState(tomorrow);
+  const [fechaSeleccionada, setFechaSeleccionada] = React.useState('');
 
   const lim = dayjs().add(limite, 'day');
 
@@ -82,12 +81,11 @@ const Disponibilidad = ({
           onChange={(newValue) => {
             setDia(newValue);
             setFecha(format(new Date(newValue), 'yyyy-MM-dd'));
-            turno.fecha_inicio = format(new Date(newValue), 'yyyy-MM-dd');
-            turno.fecha_fin = format(new Date(newValue), 'yyyy-MM-dd');
+            setFechaSeleccionada(format(new Date(newValue), 'yyyy-MM-dd'));
           }}
         />
         <Grid item xs={12} md={10}>
-          {turno.fecha_inicio !== ''
+          {fechaSeleccionada
             && (
               <Box
                 sx={{
@@ -99,7 +97,7 @@ const Disponibilidad = ({
               >
                 <Hora
                   required
-                  fecha={turno.fecha_inicio}
+                  fecha={fechaSeleccionada}
                   diasYhorarios={disponibilidad.dias_y_horarios}
                   setHoraSeleccionada={setHora}
                 />
@@ -113,15 +111,11 @@ const Disponibilidad = ({
 
 const Hora = ({ diasYhorarios, fecha, setHoraSeleccionada }) => {
   const [hora, setHora] = React.useState('');
-  let h;
 
   const handleHoraChange = (event) => {
     const selectedValue = event.target.value;
     setHora(selectedValue);
     setHoraSeleccionada(`${parseInt(selectedValue, 10)}:00:00`);
-    turno.hora_inicio = `${parseInt(selectedValue, 10)}:00:00`;
-    h = parseInt(selectedValue, 10) + 1;
-    turno.hora_fin = `${h}:00:00`;
   };
 
   const horariosDisponibles = diasYhorarios
