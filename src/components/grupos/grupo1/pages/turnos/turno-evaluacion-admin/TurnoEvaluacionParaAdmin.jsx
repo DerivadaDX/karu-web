@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -8,72 +9,60 @@ import Container from '@mui/material/Container';
 import Disponibilidad from '../Componentes/FechasHorarios';
 import Talleres from '../Componentes/Talleres';
 import ValidarPatente from '../Helpers/validar-patente';
-import ValidarKm from '../Helpers/validar-km';
 import Alerts from '../../../components/common/Alerts';
 import Popup from '../../../components/common/DialogPopup';
 
-const FormularioCliente = () => {
+const FormularioEvaluacionAdmin = () => {
   const [taller, setTaller] = useState();
-  const [patente, setPatente] = useState();
+  const [patenteTurno, setPatente] = useState();
   const [fecha, setFecha] = useState();
   const [hora, setHora] = useState();
-  const [kilometros, setKilometros] = useState('');
-  // const [dni, setDNI] = useState('');
   // Para los mensajes de confirmar o avisar que complete todos los campos
   const [openPopupNoSeleccion, setOpenPopupNoSeleccion] = useState(false);
   const [openPopupSeleccion, setOpenPopupSeleccion] = useState(false);
   // Para validar la patente
-  const [isValid, setIsValid] = useState(true);
-  // Para validar el km
-  const [isKmValido, setIsKmValido] = useState(true);
-  // Agregar kilometraje
-  const msjTurnoCreado = `Se ha creado el turno de service para ${patente} con ${kilometros} kilómetros para el día ${fecha} a las ${hora} en el taller ${taller}. Recibirá un mail con los datos mencionados. Por favor, recuerde asistir con cédula verde. Gracias.`;
+  const [isPatenteValida, setIsPatenteValida] = useState(true);
+
+  const msjTurnoCreado = `Se ha creado el turno de evaluación para la patente ${patenteTurno} para el día ${fecha} a las ${hora} en el taller ${taller}. Gracias.`;
+
+  const [msjError, setMsjError] = useState('');
+
+  const endPointDisponibilidad = `https://autotech2.onrender.com/turnos/dias-horarios-disponibles/${taller}/`;
+  // Para setear el límite del calendario
+  const limite = 31;
 
   const guardarPatente = (event) => {
     const { value } = event.target;
     if (ValidarPatente.isPatenteValida(value)) {
-      setIsValid(true);
+      setIsPatenteValida(true);
       setPatente(value);
     } else {
-      setIsValid(false);
+      setIsPatenteValida(false);
     }
   };
 
-  const guardarKilometraje = (e) => {
-    const val = e.target.value;
-
-    if (e.target.validity.valid) {
-      if (ValidarKm.isKilometroValid(val)) {
-        setIsKmValido(true);
-      } else {
-        setIsKmValido(false);
-      }
-      if (ValidarKm.isKmNros(val)) {
-        setKilometros(val);
-      }
-    } else if (val === '') {
-      setKilometros(val);
-    }
-    // Hacer los redondeos a la hora de mandar al back para crear el turno
-    // if (val > 200000) {
-    //   setKilometros(200000);
-    // } else {
-    //   setKilometros(Math.ceil(val / 5000) * 5000);
-    // }
-  };
-
-  // Implementar función
-  const guardarDNI = (e) => {
-    const v = e.target.value;
-    return v;
-  };
-
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // Quedaría verificar que haya también un DNI correcto
-    if (taller && patente && isValid && fecha && hora && kilometros && isKmValido) {
-      setOpenPopupSeleccion(true);
-    } else {
+    try {
+      if (msjError !== '') {
+        setOpenPopupNoSeleccion(true);
+      } else if (
+        taller && patenteTurno && isPatenteValida && fecha && hora) {
+        await axios({
+          method: 'post',
+          url: 'https://autotech2.onrender.com/turnos/crear-turno-evaluacion-presencial/',
+          data: {
+            patente: patenteTurno,
+            fecha_inicio: fecha,
+            hora_inicio: hora,
+            taller_id: taller,
+          },
+        });
+        setOpenPopupSeleccion(true);
+      } else {
+        setOpenPopupNoSeleccion(true);
+      }
+    } catch (error) {
       setOpenPopupNoSeleccion(true);
     }
   };
@@ -91,49 +80,34 @@ const FormularioCliente = () => {
           }}
         >
           <Typography component="h1" variant="h5" sx={{ marginBottom: 5 }}>
-            Turno para Service
+            Turno para Evaluación (Administrativos)
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required
               fullWidth
-              id="dni"
-              label="DNI"
-              name="dni"
               autoFocus
-              inputProps={{ minLength: 7, maxLength: 8 }}
-              onChange={guardarDNI}
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
               id="patente"
               label="Patente"
               name="patente"
-              autoFocus
               inputProps={{ minLength: 6, maxLength: 7 }}
               onChange={guardarPatente}
             />
-            {!isValid && <Alerts alertType="warning" description="Ejemplos de patentes válidas: AA111AA o ABC123" title="Patente inválida" />}
+            {!isPatenteValida && <Alerts alertType="warning" description="Ejemplos de patentes válidas: AA111AA o ABC123" title="Patente inválida" />}
             <Talleres setTallerSeleccionado={setTaller} />
-            {taller && <Disponibilidad tallerId={taller} setFecha={setFecha} setHora={setHora} />}
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              value={kilometros}
-              id="kilometraje"
-              label="Kilometraje"
-              name="kilometraje"
-              type="tel"
-              pattern="[1-9][0-9]*"
-              autoFocus
-              inputProps={{ maxLength: 6 }}
-              onChange={guardarKilometraje}
-            />
-            {!isKmValido && <Alerts alertType="warning" description="Coberturas válidas: de 5000 a 200000 km." title="Kilometraje inválido" />}
+            {patenteTurno
+              && taller
+              && (
+                <Disponibilidad
+                  endPoint={endPointDisponibilidad}
+                  setFecha={setFecha}
+                  setHora={setHora}
+                  msjError={setMsjError}
+                  limite={limite}
+                />
+              )}
+            {msjError && <Alerts alertType="error" description={msjError} title="Hubo un error en la disponibilidad." />}
             <Button
               type="submit"
               fullWidth
@@ -146,7 +120,7 @@ const FormularioCliente = () => {
           </Box>
           <Popup
             title="Error en datos requeridos."
-            description="Por favor complete todos los campos y verifique que la patente y el kilometraje sean correctos."
+            description="Por favor complete todos los campos y verifique la correctitud de la patente."
             openDialog={openPopupNoSeleccion}
             setOpenDialog={setOpenPopupNoSeleccion}
           >
@@ -184,4 +158,4 @@ const FormularioCliente = () => {
   );
 };
 
-export default FormularioCliente;
+export default FormularioEvaluacionAdmin;
