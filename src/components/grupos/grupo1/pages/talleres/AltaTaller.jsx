@@ -74,13 +74,6 @@ const AltaTaller = (props) => {
     try {
       traerSucursales();
       setAlertType('');
-      console.log(sucursalId);
-      console.log(nombre);
-      console.log(direccion);
-      console.log(mail);
-      console.log(telefono);
-      console.log(capacidad);
-      console.log(cantTecnicos);
     } catch (error) {
       setAlertType('error');
       setAlertTitle('Error de servidor');
@@ -164,6 +157,19 @@ const AltaTaller = (props) => {
     }
   };
 
+  const limpiarFormulario = () => {
+    const primeraSucursalId = sucursales.length > 0 ? sucursales[0].id : '';
+    setS({ sucursal: primeraSucursalId });
+    setSucursalId(primeraSucursalId);
+    setSucursalSeleccionada(sucursales.find((sucu) => sucu.id === primeraSucursalId));
+    setTelefono(0);
+    setNombre('');
+    setDireccion('');
+    setMail('');
+    setCapacidad(0);
+    setCantTecnicos(0);
+  };
+
   const url = 'https://autotech2.onrender.com/talleres/crear/';
   const handleCrearTaller = () => {
     axios.post(url, {
@@ -178,6 +184,7 @@ const AltaTaller = (props) => {
       .then(() => {
         setOpenMensajeExitoso(true);
         setActualizar(true);
+        limpiarFormulario();
       })
       .catch((error) => {
         setOpenErrorCrear(open);
@@ -217,7 +224,7 @@ const AltaTaller = (props) => {
                 label="Sucursal"
                 type="text"
                 name="sucursal"
-                value={s.sucursal}
+                value={sucursales.some((sucu) => sucu.id === s.sucursal) ? s.sucursal : ''}
                 onChange={guardarSucursal}
                 margin="dense"
                 fullWidth
