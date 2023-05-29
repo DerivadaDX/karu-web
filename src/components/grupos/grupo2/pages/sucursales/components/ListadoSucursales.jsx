@@ -9,7 +9,7 @@ import CheckBoxOutlineBlankOutlinedIcon from '@mui/icons-material/CheckBoxOutlin
 import MaterialReactTable from 'material-react-table';
 
 import SucursalService from '../services/sucursal-service';
-import PopUpCambiarEstadoSucursal from './PopUpCambiarEstadoSucursal';
+import ModificarSucursal from './ModificarSucursal';
 
 const ListadoSucursales = () => {
   const [sucursales, setSucursales] = useState([]);
@@ -23,17 +23,15 @@ const ListadoSucursales = () => {
       });
   };
 
-  const actualizarEstadoDeSucursal = (id) => {
-    const cambiarEstadoDeSucursal = (sucursal) => {
-      const esLaSucursalActualizada = sucursal.id === id;
-      const retVal = esLaSucursalActualizada
-        ? { ...sucursal, activa: !sucursal.activa }
-        : sucursal;
+  const actualizarDatosDeSucursal = (sucursalModificada) => {
+    const actualizarSucursalModificada = (sucursalActual) => {
+      const esLaSucursalModificada = sucursalActual.id === sucursalModificada.id;
+      const sucursal = esLaSucursalModificada ? sucursalModificada : sucursalActual;
 
-      return retVal;
+      return sucursal;
     };
 
-    setSucursales((prevRecords) => prevRecords.map(cambiarEstadoDeSucursal));
+    setSucursales((sucursalesActuales) => sucursalesActuales.map(actualizarSucursalModificada));
   };
 
   const renderCheckTieneTaller = ({ row }) => (
@@ -61,9 +59,9 @@ const ListadoSucursales = () => {
     const sucursal = row.original;
 
     return (
-      <PopUpCambiarEstadoSucursal
+      <ModificarSucursal
         sucursal={sucursal}
-        onSuccess={actualizarEstadoDeSucursal}
+        onEdit={actualizarDatosDeSucursal}
       />
     );
   };
@@ -124,6 +122,19 @@ const ListadoSucursales = () => {
         positionActionsColumn="last"
         renderRowActions={renderAccionesFila}
         defaultColumn={{ minSize: 10, maxSize: 100 }}
+        displayColumnDefOptions={{
+          'mrt-row-actions': {
+            header: 'Acciones',
+          },
+        }}
+        initialState={{
+          sorting: [
+            {
+              id: 'id',
+              desc: false,
+            },
+          ],
+        }}
       />
     </Box>
   );
