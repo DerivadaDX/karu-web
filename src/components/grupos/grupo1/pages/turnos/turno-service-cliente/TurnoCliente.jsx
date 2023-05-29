@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-// import { FormControl, FormLabel } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 import { Box, Paper } from '@mui/material';
 import Typography from '@mui/material/Typography';
@@ -10,51 +9,82 @@ import Container from '@mui/material/Container';
 import Disponibilidad from '../Componentes/FechasHorarios';
 import Talleres from '../Componentes/Talleres';
 import ValidarPatente from '../Helpers/validar-patente';
+import ValidarKm from '../Helpers/validar-km';
 import Alerts from '../../../components/common/Alerts';
 import Popup from '../../../components/common/DialogPopup';
 
-const Formulario = () => {
+const FormularioCliente = () => {
   const [taller, setTaller] = useState();
-  const [patenteReparacion, setPatente] = useState();
+  const [patenteTurno, setPatente] = useState();
   const [fecha, setFecha] = useState();
   const [hora, setHora] = useState();
+  // Para mostrar en la pantalla lo que pone el cliente
+  const [kilometros, setKilometros] = useState('');
+  // Para crear el turno, redondeado
+  const [frecuenciaKm, setFrecuenciaKM] = useState('');
   // Para los mensajes de confirmar o avisar que complete todos los campos
   const [openPopupNoSeleccion, setOpenPopupNoSeleccion] = useState(false);
   const [openPopupSeleccion, setOpenPopupSeleccion] = useState(false);
   // Para validar la patente
-  const [isValid, setIsValid] = useState(true);
+  const [isPatenteValida, setIsPatenteValida] = useState(true);
+  // Para validar el km
+  const [isKmValido, setIsKmValido] = useState(true);
 
-  const msjTurnoCreado = `Se ha creado el turno para la patente ${patenteReparacion} el día ${fecha} a las ${hora} en el taller ${taller}.`;
+  const msjTurnoCreado = `Se ha creado el turno de service para la patente ${patenteTurno} con ${kilometros} kilómetros para el día ${fecha} a las ${hora} en el taller ${taller}. Recibirá un mail con los datos mencionados. Por favor, recuerde asistir con cédula verde. Gracias.`;
 
-  const [msjError, setMsjError] = useState();
+  const [msjError, setMsjError] = useState('');
 
-  const origenReparacion = 'evaluacion';
-
-  const endPointDisponibilidad = `https://autotech2.onrender.com/turnos/dias-horarios-disponibles-reparaciones/${taller}/${patenteReparacion}/${origenReparacion}/`;
+  const marca = 'generico';
+  const modelo = 'generico';
+  const endPointDisponibilidad = `https://autotech2.onrender.com/turnos/dias-horarios-disponibles-service/${taller}/${marca}/${modelo}/${frecuenciaKm}/`;
+  // Para setear el límite del calendario
+  const limite = 31;
 
   const guardarPatente = (event) => {
     const { value } = event.target;
     if (ValidarPatente.isPatenteValida(value)) {
-      setIsValid(true);
+      setIsPatenteValida(true);
       setPatente(value);
     } else {
-      setIsValid(false);
+      setIsPatenteValida(false);
+    }
+  };
+
+  const guardarKilometraje = (e) => {
+    const val = e.target.value;
+
+    if (e.target.validity.valid) {
+      if (ValidarKm.isKilometroValid(val)) {
+        setIsKmValido(true);
+      } else {
+        setIsKmValido(false);
+      }
+      if (ValidarKm.isKmNros(val)) {
+        setKilometros(val);
+        const km = ValidarKm.redondearKm(val);
+        setFrecuenciaKM(km);
+      }
+    } else if (val === '') {
+      setKilometros(val);
     }
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      if (taller && patenteReparacion && isValid && fecha && hora) {
+      if (msjError !== '') {
+        setOpenPopupNoSeleccion(true);
+      } else if (
+        taller && patenteTurno && isPatenteValida && fecha && hora && frecuenciaKm && isKmValido) {
         await axios({
           method: 'post',
-          url: 'https://autotech2.onrender.com/turnos/crear-turno-reparacion/',
+          url: 'https://autotech2.onrender.com/turnos/crear-turno-service/',
           data: {
-            patente: patenteReparacion,
+            patente: patenteTurno,
             fecha_inicio: fecha,
             hora_inicio: hora,
+            frecuencia_km: frecuenciaKm,
             taller_id: taller,
-            origen: origenReparacion,
           },
         });
         setOpenPopupSeleccion(true);
@@ -79,25 +109,48 @@ const Formulario = () => {
           }}
         >
           <Typography component="h1" variant="h5" sx={{ marginBottom: 5 }}>
-            Reparación para Venta
+            Turno para Service
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required
               fullWidth
+              autoFocus
               id="patente"
               label="Patente"
               name="patente"
-              autoFocus
               inputProps={{ minLength: 6, maxLength: 7 }}
               onChange={guardarPatente}
             />
-            {!isValid && <Alerts alertType="warning" description="Ejemplos de patentes válidas: AA111AA o ABC123" title="Patente inválida" />}
+            {!isPatenteValida && <Alerts alertType="warning" description="Ejemplos de patentes válidas: AA111AA o ABC123" title="Patente inválida" />}
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              value={kilometros}
+              id="kilometraje"
+              label="Kilometraje"
+              name="kilometraje"
+              type="tel"
+              pattern="[1-9][0-9]*"
+              inputProps={{ maxLength: 6 }}
+              onChange={guardarKilometraje}
+            />
+            {!isKmValido && <Alerts alertType="warning" description="Coberturas válidas: de 5000 a 200000 km." title="Kilometraje inválido" />}
             <Talleres setTallerSeleccionado={setTaller} />
-            {/* eslint-disable-next-line max-len */}
-            {patenteReparacion && taller && <Disponibilidad endPoint={endPointDisponibilidad} setFecha={setFecha} setHora={setHora} msjError={setMsjError} />}
-            {msjError && <Alerts alertType="error" description={msjError} title="No se encontró evaluación." />}
+            {patenteTurno
+              && frecuenciaKm && taller
+              && (
+                <Disponibilidad
+                  endPoint={endPointDisponibilidad}
+                  setFecha={setFecha}
+                  setHora={setHora}
+                  msjError={setMsjError}
+                  limite={limite}
+                />
+              )}
+            {msjError && <Alerts alertType="error" description={msjError} title="No se encontró service." />}
             <Button
               type="submit"
               fullWidth
@@ -105,12 +158,12 @@ const Formulario = () => {
               color="secondary"
               sx={{ mt: 3, mb: 2 }}
             >
-              Crear Turno
+              Reservar Turno
             </Button>
           </Box>
           <Popup
             title="Error en datos requeridos."
-            description="Por favor complete todos los campos y verifique que la patente sea correcta."
+            description="Por favor complete todos los campos y verifique la correctitud del DNI, la patente y el kilometraje."
             openDialog={openPopupNoSeleccion}
             setOpenDialog={setOpenPopupNoSeleccion}
           >
@@ -126,7 +179,7 @@ const Formulario = () => {
             </Box>
           </Popup>
           <Popup
-            title="Turno creado con éxito."
+            title="Turno reservado con éxito."
             description={msjTurnoCreado}
             openDialog={openPopupSeleccion}
             setOpenDialog={setOpenPopupSeleccion}
@@ -148,4 +201,4 @@ const Formulario = () => {
   );
 };
 
-export default Formulario;
+export default FormularioCliente;

@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import InputLabel from '@mui/material/InputLabel';
 import turno from '../turno.json';
-import localidadTaller from '../turno-cliente/localidadTaller.json';
+import localidadTaller from '../turno-service-cliente/localidadTaller.json';
 
 const tallerAPI = axios.create({
   baseURL: 'https://autotech2.onrender.com/talleres_admin/',
