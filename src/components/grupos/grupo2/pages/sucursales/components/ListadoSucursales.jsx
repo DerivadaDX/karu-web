@@ -71,7 +71,6 @@ const ListadoSucursales = () => {
       {
         accessorKey: 'id',
         header: 'ID',
-        defaultSortDesc: false,
       },
       {
         accessorKey: 'nombre',
@@ -123,7 +122,14 @@ const ListadoSucursales = () => {
         positionActionsColumn="last"
         renderRowActions={renderAccionesFila}
         defaultColumn={{ minSize: 10, maxSize: 100 }}
-        defaultSortBy={[{ id: 'id', desc: false }]}
+        initialState={{
+          sorting: [
+            {
+              id: 'id',
+              desc: false,
+            },
+          ],
+        }}
       />
     </Box>
   );
