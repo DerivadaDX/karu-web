@@ -16,7 +16,6 @@ import AgendaTaller from './pages/visualizar-agenda/AgendaTaller';
 import Talleres from './pages/talleres/Talleres';
 import FormularioCliente from './pages/turnos/turno-service-cliente/TurnoCliente';
 import Formulario from './pages/turnos/turno-reparacion/TurnoReparacion';
-import ChecklistReparacion from './pages/checklist-reparacion/ChecklistReparacion';
 import Services from './pages/visualizar-services/Services';
 import FormularioEvaluacionAdmin from './pages/turnos/turno-evaluacion-admin/TurnoEvaluacionParaAdmin';
 import FormularioEvaluacionCliente from './pages/turnos/turno-evaluacion-cliente/TurnoEvaluacionCliente';
@@ -63,13 +62,6 @@ const GROUP_1_PAGES_CONFIG = [
     href: '/turno-reparacion-venta',
     icon: <TooltipCus icon={<HandymanIcon />} title="Turnos de reparación" />,
     page: <Formulario />,
-  },
-  {
-    id: 'g1-CheckListReparacion',
-    name: 'Checklist reparación',
-    href: '/checklist-reparacion',
-    icon: <TooltipCus icon={<ListAltIcon />} title="Checklist repración" />,
-    page: <ChecklistReparacion />,
   },
   {
     id: 'g1-Services',
