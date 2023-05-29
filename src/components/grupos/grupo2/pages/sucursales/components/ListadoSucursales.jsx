@@ -122,6 +122,11 @@ const ListadoSucursales = () => {
         positionActionsColumn="last"
         renderRowActions={renderAccionesFila}
         defaultColumn={{ minSize: 10, maxSize: 100 }}
+        displayColumnDefOptions={{
+          'mrt-row-actions': {
+            header: 'Acciones',
+          },
+        }}
         initialState={{
           sorting: [
             {
