@@ -28,6 +28,8 @@ const FormularioEvaluacionAdmin = () => {
   const [msjError, setMsjError] = useState('');
 
   const endPointDisponibilidad = `https://autotech2.onrender.com/turnos/dias-horarios-disponibles/${taller}/`;
+  // Para setear el límite del calendario
+  const limite = 31;
 
   const guardarPatente = (event) => {
     const { value } = event.target;
@@ -102,6 +104,7 @@ const FormularioEvaluacionAdmin = () => {
                   setFecha={setFecha}
                   setHora={setHora}
                   msjError={setMsjError}
+                  limite={limite}
                 />
               )}
             {msjError && <Alerts alertType="error" description={msjError} title="Hubo un error en la disponibilidad." />}
