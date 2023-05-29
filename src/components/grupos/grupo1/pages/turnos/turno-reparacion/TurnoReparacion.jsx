@@ -5,6 +5,11 @@ import Button from '@mui/material/Button';
 // import { FormControl, FormLabel } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 import { Box, Paper } from '@mui/material';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Disponibilidad from '../Componentes/FechasHorarios';
@@ -28,9 +33,15 @@ const Formulario = () => {
 
   const [msjError, setMsjError] = useState();
 
-  const origenReparacion = 'evaluacion';
+  const [origenReparacion, setOrigenReparacion] = React.useState('');
 
   const endPointDisponibilidad = `https://autotech2.onrender.com/turnos/dias-horarios-disponibles-reparaciones/${taller}/${patenteReparacion}/${origenReparacion}/`;
+  // Para setear el límite del calendario
+  const limite = 45;
+
+  const guardarOrigen = (event) => {
+    setOrigenReparacion(event.target.value);
+  };
 
   const guardarPatente = (event) => {
     const { value } = event.target;
@@ -45,7 +56,7 @@ const Formulario = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      if (taller && patenteReparacion && isValid && fecha && hora) {
+      if (taller && patenteReparacion && isValid && fecha && hora && origenReparacion) {
         await axios({
           method: 'post',
           url: 'https://autotech2.onrender.com/turnos/crear-turno-reparacion/',
@@ -79,9 +90,21 @@ const Formulario = () => {
           }}
         >
           <Typography component="h1" variant="h5" sx={{ marginBottom: 5 }}>
-            Reparación para Venta
+            Turno para Reparación
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+            <FormControl sx={{ m: 3 }} variant="standard">
+              <FormLabel id="demo-error-radios">Origen del turno</FormLabel>
+              <RadioGroup
+                aria-labelledby="demo-error-radios"
+                name="quiz"
+                value={origenReparacion}
+                onChange={guardarOrigen}
+              >
+                <FormControlLabel value="evaluacion" control={<Radio />} label="Evaluación" />
+                <FormControlLabel value="extraordinario" control={<Radio />} label="Extraordinario" />
+              </RadioGroup>
+            </FormControl>
             <TextField
               margin="normal"
               required
@@ -96,8 +119,8 @@ const Formulario = () => {
             {!isValid && <Alerts alertType="warning" description="Ejemplos de patentes válidas: AA111AA o ABC123" title="Patente inválida" />}
             <Talleres setTallerSeleccionado={setTaller} />
             {/* eslint-disable-next-line max-len */}
-            {patenteReparacion && taller && <Disponibilidad endPoint={endPointDisponibilidad} setFecha={setFecha} setHora={setHora} msjError={setMsjError} />}
-            {msjError && <Alerts alertType="error" description={msjError} title="No se encontró evaluación." />}
+            {patenteReparacion && taller && origenReparacion && <Disponibilidad endPoint={endPointDisponibilidad} setFecha={setFecha} setHora={setHora} msjError={setMsjError} limite={limite} />}
+            {msjError && <Alerts alertType="error" description={msjError} title="No se encontró evaluación asociada de venta ni extraordinario." />}
             <Button
               type="submit"
               fullWidth

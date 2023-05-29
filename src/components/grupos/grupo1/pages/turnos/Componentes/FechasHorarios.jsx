@@ -5,7 +5,7 @@ import {
 } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
+import { DateCalendar } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 import 'dayjs/locale/es';
 import { format } from 'date-fns';
@@ -25,7 +25,6 @@ dayjs.tz.setDefault('America/Argentina/Buenos_Aires');
 
 const today = dayjs();
 const tomorrow = dayjs().add(1, 'day');
-const limite = dayjs().add(31, 'day');
 
 // Para traer la disponibilidad de un taller
 
@@ -40,22 +39,24 @@ const fetchAgendaData = async (endPoint, msjError) => {
   }
 };
 
-const isFeriadoIsMas30Dias = (date) => {
-  const actual = format(new Date(date), 'dd/MM/yyyy');
-  const hoy = format(new Date(today), 'dd/MM/yyyy');
-  let isFeriado = false;
-
-  // eslint-disable-next-line no-restricted-syntax
-  for (const dia in feriados) { if (actual === feriados[dia]) { isFeriado = true; } }
-  return isFeriado || date > limite || actual === hoy;
-};
-
 const Disponibilidad = ({
-  endPoint, setFecha, setHora, msjError,
+  endPoint, setFecha, setHora, msjError, limite,
 }) => {
   const [dia, setDia] = React.useState(tomorrow);
 
+  const lim = dayjs().add(limite, 'day');
+
   fetchAgendaData(endPoint, msjError);
+
+  const isFeriadoIsMas30Dias = (date) => {
+    const actual = format(new Date(date), 'dd/MM/yyyy');
+    const hoy = format(new Date(today), 'dd/MM/yyyy');
+    let isFeriado = false;
+
+    // eslint-disable-next-line no-restricted-syntax
+    for (const d in feriados) { if (actual === feriados[d]) { isFeriado = true; } }
+    return isFeriado || date > lim || actual === hoy;
+  };
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -67,7 +68,7 @@ const Disponibilidad = ({
           flexDirection: 'column',
         }}
       >
-        <MobileDatePicker
+        <DateCalendar
           margin="normal"
           fullWidth
           required
