@@ -28,8 +28,8 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
     numero: 0,
     localidad: '',
     provincia: '',
-    codigoPostal: '',
-    poseeTaller: false,
+    codigo_postal: '',
+    posee_taller: false,
     activa: false,
   });
 
@@ -40,10 +40,10 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
       nombre: sucursal.nombre,
       calle: sucursal.calle,
       numero: sucursal.numero,
-      codigoPostal: sucursal.codigo_postal,
+      codigo_postal: sucursal.codigo_postal,
       localidad: sucursal.localidad,
       provincia: sucursal.provincia,
-      poseeTaller: sucursal.posee_taller,
+      posee_taller: sucursal.posee_taller,
       activa: sucursal.activa,
     });
   };
@@ -71,18 +71,7 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
   const modificarSucursal = (event) => {
     event.preventDefault();
 
-    const datosSucursal = {
-      nombre: valoresDelFormulario.nombre,
-      calle: valoresDelFormulario.calle,
-      numero: valoresDelFormulario.numero,
-      codigo_postal: valoresDelFormulario.codigoPostal,
-      localidad: valoresDelFormulario.localidad,
-      provincia: valoresDelFormulario.provincia,
-      posee_taller: valoresDelFormulario.poseeTaller,
-      activa: valoresDelFormulario.activa,
-    };
-
-    SucursalService.modificarSucursal(sucursal.id, datosSucursal)
+    SucursalService.modificarSucursal(sucursal.id, valoresDelFormulario)
       .then(cambiarVisibilidadDePopUpModificacionExitosa);
   };
 
@@ -151,14 +140,13 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
               required
             />
             <TextField
-              id="codigoPostal"
-              name="codigoPostal"
-              value={valoresDelFormulario.codigoPostal}
+              id="codigo_postal"
+              name="codigo_postal"
+              value={valoresDelFormulario.codigo_postal}
               label="C.P."
               onChange={actualizarValorDeFormulario}
               variant="standard"
               margin="dense"
-              type="number"
               required
             />
             <TextField
@@ -182,14 +170,14 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
               required
             />
             <FormControlLabel
-              id="poseeTaller"
-              name="poseeTaller"
-              value={valoresDelFormulario.poseeTaller}
+              id="posee_taller"
+              name="posee_taller"
+              value={valoresDelFormulario.posee_taller}
               label="¿Posee taller mecánico?"
               labelPlacement="start"
               control={(
                 <Switch
-                  checked={valoresDelFormulario.poseeTaller}
+                  checked={valoresDelFormulario.posee_taller}
                   onChange={actualizarValorDeFormulario}
                   disabled={sucursal.posee_taller}
                 />
