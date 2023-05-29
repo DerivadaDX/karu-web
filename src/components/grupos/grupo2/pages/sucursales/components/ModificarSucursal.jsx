@@ -59,8 +59,17 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
   const actualizarValorDeFormulario = (event) => {
     const { name, value, checked } = event.target;
 
-    const cambioUnCheckbox = name === 'activa' || name === 'poseeTaller';
-    const valorNuevo = cambioUnCheckbox ? checked : value;
+    let valorNuevo = value;
+
+    const cambioUnCheckbox = name === 'activa' || name === 'posee_taller';
+    if (cambioUnCheckbox) {
+      valorNuevo = checked;
+    }
+
+    const cambioUnCampoNumerico = name === 'numero';
+    if (cambioUnCampoNumerico) {
+      valorNuevo = parseInt(value, 10);
+    }
 
     setValoresDelFormulario((valoresActuales) => ({
       ...valoresActuales,
@@ -76,14 +85,14 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
   };
 
   const finalizarModificacion = () => {
-    const nuevosDatosSucursal = {
+    const sucursalModificada = {
       id: sucursal.id,
       ...valoresDelFormulario,
     };
 
     cambiarVisibilidadDePopUpModificacionExitosa();
     cambiarVisibilidadDePopUpModificarSucursal();
-    onEdit(nuevosDatosSucursal);
+    onEdit(sucursalModificada);
   };
 
   return (
