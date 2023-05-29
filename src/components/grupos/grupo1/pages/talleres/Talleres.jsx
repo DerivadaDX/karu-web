@@ -1,22 +1,22 @@
 /* eslint-disable react/react-in-jsx-scope */
 import { Box, Container, Divider } from '@mui/material';
 import Header from '../../components/common/Header';
-import { TabMisTurnos } from './TabMisTurnos';
+import { TabTalleres } from './TabTalleres';
 
-const idTecnico = 43;
+const Talleres = () => (
 
-const MisTurnos = () => (
   <>
     <Box mt="5px">
       <Box display="flex">
-        <Header titulo="Mis Turnos" subtitulo="Área de trabajo" />
+        <Header titulo="Talleres" subtitulo="Administración" />
       </Box>
     </Box>
     <Divider sx={{ color: 'silver' }} />
     <Container maxWidth="xxl" sx={{ mb: 2 }}>
-      <TabMisTurnos idTecnico={idTecnico} />
+      <TabTalleres />
     </Container>
   </>
+
 );
 
-export default MisTurnos;
+export default Talleres;

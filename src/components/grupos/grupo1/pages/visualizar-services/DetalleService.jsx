@@ -1,44 +1,24 @@
 /* eslint-disable consistent-return */
 /* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable react/jsx-no-undef */
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/function-component-definition */
+/* eslint-disable no-unused-vars */
 import DialogActions from '@mui/material/DialogActions';
 import {
   Box, Stack, TextField, Button,
 } from '@mui/material';
 
-export default function DetalleTurno(props) {
+export default function DetalleService(props) {
   const {
     openDialog, setOpenDialog, row,
   } = props;
 
-  const definirEstado = (estado) => {
-    if (estado === 'en_proceso' || estado === 'en proceso') {
-      return ('En proceso');
-    } if (estado === 'terminado') {
-      return ('Terminado');
-    } if (estado === 'cancelado') {
-      return ('Cancelado');
-    } if (estado === 'pendiente') {
-      return ('Pendiente');
-    } if (estado === 'rechazado') {
-      return ('Rechazado');
-    } if (estado === 'ausente') {
-      return ('Ausente');
-    }
-  };
-
-  const definirTipo = (tipo) => {
-    if (tipo === 'evaluacion') {
-      return ('Evaluación');
-    } if (tipo === 'service') {
-      return ('Service');
-    } if (tipo === 'extraordinario') {
-      return ('Extraordinario');
-    } if (tipo === 'reparacion') {
-      return ('Reparación');
+  const definirActivo = (estado) => {
+    if (estado === false) {
+      return ('No activo');
+    } if (estado === true) {
+      return ('Activo');
     }
   };
 
@@ -48,71 +28,71 @@ export default function DetalleTurno(props) {
         <TextField
           disabled
           id="standard-disabled"
-          label="ID del turno"
-          defaultValue={row.id_turno}
+          label="ID del service"
+          defaultValue={row.id_service}
           variant="standard"
         />
         <TextField
           disabled
           id="standard-disabled"
-          label="Tipo de turno"
-          defaultValue={definirTipo(row.tipo)}
+          label="Marca"
+          defaultValue={row.marca}
           variant="standard"
         />
         <TextField
           disabled
           id="standard-disabled"
-          label="Estado"
-          defaultValue={definirEstado(row.estado)}
+          label="Modelo"
+          defaultValue={row.modelo}
           variant="standard"
         />
         <TextField
           disabled
           id="standard-disabled"
-          label="ID del técnico"
-          defaultValue={row.tecnico_id === null ? 'No asignado' : row.tecnico_id}
+          label="Frecuencia de km"
+          defaultValue={row.frecuencia_km}
           variant="standard"
         />
         <TextField
           disabled
           id="standard-disabled"
-          label="Patente"
-          defaultValue={row.patente}
+          label="Costo base (ARS)"
+          defaultValue={row.costo_base}
           variant="standard"
         />
         <TextField
           disabled
           id="standard-disabled"
-          label="Fecha de inicio"
-          defaultValue={row.fecha_inicio}
+          label="Costo total (ARS)"
+          defaultValue={row.costo_total}
           variant="standard"
         />
         <TextField
           disabled
           id="standard-disabled"
-          label="Hora de inicio"
-          defaultValue={row.hora_inicio}
+          label="Duración total (minutos)"
+          defaultValue={row.duracion_total}
           variant="standard"
         />
         <TextField
           disabled
           id="standard-disabled"
-          label="Fecha de fin"
-          defaultValue={row.fecha_fin}
+          label="Fecha de creación"
+          defaultValue={row.fecha_creacion}
           variant="standard"
         />
         <TextField
           disabled
           id="standard-disabled"
-          label="Hora de fin"
-          defaultValue={row.hora_fin}
+          label="ID supervisor creador"
+          defaultValue={row.id_supervisor}
           variant="standard"
         />
         <TextField
           disabled
           id="standard-disabled"
-          label="Frecuencia de KM"
-          defaultValue={row.frecuencia_km === null ? '-' : row.frecuencia_km}
+          label="Activo"
+          defaultValue={definirActivo(row.activo)}
           variant="standard"
         />
       </Stack>

@@ -1,122 +1,99 @@
 /* eslint-disable consistent-return */
 /* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable react/jsx-no-undef */
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/function-component-definition */
+/* eslint-disable no-unused-vars */
 import DialogActions from '@mui/material/DialogActions';
 import {
   Box, Stack, TextField, Button,
 } from '@mui/material';
 
-export default function DetalleTurno(props) {
+export default function DetalleTaller(props) {
   const {
     openDialog, setOpenDialog, row,
   } = props;
 
-  const definirEstado = (estado) => {
-    if (estado === 'en_proceso' || estado === 'en proceso') {
-      return ('En proceso');
-    } if (estado === 'terminado') {
-      return ('Terminado');
-    } if (estado === 'cancelado') {
-      return ('Cancelado');
-    } if (estado === 'pendiente') {
-      return ('Pendiente');
-    } if (estado === 'rechazado') {
-      return ('Rechazado');
-    } if (estado === 'ausente') {
-      return ('Ausente');
-    }
-  };
-
-  const definirTipo = (tipo) => {
-    if (tipo === 'evaluacion') {
-      return ('Evaluación');
-    } if (tipo === 'service') {
-      return ('Service');
-    } if (tipo === 'extraordinario') {
-      return ('Extraordinario');
-    } if (tipo === 'reparacion') {
-      return ('Reparación');
-    }
-  };
-
   return (
     <>
-      <Stack spacing={1}>
+      <Stack spacing={1} width={250}>
         <TextField
           disabled
           id="standard-disabled"
-          label="ID del turno"
-          defaultValue={row.id_turno}
+          label="ID del taller"
+          defaultValue={row.id_taller}
           variant="standard"
         />
         <TextField
           disabled
           id="standard-disabled"
-          label="Tipo de turno"
-          defaultValue={definirTipo(row.tipo)}
+          label="Nombre"
+          defaultValue={row.nombre}
           variant="standard"
         />
         <TextField
           disabled
           id="standard-disabled"
-          label="Estado"
-          defaultValue={definirEstado(row.estado)}
+          label="Dirección"
+          defaultValue={row.direccion}
           variant="standard"
         />
         <TextField
           disabled
           id="standard-disabled"
-          label="ID del técnico"
-          defaultValue={row.tecnico_id === null ? 'No asignado' : row.tecnico_id}
+          label="Localidad"
+          defaultValue={row.localidad}
           variant="standard"
         />
         <TextField
           disabled
           id="standard-disabled"
-          label="Patente"
-          defaultValue={row.patente}
+          label="Provincia"
+          defaultValue={row.provincia}
           variant="standard"
         />
         <TextField
           disabled
           id="standard-disabled"
-          label="Fecha de inicio"
-          defaultValue={row.fecha_inicio}
+          label="C.P."
+          defaultValue={row.cod_postal}
           variant="standard"
         />
         <TextField
           disabled
           id="standard-disabled"
-          label="Hora de inicio"
-          defaultValue={row.hora_inicio}
+          label="Mail"
+          defaultValue={row.mail}
+          variant="standard"
+          multiline
+          rows={1}
+        />
+        <TextField
+          disabled
+          id="standard-disabled"
+          label="Teléfono"
+          defaultValue={row.telefono}
           variant="standard"
         />
         <TextField
           disabled
           id="standard-disabled"
-          label="Fecha de fin"
-          defaultValue={row.fecha_fin}
+          label="Zonas de trabajo"
+          defaultValue={row.capacidad}
           variant="standard"
         />
         <TextField
           disabled
           id="standard-disabled"
-          label="Hora de fin"
-          defaultValue={row.hora_fin}
-          variant="standard"
-        />
-        <TextField
-          disabled
-          id="standard-disabled"
-          label="Frecuencia de KM"
-          defaultValue={row.frecuencia_km === null ? '-' : row.frecuencia_km}
+          label="Cantidad de técnicos"
+          defaultValue={row.cant_tecnicos}
           variant="standard"
         />
       </Stack>
-      <Box>
+      <Box sx={{
+        display: 'flex', justifyContent: 'center', alignItems: 'center',
+      }}
+      >
         <DialogActions>
           <Button
             color="primary"

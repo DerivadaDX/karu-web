@@ -1,3 +1,5 @@
+/* eslint-disable react/no-unstable-nested-components */
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-shadow */
 /* eslint-disable react/react-in-jsx-scope */
@@ -14,33 +16,32 @@ import DialogActions from '@mui/material/DialogActions';
 import Alerts from '../../components/common/Alerts';
 import Popup from '../../components/common/DialogPopup';
 import LittleHeader from '../../components/common/LittleHeader';
-import DetalleTurno from '../../components/common/DetalleTurno';
+import DetalleService from './DetalleService';
 
 import {
-  getCancelarTurno,
-  getTurnosPendientes,
-} from '../../services/services-Turnos';
+  getServices,
+  putCambiarEstado,
+} from '../../services/services-services';
+import DetalleChecklist from './DetalleChecklist';
 
-import PanelDeAsignacion from '../asignacion-de-tecnico/PanelDeAsignacion';
-
-const TablaTurnosPendientes = (props) => {
-  const { idTaller } = props;
-
-  const [turnosPendientes, setTurnosPendientes] = useState([]);
+const TablaServices = () => {
+  const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  // abre popup de confirmar cambiar estado service
   const [openDialog, setOpenDialog] = useState(false);
 
   const [openVerMas, setVerMas] = useState(false);
   const [rowDetalle, setRowDetalle] = useState({});
 
-  const [resCancelar, setResCancelar] = useState([]);
-  const [idTurnoCancelar, setIdTurnoCancelar] = useState(0);
+  const [resActivar, setResActivar] = useState([]);
+  const [idServiceActivar, setIdServiceActivar] = useState(0);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [actualizarTabla, setActualizarTabla] = useState(false);
 
   // Para abrir el formulario de asignacion
-  const [idTurnoAsignar, setIdTurnoAsignar] = useState(0);
-  const [openAsignacion, setOpenAsignacion] = useState(false);
+  const [serviceId, setServiceId] = useState({});
+  const [openChecklist, setOpenChecklist] = useState(false);
 
   // alertas de la API
   const [alertType, setAlertType] = useState('');
@@ -50,37 +51,55 @@ const TablaTurnosPendientes = (props) => {
   const columnas = useMemo(
     () => [
       {
-        accessorKey: 'id_turno',
-        header: 'Turno id',
+        accessorKey: 'id_service',
+        header: 'Service id',
       },
       {
-        accessorKey: 'tipo',
-        header: 'Tipo de Turno',
+        accessorKey: 'marca',
+        header: 'Marca',
       },
       {
-        accessorKey: 'patente',
-        header: 'Patente',
+        accessorKey: 'modelo',
+        header: 'Modelo',
       },
       {
-        accessorKey: 'estado',
-        header: 'Estado',
+        accessorKey: 'frecuencia_km',
+        header: 'Frecuencia',
       },
       {
-        accessorKey: 'fecha_inicio',
-        header: 'Fecha',
-      },
-      {
-        accessorKey: 'hora_inicio',
-        header: 'Hora',
+        accessorKey: 'activo',
+        header: 'Activo',
+        Cell: ({ cell }) => (
+          <span style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: '100%',
+          }}
+          >
+            <p style={{
+              backgroundColor: cell.getValue() === true ? 'rgb(53, 122, 56)' : '#b71c1c',
+              padding: '0.4rem',
+              margin: '0px',
+              borderRadius: '5px',
+              width: '6.5rem',
+              textAlign: 'center',
+              color: 'white',
+            }}
+            >
+              {cell.getValue() === true ? 'Activo' : 'No activo'}
+            </p>
+          </span>
+        ),
       },
     ],
     [],
   );
 
-  const traerTurnos = useCallback(() => {
-    getTurnosPendientes(idTaller)
+  const traerServices = useCallback(() => {
+    getServices()
       .then((response) => {
-        setTurnosPendientes(response.data);
+        setServices(response.data);
         setLoading(false);
       })
       .catch((error) => {
@@ -94,26 +113,27 @@ const TablaTurnosPendientes = (props) => {
 
   useEffect(() => {
     try {
-      traerTurnos();
+      traerServices();
       setActualizarTabla(false); // Reiniciar el estado de actualizarTabla
       setAlertType('');
     } catch (error) {
       setAlertType('error');
       setAlertTitle('Error de servidor');
       setAlertMessage(
-        'Error al traer los turnos. Por favor, recargue la página y vuelva a intentarlo nuevamente.',
+        'Error al traer los services. Por favor, recargue la página y vuelva a intentarlo nuevamente.',
       );
     }
-  }, [traerTurnos, actualizarTabla]);
+  }, [traerServices, actualizarTabla]);
 
-  const cancelarTurno = (idTurno) => {
-    getCancelarTurno(idTurno)
+  const activarService = (idService) => {
+    putCambiarEstado(idService)
       .then((response) => {
-        setResCancelar(response.data);
-        setActualizarTabla(true); // Para actualizar la tabla despues de cancelar turno
+        setResActivar('Estado de service actualizado correctamente');
+        // Para actualizar la tabla despues de activar o desactivar un service
+        setActualizarTabla(true);
       })
       .catch((error) => {
-        setResCancelar(error.message);
+        setResActivar(error.message);
       });
   };
 
@@ -143,23 +163,24 @@ const TablaTurnosPendientes = (props) => {
         variant="contained"
         color="secondary"
         sx={{ fontSize: '0.9em' }}
+        size="small"
         onClick={() => {
-          setOpenAsignacion(true);
-          setIdTurnoAsignar(row.original.id_turno);
+          setOpenChecklist(true);
+          setServiceId(row.original.id_service);
         }}
       >
-        Asignar Tecnico
+        Checklist
       </Button>
       <Button
         variant="contained"
-        color="error"
+        color="primary"
         sx={{ fontSize: '0.9em' }}
         onClick={() => {
           setOpenDialog(true);
-          setIdTurnoCancelar(row.original.id_turno);
+          setIdServiceActivar(row.original.id_service);
         }}
       >
-        Cancelar Turno
+        {row.original.activo === false ? 'Activar' : 'Desactivar'}
       </Button>
     </Box>
   );
@@ -176,8 +197,8 @@ const TablaTurnosPendientes = (props) => {
     </Box>
   );
 
-  const agregarTurno = () => (
-    <Tooltip title="Agregar turno" placement="right">
+  const agregarService = () => (
+    <Tooltip title="Nuevo Service" placement="right">
       <Button
         variant="contained"
         startIcon={<AddCircleIcon sx={{ height: '2rem' }} />}
@@ -189,10 +210,10 @@ const TablaTurnosPendientes = (props) => {
           },
         }}
         onClick={() => {
-          // console.log('Agregar turno');
+          // console.log('Agregar service');
         }}
       >
-        Agregar turno
+        Nuevo Service
       </Button>
     </Tooltip>
   );
@@ -210,9 +231,9 @@ const TablaTurnosPendientes = (props) => {
       </Box>
       <MaterialReactTable
         columns={columnas}
-        data={turnosPendientes}
+        data={services}
         state={{ isLoading: loading }}
-        renderTopToolbarCustomActions={agregarTurno}
+        renderTopToolbarCustomActions={agregarService}
         muiTopToolbarProps={{
           sx: {
             display: 'flex',
@@ -237,10 +258,10 @@ const TablaTurnosPendientes = (props) => {
       />
 
       <Popup
-        title={<LittleHeader titulo="Cancelar turno" />}
+        title={<LittleHeader titulo="Estado de service" />}
         openDialog={openDialog}
         setOpenDialog={setOpenDialog}
-        description="¿Está seguro que desea cancelar el turno? No se podrá modificar la acción una vez realizada."
+        description="¿Está seguro que desea cambiar el estado de este service?"
       >
         <Box>
           <DialogActions>
@@ -248,7 +269,7 @@ const TablaTurnosPendientes = (props) => {
               color="primary"
               variant="outlined"
               onClick={() => {
-                cancelarTurno(idTurnoCancelar);
+                activarService(idServiceActivar);
                 setOpenDialog(false);
                 setOpenSnackbar(true);
               }}
@@ -268,33 +289,31 @@ const TablaTurnosPendientes = (props) => {
         </Box>
       </Popup>
       <Snackbar
-        message={resCancelar}
+        message={<span>{resActivar}</span>}
         autoHideDuration={4000}
         open={openSnackbar}
         onClose={handleCloseSnackbar}
       />
       <Popup
-        title={<LittleHeader titulo="Detalle de turno" />}
+        title={<LittleHeader titulo="Detalle de service" />}
         openDialog={openVerMas}
         setOpenDialog={setVerMas}
       >
-        <DetalleTurno openDialog={openVerMas} setOpenDialog={setVerMas} row={rowDetalle} />
+        <DetalleService openDialog={openVerMas} setOpenDialog={setVerMas} row={rowDetalle} />
       </Popup>
       <Popup
-        title="Asignar Turno a un Técnico"
-        openDialog={openAsignacion}
-        setOpenDialog={setOpenAsignacion}
+        title={<LittleHeader titulo="Checklist de service" />}
+        openDialog={openChecklist}
+        setOpenDialog={setOpenChecklist}
       >
-        <PanelDeAsignacion
-          idTurnoPadre={idTurnoAsignar}
-          open={openAsignacion}
-          setOpen={setOpenAsignacion}
-          actualizar={actualizarTabla}
-          setActualizar={setActualizarTabla}
+        <DetalleChecklist
+          open={openChecklist}
+          setOpen={setOpenChecklist}
+          serviceId={serviceId}
         />
       </Popup>
     </>
   );
 };
 
-export default TablaTurnosPendientes;
+export default TablaServices;

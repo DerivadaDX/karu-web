@@ -1,37 +1,56 @@
 /* eslint-disable react/prop-types */
-/* eslint-disable react/no-unescaped-entities */
+/* eslint-disable no-shadow */
 /* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable no-unused-vars */
-import {
-  useState, useEffect, useMemo, useCallback,
-} from 'react';
-
+import { useState, useEffect, useMemo } from 'react';
+import { Box, Button } from '@mui/material';
 import MaterialReactTable from 'material-react-table';
-import { Button, Box } from '@mui/material';
+import { getTurnosNoValidos } from '../../services/services-Turnos';
 import Alerts from '../../components/common/Alerts';
-import { getTurnosTerminados } from '../../services/services-tecnicos';
 import Popup from '../../components/common/DialogPopup';
 import LittleHeader from '../../components/common/LittleHeader';
 import DetalleTurno from '../../components/common/DetalleTurno';
 
-const TablaTurnosTerminados = (props) => {
-  const { idTecnico } = props;
-  const [turnosTerminados, setTurnosTerminados] = useState([]);
-  const [actualizarTabla, setActualizarTabla] = useState([]);
+const TablaTurnosNoValidos = (props) => {
+  const { idTaller } = props;
+  const [turnosNoValidos, setTurnosNoValidos] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Para ver los detalles del turno antes de realizarlo
-  const [openVerMas, setOpenVerMas] = useState(false);
   const [rowDetalle, setRowDetalle] = useState({});
-
-  // Para abrir el popup con la checklist
-  const [idTurno, setIdTurno] = useState(0);
-  const [openChecklist, setOpenChecklist] = useState(false);
+  const [openVerMas, setVerMas] = useState(false);
 
   // alertas de la API
   const [alertType, setAlertType] = useState('');
   const [alertMessage, setAlertMessage] = useState('');
   const [alertTitle, setAlertTitle] = useState('');
+
+  const traerTurnos = () => {
+    getTurnosNoValidos(idTaller)
+      .then((response) => {
+        setTurnosNoValidos(response.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        setAlertType('error');
+        setAlertTitle('Error de servidor');
+        setAlertMessage(
+          'Error de servidor. Por favor, recargue la página y vuelva a intentarlo nuevamente.',
+        );
+      });
+  };
+
+  useEffect(() => {
+    try {
+      traerTurnos();
+      setAlertType('');
+    } catch (error) {
+      setAlertType('error');
+      setAlertTitle('Error de servidor');
+      setAlertMessage(
+        'Error de servidor. Por favor, recargue la página y vuelva a intentarlo nuevamente.',
+      );
+    }
+  }, []);
 
   const columnas = useMemo(
     () => [
@@ -45,60 +64,37 @@ const TablaTurnosTerminados = (props) => {
       },
       {
         accessorKey: 'tipo',
-        header: 'Tipo',
+        header: 'Tipo de Turno',
+      },
+      {
+        accessorKey: 'estado',
+        header: 'Estado',
       },
       {
         accessorKey: 'fecha_inicio',
-        header: 'Fecha de inicio',
+        header: 'Fecha Inicio',
       },
       {
         accessorKey: 'hora_inicio',
-        header: 'Hora de inicio',
-      },
-      {
-        accessorKey: 'fecha_fin',
-        header: 'Fecha de fin',
-      },
-      {
-        accessorKey: 'hora_fin',
-        header: 'Hora de fin',
+        header: 'Hora Inicio',
       },
     ],
     [],
   );
 
-  const traerTurnos = useCallback(() => {
-    getTurnosTerminados(idTecnico)
-      .then((response) => {
-        setTurnosTerminados(response.data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        setAlertType('Error');
-        setAlertTitle('Error de servidor');
-        setAlertMessage(
-          'Error en el servidor. Por favor, vuelva a intentarlo nuevamente. Si el error persiste, comuníquese con el área técnica de KarU. ✉: insomia.autotech@gmail.com',
-        );
-      });
-  }, []);
-
-  useEffect(() => {
-    traerTurnos();
-    setActualizarTabla(false);
-    setAlertType('');
-  }, [traerTurnos, actualizarTabla]);
-
   const renderRowActions = ({ row }) => (
     <Box
       style={{ display: 'flex', flexWrap: 'nowrap', gap: '0.5rem' }}
-      sx={{ height: '3.2em' }}
+      sx={{ height: '3.5em' }}
     >
       <Button
         variant="contained"
-        sx={{ fontSize: '0.9em', backgroundColor: 'rgba(51,51,51,0.75)' }}
+        color="secondary"
+        sx={{ fontSize: '1em' }}
         onClick={() => {
+          // console.log('Ver mas', row.original.id_turno);
           setRowDetalle(row.original);
-          setOpenVerMas(true);
+          setVerMas(true);
         }}
       >
         Ver más
@@ -111,8 +107,8 @@ const TablaTurnosTerminados = (props) => {
       sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
     >
       <Alerts
-        title="No hay turnos asignados"
-        description="No hay turnos asignados para usted en este momento. Consulte con su supervisor a cargo."
+        title="No hay datos"
+        description="No hay datos disponibles en este momento"
         alertType="info"
       />
     </Box>
@@ -131,13 +127,13 @@ const TablaTurnosTerminados = (props) => {
       </Box>
       <MaterialReactTable
         columns={columnas}
-        data={turnosTerminados}
+        data={turnosNoValidos}
         state={{ isLoading: loading }}
         positionActionsColumn="last"
         enableRowActions
         renderRowActions={renderRowActions}
         renderEmptyRowsFallback={noData}
-        defaultColumn={{ minSize: 10, maxSize: 100 }}
+        defaultColumn={{ minSize: 10, maxSize: 120 }}
         muiTopToolbarProps={{
           sx: {
             display: 'flex',
@@ -158,19 +154,12 @@ const TablaTurnosTerminados = (props) => {
       <Popup
         title={<LittleHeader titulo="Detalle de turno" />}
         openDialog={openVerMas}
-        setOpenDialog={setOpenVerMas}
+        setOpenDialog={setVerMas}
       >
-        <DetalleTurno openDialog={openVerMas} setOpenDialog={setOpenVerMas} row={rowDetalle} />
-      </Popup>
-      <Popup
-        title="Checklist"
-        openDialog={openChecklist}
-        setOpenDialog={setOpenChecklist}
-      >
-        Checklist
+        <DetalleTurno openDialog={openVerMas} setOpenDialog={setVerMas} row={rowDetalle} />
       </Popup>
     </>
   );
 };
 
-export default TablaTurnosTerminados;
+export default TablaTurnosNoValidos;

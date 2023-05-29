@@ -19,16 +19,16 @@ import MaterialReactTable from 'material-react-table';
 import Slider from '@mui/material/Slider';
 import Header from '../../components/common/Header';
 import Alerts from '../../components/common/Alerts';
-import { getChecklistEvaluaciones } from '../../services/services-checklist';
-import evaluacion from './evaluacion.json';
+import { getChecklistReparacion } from '../../services/services-checklistReparacion';
+// import reparacion from './reparacion.json';
 import Popup from '../../components/common/DialogPopup';
 import LittleHeader from '../../components/common/LittleHeader';
 
-const ChecklistEvaluacion = (props) => {
+const ChecklistReparacion = (props) => {
   const {
-    idTurnoPadre, open, setOpen, actualizar, setActualizar,
+    idTurnoPadre, setOpen,
   } = props;
-  const [evaluaciones, setEvaluaciones] = useState([]);
+  const [reparaciones, setEvaluaciones] = useState([]);
   const [loading, setLoading] = useState(true);
   const [resError, setResError] = useState([]);
   // Para los popups de confirmacion y manejo de errores
@@ -38,12 +38,11 @@ const ChecklistEvaluacion = (props) => {
   const [openEvaluacionEnviada, setOpenEvaluacionEnviada] = useState(false);
   // Para que se mantengan seteados los valores de los sliders al cambiar de página
   const [valoresSlider, setValoresSlider] = useState({});
-  evaluacion.id_turno = idTurnoPadre;
-  const msjErrorDefault = 'Ha ocurrido un error, disculpe las molestias. Intente nuevamente. Si el error persiste comunicarse con soporte: soporte-tecnico@KarU.com';
+  // reparacion.id_turno = idTurnoPadre;
   const tableInstanceRef = useRef(null);
 
-  const [valoresEvaluacion, setValoresEvaluacion] = useState({
-    puntaje: 0,
+  const [valoresReparacion, setValoresReparacion] = useState({
+
     comentarios: '',
   });
 
@@ -55,20 +54,19 @@ const ChecklistEvaluacion = (props) => {
   const [alertError, setAlertError] = useState('');
   const [alertMensaje, setAlertmensaje] = useState('');
   const [alertTitulo, setAlertTitulo] = useState('');
+  const id = 128;
 
   const traerChecklist = () => {
-    getChecklistEvaluaciones()
+    getChecklistReparacion(id)
       .then((response) => {
         setEvaluaciones(response.data);
         setLoading(false);
         setAlertType('');
       })
       .catch((error) => {
-        setAlertMessage(
-          'Ha ocurrido un error, disculpe las molestias. Intente nuevamente más tarde. Si el error persiste comunicarse con soporte: soporte-tecnico@KarU.com',
-        );
+        setAlertMessage(error.response.data.error);
         setAlertType('error');
-        setAlertTitle('Error de servidor');
+        setAlertTitle('Error');
       });
   };
 
@@ -81,6 +79,14 @@ const ChecklistEvaluacion = (props) => {
       {
         accessorKey: 'tarea',
         header: 'Tarea',
+      },
+      {
+        accessorKey: 'costo_reemplazo',
+        header: 'Costo de reemplazo (ARS$)',
+      },
+      {
+        accessorKey: 'duracion_reemplazo',
+        header: 'Duración en minutos',
       },
     ],
     [],
@@ -97,68 +103,31 @@ const ChecklistEvaluacion = (props) => {
     }
   };
 
-  const handleChangeScore = (event, index) => {
-    const nuevoValorSlider = event.target.value;
-    const { name, value } = event.target;
-    setValoresEvaluacion((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-    setValoresSlider((prevValoresSlider) => ({
-      ...prevValoresSlider,
-      [index]: nuevoValorSlider,
-    }));
-    evaluacion.id_task_puntaje[index] = value;
-  };
-
   const handleChangeComment = (event) => {
     const { name, value } = event.target;
-    setValoresEvaluacion((prevState) => ({
+    setValoresReparacion((prevState) => ({
       ...prevState,
       [name]: value,
     }));
-    evaluacion.detalle = value;
+    // reparacion.detalle = value;
+    // console.log('Comentario ', reparacion.detalle);
   };
 
-  const renderRowActions = ({ row }) => {
-    const valorSlider = valoresSlider[row.original.id_task] || 0;
-    return (
-      <Box
-        style={{ display: 'flex', flexWrap: 'nowrap', gap: '0.5rem' }}
-        sx={{ height: '3.5em', marginLeft: '0.2rem', marginRight: '0.2rem' }}
-      >
-        <Slider
-          aria-label="Puntaje máximo"
-          size="small"
-          valueLabelDisplay="on"
-          value={valorSlider}
-          step={5}
-          min={0}
-          max={row.original.puntaje_max}
-          className="pt-5"
-          color="secondary"
-          onChange={(event) => handleChangeScore(event, row.original.id_task)}
-        />
-      </Box>
-    );
-  };
-
-  const url = 'https://autotech2.onrender.com/evaluaciones/registros/crear/';
-  const handleEnviarEvaluacion = () => {
-    axios.post(url, evaluacion)
-      .then(() => {
-        setOpenEvaluacionEnviada(true);
-        setActualizar(true);
-      })
-      .catch(() => {
-        setAlertmensaje('Ha ocurrido un error.');
-        setAlertError('error');
-        setAlertTitulo('Error de servidor');
-      });
-  };
-
-  async function handleSubmit(event) {
-    handleEnviarEvaluacion();
+  /* const handleEnviarReparacion = () => {
+      axios.post(url, reparacion)
+        .then(() => {
+          setOpenEvaluacionEnviada(true);
+          setActualizar(true);
+        })
+        .catch(() => {
+          setAlertmensaje('Ha ocurrido un error.');
+          setAlertError('error');
+          setAlertTitulo('Error de servidor');
+        });
+    };
+  */
+  async function handleSubmit() {
+    // handleEnviarReparacion();
   }
 
   useEffect(() => {
@@ -176,21 +145,13 @@ const ChecklistEvaluacion = (props) => {
       <Container maxWidth="xxl" sx={{ mb: 1 }}>
         <MaterialReactTable
           columns={columnas}
-          data={evaluaciones}
+          data={reparaciones}
           state={{ isLoading: loading }}
           enableToolbarInternalActions={false}
           enableRowSelection
           positionActionsColumn="last"
-          enableRowActions
-          renderRowActions={renderRowActions}
-          displayColumnDefOptions={{
-            'mrt-row-actions': {
-              header: 'Puntaje',
-            },
-            'mrt-row-select': {
-              header: 'Evaluado',
-            },
-          }}
+          // enableRowActions
+          // renderRowActions={renderRowActions}
           defaultColumn={{ minSize: 10, maxSize: 100 }}
           positionPagination="top"
           initialState={{
@@ -221,7 +182,7 @@ const ChecklistEvaluacion = (props) => {
             rows={5}
             variant="outlined"
             color="secondary"
-            sx={{ width: '80rem', mt: 1 }}
+            sx={{ width: '90rem', mt: 1 }}
             onChange={handleChangeComment}
           />
         </Box>
@@ -237,10 +198,10 @@ const ChecklistEvaluacion = (props) => {
           sx={{ mt: 3, ml: 1 }}
           color="secondary"
           onClick={() => {
-            handleCheckAllRows();
+            handleSubmit();
           }}
         >
-          Terminar evaluación
+          Guardar
         </Button>
         <Button
           variant="contained"
@@ -254,72 +215,13 @@ const ChecklistEvaluacion = (props) => {
           Cerrar
         </Button>
       </Box>
-      {/* Popup para mostrar en caso de que no haya seleccionado ningun item */}
-      <Popup
-        title={<LittleHeader titulo="Checklist incompleta" />}
-        openDialog={openNoSeleccion}
-        setOpenDialog={setOpenNoSeleccion}
-        description="No ha seleccionado todas las checkboxes correspondientes. Por favor, verifique que haya revisado todas las tareas para registrar la evaluación."
-      >
-        <Box sx={{
-          display: 'flex', justifyContent: 'center', alignItems: 'center',
-        }}
-        >
-          <DialogActions>
-            <Button
-              color="secondary"
-              variant="outlined"
-              onClick={() => {
-                setOpenNoSeleccion(false);
-              }}
-            >
-              Aceptar
-            </Button>
-          </DialogActions>
-        </Box>
-      </Popup>
-      {/* Popup cuando estan todas las rows seleccionadas para confirmar evaluacion */}
-      <Popup
-        title={<LittleHeader titulo="Evaluación Terminada" />}
-        openDialog={openConfirmarEvaluacion}
-        setOpenDialog={setOpenConfirmarEvaluacion}
-        description="¿Está seguro que desea enviar la evaluación? No se podrá modificar una vez realizada."
-      >
-        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <Alerts alertType={alertError} description={alertMensaje} title={alertTitulo} />
-        </Box>
-        <Box sx={{
-          display: 'flex', justifyContent: 'center', alignItems: 'center',
-        }}
-        >
-          <DialogActions>
-            <Button
-              color="secondary"
-              variant="outlined"
-              onClick={() => {
-                handleSubmit();
-              }}
-            >
-              Enviar
-            </Button>
-            <Button
-              color="error"
-              variant="outlined"
-              onClick={() => {
-                setOpenConfirmarEvaluacion(false);
-              }}
-            >
-              Cerrar
-            </Button>
-          </DialogActions>
-        </Box>
-      </Popup>
+
       {/* Popup confirmando que se envio de la evaluación */}
       <Popup
-        title={<LittleHeader titulo="Evaluación cargada exitosamente." />}
+        title={<LittleHeader titulo="Reparación guardada exitosamente." />}
         openDialog={openEvaluacionEnviada}
         setOpenDialog={setOpenEvaluacionEnviada}
-        description="La evaluación realizada se ha enviado existosamente."
+        description="Se ha guardado las tareas hechas."
       >
         <Box sx={{
           display: 'flex', justifyContent: 'center', alignItems: 'center',
@@ -342,4 +244,4 @@ const ChecklistEvaluacion = (props) => {
   );
 };
 
-export default ChecklistEvaluacion;
+export default ChecklistReparacion;
