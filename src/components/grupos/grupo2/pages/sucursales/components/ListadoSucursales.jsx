@@ -23,27 +23,15 @@ const ListadoSucursales = () => {
       });
   };
 
-  const actualizarDatosDeSucursal = (sucursalActualizada) => {
-    const cambiarEstadoDeSucursal = (sucursal) => {
-      const esLaSucursalActualizada = sucursal.id === sucursalActualizada.id;
-      const retVal = esLaSucursalActualizada
-        ? {
-          ...sucursal,
-          activa: sucursalActualizada.activa,
-          nombre: sucursalActualizada.nombre,
-          numero: parseInt(sucursalActualizada.numero, 10),
-          calle: sucursalActualizada.calle,
-          codigo_postal: sucursalActualizada.codigo_postal,
-          provincia: sucursalActualizada.provincia,
-          localidad: sucursalActualizada.localidad,
-          posee_taller: sucursalActualizada.posee_taller,
-        }
-        : sucursal;
+  const actualizarDatosDeSucursal = (sucursalModificada) => {
+    const actualizarSucursalModificada = (sucursalActual) => {
+      const esLaSucursalModificada = sucursalActual.id === sucursalModificada.id;
+      const sucursal = esLaSucursalModificada ? sucursalModificada : sucursalActual;
 
-      return retVal;
+      return sucursal;
     };
 
-    setSucursales((prevRecords) => prevRecords.map(cambiarEstadoDeSucursal));
+    setSucursales((sucursalesActuales) => sucursalesActuales.map(actualizarSucursalModificada));
   };
 
   const renderCheckTieneTaller = ({ row }) => (
