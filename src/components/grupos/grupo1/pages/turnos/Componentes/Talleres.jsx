@@ -4,7 +4,6 @@ import { Box, Select, MenuItem } from '@mui/material';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import InputLabel from '@mui/material/InputLabel';
-import localidadTaller from '../turno-service-cliente/localidadTaller.json';
 
 const tallerAPI = axios.create({
   baseURL: 'https://autotech2.onrender.com/talleres_admin/',
@@ -31,8 +30,6 @@ const Talleres = ({ setTallerSeleccionado }) => {
       [name]: value,
     }));
     setTallerSeleccionado(value);
-    const localidad = talleres.find((taller) => taller.id_taller === value)?.localidad;
-    localidadTaller.localidad = localidad;
   };
 
   return (
@@ -57,7 +54,12 @@ const Talleres = ({ setTallerSeleccionado }) => {
           >
             {talleres.map((taller) => (
               <MenuItem key={taller.id_taller} value={taller.id_taller}>
+                {'Taller '}
+                {taller.id_taller}
+                {', '}
                 {taller.localidad}
+                {', '}
+                {taller.nombre}
               </MenuItem>
             ))}
           </Select>
