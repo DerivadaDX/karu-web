@@ -6,6 +6,9 @@ import RegisterForm from './pages/register/RegisterForm';
 import Mfa from './pages/mfa/Mfa';
 import ModelForm from './pages/model/ModelForm';
 import PaperWork from './pages/PaperWork/PaperWork';
+import RestorePassword from './pages/restorePassword/RestorePassword';
+import ConfirmToken from './pages/restorePassword/confirmToken/ConfirmToken';
+import ChangePassword from './pages/restorePassword/changePassword/ChangePassword';
 
 const GROUP_4_PAGES_CONFIG = [
   {
@@ -44,6 +47,30 @@ const GROUP_4_PAGES_CONFIG = [
     href: '/paperWork',
     icon: <StoreIcon />,
     page: <PaperWork />,
+  },
+  {
+    id: 'g4-restorePassword',
+    name: 'Cambiar Contraseña',
+    href: '/restorePassword',
+    icon: <StoreIcon />,
+    page: <RestorePassword />,
+    soloUrl: true,
+  },
+  {
+    id: 'g4-confirmToken',
+    name: 'Confirmar Token',
+    href: '/restorePassword/confirmToken',
+    icon: <StoreIcon />,
+    page: <ConfirmToken />,
+    soloUrl: true,
+  },
+  {
+    id: 'g4-changePasswordForgotten',
+    name: 'Cambiar contraseña olvidada',
+    href: '/restorePassword/changePassword',
+    icon: <StoreIcon />,
+    page: <ChangePassword />,
+    soloUrl: true,
   },
 ];
 
