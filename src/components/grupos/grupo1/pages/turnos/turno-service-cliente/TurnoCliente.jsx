@@ -40,6 +40,12 @@ const FormularioCliente = () => {
   // Para setear el límite del calendario
   const limite = 31;
 
+  // Para el manejo de errores de la API para crear el turno
+  const [openError, setOpenError] = useState(false);
+  const [alertError, setAlertError] = useState('');
+  const [alertMensaje, setAlertMensaje] = useState('');
+  const [alertTitulo, setAlertTitulo] = useState('');
+
   const guardarPatente = (event) => {
     const { value } = event.target;
     if (ValidarPatente.isPatenteValida(value)) {
@@ -92,7 +98,17 @@ const FormularioCliente = () => {
         setOpenPopupNoSeleccion(true);
       }
     } catch (error) {
-      setOpenPopupNoSeleccion(true);
+      if (error.response.data.includes('la patente ingresada ya tiene un turno de ese tipo registrado en el sistema')) {
+        setOpenError(true);
+        setAlertError('error');
+        setAlertTitulo('Ha ocurrido un problema');
+        setAlertMensaje('Ya existe un turno para esa patente y tipo de turno.');
+      } else {
+        setOpenError(true);
+        setAlertError('error');
+        setAlertTitulo('Ha ocurrido un error');
+        setAlertMensaje('Si el problema persiste, comuniquese con insomnia.front@gmail.com');
+      }
     }
   };
 
@@ -193,6 +209,16 @@ const FormularioCliente = () => {
               >
                 Cerrar
               </Button>
+            </Box>
+          </Popup>
+          {/* Popup para mostrar mensaje de error, cuando sea enviado el turno */}
+          <Popup
+            openDialog={openError}
+            setOpenDialog={setOpenError}
+            title="Ha ocurrido un problema"
+          >
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              <Alerts alertType={alertError} description={alertMensaje} title={alertTitulo} />
             </Box>
           </Popup>
         </Box>
