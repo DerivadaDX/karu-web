@@ -9,33 +9,27 @@
 /* eslint-disable no-unused-vars */
 import DialogActions from '@mui/material/DialogActions';
 import {
-  Box, TextField, Button, InputLabel, Select, MenuItem, Container, Grid,
+  Box, TextField, Button, Container, Grid,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { getSucursalesSinTaller } from '../../services/services-talleres';
 import Alerts from '../../components/common/Alerts';
 import Popup from '../../components/common/DialogPopup';
 import LittleHeader from '../../components/common/LittleHeader';
 
-const AltaTaller = (props) => {
+const ModificarTaller = (props) => {
   const {
-    open, setOpen, actualizar, setActualizar,
+    open, setOpen, actualizar, setActualizar, row,
   } = props;
-  const [sucursales, setSucursales] = useState([]);
-
-  const [s, setS] = useState({ sucursal: '' });
-  const [sucursalId, setSucursalId] = useState(0);
-  const [nombre, setNombre] = useState('');
-  const [direccion, setDireccion] = useState('');
-  const [mail, setMail] = useState('');
-  const [telefono, setTelefono] = useState('');
-  const [capacidad, setCapacidad] = useState(0);
-  const [cantTecnicos, setCantTecnicos] = useState(0);
+  const [idTaller, setIdTaller] = useState(row.id_taller);
+  const [nombreNuevo, setNombreNuevo] = useState(row.nombre);
+  const [direccionNueva, setDireccionNueva] = useState(row.direccion);
+  const [mailNuevo, setMailNuevo] = useState(row.mail);
+  const [telefonoNuevo, setTelefonoNuevo] = useState(row.telefono);
+  const [capacidadNueva, setCapacidadNueva] = useState(row.capacidad);
+  const [cantTecnicosNuevo, setCantTecnicosNuevo] = useState(row.cant_tecnicos);
 
   // Para validar form
-  const [sucursalSeleccionada, setSucursalSeleccionada] = useState(null);
-  const [seleccionoSucursal, setSeleccionoSucursal] = useState(false);
   const [nombreEsValido, setNombreEsValido] = useState(true);
   const [dirEsValida, setDirEsValida] = useState(true);
   const [mailEsValido, setMailEsValido] = useState(true);
@@ -46,33 +40,26 @@ const AltaTaller = (props) => {
   // Para confirmar  y validar form
   const [openConfirmar, setOpenConfirmar] = useState(false);
   const [openError, setOpenError] = useState(false);
-  const mensajeExitoso = `Se ha creado exitosamente el Taller ${nombre} en la direccion ${direccion}`;
+  const mensajeExitoso = `Se ha modificado exitosamente el Taller ${nombreNuevo}`;
   const [openMensajeExitoso, setOpenMensajeExitoso] = useState(false);
 
   // Error al enviar
-  const [openErrorCrear, setOpenErrorCrear] = useState(false);
+  const [openErrorModificar, setOpenErrorModificar] = useState(false);
 
   // Alertas de la API
   const [alertType, setAlertType] = useState('');
   const [alertMessage, setAlertMessage] = useState('');
   const [alertTitle, setAlertTitle] = useState('');
 
-  const traerSucursales = () => {
-    getSucursalesSinTaller()
-      .then((response) => {
-        setSucursales(response.data);
-      }).catch((error) => {
-        setAlertType('error');
-        setAlertTitle('Error de servidor');
-        setAlertMessage(
-          'Error en el servidor. Por favor, recargue la página y vuelva a intentarlo nuevamente.',
-        );
-      });
-  };
-
   useEffect(() => {
     try {
-      traerSucursales();
+      console.log(idTaller);
+      console.log(nombreNuevo);
+      console.log(direccionNueva);
+      console.log(mailNuevo);
+      console.log(telefonoNuevo);
+      console.log(capacidadNueva);
+      console.log(cantTecnicosNuevo);
       setAlertType('');
     } catch (error) {
       setAlertType('error');
@@ -81,23 +68,14 @@ const AltaTaller = (props) => {
         'Error al traer los talleres. Por favor, recargue la página y vuelva a intentarlo nuevamente.',
       );
     }
-  }, [traerSucursales, nombre, sucursalId, direccion, cantTecnicos, capacidad, mail, telefono]);
-
-  const guardarSucursal = (event) => {
-    const { value } = event.target;
-    const sucursal = sucursales.find((sucu) => sucu.id === value);
-    setSucursalSeleccionada(sucursal);
-    setSucursalId(value);
-    setSeleccionoSucursal(true);
-    setS((prevS) => ({ ...prevS, sucursal: value }));
-  };
+  }, [nombreNuevo, direccionNueva, cantTecnicosNuevo, capacidadNueva, mailNuevo, telefonoNuevo]);
 
   const guardarNombre = (event) => {
     const { name, value } = event.target;
     const nombreValido = value.length >= 1 && value.length <= 30;
     setNombreEsValido(nombreValido);
     if (nombreValido) {
-      setNombre(value);
+      setNombreNuevo(value);
     }
   };
 
@@ -106,7 +84,7 @@ const AltaTaller = (props) => {
     const dirValida = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\d\s.]+$/u.test(event.target.value);
     setDirEsValida(dirValida);
     if (dirValida) {
-      setDireccion(value);
+      setDireccionNueva(value);
     }
   };
 
@@ -115,7 +93,7 @@ const AltaTaller = (props) => {
     const mailValido = /.+@[\w-]+(\.[\w-]+)*(\.[a-zA-Z]{2,})$/.test(event.target.value);
     setMailEsValido(mailValido);
     if (mailValido) {
-      setMail(value);
+      setMailNuevo(value);
     }
   };
 
@@ -124,7 +102,7 @@ const AltaTaller = (props) => {
     const telefonoValido = /^\+?1?\d{9,15}$/.test(event.target.value);
     setTelefonoEsValido(telefonoValido);
     if (telefonoValido) {
-      setTelefono(value);
+      setTelefonoNuevo(value);
     }
   };
 
@@ -133,7 +111,7 @@ const AltaTaller = (props) => {
     const capacidadValida = /^(?:[1-9]|1[0-5])$/.test(event.target.value);
     setCapacidadEsValida(capacidadValida);
     if (capacidadValida) {
-      setCapacidad(parseInt(value));
+      setCapacidadNueva(parseInt(value));
     }
   };
 
@@ -142,12 +120,12 @@ const AltaTaller = (props) => {
     const cantTecnicosValido = /^(?:[1-9]|[1-3][0-9]|4[0-5])$/.test(event.target.value);
     setCantTecnicosEsValido(cantTecnicosValido);
     if (cantTecnicosValido) {
-      setCantTecnicos(parseInt(value));
+      setCantTecnicosNuevo(parseInt(value));
     }
   };
 
   const validarForm = () => {
-    const todoCompleto = sucursalSeleccionada && nombre && direccion && mail && telefono && capacidad && cantTecnicos;
+    const todoCompleto = nombreNuevo && direccionNueva && mailNuevo && telefonoNuevo && capacidadNueva && cantTecnicosNuevo;
     const todoValido = nombreEsValido && dirEsValida && mailEsValido && telefonoEsValido && capacidadEsValida && cantTecnicosEsValido;
     const todoCorrecto = todoCompleto && todoValido;
     if (todoCorrecto) {
@@ -157,42 +135,28 @@ const AltaTaller = (props) => {
     }
   };
 
-  const limpiarFormulario = () => {
-    const primeraSucursalId = sucursales.length > 0 ? sucursales[0].id : '';
-    setS({ sucursal: primeraSucursalId });
-    setSucursalId(primeraSucursalId);
-    setSucursalSeleccionada(sucursales.find((sucu) => sucu.id === primeraSucursalId));
-    setTelefono(0);
-    setNombre('');
-    setDireccion('');
-    setMail('');
-    setCapacidad(0);
-    setCantTecnicos(0);
-  };
-
-  const url = 'https://autotech2.onrender.com/talleres/crear/';
-  const handleCrearTaller = () => {
-    axios.post(url, {
-      id_sucursal: sucursalId,
-      nombre,
-      direccion,
-      mail,
-      telefono,
-      capacidad,
-      cant_tecnicos: cantTecnicos,
+  const url = `https://autotech2.onrender.com/talleres/modificar/${idTaller}/`;
+  const handleModificarTaller = () => {
+    axios.put(url, {
+      id_sucursal: idTaller,
+      nombre: nombreNuevo,
+      direccion: direccionNueva,
+      mail: mailNuevo,
+      telefono: telefonoNuevo,
+      capacidad: capacidadNueva,
+      cant_tecnicos: cantTecnicosNuevo,
     })
       .then(() => {
         setOpenMensajeExitoso(true);
         setActualizar(true);
-        limpiarFormulario();
       })
       .catch((error) => {
-        setOpenErrorCrear(open);
+        setOpenErrorModificar(open);
       });
   };
 
   async function handleSubmit(event) {
-    handleCrearTaller();
+    handleModificarTaller();
   }
 
   return (
@@ -218,25 +182,20 @@ const AltaTaller = (props) => {
                 },
               }}
             >
-              <InputLabel id="demo-simple-select-label">Sucursal</InputLabel>
-              <Select
-                required
-                label="Sucursal"
-                type="text"
-                name="sucursal"
-                value={sucursales.some((sucu) => sucu.id === s.sucursal) ? s.sucursal : ''}
-                onChange={guardarSucursal}
-                margin="dense"
+              <TextField
+                disabled
                 fullWidth
-                aria-describedby="helper-sucursal"
+                label="ID del taller"
+                defaultValue={row.id_taller}
+                margin="dense"
+                variant="standard"
                 color="secondary"
-              >
-                {sucursales.map((sucu) => (
-                  <MenuItem key={sucu.id} value={sucu.id}>
-                    {sucu.nombre}
-                  </MenuItem>
-                ))}
-              </Select>
+                sx={{
+                  mt: {
+                    xs: 0, sm: 1, md: 2, lg: 3,
+                  },
+                }}
+              />
               <TextField
                 aria-describedby="helper-nombre"
                 sx={{ mt: 1 }}
@@ -245,6 +204,7 @@ const AltaTaller = (props) => {
                 id="nombre"
                 label="Nombre de taller"
                 name="nombre"
+                defaultValue={row.nombre}
                 inputProps={{ minLength: 1, maxLength: 30 }}
                 onChange={guardarNombre}
                 variant="standard"
@@ -264,6 +224,7 @@ const AltaTaller = (props) => {
                 variant="standard"
                 margin="dense"
                 color="secondary"
+                defaultValue={row.direccion}
                 onChange={guardarDireccion}
                 inputProps={{
                   minLength: 1,
@@ -276,7 +237,7 @@ const AltaTaller = (props) => {
                 disabled
                 fullWidth
                 label="Localidad"
-                value={sucursalSeleccionada ? sucursalSeleccionada.localidad : ''}
+                defaultValue={row.localidad}
                 margin="dense"
                 variant="standard"
                 color="secondary"
@@ -286,7 +247,7 @@ const AltaTaller = (props) => {
                 disabled
                 fullWidth
                 label="Provincia"
-                value={sucursalSeleccionada ? sucursalSeleccionada.provincia : ''}
+                defaultValue={row.provincia}
                 margin="dense"
                 variant="standard"
                 color="secondary"
@@ -311,7 +272,7 @@ const AltaTaller = (props) => {
                 disabled
                 fullWidth
                 label="C.P."
-                value={sucursalSeleccionada ? sucursalSeleccionada.codigo_postal : ''}
+                defaultValue={row.cod_postal}
                 margin="dense"
                 variant="standard"
                 color="secondary"
@@ -335,6 +296,7 @@ const AltaTaller = (props) => {
                 variant="standard"
                 margin="dense"
                 color="secondary"
+                defaultValue={row.mail}
                 onChange={guardarMail}
                 inputProps={{
                   minLength: 1,
@@ -356,6 +318,7 @@ const AltaTaller = (props) => {
                 variant="standard"
                 margin="dense"
                 color="secondary"
+                defaultValue={row.telefono}
                 onChange={guardarTelefono}
                 inputProps={{
                   minLength: 1,
@@ -378,6 +341,7 @@ const AltaTaller = (props) => {
                 margin="dense"
                 type="number"
                 color="secondary"
+                defaultValue={row.capacidad}
                 inputProps={{
                   min: 1,
                   max: 15,
@@ -401,6 +365,7 @@ const AltaTaller = (props) => {
                 margin="dense"
                 type="number"
                 color="secondary"
+                defaultValue={row.cant_tecnicos}
                 inputProps={{
                   min: 1,
                   max: 45,
@@ -426,7 +391,7 @@ const AltaTaller = (props) => {
               validarForm();
             }}
           >
-            Crear taller
+            Modificar taller
           </Button>
           <Button
             color="primary"
@@ -444,7 +409,7 @@ const AltaTaller = (props) => {
         title={<LittleHeader titulo="Confirmar" />}
         openDialog={openConfirmar}
         setOpenDialog={setOpenConfirmar}
-        description="¿Está seguro que todos los datos completados son correctos? La creación puede tardar unos segundos."
+        description="¿Está seguro que todos los datos completados son correctos? La modificación puede tardar unos segundos."
       >
         <Box sx={{
           display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 2,
@@ -474,9 +439,9 @@ const AltaTaller = (props) => {
         </Box>
       </Popup>
       <Popup
-        title={<LittleHeader titulo="Error al crear el taller" />}
-        openDialog={openErrorCrear}
-        setOpenDialog={setOpenErrorCrear}
+        title={<LittleHeader titulo="Error al modificar el taller" />}
+        openDialog={openErrorModificar}
+        setOpenDialog={setOpenErrorModificar}
         description="Se produjo un error. Si persiste, comuniquese con el área técnica de KarU."
       >
         <Box sx={{
@@ -488,7 +453,7 @@ const AltaTaller = (props) => {
               color="primary"
               variant="outlined"
               onClick={() => {
-                setOpenErrorCrear(false);
+                setOpenErrorModificar(false);
                 setOpenConfirmar(false);
               }}
             >
@@ -498,7 +463,7 @@ const AltaTaller = (props) => {
         </Box>
       </Popup>
       <Popup
-        title={<LittleHeader titulo="Taller creado exitosamente" />}
+        title={<LittleHeader titulo="Taller modificado exitosamente" />}
         openDialog={openMensajeExitoso}
         setOpenDialog={setOpenMensajeExitoso}
         description={mensajeExitoso}
@@ -547,4 +512,4 @@ const AltaTaller = (props) => {
   );
 };
 
-export default AltaTaller;
+export default ModificarTaller;
