@@ -5,6 +5,7 @@ import LoginForm from './pages/login/LoginForm';
 import RegisterForm from './pages/register/RegisterForm';
 import Mfa from './pages/mfa/Mfa';
 import ModelForm from './pages/model/ModelForm';
+import PaperWork from './pages/PaperWork/PaperWork';
 
 const GROUP_4_PAGES_CONFIG = [
   {
@@ -36,6 +37,13 @@ const GROUP_4_PAGES_CONFIG = [
     href: '/save-vehicle-model',
     icon: <StoreIcon />,
     page: <ModelForm />,
+  },
+  {
+    id: 'g4-paperWork',
+    name: 'Cargar Documentación',
+    href: '/paperWork',
+    icon: <StoreIcon />,
+    page: <PaperWork />,
   },
 ];
 
