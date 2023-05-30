@@ -9,6 +9,7 @@ import PaperWork from './pages/PaperWork/PaperWork';
 import RestorePassword from './pages/restorePassword/RestorePassword';
 import ConfirmToken from './pages/restorePassword/confirmToken/ConfirmToken';
 import ChangePassword from './pages/restorePassword/changePassword/ChangePassword';
+import UpdateProfile from './pages/update/UpdateProfile';
 
 const GROUP_4_PAGES_CONFIG = [
   {
@@ -71,6 +72,13 @@ const GROUP_4_PAGES_CONFIG = [
     icon: <StoreIcon />,
     page: <ChangePassword />,
     soloUrl: true,
+  },
+  {
+    id: 'g4-updateuser',
+    name: 'Actualizar usuario',
+    href: '/update-user',
+    icon: <StoreIcon />,
+    page: <UpdateProfile />,
   },
 ];
 
