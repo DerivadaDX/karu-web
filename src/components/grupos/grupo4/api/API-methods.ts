@@ -1,27 +1,15 @@
 /*eslint-disable */
 import axios from 'axios';
-import { VehicleFormData } from '../dto/vehicle-props';
-import { ModelFormData } from '../dto/model-props';
-import {
-  ModifyUserPasswordProps,
-  ModifyUserProps,
-  RegistrationFormData,
-} from '../dto/registration-props';
-import { LoginRequestTO, userLoginProps } from '../dto/users-props';
-import { SessionStatusEnum } from '../enums/sessionStatusEnum';
-import { PaperWorkFormData } from '../dto/paperwork-props';
-
-export const client = axios.create({
-  baseURL: 'http://localhost:8080/api/v1/',
-  // baseURL: "https://gadmin-backend-production.up.railway.app/api/v1",
+const client = axios.create({
+  // baseURL: 'http://localhost:8080/api/v1/',
+  baseURL: 'https://gadmin-backend-production.up.railway.app/api/v1',
 });
 
-export const authLogin = async (user: userLoginProps): Promise<boolean> => {
+export const authLogin = async (user: any) => {
   try {
-    const response = await client.post<any>('/login/startLogin', user);
+    const response = await client.post('/login/startLogin', user);
     if (
-      SessionStatusEnum[SessionStatusEnum.USUARIO_ENCONTRADO] ===
-      response.data?.result.sessionStatus
+      response.data?.result.sessionStatus === 'USUARIO_ENCONTRADO'
     ) {
       return true;
     }
@@ -31,11 +19,9 @@ export const authLogin = async (user: userLoginProps): Promise<boolean> => {
   }
 };
 
-export const confirmMail = async (
-  email: string
-): Promise<{ errorMessage?: string; validEmail: boolean }> => {
+export const confirmMail = async (email: any) => {
   try {
-    const response = await client.post<any>('/resetPassword/validateEmail', {
+    const response = await client.post('/resetPassword/validateEmail', {
       email,
     });
     if (response.data?.result.value) {
@@ -47,11 +33,9 @@ export const confirmMail = async (
   }
 };
 
-export const tokenValidatorForChangePassword = async (
-  token: string
-): Promise<{ errorMessage?: string; validToken: boolean }> => {
+export const tokenValidatorForChangePassword = async (token: any) => {
   try {
-    const response = await client.post<any>('/resetPassword/validateToken', {
+    const response = await client.post('/resetPassword/validateToken', {
       token,
     });
     if (response.data?.result.value) {
@@ -62,13 +46,10 @@ export const tokenValidatorForChangePassword = async (
     return { validToken: false };
   }
 };
-//TODO: mejorarla cuando martin haga las correcciones.
-export const modifyPassword = async (userData: {
-  email: string;
-  password: string;
-}): Promise<{ errorMessage?: string; validPassword: boolean }> => {
+
+export const modifyPassword = async (userData: any) => {
   try {
-    const response = await client.post<any>(
+    const response = await client.post(
       '/resetPassword/changePassword',
       userData
     );
@@ -81,14 +62,9 @@ export const modifyPassword = async (userData: {
   }
 };
 
-export const tokenValidator = async (
-  loginRequest: LoginRequestTO
-): Promise<boolean> => {
+export const tokenValidator = async (loginRequest: any) => {
   try {
-    const response = await client.post<any>(
-      '/login/twoFactorAuth',
-      loginRequest
-    );
+    const response = await client.post('/login/twoFactorAuth', loginRequest);
     if (response.data.result.sessionStatus === 'SESION_CONFIRMADA') {
       return true;
     }
@@ -98,11 +74,9 @@ export const tokenValidator = async (
   }
 };
 
-export const sendPaperWork = async (
-  vehicleDocumentation: PaperWorkFormData
-): Promise<{ errorMessage?: string; registeredPaper: boolean }> => {
+export const sendPaperWork = async (vehicleDocumentation: any) => {
   try {
-    const response = await client.post<any>(
+    const response = await client.post(
       '/vehicle/savePaperwork',
       vehicleDocumentation
     );
@@ -118,11 +92,9 @@ export const sendPaperWork = async (
   }
 };
 
-export const PostNewUser = async (
-  user: RegistrationFormData
-): Promise<{ value?: string; registeredUser: boolean }> => {
+export const PostNewUser = async (user: any) => {
   try {
-    const response = await client.post<any>('/signup/internal', user);
+    const response = await client.post('/signup/internal', user);
     if (response.data.result.value) {
       return { value: response.data.result.value, registeredUser: false };
     }
@@ -132,9 +104,9 @@ export const PostNewUser = async (
   }
 };
 
-export const GetUser = async (user: string): Promise<string> => {
+export const GetUser = async (user: any) => {
   try {
-    const response = await client.get<any>(`/user/getByUser/${user}`);
+    const response = await client.get(`/user/getByUser/${user}`);
     return response.data.result.email;
   } catch (error) {
     console.log(error);
@@ -142,11 +114,9 @@ export const GetUser = async (user: string): Promise<string> => {
   }
 };
 
-export const ModifyUser = async (
-  user: ModifyUserProps,
-): Promise<{ value?: string; updatedUser: boolean }> => {
+export const ModifyUser = async (user: any) => {
   try {
-    const response = await client.put<any>('/user/profile', user);
+    const response = await client.put('/user/profile', user);
     if (response.data.result.value) {
       return { value: response.data.result.value, updatedUser: false };
     }
@@ -156,11 +126,9 @@ export const ModifyUser = async (
   }
 };
 
-export const ModifyPasswordUser = async (
-  user: ModifyUserPasswordProps,
-): Promise<{ value?: string; updatedUser: boolean }> => {
+export const ModifyPasswordUser = async (user: any) => {
   try {
-    const response = await client.put<any>('/user/security', user);
+    const response = await client.put('/user/security', user);
     if (response.data.result.value) {
       return { value: response.data.result.value, updatedUser: false };
     }
@@ -170,11 +138,9 @@ export const ModifyPasswordUser = async (
   }
 };
 
-export const PostNewVehicle = async (
-  vehicle: VehicleFormData,
-): Promise<{ value?: string; registeredVehicle: boolean }> => {
+export const PostNewVehicle = async (vehicle: any) => {
   try {
-    const response = await client.post<any>('/vehicle/saveVehicle', vehicle);
+    const response = await client.post('/vehicle/saveVehicle', vehicle);
     if (response.data.result.value) {
       return { value: response.data.result.value, registeredVehicle: false };
     }
@@ -184,11 +150,9 @@ export const PostNewVehicle = async (
   }
 };
 
-export const PostNewVehicleModel = async (
-  vehicle: ModelFormData,
-): Promise<{ value?: string; registeredVehicleModel: boolean }> => {
+export const PostNewVehicleModel = async (vehicle: any) => {
   try {
-    const response = await client.post<any>('/vehicle/saveModel', vehicle);
+    const response = await client.post('/vehicle/saveModel', vehicle);
     if (response.data.result.value) {
       return {
         value: response.data.result.value,
@@ -201,9 +165,9 @@ export const PostNewVehicleModel = async (
   }
 };
 
-export const GetAllModels = async (): Promise<Array<Object>> => {
+export const GetAllModels = async () => {
   try {
-    const response = await client.get<any>('/vehicle/getAllModels');
+    const response = await client.get('/vehicle/getAllModels');
     return response.data.result;
   } catch (error) {
     console.log(error);
@@ -211,9 +175,9 @@ export const GetAllModels = async (): Promise<Array<Object>> => {
   }
 };
 
-export const GetAllOffices = async (): Promise<Array<Object>> => {
+export const GetAllOffices = async () => {
   try {
-    const response = await client.get<any>('/branch/getOffices');
+    const response = await client.get('/branch/getOffices');
     return response.data.result;
   } catch (error) {
     console.log(error);
@@ -221,9 +185,9 @@ export const GetAllOffices = async (): Promise<Array<Object>> => {
   }
 };
 
-export const GetAllWorkshops = async (): Promise<Array<Object>> => {
+export const GetAllWorkshops = async () => {
   try {
-    const response = await client.get<any>('/branch/getWorkshops');
+    const response = await client.get('/branch/getWorkshops');
     return response.data.result;
   } catch (error) {
     console.log(error);

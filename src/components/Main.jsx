@@ -9,6 +9,7 @@ import GROUP_1_PAGES_CONFIG from './grupos/grupo1/pagesConfig';
 import GROUP_2_PAGES_CONFIG from './grupos/grupo2/pagesConfig';
 import GROUP_3_PAGES_CONFIG from './grupos/grupo3/pagesConfig';
 import GROUP_4_PAGES_CONFIG from './grupos/grupo4/pagesConfig';
+import { UserContextProvider } from './grupos/grupo4/context/UsersContext';
 
 const styles = {
   container: {
@@ -81,13 +82,15 @@ const Main = () => {
     <ThemeProvider theme={mdTheme}>
       <LoggedInLayout>
         <Container maxWidth="xl" sx={styles.container}>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            {GROUP_1_PAGES_CONFIG.map(buildRoute)}
-            {GROUP_2_PAGES_CONFIG.map(buildRoute)}
-            {GROUP_3_PAGES_CONFIG.map(buildRoute)}
-            {GROUP_4_PAGES_CONFIG.map(buildRoute)}
-          </Routes>
+          <UserContextProvider>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              {GROUP_1_PAGES_CONFIG.map(buildRoute)}
+              {GROUP_2_PAGES_CONFIG.map(buildRoute)}
+              {GROUP_3_PAGES_CONFIG.map(buildRoute)}
+              {GROUP_4_PAGES_CONFIG.map(buildRoute)}
+            </Routes>
+          </UserContextProvider>
         </Container>
         <Copyright />
       </LoggedInLayout>

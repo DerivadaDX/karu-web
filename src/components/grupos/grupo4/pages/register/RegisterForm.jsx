@@ -1,13 +1,14 @@
 /*eslint-disable */
 import { useContext, useEffect, useState } from 'react';
-import { RegistrationFormData, inputs } from '../../dto/registration-props';
+import { inputs } from '../../dto/registration-props';
 import FormInput from '../../components/FormInput';
 import { UserContext } from '../../context/UsersContext';
 import '../../assets/css/formRegister.css';
 import { GetAllOffices, GetAllWorkshops } from '../../api/API-methods';
 import { Link } from 'react-router-dom';
+
 const RegisterForm = () => {
-  const [values, setValues] = useState<RegistrationFormData>({
+  const [values, setValues] = useState({
     username: '',
     fullName: '',
     document: '',
@@ -47,12 +48,12 @@ const RegisterForm = () => {
     userValueError,
   } = useContext(UserContext);
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     await saveUser(values);
   };
 
-  const onChange = (e: any) => {
+  const onChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
     setSpanAlreadyExistsUser(false);
   };
@@ -60,7 +61,7 @@ const RegisterForm = () => {
   useEffect(() => {
     const updateOfficeDropdown = async () => {
       const valueOffice = await GetAllOffices();
-      const offices = valueOffice.map((office: any) => ({
+      const offices = valueOffice.map((office) => ({
         officeCode: office.officeCode,
         officeName: office.officeName,
       }));
@@ -69,7 +70,7 @@ const RegisterForm = () => {
     };
     const updateWorkshopDropdown = async () => {
       const valueWorkshop = await GetAllWorkshops();
-      const workshops = valueWorkshop.map((workshop: any) => ({
+      const workshops = valueWorkshop.map((workshop) => ({
         workshopCode: workshop.workshopCode,
         workshopName: workshop.workshopName,
       }));
@@ -203,7 +204,7 @@ const RegisterForm = () => {
           </div>
         )}
         <button className="buttons-register">Enviar</button>
-        <Link className="register-container__form-a" to={'/login'}>
+        <div>
           <span
             className="spans"
             style={
@@ -214,8 +215,7 @@ const RegisterForm = () => {
           >
             {userValueError}
           </span>
-          <div>¿Ya tienes una cuenta?</div>
-        </Link>
+        </div>
       </form>
     </div>
   );

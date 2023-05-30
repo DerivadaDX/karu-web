@@ -1,8 +1,8 @@
 /*eslint-disable */
-import { useContext, useEffect, useState } from 'react';
-import { UserContext } from '../../context/UsersContext';
-import { Link } from 'react-router-dom';
-import '../../assets/css/formLogin.css';
+import { useContext, useEffect, useState } from "react";
+import { UserContext } from "../../context/UsersContext";
+import { Link } from "react-router-dom";
+import "../../assets/css/formLogin.css";
 
 const LoginForm = () => {
   const [isValidUser, setIsValidUser] = useState(false);
@@ -16,13 +16,14 @@ const LoginForm = () => {
     navigate,
     authUser,
   } = useContext(UserContext);
+
   useEffect(() => {
     if (isValidUser) {
-      navigate('/authToken');
+      navigate("/authToken");
     }
   }, [isValidUser]);
-  console.log("USERNAME: ", username)
-  const handleSubmit = async (e: any): Promise<void> => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (await authUser({ username, password })) {
       setIsValidUser(true);
@@ -61,8 +62,8 @@ const LoginForm = () => {
             id="login-span"
             style={
               showSpanPasswordOrUser
-                ? { display: 'block' }
-                : { display: 'none' }
+                ? { display: "block" }
+                : { display: "none" }
             }
           >
             Usuario y/o contraseña incorrecta. Por favor vuelva a intentar.
@@ -73,14 +74,6 @@ const LoginForm = () => {
             value="Iniciar sesión"
             id="sign-in-button"
           />
-          <Link to="/sign-up" className="link-login">
-            <input
-              className="buttons"
-              type="button"
-              value="Registrarse"
-              id="sign-up-button"
-            />
-          </Link>
           <a href="/restorePassword" className="login-container__form-a">
             ¿Olvidaste la contraseña?
           </a>

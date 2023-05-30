@@ -2,6 +2,7 @@
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../context/UsersContext";
 import "../../assets/css/formMfa.css";
+
 const Mfa = () => {
   const {
     showSpanLoginTokenError,
@@ -15,7 +16,8 @@ const Mfa = () => {
     navigate,
   } = useContext(UserContext);
   const [isValidToken, setIsValidToken] = useState(false);
-  const submitHandler = async (e: any): Promise<void> => {
+
+  const submitHandler = async (e) => {
     e.preventDefault();
     if (await authToken({ username, password, twoFactorCode })) {
       setIsValidToken(true);
@@ -27,7 +29,7 @@ const Mfa = () => {
       const Loggeduser = JSON.stringify({ username, password });
       cookie.set("user", Loggeduser, { maxAge: 300 });
       login();
-      navigate("/http://localhost:3000/");
+      navigate("/");
     }
   }, [isValidToken]);
 
@@ -42,7 +44,7 @@ const Mfa = () => {
         >
           <h2 className="mfa-container__form-h2">TOKEN</h2>
           <input
-            className={"inputs-Mfa"}
+            className="inputs-Mfa"
             type="text"
             placeholder="Ingrese el token enviado por mail"
             name="name"

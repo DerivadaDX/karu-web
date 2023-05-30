@@ -1,5 +1,5 @@
 /*eslint-disable */
-import { createContext, useEffect, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import {
   ModifyPasswordUser,
   ModifyUser,
@@ -13,24 +13,12 @@ import {
   modifyPassword,
   PostNewVehicleModel,
 } from '../api/API-methods';
-import { LoginContextProps, props } from '../data/props';
-import { LoginRequestTO, userLoginProps } from '../dto/users-props';
 import Cookies from 'universal-cookie';
 import { useNavigate } from 'react-router-dom';
-import {
-  ModifyUserPasswordProps,
-  ModifyUserProps,
-  RegistrationFormData,
-} from '../dto/registration-props';
-import { PaperWorkFormData } from '../dto/paperwork-props';
-import { VehicleFormData } from '../dto/vehicle-props';
-import { ModelFormData } from '../dto/model-props';
 
-export const UserContext = createContext<LoginContextProps>(
-  {} as LoginContextProps
-);
+export const UserContext = createContext({});
 
-export const UserContextProvider = ({ children }: props) => {
+export const UserContextProvider = ({ children }) => {
   const cookie = new Cookies();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -78,23 +66,20 @@ export const UserContextProvider = ({ children }: props) => {
     readCookie();
   }, []);
 
-  const setUsernameState = (value: string): void => setUsername(value);
-  const setPasswordState = (value: string): void => setPassword(value);
-  const setUserValueErrorState = (value: string): void =>
-    setUserValueError(value);
-  const setPaperWorkMessageErrorState = (value: string): void =>
+  const setUsernameState = (value) => setUsername(value);
+  const setPasswordState = (value) => setPassword(value);
+  const setUserValueErrorState = (value) => setUserValueError(value);
+  const setPaperWorkMessageErrorState = (value) =>
     setPaperWorkMessageError(value);
-  const setTokenState = (value: string): void => settwoFactorCode(value);
-  const setEmailToChangePassState = (value: string): void =>
-    setEmailToChangePass(value);
-  const setTokenToChangePassState = (value: string): void =>
-    setTokenToChangePass(value);
-  const setNewPasswordState = (value: string): void => setNewPassword(value);
-  const setChangePasswordMessageErrorState = (value: string): void =>
+  const setTokenState = (value) => settwoFactorCode(value);
+  const setEmailToChangePassState = (value) => setEmailToChangePass(value);
+  const setTokenToChangePassState = (value) => setTokenToChangePass(value);
+  const setNewPasswordState = (value) => setNewPassword(value);
+  const setChangePasswordMessageErrorState = (value) =>
     setChangePasswordMessageError(value);
   const login = () => setIsAuthenticated(true);
 
-  const authUser = async (user: userLoginProps): Promise<boolean> => {
+  const authUser = async (user) => {
     const isValidLogin = await authLogin(user);
     if (isValidLogin) {
       return true;
@@ -103,7 +88,7 @@ export const UserContextProvider = ({ children }: props) => {
     return false;
   };
 
-  const authToken = async (loginRequest: LoginRequestTO): Promise<boolean> => {
+  const authToken = async (loginRequest) => {
     const isValidToken = await tokenValidator(loginRequest);
     if (isValidToken) {
       return true;
@@ -113,10 +98,7 @@ export const UserContextProvider = ({ children }: props) => {
     }
   };
 
-  const changePassword = async (userData: {
-    email: string;
-    password: string;
-  }): Promise<boolean> => {
+  const changePassword = async (userData) => {
     const isValidchangePass = await modifyPassword(userData);
     const { errorMessage, validPassword } = isValidchangePass;
     if (validPassword) {
@@ -131,9 +113,7 @@ export const UserContextProvider = ({ children }: props) => {
     }
   };
 
-  const sendPaperWorkData = async (
-    vehicleDocumentation: PaperWorkFormData
-  ): Promise<void> => {
+  const sendPaperWorkData = async (vehicleDocumentation) => {
     const sendData = await sendPaperWork(vehicleDocumentation);
     const { errorMessage, registeredPaper } = sendData;
     if (registeredPaper) {
@@ -146,7 +126,7 @@ export const UserContextProvider = ({ children }: props) => {
     }
   };
 
-  const logOut = (): void => {
+  const logOut = () => {
     setUsername('');
     setPassword('');
     settwoFactorCode('');
@@ -154,7 +134,7 @@ export const UserContextProvider = ({ children }: props) => {
     cookie.remove('user');
   };
 
-  async function saveUser(userData: RegistrationFormData) {
+  async function saveUser(userData) {
     const postUser = await PostNewUser(userData);
     const { value, registeredUser } = postUser;
     if (registeredUser) {
@@ -168,7 +148,7 @@ export const UserContextProvider = ({ children }: props) => {
     }
   }
 
-  async function saveVehicle(vehicleData: VehicleFormData) {
+  async function saveVehicle(vehicleData) {
     const postUser = await PostNewVehicle(vehicleData);
     const { value, registeredVehicle } = postUser;
     if (registeredVehicle) {
@@ -182,7 +162,7 @@ export const UserContextProvider = ({ children }: props) => {
     }
   }
 
-  async function saveVehicleModel(modelData: ModelFormData) {
+  async function saveVehicleModel(modelData) {
     const postUser = await PostNewVehicleModel(modelData);
     const { value, registeredVehicleModel } = postUser;
     if (registeredVehicleModel) {
@@ -196,7 +176,7 @@ export const UserContextProvider = ({ children }: props) => {
     }
   }
 
-  async function updateUser(userData: ModifyUserProps) {
+  async function updateUser(userData) {
     const putUser = await ModifyUser(userData);
     const { value, updatedUser } = putUser;
     if (updatedUser) {
@@ -210,7 +190,7 @@ export const UserContextProvider = ({ children }: props) => {
     }
   }
 
-  async function updatePasswordUser(userData: ModifyUserPasswordProps) {
+  async function updatePasswordUser(userData) {
     const putPasswordUser = await ModifyPasswordUser(userData);
     const { value, updatedUser } = putPasswordUser;
     if (updatedUser) {
@@ -224,9 +204,7 @@ export const UserContextProvider = ({ children }: props) => {
     }
   }
 
-  const validateEmailRestorePassForm = async (
-    email: string
-  ): Promise<boolean> => {
+  const validateEmailRestorePassForm = async (email) => {
     const isValidEmailForPass = await confirmMail(email);
     const { errorMessage, validEmail } = isValidEmailForPass;
     if (validEmail) {
@@ -240,9 +218,7 @@ export const UserContextProvider = ({ children }: props) => {
     return false;
   };
 
-  const validateTokenFormRestorePass = async (
-    token: string
-  ): Promise<boolean> => {
+  const validateTokenFormRestorePass = async (token) => {
     const isValidTokenForPass = await tokenValidatorForChangePassword(token);
     const { errorMessage, validToken } = isValidTokenForPass;
     if (validToken) {
@@ -319,3 +295,5 @@ export const UserContextProvider = ({ children }: props) => {
     </UserContext.Provider>
   );
 };
+
+export default UserContextProvider;

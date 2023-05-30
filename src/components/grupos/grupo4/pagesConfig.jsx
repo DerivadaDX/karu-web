@@ -1,8 +1,10 @@
+/*eslint-disable */
 import React from 'react';
 import StoreIcon from '@mui/icons-material/Store';
-import LoginForm from './pages/login/LoginForm.tsx';
-import RegisterForm from './pages/register/RegisterForm.tsx';
-import Mfa from './pages/mfa/Mfa.tsx';
+import LoginForm from './pages/login/LoginForm';
+import RegisterForm from './pages/register/RegisterForm';
+import Mfa from './pages/mfa/Mfa';
+import ModelForm from './pages/model/ModelForm';
 
 const GROUP_4_PAGES_CONFIG = [
   {
@@ -19,23 +21,22 @@ const GROUP_4_PAGES_CONFIG = [
     href: '/sign-up',
     icon: <StoreIcon />,
     page: <RegisterForm />,
-    soloUrl: true,
   },
   {
     id: 'g4-mfa',
     name: 'Multifactor',
-    href: '/mfa',
+    href: '/authToken',
     icon: <StoreIcon />,
     page: <Mfa />,
     soloUrl: true,
   },
-  // {
-  //   id: 'g4-Home',
-  //   name: 'Home',
-  //   href: '/home',
-  //   icon: <Home />,
-  //   page: null,
-  // },
+  {
+    id: 'g4-modelForm',
+    name: 'Cargar Modelo',
+    href: '/save-vehicle-model',
+    icon: <StoreIcon />,
+    page: <ModelForm />,
+  },
 ];
 
 export default GROUP_4_PAGES_CONFIG;
