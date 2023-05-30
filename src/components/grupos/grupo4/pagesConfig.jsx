@@ -10,6 +10,7 @@ import RestorePassword from './pages/restorePassword/RestorePassword';
 import ConfirmToken from './pages/restorePassword/confirmToken/ConfirmToken';
 import ChangePassword from './pages/restorePassword/changePassword/ChangePassword';
 import UpdateProfile from './pages/update/UpdateProfile';
+import VehicleForm from './pages/vehicle/VehicleForm';
 
 const GROUP_4_PAGES_CONFIG = [
   {
@@ -79,6 +80,13 @@ const GROUP_4_PAGES_CONFIG = [
     href: '/update-user',
     icon: <StoreIcon />,
     page: <UpdateProfile />,
+  },
+  {
+    id: 'g4-vehicleForm',
+    name: 'Cargar datos del Vehículo',
+    href: '/save-vehicle',
+    icon: <StoreIcon />,
+    page: <VehicleForm />,
   },
 ];
 
