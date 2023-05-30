@@ -57,7 +57,12 @@ const Talleres = ({ setTallerSeleccionado }) => {
           >
             {talleres.map((taller) => (
               <MenuItem key={taller.id_taller} value={taller.id_taller}>
+                {'Taller '}
+                {taller.id_taller}
+                {', '}
                 {taller.localidad}
+                {', '}
+                {taller.nombre}
               </MenuItem>
             ))}
           </Select>
