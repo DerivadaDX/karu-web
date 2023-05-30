@@ -105,6 +105,7 @@ const FormularioEvaluacionAdmin = () => {
               margin="normal"
               required
               fullWidth
+              sx={{ minWidth: '25em' }}
               autoFocus
               id="patente"
               label="Patente"
