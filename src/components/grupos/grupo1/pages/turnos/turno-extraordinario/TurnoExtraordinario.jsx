@@ -7,7 +7,6 @@ import { Box, Paper } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Disponibilidad from '../Componentes/FechasHorarios';
-// import Talleres from '../Componentes/Talleres';
 import ValidarPatente from '../Helpers/validar-patente';
 import Alerts from '../../../components/common/Alerts';
 import Popup from '../../../components/common/DialogPopup';
@@ -37,6 +36,12 @@ const FormularioExtraordinario = () => {
   // Para setear el límite del calendario
   const limite = 45;
 
+  // Para el manejo de errores de la API para crear el turno
+  const [openError, setOpenError] = useState(false);
+  const [alertError, setAlertError] = useState('');
+  const [alertMensaje, setAlertMensaje] = useState('');
+  const [alertTitulo, setAlertTitulo] = useState('');
+
   const guardarPatente = (event) => {
     const { value } = event.target;
     if (ValidarPatente.isPatenteValida(value)) {
@@ -47,13 +52,6 @@ const FormularioExtraordinario = () => {
     }
   };
 
-  // Cambiar endpoint por el de excepcional
-  // https://autotech2.onrender.com/turnos/crear-turno-extraordinario/
-  /* Recibe:
-  "patente": "AS123FD",
-"fecha_inicio": "2023-10-23",
-"hora_inicio": "12:00:00",
-"taller_id": 10 */
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -73,7 +71,17 @@ const FormularioExtraordinario = () => {
         setOpenPopupNoSeleccion(true);
       }
     } catch (error) {
-      setOpenPopupNoSeleccion(true);
+      if (error.response.data.includes('la patente ingresada ya tiene un turno de ese tipo registrado en el sistema')) {
+        setOpenError(true);
+        setAlertError('error');
+        setAlertTitulo('Ha ocurrido un problema');
+        setAlertMensaje('Ya existe un turno para esa patente y tipo de turno.');
+      } else {
+        setOpenError(true);
+        setAlertError('error');
+        setAlertTitulo('Ha ocurrido un error');
+        setAlertMensaje('Si el problema persiste, comuniquese con insomnia.front@gmail.com');
+      }
     }
   };
 
@@ -108,7 +116,7 @@ const FormularioExtraordinario = () => {
             {!isValid && <Alerts alertType="warning" description="Ejemplos de patentes válidas: AA111AA o ABC123" title="Patente inválida" />}
             {/* eslint-disable-next-line max-len */}
             {patenteReparacion && <Disponibilidad endPoint={endPointDisponibilidad} setFecha={setFecha} setHora={setHora} msjError={setMsjError} limite={limite} />}
-            {msjError && <Alerts alertType="error" description={msjError} title="No se encontró evaluación asociada de venta ni extraordinario." />}
+            {msjError && <Alerts alertType="error" description={msjError} title="Surgió un error." />}
             <Button
               type="submit"
               fullWidth
@@ -151,6 +159,16 @@ const FormularioExtraordinario = () => {
               >
                 Cerrar
               </Button>
+            </Box>
+          </Popup>
+          {/* Popup para mostrar mensaje de error, cuando sea enviado el turno */}
+          <Popup
+            openDialog={openError}
+            setOpenDialog={setOpenError}
+            title="Ha ocurrido un problema"
+          >
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              <Alerts alertType={alertError} description={alertMensaje} title={alertTitulo} />
             </Box>
           </Popup>
         </Box>
