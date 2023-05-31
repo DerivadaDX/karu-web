@@ -12,7 +12,7 @@ import Alerts from '../../components/common/Alerts';
 import { getDetalleSucursal } from '../../services/services-talleres';
 
 const DetalleSucursal = (props) => {
-  const { tallerId, open, setOpen } = props;
+  const { sucursalId, open, setOpen } = props;
 
   const [detalles, setDetalles] = useState({
     id: '',
@@ -30,7 +30,7 @@ const DetalleSucursal = (props) => {
   const [alertTitle, setAlertTitle] = useState('');
 
   const traerDetalle = () => {
-    getDetalleSucursal(tallerId)
+    getDetalleSucursal(sucursalId)
       .then((response) => {
         setDetalles(response.data);
         setAlertType('');
@@ -50,7 +50,7 @@ const DetalleSucursal = (props) => {
 
   useEffect(() => {
     traerDetalle();
-  }, [tallerId]);
+  }, [sucursalId]);
 
   return (
     <>

@@ -116,7 +116,7 @@ const TablaTalleres = () => {
       <Button
         variant="contained"
         size="small"
-        sx={{ fontSize: '0.8em', backgroundColor: 'rgba(51,51,51,0.75)' }}
+        sx={{ fontSize: '0.7em', backgroundColor: 'rgba(51,51,51,0.75)' }}
         onClick={() => {
           setRowDetalleTaller(row.original);
           setOpenDetalleTaller(true);
@@ -131,7 +131,7 @@ const TablaTalleres = () => {
         size="small"
         onClick={() => {
           setOpenDetalleSucursal(true);
-          setIdTallerSucursal(row.original.id_taller);
+          setIdTallerSucursal(row.original.id_sucursal);
         }}
       >
         Info sucursal
@@ -241,7 +241,7 @@ const TablaTalleres = () => {
         <DetalleSucursal
           open={openDetalleSucursal}
           setOpen={setOpenDetalleSucursal}
-          tallerId={idTallerSucursal}
+          sucursalId={idTallerSucursal}
         />
       </Popup>
       <Popup
