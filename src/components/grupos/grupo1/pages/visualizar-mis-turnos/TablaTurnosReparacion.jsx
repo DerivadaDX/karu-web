@@ -108,6 +108,8 @@ const TablaTurnosReparacion = (props) => {
       <Button
         variant="contained"
         color="secondary"
+        size="small"
+        sx={{ fontSize: '0.7em' }}
         onClick={() => {
           setIdTurno(row.original.id_turno);
           setOpenChecklist(true);
