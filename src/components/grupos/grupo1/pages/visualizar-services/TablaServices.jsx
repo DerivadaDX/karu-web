@@ -151,7 +151,8 @@ const TablaServices = () => {
     >
       <Button
         variant="contained"
-        sx={{ fontSize: '0.9em', backgroundColor: 'rgba(51,51,51,0.75)' }}
+        size="small"
+        sx={{ fontSize: '0.8em', backgroundColor: 'rgba(51,51,51,0.75)' }}
         onClick={() => {
           setRowDetalle(row.original);
           setVerMas(true);
@@ -162,7 +163,7 @@ const TablaServices = () => {
       <Button
         variant="contained"
         color="secondary"
-        sx={{ fontSize: '0.9em' }}
+        sx={{ fontSize: '0.8em' }}
         size="small"
         onClick={() => {
           setOpenChecklist(true);
@@ -174,7 +175,8 @@ const TablaServices = () => {
       <Button
         variant="contained"
         color="primary"
-        sx={{ fontSize: '0.9em' }}
+        size="small"
+        sx={{ fontSize: '0.8em' }}
         onClick={() => {
           setOpenDialog(true);
           setIdServiceActivar(row.original.id_service);

@@ -115,7 +115,8 @@ const TablaTalleres = () => {
     >
       <Button
         variant="contained"
-        sx={{ fontSize: '0.9em', backgroundColor: 'rgba(51,51,51,0.75)' }}
+        size="small"
+        sx={{ fontSize: '0.8em', backgroundColor: 'rgba(51,51,51,0.75)' }}
         onClick={() => {
           setRowDetalleTaller(row.original);
           setOpenDetalleTaller(true);
@@ -126,7 +127,7 @@ const TablaTalleres = () => {
       <Button
         variant="contained"
         color="secondary"
-        sx={{ fontSize: '0.9em' }}
+        sx={{ fontSize: '0.8em' }}
         size="small"
         onClick={() => {
           setOpenDetalleSucursal(true);
@@ -138,7 +139,7 @@ const TablaTalleres = () => {
       <Button
         variant="contained"
         color="primary"
-        sx={{ fontSize: '0.9em', padding: '1rem' }}
+        sx={{ fontSize: '0.8em', padding: '1rem' }}
         size="small"
         onClick={() => {
           setOpenModificarTaller(true);

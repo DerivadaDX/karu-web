@@ -92,12 +92,13 @@ const TablaTurnosTerminados = (props) => {
   const renderRowActions = ({ row }) => (
     <Box
       style={{ display: 'flex', flexWrap: 'nowrap', gap: '0.5rem' }}
-      sx={{ height: '3.5em' }}
+      sx={{ height: '3.5em', padding: '0.2em' }}
     >
       <Button
         variant="contained"
         color="secondary"
-        sx={{ fontSize: '1em' }}
+        size="small"
+        sx={{ fontSize: '0.7em' }}
         onClick={() => {
           // console.log('Ver mas', row.original.id_turno);
           setRowDetalle(row.original);
@@ -140,7 +141,8 @@ const TablaTurnosTerminados = (props) => {
         enableRowActions
         renderRowActions={renderRowActions}
         renderEmptyRowsFallback={noData}
-        defaultColumn={{ minSize: 10, maxSize: 120 }}
+        defaultColumn={{ minSize: 10, maxSize: 100, size: 30 }}
+        initialState={{ density: 'compact' }}
         muiTopToolbarProps={{
           sx: {
             display: 'flex',
