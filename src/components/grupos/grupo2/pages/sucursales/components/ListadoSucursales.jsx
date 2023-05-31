@@ -125,6 +125,7 @@ const ListadoSucursales = () => {
         columns={columnas}
         data={sucursales}
         state={{ isLoading: cargando }}
+        renderTopToolbarCustomActions={renderCrearSucursal}
         enableRowActions
         positionActionsColumn="last"
         renderRowActions={renderAccionesFila}
@@ -142,7 +143,6 @@ const ListadoSucursales = () => {
             },
           ],
         }}
-        renderTopToolbarCustomActions={renderCrearSucursal}
       />
     </Box>
   );
