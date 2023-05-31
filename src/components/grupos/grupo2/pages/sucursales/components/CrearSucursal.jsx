@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import {
   Box,
@@ -28,8 +28,6 @@ const CrearSucursal = ({ onCreate }) => {
   const [provincia, setProvincia] = useState('');
   const [poseeTaller, setPoseeTaller] = useState(false);
 
-  const [datosSucursal, setDatosSucursal] = useState({});
-
   const cambiarVisibilidadPopUpCrearSucursal = () => {
     setMostrarPopUpCrearSucursal(!mostrarPopUpCrearSucursal);
   };
@@ -53,14 +51,9 @@ const CrearSucursal = ({ onCreate }) => {
       posee_taller: poseeTaller,
     };
 
-    setDatosSucursal(sucursal);
+    SucursalService.crearSucursal(sucursal)
+      .then(() => setMostrarPopUpCreacionExitosa(true));
   };
-
-  useEffect(() => {
-    SucursalService.crearSucursal(datosSucursal)
-      .then(() => setMostrarPopUpCreacionExitosa(true))
-      .catch(() => setMostrarPopUpCreacionExitosa(false));
-  }, [datosSucursal]);
 
   return (
     <Box>
