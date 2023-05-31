@@ -71,10 +71,6 @@ const TablaTalleres = () => {
         accessorKey: 'provincia',
         header: 'Provincia',
       },
-      {
-        accessorKey: 'cod_postal',
-        header: 'C.P.',
-      },
     ],
     [],
   );
@@ -111,7 +107,7 @@ const TablaTalleres = () => {
   const renderRowActions = ({ row }) => (
     <Box
       style={{ display: 'flex', flexWrap: 'nowrap', gap: '0.5rem' }}
-      sx={{ height: '3.2em' }}
+      sx={{ height: '3.2em', padding: '0.2em' }}
     >
       <Button
         variant="contained"
@@ -127,7 +123,7 @@ const TablaTalleres = () => {
       <Button
         variant="contained"
         color="secondary"
-        sx={{ fontSize: '0.8em' }}
+        sx={{ fontSize: '0.7em' }}
         size="small"
         onClick={() => {
           setOpenDetalleSucursal(true);
@@ -139,7 +135,7 @@ const TablaTalleres = () => {
       <Button
         variant="contained"
         color="primary"
-        sx={{ fontSize: '0.8em', padding: '1rem' }}
+        sx={{ fontSize: '0.7em', padding: '1rem' }}
         size="small"
         onClick={() => {
           setOpenModificarTaller(true);
@@ -220,6 +216,14 @@ const TablaTalleres = () => {
           'mrt-row-actions': {
             header: 'Acciones',
           },
+        }}
+        initialState={{
+          density: 'compact',
+          sorting: [{
+            id: 'id_taller',
+            desc: false,
+          },
+          ],
         }}
       />
       <Popup

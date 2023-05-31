@@ -46,8 +46,8 @@ const AltaTaller = (props) => {
   // Para confirmar  y validar form
   const [openConfirmar, setOpenConfirmar] = useState(false);
   const [openError, setOpenError] = useState(false);
-  const mensajeExitoso = `Se ha creado exitosamente el Taller ${nombre} en la direccion ${direccion}`;
   const [openMensajeExitoso, setOpenMensajeExitoso] = useState(false);
+  const [mensajeExitoso, setMensajeExistoso] = useState();
 
   // Error al enviar
   const [openErrorCrear, setOpenErrorCrear] = useState(false);
@@ -173,15 +173,16 @@ const AltaTaller = (props) => {
   const url = 'https://autotech2.onrender.com/talleres/crear/';
   const handleCrearTaller = () => {
     axios.post(url, {
-      id_sucursal: sucursalId,
       nombre,
       direccion,
       mail,
       telefono,
       capacidad,
+      id_sucursal: sucursalId,
       cant_tecnicos: cantTecnicos,
     })
       .then(() => {
+        setMensajeExistoso(`Se ha creado exitosamente el Taller '${nombre}' en la dirección ${direccion}.`);
         setOpenMensajeExitoso(true);
         setActualizar(true);
         limpiarFormulario();
