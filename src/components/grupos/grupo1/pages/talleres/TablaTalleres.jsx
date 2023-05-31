@@ -14,14 +14,13 @@ import Alerts from '../../components/common/Alerts';
 import Popup from '../../components/common/DialogPopup';
 import LittleHeader from '../../components/common/LittleHeader';
 import DetalleTaller from './DetalleTaller';
+import ModificarTaller from './ModificarTaller';
+import DetalleSucursal from './DetalleSucursal';
+import AltaTaller from './AltaTaller';
 
 import {
   getTalleres,
-  crearTaller,
-  getSucursalesActivas,
 } from '../../services/services-talleres';
-import DetalleSucursal from './DetalleSucursal';
-import AltaTaller from './AltaTaller';
 
 const TablaTalleres = () => {
   const [talleres, setTalleres] = useState([]);
@@ -36,7 +35,7 @@ const TablaTalleres = () => {
   const [idTallerSucursal, setIdTallerSucursal] = useState(0);
 
   // Para abrir popup de modificar taller
-  const [idTallerModificar, setIdTallerModificar] = useState(0);
+  const [rowTallerModificar, setRowTallerModificar] = useState({});
   const [openModificarTaller, setOpenModificarTaller] = useState(false);
 
   // Para actualizar la tabla luego de que haya algun cambio
@@ -116,7 +115,8 @@ const TablaTalleres = () => {
     >
       <Button
         variant="contained"
-        sx={{ fontSize: '0.9em', backgroundColor: 'rgba(51,51,51,0.75)' }}
+        size="small"
+        sx={{ fontSize: '0.8em', backgroundColor: 'rgba(51,51,51,0.75)' }}
         onClick={() => {
           setRowDetalleTaller(row.original);
           setOpenDetalleTaller(true);
@@ -127,7 +127,7 @@ const TablaTalleres = () => {
       <Button
         variant="contained"
         color="secondary"
-        sx={{ fontSize: '0.9em' }}
+        sx={{ fontSize: '0.8em' }}
         size="small"
         onClick={() => {
           setOpenDetalleSucursal(true);
@@ -139,11 +139,11 @@ const TablaTalleres = () => {
       <Button
         variant="contained"
         color="primary"
-        sx={{ fontSize: '0.9em', padding: '1rem' }}
+        sx={{ fontSize: '0.8em', padding: '1rem' }}
         size="small"
         onClick={() => {
           setOpenModificarTaller(true);
-          setIdTallerModificar(row.original.id_taller);
+          setRowTallerModificar(row.original);
         }}
       >
         Modificar
@@ -254,6 +254,19 @@ const TablaTalleres = () => {
           setOpen={setOpenAltaTaller}
           setActualizar={setActualizarTabla}
           actualizar={actualizarTabla}
+        />
+      </Popup>
+      <Popup
+        title={<LittleHeader titulo="Modificar Taller" />}
+        openDialog={openModificarTaller}
+        setOpenDialog={setOpenModificarTaller}
+      >
+        <ModificarTaller
+          open={openModificarTaller}
+          setOpen={setOpenModificarTaller}
+          setActualizar={setActualizarTabla}
+          actualizar={actualizarTabla}
+          row={rowTallerModificar}
         />
       </Popup>
     </>

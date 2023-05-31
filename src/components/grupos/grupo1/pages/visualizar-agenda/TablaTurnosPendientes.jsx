@@ -62,10 +62,6 @@ const TablaTurnosPendientes = (props) => {
         header: 'Patente',
       },
       {
-        accessorKey: 'estado',
-        header: 'Estado',
-      },
-      {
         accessorKey: 'fecha_inicio',
         header: 'Fecha',
       },
@@ -127,11 +123,12 @@ const TablaTurnosPendientes = (props) => {
   const renderRowActions = ({ row }) => (
     <Box
       style={{ display: 'flex', flexWrap: 'nowrap', gap: '0.5rem' }}
-      sx={{ height: '3.2em' }}
+      sx={{ height: '3.2em', padding: '0.2em' }}
     >
       <Button
         variant="contained"
-        sx={{ fontSize: '0.9em', backgroundColor: 'rgba(51,51,51,0.75)' }}
+        size="small"
+        sx={{ fontSize: '0.8em', backgroundColor: 'rgba(51,51,51,0.75)' }}
         onClick={() => {
           setRowDetalle(row.original);
           setVerMas(true);
@@ -142,7 +139,8 @@ const TablaTurnosPendientes = (props) => {
       <Button
         variant="contained"
         color="secondary"
-        sx={{ fontSize: '0.9em' }}
+        size="small"
+        sx={{ fontSize: '0.8em' }}
         onClick={() => {
           setOpenAsignacion(true);
           setIdTurnoAsignar(row.original.id_turno);
@@ -153,13 +151,14 @@ const TablaTurnosPendientes = (props) => {
       <Button
         variant="contained"
         color="error"
-        sx={{ fontSize: '0.9em' }}
+        size="small"
+        sx={{ fontSize: '0.8em' }}
         onClick={() => {
           setOpenDialog(true);
           setIdTurnoCancelar(row.original.id_turno);
         }}
       >
-        Cancelar Turno
+        Cancelar
       </Button>
     </Box>
   );
@@ -224,11 +223,12 @@ const TablaTurnosPendientes = (props) => {
         }}
         positionActionsColumn="last"
         enableRowActions
+        initialState={{ density: 'compact' }}
         renderRowActions={renderRowActions}
         renderEmptyRowsFallback={noData}
-        defaultColumn={{ minSize: 10, maxSize: 100 }}
-        muiTableHeadCellProps={{ align: 'center' }}
-        muiTableBodyCellProps={{ align: 'center' }}
+        defaultColumn={{ minSize: 10, maxSize: 100, size: 30 }}
+        muiTableHeadCellProps={{ align: 'center', padding: 'none' }}
+        muiTableBodyCellProps={{ align: 'center', padding: 'none' }}
         displayColumnDefOptions={{
           'mrt-row-actions': {
             header: 'Acciones',

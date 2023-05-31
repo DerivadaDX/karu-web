@@ -8,8 +8,9 @@ import DesignServicesIcon from '@mui/icons-material/DesignServices';
 import GarageIcon from '@mui/icons-material/Garage';
 import RateReviewIcon from '@mui/icons-material/RateReview';
 import ReviewsIcon from '@mui/icons-material/Reviews';
+import TaxiAlertIcon from '@mui/icons-material/TaxiAlert';
 import TooltipCus from './components/common/Tooltip';
-import VisualizacionFiltroBusqueda from './pages/visualizacion-tecnicos/VisualizacionFiltroBusqueda';
+import VisualizacionBusquedaTecnicos from './pages/visualizacion-tecnicos/VisualizacionFiltroBusqueda';
 import Dashboard from './pages/dashboard/Dashboard';
 import MisTurnos from './pages/visualizar-mis-turnos/MisTurnos';
 import AgendaTaller from './pages/visualizar-agenda/AgendaTaller';
@@ -19,6 +20,7 @@ import Formulario from './pages/turnos/turno-reparacion/TurnoReparacion';
 import Services from './pages/visualizar-services/Services';
 import FormularioEvaluacionAdmin from './pages/turnos/turno-evaluacion-admin/TurnoEvaluacionParaAdmin';
 import FormularioEvaluacionCliente from './pages/turnos/turno-evaluacion-cliente/TurnoEvaluacionCliente';
+import FormularioExtraordinario from './pages/turnos/turno-extraordinario/TurnoExtraordinario';
 
 const GROUP_1_PAGES_CONFIG = [
   {
@@ -40,7 +42,7 @@ const GROUP_1_PAGES_CONFIG = [
     name: 'Técnicos',
     href: '/informacion-tecnicos',
     icon: <TooltipCus icon={<PersonSearchIcon />} title="Técnicos" />,
-    page: <VisualizacionFiltroBusqueda />,
+    page: <VisualizacionBusquedaTecnicos />,
   },
   {
     id: 'g1-MisTurnos',
@@ -90,6 +92,13 @@ const GROUP_1_PAGES_CONFIG = [
     href: '/turno-evaluación-cliente',
     icon: <TooltipCus icon={<ReviewsIcon />} title="Evaluación cliente" />,
     page: <FormularioEvaluacionCliente />,
+  },
+  {
+    id: 'g1-TurnoExcepcional',
+    name: 'Turno Extraordinario',
+    href: '/turno-extraordinario',
+    icon: <TooltipCus icon={<TaxiAlertIcon />} title="Turno Extraordinario" />,
+    page: <FormularioExtraordinario />,
   },
 ];
 

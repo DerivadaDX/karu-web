@@ -48,7 +48,7 @@ const VisualizacionBusquedaTecnicos = () => {
   const [alertType, setAlertType] = useState('');
   const [alertMessage, setAlertMessage] = useState('');
   const [alertTitle, setAlertTitle] = useState('');
-  const taller = 'T001';
+  const taller = 'T002';
   const endPoint = `https://autotech2.onrender.com/tecnicos/filtro/?branch=${taller}&`;
 
   const filtrarTecnicos = () => {

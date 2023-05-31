@@ -132,11 +132,12 @@ const TablaTurnosEvaluacion = (props) => {
   const renderRowActions = ({ row }) => (
     <Box
       style={{ display: 'flex', flexWrap: 'nowrap', gap: '0.5rem' }}
-      sx={{ height: '3.2em' }}
+      sx={{ height: '3.2em', padding: '0.2em' }}
     >
       <Button
         variant="contained"
-        sx={{ fontSize: '0.9em', backgroundColor: 'rgba(51,51,51,0.75)' }}
+        size="small"
+        sx={{ fontSize: '0.7em', backgroundColor: 'rgba(51,51,51,0.75)' }}
         onClick={() => {
           setRowDetalle(row.original);
           setOpenVerMas(true);
@@ -147,6 +148,8 @@ const TablaTurnosEvaluacion = (props) => {
       <Button
         variant="contained"
         color="secondary"
+        size="small"
+        sx={{ fontSize: '0.7em' }}
         onClick={() => {
           controlarTiempo({ row });
           // setIdTurnoEvaluacion(row.original.id_turno);
@@ -177,7 +180,7 @@ const TablaTurnosEvaluacion = (props) => {
         enableRowActions
         renderRowActions={renderRowActions}
         renderEmptyRowsFallback={noData}
-        defaultColumn={{ minSize: 10, maxSize: 100 }}
+        defaultColumn={{ minSize: 10, maxSize: 100, size: 30 }}
         muiTopToolbarProps={{
           sx: {
             display: 'flex',
@@ -189,6 +192,7 @@ const TablaTurnosEvaluacion = (props) => {
         }}
         muiTableHeadCellProps={{ align: 'center' }}
         muiTableBodyCellProps={{ align: 'center' }}
+        initialState={{ density: 'compact' }}
         displayColumnDefOptions={{
           'mrt-row-actions': {
             header: 'Acciones',

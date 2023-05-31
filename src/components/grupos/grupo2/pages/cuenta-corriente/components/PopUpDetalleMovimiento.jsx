@@ -1,30 +1,29 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import { DialogTitle, Stack, TextField } from '@mui/material';
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Stack,
+  TextField,
+} from '@mui/material';
 import PropTypes from 'prop-types';
-import MovimientoService from '../services/movimiento-service';
+
 import DineroHelper from '../helpers/dinero-helper';
 import FechaHelper from '../helpers/fecha-helper';
 
-const PopUpDetalleMovimiento = ({ movimientoId }) => {
+const PopUpDetalleMovimiento = ({ movimiento }) => {
   const [mostrarPopUp, setMostrarPopUp] = useState(false);
-  const [movimiento, setMovimiento] = useState({});
 
   const cambiarVisibilidadPopUp = () => {
     setMostrarPopUp(!mostrarPopUp);
   };
 
-  useEffect(() => {
-    MovimientoService.obtenerMovimientoPorId(movimientoId)
-      .then((response) => setMovimiento(response.data));
-  }, []);
-
   return (
-    <>
+    <Box>
       <Button variant="contained" onClick={cambiarVisibilidadPopUp}>
         Ver más
       </Button>
@@ -65,7 +64,7 @@ const PopUpDetalleMovimiento = ({ movimientoId }) => {
               disabled
               id="standard-disabled"
               label="Monto"
-              defaultValue={DineroHelper.formatearComoDinero(movimiento.monto)}
+              defaultValue={DineroHelper.formatearComoDinero(Math.abs(movimiento.monto))}
               variant="standard"
             />
             <TextField
@@ -90,12 +89,20 @@ const PopUpDetalleMovimiento = ({ movimientoId }) => {
           </Button>
         </DialogActions>
       </Dialog>
-    </>
+    </Box>
   );
 };
 
 PopUpDetalleMovimiento.propTypes = {
-  movimientoId: PropTypes.node.isRequired,
+  movimiento: PropTypes.shape({
+    numero_operacion: PropTypes.string,
+    fecha: PropTypes.string,
+    tipo: PropTypes.string,
+    nombre_persona: PropTypes.string,
+    monto: PropTypes.number,
+    concepto: PropTypes.string,
+    documento_persona: PropTypes.string,
+  }).isRequired,
 };
 
 export default PopUpDetalleMovimiento;
