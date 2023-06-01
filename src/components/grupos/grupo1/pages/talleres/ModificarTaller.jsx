@@ -48,7 +48,7 @@ const ModificarTaller = (props) => {
   });
   // Para validar form
   const [sucursalSeleccionada, setSucursalSeleccionada] = useState(null);
-  const [seleccionoSucursal, setSeleccionoSucursal] = useState(false);
+  const [cambioEstado, setCambioEstado] = useState(false);
   const [nombreEsValido, setNombreEsValido] = useState(true);
   const [dirEsValida, setDirEsValida] = useState(true);
   const [mailEsValido, setMailEsValido] = useState(true);
@@ -64,6 +64,7 @@ const ModificarTaller = (props) => {
 
   // Error al enviar
   const [openErrorModificar, setOpenErrorModificar] = useState(false);
+  const [respuestaError, setRespuestaError] = useState([]);
 
   // Alertas de la API
   const [alertType, setAlertType] = useState('');
@@ -199,16 +200,17 @@ const ModificarTaller = (props) => {
 
   const handleCambiarEstado = (event) => {
     setEstadoNuevo(event.target.checked);
-    console.log(estadoNuevo);
+    setCambioEstado(true);
   };
 
   const validarForm = () => {
-    const todoCompleto = sucursalIdNuevo && nombreNuevo && direccionNueva && mailNuevo && telefonoNuevo && capacidadNueva && cantTecnicosNuevo;
+    const todoCompleto = sucursalIdNuevo && cambioEstado && nombreNuevo && direccionNueva && mailNuevo && telefonoNuevo && capacidadNueva && cantTecnicosNuevo;
     const todoValido = nombreEsValido && dirEsValida && mailEsValido && telefonoEsValido && capacidadEsValida && cantTecnicosEsValido;
     const todoCorrecto = todoCompleto && todoValido;
     if (todoCorrecto) {
       setOpenConfirmar(true);
     } else {
+      setRespuestaError('Verifique que haya completado todos los campos con los datos de manera correcta.');
       setOpenError(true);
     }
   };
@@ -218,6 +220,7 @@ const ModificarTaller = (props) => {
     axios.put(url, {
       id_sucursal: sucursalIdNuevo,
       nombre: nombreNuevo,
+      estado: estadoNuevo,
       direccion: direccionNueva,
       mail: mailNuevo,
       telefono: telefonoNuevo,
@@ -230,6 +233,7 @@ const ModificarTaller = (props) => {
       })
       .catch((error) => {
         setOpenErrorModificar(open);
+        setRespuestaError(error.response.data.error);
       });
   };
 
@@ -554,7 +558,7 @@ const ModificarTaller = (props) => {
         title={<LittleHeader titulo="Error al modificar el taller" />}
         openDialog={openErrorModificar}
         setOpenDialog={setOpenErrorModificar}
-        description="Se produjo un error. Si persiste, comuniquese con el área técnica de KarU."
+        description={respuestaError}
       >
         <Box sx={{
           display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 2,
@@ -567,6 +571,7 @@ const ModificarTaller = (props) => {
               onClick={() => {
                 setOpenErrorModificar(false);
                 setOpenConfirmar(false);
+                setOpen(false);
               }}
             >
               Cerrar
@@ -601,7 +606,7 @@ const ModificarTaller = (props) => {
         title={<LittleHeader titulo="Error en formulario" />}
         openDialog={openError}
         setOpenDialog={setOpenError}
-        description="Por favor, verifique que haya completado todos los campos con los datos correspondientes."
+        description={respuestaError}
       >
         <Box sx={{
           display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 2,
