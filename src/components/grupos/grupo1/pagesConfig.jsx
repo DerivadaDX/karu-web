@@ -9,6 +9,7 @@ import GarageIcon from '@mui/icons-material/Garage';
 import RateReviewIcon from '@mui/icons-material/RateReview';
 import ReviewsIcon from '@mui/icons-material/Reviews';
 import TaxiAlertIcon from '@mui/icons-material/TaxiAlert';
+import HomeRepairServiceIcon from '@mui/icons-material/HomeRepairService';
 import TooltipCus from './components/common/Tooltip';
 import VisualizacionFiltroBusqueda from './pages/visualizacion-tecnicos/VisualizacionFiltroBusqueda';
 import Dashboard from './pages/dashboard/Dashboard';
@@ -21,6 +22,7 @@ import Services from './pages/visualizar-services/Services';
 import FormularioEvaluacionAdmin from './pages/turnos/turno-evaluacion-admin/TurnoEvaluacionParaAdmin';
 import FormularioEvaluacionCliente from './pages/turnos/turno-evaluacion-cliente/TurnoEvaluacionCliente';
 import FormularioExtraordinario from './pages/turnos/turno-extraordinario/TurnoExtraordinario';
+import AltaServiceForm from './pages/alta-services/AltaServices';
 
 const GROUP_1_PAGES_CONFIG = [
   {
@@ -99,6 +101,13 @@ const GROUP_1_PAGES_CONFIG = [
     href: '/turno-extraordinario',
     icon: <TooltipCus icon={<TaxiAlertIcon />} title="Turno Extraordinario" />,
     page: <FormularioExtraordinario />,
+  },
+  {
+    id: 'g1-AltaServices',
+    name: 'Alta de Services',
+    href: '/alta-service',
+    icon: <TooltipCus icon={<HomeRepairServiceIcon />} title="Alta de Services" />,
+    page: <AltaServiceForm />,
   },
 ];
 
