@@ -27,7 +27,7 @@ const Vendedores = () => {
   useEffect(() => {
     SucursalService.obtenerSucursales()
       .then((response) => {
-        setSucursales(response.data.filter((s) => s.activa === true));
+        setSucursales(response.data);
         setCargando(false);
       });
   }, []);
@@ -39,30 +39,33 @@ const Vendedores = () => {
   return (
     <Box>
       <Encabezado titulo="Vendedores" subtitulo="Alta, baja y modificación de Vendedores" />
-      {!cargando && (
-        <Paper sx={styles.paper} elevation={5}>
-          <FormControl variant="standard" sx={{ m: 1, minWidth: 250 }}>
-            <InputLabel id="demo-simple-select-standard-label">Sucursal</InputLabel>
-            <Select
-              labelId="demo-simple-select-standard-label"
-              id="demo-simple-select-standard"
-              value={sucursalSeleccionada}
-              onChange={handleChange}
-            >
-              <MenuItem value={0}>
-                Todas las sucursales
-              </MenuItem>
-              {sucursales.map((sucursal) => (
-                <MenuItem key={sucursal.id} value={sucursal.id}>
-                  {sucursal.nombre}
+      {
+        !cargando && (
+          <Paper sx={styles.paper} elevation={5}>
+            <FormControl variant="standard" sx={{ m: 1, minWidth: 250 }}>
+              <InputLabel id="demo-simple-select-standard-label">
+                Sucursal
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-standard-label"
+                id="demo-simple-select-standard"
+                value={sucursalSeleccionada}
+                onChange={handleChange}
+              >
+                <MenuItem value={0}>
+                  Todas las sucursales
                 </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <ListadoVendedores sucursal={sucursalSeleccionada} />
-        </Paper>
-      )}
-
+                {sucursales.map((sucursal) => (
+                  <MenuItem key={sucursal.id} value={sucursal.id}>
+                    {sucursal.nombre}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <ListadoVendedores sucursal={sucursalSeleccionada} />
+          </Paper>
+        )
+      }
     </Box>
   );
 };
