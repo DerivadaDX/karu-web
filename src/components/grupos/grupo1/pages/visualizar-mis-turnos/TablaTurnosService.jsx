@@ -97,7 +97,9 @@ const TablaTurnosService = (props) => {
           setOpenVerMas(true);
         }}
       >
-        Ver más
+        Ver
+        <br />
+        más
       </Button>
       <Button
         variant="contained"
@@ -109,7 +111,9 @@ const TablaTurnosService = (props) => {
           setOpenChecklist(true);
         }}
       >
-        Realizar service
+        Realizar
+        <br />
+        service
       </Button>
     </Box>
   );

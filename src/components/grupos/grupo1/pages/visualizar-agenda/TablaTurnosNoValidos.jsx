@@ -97,7 +97,9 @@ const TablaTurnosNoValidos = (props) => {
           setVerMas(true);
         }}
       >
-        Ver más
+        Ver
+        <br />
+        más
       </Button>
     </Box>
   );

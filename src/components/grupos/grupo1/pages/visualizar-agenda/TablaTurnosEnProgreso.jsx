@@ -138,7 +138,9 @@ const TablaTurnosEnProgreso = (props) => {
           setVerMas(true);
         }}
       >
-        Ver más
+        Ver
+        <br />
+        más
       </Button>
       <Button
         variant="contained"

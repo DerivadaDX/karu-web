@@ -118,7 +118,9 @@ const TablaTalleres = () => {
           setOpenDetalleTaller(true);
         }}
       >
-        Info taller
+        Info
+        <br />
+        taller
       </Button>
       <Button
         variant="contained"
@@ -130,7 +132,9 @@ const TablaTalleres = () => {
           setIdTallerSucursal(row.original.id_sucursal);
         }}
       >
-        Info sucursal
+        Info
+        <br />
+        sucursal
       </Button>
       <Button
         variant="contained"
