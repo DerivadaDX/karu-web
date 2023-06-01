@@ -201,13 +201,6 @@ const AltaTaller = (props) => {
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <Alerts alertType={alertType} description={alertMessage} title={alertTitle} />
       </Box>
-      <Box
-        sx={{
-          marginBottom: 3,
-          display: 'flex',
-          flexDirection: 'column',
-        }}
-      />
       <Container>
         <Grid container spacing={4}>
           <Grid item xs={12} sm={6} md={6} lg={6}>

@@ -71,6 +71,33 @@ const TablaTalleres = () => {
         accessorKey: 'provincia',
         header: 'Provincia',
       },
+      {
+        accessorKey: 'estado',
+        header: 'estado',
+
+        Cell: ({ cell }) => (
+          <span style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: '100%',
+          }}
+          >
+            <p style={{
+              backgroundColor: cell.getValue() === true ? 'rgb(53, 122, 56)' : '#b71c1c',
+              padding: '0.4rem',
+              margin: '0px',
+              borderRadius: '5px',
+              width: '6.5rem',
+              textAlign: 'center',
+              color: 'white',
+            }}
+            >
+              {cell.getValue() === true ? 'Activo' : 'No activo'}
+            </p>
+          </span>
+        ),
+      },
     ],
     [],
   );

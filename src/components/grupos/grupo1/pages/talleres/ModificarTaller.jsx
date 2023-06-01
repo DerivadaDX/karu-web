@@ -9,27 +9,46 @@
 /* eslint-disable no-unused-vars */
 import DialogActions from '@mui/material/DialogActions';
 import {
-  Box, TextField, Button, Container, Grid,
+  Box, TextField, Button, Container, Grid, InputLabel, Select, MenuItem, FormControl, FormControlLabel, Switch, Typography,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Alerts from '../../components/common/Alerts';
 import Popup from '../../components/common/DialogPopup';
 import LittleHeader from '../../components/common/LittleHeader';
+import { getDetalleSucursal, getSucursalesSinTaller } from '../../services/services-talleres';
 
 const ModificarTaller = (props) => {
   const {
     open, setOpen, actualizar, setActualizar, row,
   } = props;
+  // Para opcion de sucursales
+  const [sucursales, setSucursales] = useState([]);
+
+  // Campos para modificar
+  const [sucursalIdNuevo, setSucursalIdNuevo] = useState(row.id_sucursal);
+  const [s, setS] = useState({ sucursal: sucursalIdNuevo });
   const [idTaller, setIdTaller] = useState(row.id_taller);
   const [nombreNuevo, setNombreNuevo] = useState(row.nombre);
   const [direccionNueva, setDireccionNueva] = useState(row.direccion);
   const [mailNuevo, setMailNuevo] = useState(row.mail);
   const [telefonoNuevo, setTelefonoNuevo] = useState(row.telefono);
+  const [estadoNuevo, setEstadoNuevo] = useState(row.estado);
   const [capacidadNueva, setCapacidadNueva] = useState(row.capacidad);
   const [cantTecnicosNuevo, setCantTecnicosNuevo] = useState(row.cant_tecnicos);
 
+  const [sucursalActual, setSucursalActual] = useState({
+    id: '',
+    nombre: '',
+    calle: '',
+    numero: '',
+    localidad: '',
+    provincia: '',
+    codigo_postal: '',
+  });
   // Para validar form
+  const [sucursalSeleccionada, setSucursalSeleccionada] = useState(null);
+  const [seleccionoSucursal, setSeleccionoSucursal] = useState(false);
   const [nombreEsValido, setNombreEsValido] = useState(true);
   const [dirEsValida, setDirEsValida] = useState(true);
   const [mailEsValido, setMailEsValido] = useState(true);
@@ -51,15 +70,55 @@ const ModificarTaller = (props) => {
   const [alertMessage, setAlertMessage] = useState('');
   const [alertTitle, setAlertTitle] = useState('');
 
+  const traerSucursales = () => {
+    getSucursalesSinTaller()
+      .then((response) => {
+        setSucursales(response.data);
+      })
+      .catch((error) => {
+        setAlertType('error');
+        setAlertTitle('Error de servidor');
+        setAlertMessage(
+          'Error en el servidor. Por favor, recargue la página y vuelva a intentarlo nuevamente.',
+        );
+      });
+  };
+
+  const traerSucursalActual = () => {
+    getDetalleSucursal(sucursalIdNuevo)
+      .then((response) => {
+        setSucursalActual(response.data);
+        setAlertType('');
+      })
+      .catch((error) => {
+        setAlertMessage(
+          <>
+            Ha ocurrido un error, disculpe las molestias.Intente nuevamente más tarde.
+            <br />
+            Si el error persiste comunicarse con soporte: soporte-tecnico@KarU.com
+          </>,
+        );
+        setAlertType('error');
+        setAlertTitle('Error de servidor');
+      });
+  };
+
+  useEffect(() => {
+    traerSucursalActual();
+  }, []);
+
   useEffect(() => {
     try {
-      console.log(idTaller);
+      traerSucursales();
+      console.log(sucursalIdNuevo);
+      console.log(estadoNuevo);
       console.log(nombreNuevo);
       console.log(direccionNueva);
       console.log(mailNuevo);
       console.log(telefonoNuevo);
       console.log(capacidadNueva);
       console.log(cantTecnicosNuevo);
+      console.log('--------------------------');
       setAlertType('');
     } catch (error) {
       setAlertType('error');
@@ -68,7 +127,21 @@ const ModificarTaller = (props) => {
         'Error al traer los talleres. Por favor, recargue la página y vuelva a intentarlo nuevamente.',
       );
     }
-  }, [nombreNuevo, direccionNueva, cantTecnicosNuevo, capacidadNueva, mailNuevo, telefonoNuevo]);
+  }, [traerSucursales, sucursalIdNuevo, nombreNuevo, direccionNueva, cantTecnicosNuevo, capacidadNueva, mailNuevo, telefonoNuevo]);
+
+  const guardarSucursal = (event) => {
+    const { value } = event.target;
+    const sucursal = sucursales.find((sucu) => sucu.id === value);
+    if (!sucursales.some((sucu) => sucu.id === value)) {
+      setSucursalIdNuevo(sucursalActual.id);
+      setSucursalSeleccionada(sucursalActual);
+    } else {
+      setSucursalSeleccionada(sucursal);
+      setSucursalIdNuevo(value);
+    }
+    // setSeleccionoSucursal(true);
+    setS((prevS) => ({ ...prevS, sucursal: value }));
+  };
 
   const guardarNombre = (event) => {
     const { name, value } = event.target;
@@ -124,8 +197,13 @@ const ModificarTaller = (props) => {
     }
   };
 
+  const handleCambiarEstado = (event) => {
+    setEstadoNuevo(event.target.checked);
+    console.log(estadoNuevo);
+  };
+
   const validarForm = () => {
-    const todoCompleto = nombreNuevo && direccionNueva && mailNuevo && telefonoNuevo && capacidadNueva && cantTecnicosNuevo;
+    const todoCompleto = sucursalIdNuevo && nombreNuevo && direccionNueva && mailNuevo && telefonoNuevo && capacidadNueva && cantTecnicosNuevo;
     const todoValido = nombreEsValido && dirEsValida && mailEsValido && telefonoEsValido && capacidadEsValida && cantTecnicosEsValido;
     const todoCorrecto = todoCompleto && todoValido;
     if (todoCorrecto) {
@@ -138,7 +216,7 @@ const ModificarTaller = (props) => {
   const url = `https://autotech2.onrender.com/talleres/modificar/${idTaller}/`;
   const handleModificarTaller = () => {
     axios.put(url, {
-      id_sucursal: idTaller,
+      id_sucursal: sucursalIdNuevo,
       nombre: nombreNuevo,
       direccion: direccionNueva,
       mail: mailNuevo,
@@ -164,13 +242,6 @@ const ModificarTaller = (props) => {
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <Alerts alertType={alertType} description={alertMessage} title={alertTitle} />
       </Box>
-      <Box
-        sx={{
-          marginBottom: 3,
-          display: 'flex',
-          flexDirection: 'column',
-        }}
-      />
       <Container>
         <Grid container spacing={4}>
           <Grid item xs={12} sm={6} md={6} lg={6}>
@@ -182,20 +253,60 @@ const ModificarTaller = (props) => {
                 },
               }}
             >
-              <TextField
-                disabled
-                fullWidth
-                label="ID del taller"
-                defaultValue={row.id_taller}
-                margin="dense"
-                variant="standard"
-                color="secondary"
-                sx={{
-                  mt: {
-                    xs: 0, sm: 1, md: 2, lg: 3,
-                  },
-                }}
-              />
+              <Grid container alignItems="center" spacing={6}>
+                <Grid item xs={12} sm={6} md={6} lg={6}>
+                  <InputLabel id="demo-simple-select-label">Sucursal</InputLabel>
+                  <Select
+                    required
+                    label="Sucursal"
+                    type="text"
+                    name="sucursal"
+                    value={sucursales.some((sucu) => sucu.id === s.sucursal) ? s.sucursal : ''}
+                    onChange={guardarSucursal}
+                    margin="dense"
+                    fullWidth
+                    aria-describedby="helper-sucursal"
+                    color="secondary"
+                    displayEmpty
+                  >
+                    <MenuItem key={sucursalIdNuevo} value="">
+                      {sucursalActual.nombre}
+                    </MenuItem>
+                    {sucursales.map((sucu) => (
+                      <MenuItem key={sucu.id} value={sucu.id}>
+                        {sucu.nombre}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </Grid>
+                <Grid item xs={12} sm={6} md={6} lg={6}>
+                  <Box>
+                    <Typography variant="body1" style={{ marginTop: 4 }} color="rgba(0, 0, 0, 0.54)">
+                      Estado del taller
+                    </Typography>
+                    <FormControlLabel
+                      value="top"
+                      control={(
+                        <Switch
+                          checked={estadoNuevo}
+                          sx={{
+                            '& .MuiSwitch-thumb': {
+                              bgcolor: estadoNuevo === false ? '#b71c1c' : 'rgb(53, 122, 56)',
+                            },
+                          }}
+                        />
+)}
+                      label={(
+                        <span style={{ fontSize: '0.7em' }}>
+                          {estadoNuevo === false ? 'Inactivo' : 'Activo'}
+                        </span>
+              )}
+                      labelPlacement="top"
+                      onChange={handleCambiarEstado}
+                    />
+                  </Box>
+                </Grid>
+              </Grid>
               <TextField
                 aria-describedby="helper-nombre"
                 sx={{ mt: 1 }}
@@ -237,7 +348,7 @@ const ModificarTaller = (props) => {
                 disabled
                 fullWidth
                 label="Localidad"
-                defaultValue={row.localidad}
+                value={sucursalSeleccionada ? sucursalSeleccionada.localidad : sucursalActual.localidad}
                 margin="dense"
                 variant="standard"
                 color="secondary"
@@ -247,7 +358,8 @@ const ModificarTaller = (props) => {
                 disabled
                 fullWidth
                 label="Provincia"
-                defaultValue={row.provincia}
+                value={sucursalSeleccionada
+                  ? sucursalSeleccionada.provincia : sucursalActual.provincia}
                 margin="dense"
                 variant="standard"
                 color="secondary"
@@ -272,13 +384,13 @@ const ModificarTaller = (props) => {
                 disabled
                 fullWidth
                 label="C.P."
-                defaultValue={row.cod_postal}
+                value={sucursalSeleccionada ? sucursalSeleccionada.codigo_postal : sucursalActual.codigo_postal}
                 margin="dense"
                 variant="standard"
                 color="secondary"
                 sx={{
                   mt: {
-                    xs: 0, sm: 1, md: 2, lg: 3,
+                    xs: 0, sm: 1, md: 1, lg: 2.5,
                   },
                 }}
               />
@@ -287,7 +399,7 @@ const ModificarTaller = (props) => {
                 aria-describedby="helper-mail"
                 sx={{
                   mt: {
-                    xs: 1, sm: 1, md: 1, lg: 1.5,
+                    xs: 1, sm: 1, md: 1, lg: 2.5,
                   },
                 }}
                 required
@@ -309,7 +421,7 @@ const ModificarTaller = (props) => {
                 aria-describedby="helper-telefono"
                 sx={{
                   mt: {
-                    xs: 1, sm: 1, md: 2, lg: 1,
+                    xs: 1, sm: 1, md: 2, lg: 2,
                   },
                 }}
                 required
@@ -386,7 +498,7 @@ const ModificarTaller = (props) => {
           <Button
             color="secondary"
             variant="outlined"
-            sx={{ marginTop: 5 }}
+            sx={{ marginTop: 3 }}
             onClick={() => {
               validarForm();
             }}
@@ -396,7 +508,7 @@ const ModificarTaller = (props) => {
           <Button
             color="primary"
             variant="outlined"
-            sx={{ marginTop: 5 }}
+            sx={{ marginTop: 3 }}
             onClick={() => {
               setOpen(false);
             }}
