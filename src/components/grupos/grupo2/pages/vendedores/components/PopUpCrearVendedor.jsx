@@ -8,16 +8,26 @@ import {
   DialogActions,
   DialogTitle,
 
+  FormControl,
+
+  InputLabel,
+
+  MenuItem,
+
   Paper,
+  Select,
   Stack,
   TextField,
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import AddIcon from '@mui/icons-material/Add';
+// eslint-disable-next-line import/no-unresolved
 import { IMaskInput } from 'react-imask';
 import { DatePicker } from '@mui/x-date-pickers';
+// eslint-disable-next-line import/no-unresolved
 import { Controller, useForm } from 'react-hook-form';
 import VendedorService from '../services/vendedor-service';
+import SucursalService from '../../sucursales/services/sucursal-service';
 
 const CuitComponent = React.forwardRef((props, inputRef) => {
   const { onChange, ...other } = props;
@@ -50,11 +60,10 @@ CuitComponent.propTypes = {
   onChange: PropTypes.func.isRequired,
 };
 
-const PopUpCrearVendedor = () => {
+const PopUpCrearVendedor = ({ onSuccess }) => {
   const [mostrarPopUpCrearVendedor, setMostrarPopUpCrearVendedor] = useState(false);
   const [mostrarPopUpCreacionExitosa, setMostrarPopUpCreacionExitosa] = useState(false);
-  const [datosVendedor, setDatosVendedor] = useState({});
-
+  const [sucursales, setSucursales] = useState({});
   const {
     handleSubmit, control, formState: { errors, isValid },
   } = useForm({
@@ -64,19 +73,24 @@ const PopUpCrearVendedor = () => {
       apellido: '',
       email: '',
       cuit: '',
-      fecha: null,
+      fecha_nacimiento: null,
+      fecha_ingreso: null,
+      sucursal_id: '',
     },
   });
   const onSubmit = async (data) => {
-    console.log(data);
-    setDatosVendedor(data);
-  };
-
-  useEffect(() => {
-    VendedorService.crearVendedor(datosVendedor)
-      .then(() => setMostrarPopUpCreacionExitosa(true))
+    const nuevaData = {
+      ...data,
+      fecha_ingreso: data.fecha_ingreso.toISOString().slice(0, 10),
+      fecha_nacimiento: data.fecha_nacimiento.toISOString().slice(0, 10),
+    };
+    VendedorService.crearVendedor(nuevaData)
+      .then(() => {
+        setMostrarPopUpCreacionExitosa(true);
+        onSuccess();
+      })
       .catch(() => setMostrarPopUpCreacionExitosa(false));
-  }, [datosVendedor]);
+  };
 
   const cambiarVisibilidadPopUpCrearVendedor = () => {
     setMostrarPopUpCrearVendedor(!mostrarPopUpCrearVendedor);
@@ -86,6 +100,15 @@ const PopUpCrearVendedor = () => {
     setMostrarPopUpCreacionExitosa(false);
     setMostrarPopUpCrearVendedor(false);
   };
+
+  const obtenerSucursales = () => {
+    SucursalService.obtenerSucursales()
+      .then((response) => {
+        setSucursales(response.data);
+      });
+  };
+
+  useEffect(obtenerSucursales, []);
 
   return (
     <Box>
@@ -199,7 +222,7 @@ const PopUpCrearVendedor = () => {
               }}
             />
             <Controller
-              name="fecha"
+              name="fecha_nacimiento"
               control={control}
               render={({ field: { onChange, onBlur, value } }) => (
                 <DatePicker
@@ -207,9 +230,8 @@ const PopUpCrearVendedor = () => {
                   onBlur={onBlur}
                   onChange={onChange}
                   value={value}
-                  label="Fecha de Ingreso"
+                  label="Fecha de Nacimiento"
                   error={errors.fecha}
-                  helperText={errors.fecha ? 'noo' : 'sadasdasd'}
                   slotProps={{ textField: { variant: 'standard', margin: 'dense' } }}
 
                 />
@@ -222,7 +244,58 @@ const PopUpCrearVendedor = () => {
                 },
               }}
             />
+            <Controller
+              name="fecha_ingreso"
+              control={control}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <DatePicker
+                  disableFuture
+                  onBlur={onBlur}
+                  onChange={onChange}
+                  value={value}
+                  label="Fecha de Ingreso"
+                  error={errors.fecha}
+                  slotProps={{ textField: { variant: 'standard', margin: 'dense' } }}
 
+                />
+              )}
+              rules={{
+                required: 'La fecha es requerida',
+                pattern: {
+                  value: /^(0[1-9]|1[012])[- /.] (0[1-9]|[12][0-9]|3[01])[- /.] (19|20)\d$/,
+                  message: 'Ingrese una fecha válida',
+                },
+              }}
+            />
+            <Controller
+              name="sucursal_id"
+              control={control}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <FormControl variant="standard" sx={{ m: 1, width: 300 }}>
+                  <InputLabel id="demo-multiple-name-label">Sucursal a la que pertenece</InputLabel>
+                  <Select
+                    labelId="demo-multiple-name-label"
+                    id="demo-multiple-name"
+                    onBlur={onBlur}
+                    error={Boolean(errors.sucursal)}
+                    value={value}
+                    onChange={onChange}
+                  >
+                    {sucursales.map((sucursal) => (
+                      <MenuItem
+                        key={sucursal.id}
+                        value={sucursal.id}
+                      >
+                        {sucursal.nombre}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              )}
+              rules={{
+                required: 'La sucursal es requerida',
+              }}
+            />
             <Button
               disabled={!isValid}
               type="submit"
@@ -238,4 +311,7 @@ const PopUpCrearVendedor = () => {
   );
 };
 
+PopUpCrearVendedor.propTypes = {
+  onSuccess: PropTypes.func.isRequired,
+};
 export default PopUpCrearVendedor;
