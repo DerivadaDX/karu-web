@@ -118,19 +118,21 @@ const TablaTurnosPendientesDeAprobacion = (props) => {
       <Button
         variant="contained"
         size="small"
-        sx={{ fontSize: '0.8em', backgroundColor: 'rgba(51,51,51,0.75)' }}
+        sx={{ fontSize: '0.7em', backgroundColor: 'rgba(51,51,51,0.75)' }}
         onClick={() => {
           setRowDetalle(row.original);
           setVerMas(true);
         }}
       >
-        Ver más
+        Ver
+        <br />
+        más
       </Button>
       <Button
         variant="contained"
         color="error"
         size="small"
-        sx={{ fontSize: '0.8em' }}
+        sx={{ fontSize: '0.7em' }}
         onClick={() => {
           // console.log('Cancelar turno', row.original.id_turno);
           setIdTurnoCancelar(row.original.id_turno);

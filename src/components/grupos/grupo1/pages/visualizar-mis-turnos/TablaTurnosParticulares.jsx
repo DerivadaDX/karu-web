@@ -93,7 +93,9 @@ const TablaTurnosParticulares = (props) => {
           setOpenVerMas(true);
         }}
       >
-        Ver más
+        Ver
+        <br />
+        más
       </Button>
       <Button
         variant="contained"
@@ -105,7 +107,9 @@ const TablaTurnosParticulares = (props) => {
           setOpenChecklist(true);
         }}
       >
-        Realizar turno
+        Realizar
+        <br />
+        turno
       </Button>
     </Box>
   );
