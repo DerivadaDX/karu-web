@@ -169,6 +169,8 @@ const TablaTurnosEnProgreso = (props) => {
       <Button
         variant="contained"
         color="primary"
+        size="small"
+        sx={{ fontSize: '0.7em' }}
         onClick={() => {
           // console.log('Finalizar', row.original);
           setIdTurnoFinalizar(row.original.id_turno);
