@@ -24,9 +24,7 @@ const AltaServiceForm = () => {
   // Para validar el km
   const [isKmValido, setIsKmValido] = useState(true);
 
-  const msjTurnoCreado = `Se ha creado un service de ${kilometros} ${frecuenciaKm} kilómetros para la marca ${marca} y modelo ${modelo}.`;
-
-  // const [msjError, setMsjError] = useState('');
+  const msjTurnoCreado = `Se ha creado un service de ${frecuenciaKm} kilómetros para la marca ${marca} y modelo ${modelo}.`;
 
   // Para el manejo de errores de la API para crear el turno
   const [openError, setOpenError] = useState(false);
@@ -53,11 +51,18 @@ const AltaServiceForm = () => {
     }
   };
 
+  const isLetras = (text) => {
+    const pattern = /^[A-Za-z]+$/;
+    return pattern.test(text);
+  };
+
   const guardarMarca = (e) => {
     const val = e.target.value;
 
     if (e.target.validity.valid) {
-      setMarca(val);
+      if (isLetras(val)) {
+        setMarca(val);
+      }
     } else if (val === '') {
       setMarca(val);
     }
@@ -67,7 +72,9 @@ const AltaServiceForm = () => {
     const val = e.target.value;
 
     if (e.target.validity.valid) {
-      setModelo(val);
+      if (isLetras(val)) {
+        setModelo(val);
+      }
     } else if (val === '') {
       setModelo(val);
     }
@@ -76,22 +83,20 @@ const AltaServiceForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      if ('true' !== '') {
-        setOpenPopupNoSeleccion(true);
-        // } else if (
-        //   taller && patenteTurno && fecha && hora && frecuenciaKm && isKmValido) {
-        //   await axios({
-        //     method: 'post',
-        //     url: 'https://autotech2.onrender.com/turnos/crear-turno-service/',
-        //     data: {
-        //       patente: patenteTurno,
-        //       fecha_inicio: fecha,
-        //       hora_inicio: hora,
-        //       frecuencia_km: frecuenciaKm,
-        //       taller_id: taller,
-        //     },
-        //   });
-        //   setOpenPopupSeleccion(true);
+      if (
+        marca && modelo && frecuenciaKm && isKmValido) {
+        // await axios({
+        //   method: 'post',
+        //   url: 'https://autotech2.onrender.com/turnos/crear-turno-service/',
+        //   data: {
+        //     patente: patenteTurno,
+        //     fecha_inicio: fecha,
+        //     hora_inicio: hora,
+        //     frecuencia_km: frecuenciaKm,
+        //     taller_id: taller,
+        //   },
+        // });
+        setOpenPopupSeleccion(true);
       } else {
         setOpenPopupNoSeleccion(true);
       }
@@ -123,25 +128,9 @@ const AltaServiceForm = () => {
           }}
         >
           <Typography component="h1" variant="h5" sx={{ marginBottom: 5 }}>
-            Turno para Service
+            Alta de Service
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              value={kilometros}
-              id="kilometraje"
-              label="Kilometraje"
-              name="kilometraje"
-              type="tel"
-              pattern="[1-9][0-9]*"
-              inputProps={{ maxLength: 6 }}
-              onChange={guardarKilometraje}
-            />
-            {!isKmValido && <Alerts alertType="warning" description="Coberturas válidas: de 5000 a 200000 km." title="Kilometraje inválido" />}
-            {/* eslint-disable-next-line max-len */}
-            {/* {msjError && <Alerts alertType="error" description={msjError} title="No se encontró service." />} */}
             <TextField
               margin="normal"
               required
@@ -166,6 +155,22 @@ const AltaServiceForm = () => {
               pattern="^[A-Za-z]+$"
               onChange={guardarModelo}
             />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              value={kilometros}
+              id="kilometraje"
+              label="Kilometraje"
+              name="kilometraje"
+              type="tel"
+              pattern="[1-9][0-9]*"
+              inputProps={{ maxLength: 6 }}
+              onChange={guardarKilometraje}
+            />
+            {!isKmValido && <Alerts alertType="warning" description="Coberturas válidas: de 5000 a 200000 km." title="Kilometraje inválido" />}
+            {/* eslint-disable-next-line max-len */}
+            {/* {msjError && <Alerts alertType="error" description={msjError} title="No se encontró service." />} */}
             <Button
               type="submit"
               fullWidth
