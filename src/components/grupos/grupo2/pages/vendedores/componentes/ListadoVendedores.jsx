@@ -1,15 +1,14 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Box, Typography } from '@mui/material';
 import MaterialReactTable from 'material-react-table';
-import { useParams } from 'react-router-dom';
+
+import PropTypes from 'prop-types';
 import VendedoresService from '../services/vendedores-service';
 import SucursalService from '../../sucursales/services/sucursal-service';
 
-const ListadoVendedores = () => {
+const ListadoVendedores = ({ sucursal }) => {
   const [vendedores, setVendedores] = useState([]);
   const [cargando, setCargando] = useState(true);
-  const { id: idSucursal } = useParams();
-
   const renderSucursal = ({ row }) => {
     const sucursalId = row.original.sucursal_id;
     const [sucursalName, setSucursalName] = useState('');
@@ -84,20 +83,27 @@ const ListadoVendedores = () => {
   );
 
   const obtenerVendedoresDeSucursal = () => {
-    if (idSucursal) {
-      VendedoresService.obtenerVendedoresDeSucursal(idSucursal).then((response) => {
-        setVendedores(response.data);
-        setCargando(false);
-      });
-    } else {
-      VendedoresService.obtenerVendedores().then((response) => {
-        setVendedores(response.data);
-        setCargando(false);
-      });
-    }
+    setCargando(true);
+    VendedoresService.obtenerVendedoresDeSucursal(sucursal).then((response) => {
+      setVendedores(response.data);
+      setCargando(false);
+    });
+  };
+  const obtenerVendedoresDeSucursales = () => {
+    setCargando(true);
+    VendedoresService.obtenerVendedores().then((response) => {
+      setVendedores(response.data);
+      setCargando(false);
+    });
   };
 
-  useEffect(obtenerVendedoresDeSucursal, []);
+  useEffect(() => {
+    if (sucursal) {
+      obtenerVendedoresDeSucursal();
+    } else {
+      obtenerVendedoresDeSucursales();
+    }
+  }, [sucursal]);
   return (
     <Box>
       <MaterialReactTable
@@ -109,5 +115,7 @@ const ListadoVendedores = () => {
     </Box>
   );
 };
-
+ListadoVendedores.propTypes = {
+  sucursal: PropTypes.number.isRequired,
+};
 export default ListadoVendedores;

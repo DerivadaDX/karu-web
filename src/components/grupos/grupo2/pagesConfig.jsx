@@ -22,13 +22,6 @@ const GROUP_2_PAGES_CONFIG = [
     page: <Sucursales />,
   },
   {
-    id: 'g2-SucursalesV',
-    name: 'SucursalesVendedores',
-    href: '/sucursales/:id/vendedores',
-    page: <Vendedores />,
-    soloUrl: true,
-  },
-  {
     id: 'g2-Vendedores',
     name: 'Vendedores',
     href: '/vendedores',
