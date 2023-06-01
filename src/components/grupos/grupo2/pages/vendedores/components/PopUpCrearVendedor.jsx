@@ -21,10 +21,10 @@ import {
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import AddIcon from '@mui/icons-material/Add';
-// eslint-disable-next-line import/no-unresolved
+
 import { IMaskInput } from 'react-imask';
 import { DatePicker } from '@mui/x-date-pickers';
-// eslint-disable-next-line import/no-unresolved
+
 import { Controller, useForm } from 'react-hook-form';
 import VendedorService from '../services/vendedor-service';
 import SucursalService from '../../sucursales/services/sucursal-service';
