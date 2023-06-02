@@ -48,7 +48,7 @@ const NuevaPagina = () => {
 
   const [validated, setValidated] = useState(false);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();// para que no se actualice la pantalla al hacer clic
 
     /* primero valida formulario */
@@ -58,49 +58,38 @@ const NuevaPagina = () => {
       event.stopPropagation();
       setValidated(true);
     } else {
-      /* Aquí puedes utilizar los valores de nombreC y email para realizar las acciones que necesites
-            tiene que estar adentro del handleSubmit, no anda por el Link
-            aca afuera tira error */
-      /* agrego- 16-05 */
-      // updateNombreC(nombreC);
-      // updateEmail(email);
-      // updatePatente(productSelected.patente);
-      // updateGarantiaExtendida(garantiaExtendida);
+      try {
+        /* Aquí puedes utilizar los valores de nombreC y email para realizar las acciones que necesites
+              tiene que estar adentro del handleSubmit, no anda por el Link
+              aca afuera tira error */
+        /* agrego- 16-05 */
+        // updateNombreC(nombreC);
+        // updateEmail(email);
+        // updatePatente(productSelected.patente);
+        // updateGarantiaExtendida(garantiaExtendida);
 
-      // paso datos al back
-      const url = 'http://34.139.89.18:8181/api-gc/cotizaciones/save';
-      const cotizacionData = {
-        sucursal: 'S-01',
-        nombreCliente: nombreC,
-        patente: productSelected.patente, // infoCotizacion.patente,
-        email: mail,
-        idVendedor: 123,
-        precioBase: 1000000,
-        garantiaExtendida: garantiaCheck,
-      };
-      axios.post(url, cotizacionData)
-        .then((response) => {
-          // Manejar la respuesta exitosa
-          console.log(response.data);
-          /* const infoCotizacion = {
-            nombreC,
-            mail,
-            garantiaExtendida,
-            patente: productSelected.patente,
-            datos: response.data,
-          }; */
-          // paso datos al storage
-          const infoCotizacion = response.data;
-          sessionStorage.setItem('cotizacion', JSON.stringify(infoCotizacion));
-        })
-        .catch((error) => {
-          // Manejar el error
-          console.error(error);
-        });
+        // paso datos al back
+        const url = 'http://34.139.89.18:8181/api-gc/cotizaciones/save';
+        const cotizacionData = {
+          sucursal: 'S-01',
+          nombreCliente: nombreC,
+          patente: productSelected.patente, // infoCotizacion.patente,
+          email: mail,
+          idVendedor: 123,
+          precioBase: 1000000,
+          garantiaExtendida: garantiaCheck,
+        };
+        const response = await axios.post(url, cotizacionData);
+        console.log(response.data);
 
-      // sessionStorage.setItem('cotizacion', JSON.stringify(infoCotizacion));
-      /* no hace fata darle clic,x eso uso navigate() */
-      navigate('/boleta-cotizacion');
+        const infoCotizacion = response.data;
+        sessionStorage.setItem('cotizacion', JSON.stringify(infoCotizacion));
+
+        navigate('/boleta-cotizacion');
+      } catch (error) {
+        console.error(error);
+      }
+      // sessionStorage.setItem('cotizacion', JSON.stringify(infoCotizacion))
     }
   };
 

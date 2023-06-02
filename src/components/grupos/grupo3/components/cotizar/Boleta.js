@@ -39,16 +39,16 @@ const Boleta = () => {
   /* declara una variable de estado para almacenar la fecha actual */
   const [fecha, setFechaActual] = useState(new Date());
 
-  // Acceder al array de gastosAdministrativos
-  const { gastosAdministrativos } = cotizacion;
-
-  // Obtener el objeto correspondiente a SEGUROS y demas datos
-  const seguroObj = gastosAdministrativos.find((gasto) => gasto.nombre === 'SEGUROS');
-  const garantiaObj = gastosAdministrativos.find((gasto) => gasto.nombre === 'GARANTIA');
-  const registroObj = gastosAdministrativos.find((gasto) => gasto.nombre === 'REGISTRO_AUTOMOTOR');
-  const legalesObj = gastosAdministrativos.find((gasto) => gasto.nombre === 'LEGALES');
-  const docObj = gastosAdministrativos.find((gasto) => gasto.nombre === 'DOCUMENTACION');
-  const grabadoObj = gastosAdministrativos.find((gasto) => gasto.nombre === 'GRABADO_AUTOPARTES');
+  cotizacion.gastosAdministrativos.forEach((gasto) => {
+    console.log(gasto.nombre);
+    console.log(gasto.importe);
+  });
+  const seguroObj = cotizacion.gastosAdministrativos.find((gasto) => gasto.nombre === 'SEGUROS');
+  const garantiaObj = cotizacion.gastosAdministrativos.find((gasto) => gasto.nombre === 'GARANTIA');
+  const registroObj = cotizacion.gastosAdministrativos.find((gasto) => gasto.nombre === 'REGISTRO_AUTOMOTOR');
+  const legalesObj = cotizacion.gastosAdministrativos.find((gasto) => gasto.nombre === 'LEGALES');
+  const docObj = cotizacion.gastosAdministrativos.find((gasto) => gasto.nombre === 'DOCUMENTACION');
+  const grabadoObj = cotizacion.gastosAdministrativos.find((gasto) => gasto.nombre === 'GRABADO_AUTOPARTES');
 
   return (
     <Container className="my-0">
@@ -132,7 +132,6 @@ const Boleta = () => {
             <p>{legalesObj.importe}</p>
             <p>{docObj.importe}</p>
             <p>{grabadoObj.importe}</p>
-
           </Col>
           <hr />
           <Col xs={6}><p><strong>Total:</strong></p></Col>
