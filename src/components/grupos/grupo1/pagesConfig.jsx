@@ -3,24 +3,22 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import ContactMailIcon from '@mui/icons-material/ContactMail';
-import HandymanIcon from '@mui/icons-material/Handyman';
 import DesignServicesIcon from '@mui/icons-material/DesignServices';
 import GarageIcon from '@mui/icons-material/Garage';
 import RateReviewIcon from '@mui/icons-material/RateReview';
 import ReviewsIcon from '@mui/icons-material/Reviews';
-import TaxiAlertIcon from '@mui/icons-material/TaxiAlert';
+import HomeRepairServiceIcon from '@mui/icons-material/HomeRepairService';
 import TooltipCus from './components/common/Tooltip';
-import VisualizacionFiltroBusqueda from './pages/visualizacion-tecnicos/VisualizacionFiltroBusqueda';
+import VisualizacionBusquedaTecnicos from './pages/visualizacion-tecnicos/VisualizacionFiltroBusqueda';
 import Dashboard from './pages/dashboard/Dashboard';
 import MisTurnos from './pages/visualizar-mis-turnos/MisTurnos';
 import AgendaTaller from './pages/visualizar-agenda/AgendaTaller';
 import Talleres from './pages/talleres/Talleres';
 import FormularioCliente from './pages/turnos/turno-service-cliente/TurnoCliente';
-import Formulario from './pages/turnos/turno-reparacion/TurnoReparacion';
 import Services from './pages/visualizar-services/Services';
 import FormularioEvaluacionAdmin from './pages/turnos/turno-evaluacion-admin/TurnoEvaluacionParaAdmin';
 import FormularioEvaluacionCliente from './pages/turnos/turno-evaluacion-cliente/TurnoEvaluacionCliente';
-import FormularioExtraordinario from './pages/turnos/turno-extraordinario/TurnoExtraordinario';
+import AltaServiceForm from './pages/alta-services/AltaServices';
 
 const GROUP_1_PAGES_CONFIG = [
   {
@@ -42,7 +40,7 @@ const GROUP_1_PAGES_CONFIG = [
     name: 'Técnicos',
     href: '/informacion-tecnicos',
     icon: <TooltipCus icon={<PersonSearchIcon />} title="Técnicos" />,
-    page: <VisualizacionFiltroBusqueda />,
+    page: <VisualizacionBusquedaTecnicos />,
   },
   {
     id: 'g1-MisTurnos',
@@ -57,13 +55,6 @@ const GROUP_1_PAGES_CONFIG = [
     href: '/turnos-service',
     icon: <TooltipCus icon={<ContactMailIcon />} title="Turnos de service" />,
     page: <FormularioCliente />,
-  },
-  {
-    id: 'g1-TurnoReparacionVenta',
-    name: 'Turnos de reparación',
-    href: '/turno-reparacion-venta',
-    icon: <TooltipCus icon={<HandymanIcon />} title="Turnos de reparación" />,
-    page: <Formulario />,
   },
   {
     id: 'g1-Services',
@@ -94,11 +85,11 @@ const GROUP_1_PAGES_CONFIG = [
     page: <FormularioEvaluacionCliente />,
   },
   {
-    id: 'g1-TurnoExcepcional',
-    name: 'Turno Extraordinario',
-    href: '/turno-extraordinario',
-    icon: <TooltipCus icon={<TaxiAlertIcon />} title="Turno Extraordinario" />,
-    page: <FormularioExtraordinario />,
+    id: 'g1-AltaServices',
+    name: 'Alta de Services',
+    href: '/alta-service',
+    icon: <TooltipCus icon={<HomeRepairServiceIcon />} title="Alta de Services" />,
+    page: <AltaServiceForm />,
   },
 ];
 

@@ -55,6 +55,8 @@ const TablaTurnosPendientesDeAprobacion = (props) => {
   useEffect(() => {
     try {
       traerTurnos();
+      setActualizarTabla(false); // Reiniciar el estado de actualizarTabla
+      setAlertType('');
     } catch (error) {
       setAlertType('error');
       setAlertTitle('Error de servidor');
@@ -62,8 +64,6 @@ const TablaTurnosPendientesDeAprobacion = (props) => {
         'Error al traer los turnos. Por favor, recargue la página y vuelva a intentarlo nuevamente.',
       );
     }
-    setActualizarTabla(false); // Reiniciar el estado de actualizarTabla
-    setAlertType('');
   }, [traerTurnos, actualizarTabla]);
 
   const cancelarTurno = (idTurno) => {
@@ -95,10 +95,6 @@ const TablaTurnosPendientesDeAprobacion = (props) => {
         header: 'Patente',
       },
       {
-        accessorKey: 'estado',
-        header: 'Estado',
-      },
-      {
         accessorKey: 'tipo',
         header: 'Tipo de Turno',
       },
@@ -117,29 +113,33 @@ const TablaTurnosPendientesDeAprobacion = (props) => {
   const renderRowActions = ({ row }) => (
     <Box
       style={{ display: 'flex', flexWrap: 'nowrap', gap: '0.5rem' }}
-      sx={{ height: '3.2em' }}
+      sx={{ height: '3.2em', padding: '0.2em' }}
     >
       <Button
         variant="contained"
-        sx={{ fontSize: '0.9em', backgroundColor: 'rgba(51,51,51,0.75)' }}
+        size="small"
+        sx={{ fontSize: '0.7em', backgroundColor: 'rgba(51,51,51,0.75)' }}
         onClick={() => {
           setRowDetalle(row.original);
           setVerMas(true);
         }}
       >
-        Ver más
+        Ver
+        <br />
+        más
       </Button>
       <Button
         variant="contained"
         color="error"
-        sx={{ fontSize: '0.9em' }}
+        size="small"
+        sx={{ fontSize: '0.7em' }}
         onClick={() => {
           // console.log('Cancelar turno', row.original.id_turno);
           setIdTurnoCancelar(row.original.id_turno);
           setOpenCancel(true);
         }}
       >
-        Cancelar Turno
+        Cancelar
       </Button>
     </Box>
   );
@@ -175,7 +175,7 @@ const TablaTurnosPendientesDeAprobacion = (props) => {
         enableRowActions
         renderRowActions={renderRowActions}
         renderEmptyRowsFallback={noData}
-        defaultColumn={{ minSize: 10, maxSize: 100 }}
+        defaultColumn={{ minSize: 10, maxSize: 100, size: 30 }}
         muiTopToolbarProps={{
           sx: {
             display: 'flex',
@@ -187,6 +187,7 @@ const TablaTurnosPendientesDeAprobacion = (props) => {
         }}
         muiTableHeadCellProps={{ align: 'center' }}
         muiTableBodyCellProps={{ align: 'center' }}
+        initialState={{ density: 'compact' }}
         displayColumnDefOptions={{
           'mrt-row-actions': {
             header: 'Acciones',

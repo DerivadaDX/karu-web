@@ -72,8 +72,31 @@ const TablaTalleres = () => {
         header: 'Provincia',
       },
       {
-        accessorKey: 'cod_postal',
-        header: 'C.P.',
+        accessorKey: 'estado',
+        header: 'estado',
+
+        Cell: ({ cell }) => (
+          <span style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: '100%',
+          }}
+          >
+            <p style={{
+              backgroundColor: cell.getValue() === true ? 'rgb(53, 122, 56)' : '#b71c1c',
+              padding: '0.4rem',
+              margin: '0px',
+              borderRadius: '5px',
+              width: '6.5rem',
+              textAlign: 'center',
+              color: 'white',
+            }}
+            >
+              {cell.getValue() === true ? 'Activo' : 'No activo'}
+            </p>
+          </span>
+        ),
       },
     ],
     [],
@@ -111,34 +134,39 @@ const TablaTalleres = () => {
   const renderRowActions = ({ row }) => (
     <Box
       style={{ display: 'flex', flexWrap: 'nowrap', gap: '0.5rem' }}
-      sx={{ height: '3.2em' }}
+      sx={{ height: '3.2em', padding: '0.2em' }}
     >
       <Button
         variant="contained"
-        sx={{ fontSize: '0.9em', backgroundColor: 'rgba(51,51,51,0.75)' }}
+        size="small"
+        sx={{ fontSize: '0.7em', backgroundColor: 'rgba(51,51,51,0.75)' }}
         onClick={() => {
           setRowDetalleTaller(row.original);
           setOpenDetalleTaller(true);
         }}
       >
-        Info taller
+        Info
+        <br />
+        taller
       </Button>
       <Button
         variant="contained"
         color="secondary"
-        sx={{ fontSize: '0.9em' }}
+        sx={{ fontSize: '0.7em' }}
         size="small"
         onClick={() => {
           setOpenDetalleSucursal(true);
-          setIdTallerSucursal(row.original.id_taller);
+          setIdTallerSucursal(row.original.id_sucursal);
         }}
       >
-        Info sucursal
+        Info
+        <br />
+        sucursal
       </Button>
       <Button
         variant="contained"
         color="primary"
-        sx={{ fontSize: '0.9em', padding: '1rem' }}
+        sx={{ fontSize: '0.7em', padding: '1rem' }}
         size="small"
         onClick={() => {
           setOpenModificarTaller(true);
@@ -220,6 +248,14 @@ const TablaTalleres = () => {
             header: 'Acciones',
           },
         }}
+        initialState={{
+          density: 'compact',
+          sorting: [{
+            id: 'id_taller',
+            desc: false,
+          },
+          ],
+        }}
       />
       <Popup
         title={<LittleHeader titulo="Detalle de taller" />}
@@ -240,7 +276,7 @@ const TablaTalleres = () => {
         <DetalleSucursal
           open={openDetalleSucursal}
           setOpen={setOpenDetalleSucursal}
-          tallerId={idTallerSucursal}
+          sucursalId={idTallerSucursal}
         />
       </Popup>
       <Popup
