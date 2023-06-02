@@ -143,7 +143,9 @@ const TablaTurnosEvaluacion = (props) => {
           setOpenVerMas(true);
         }}
       >
-        Ver más
+        Ver
+        <br />
+        más
       </Button>
       <Button
         variant="contained"
@@ -156,7 +158,9 @@ const TablaTurnosEvaluacion = (props) => {
           // setOpenChecklist(true);
         }}
       >
-        Realizar evaluación
+        Realizar
+        <br />
+        evaluación
       </Button>
     </Box>
   );

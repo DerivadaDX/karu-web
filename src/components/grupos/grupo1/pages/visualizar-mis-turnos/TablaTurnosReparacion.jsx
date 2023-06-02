@@ -97,13 +97,17 @@ const TablaTurnosReparacion = (props) => {
       <Button
         variant="contained"
         size="small"
-        sx={{ fontSize: '0.7em', backgroundColor: 'rgba(51,51,51,0.75)' }}
+        sx={{
+          fontSize: '0.7em', backgroundColor: 'rgba(51,51,51,0.75)',
+        }}
         onClick={() => {
           setRowDetalle(row.original);
           setOpenVerMas(true);
         }}
       >
-        Ver más
+        Ver
+        <br />
+        más
       </Button>
       <Button
         variant="contained"
@@ -115,7 +119,9 @@ const TablaTurnosReparacion = (props) => {
           setOpenChecklist(true);
         }}
       >
-        Realizar reparación
+        Realizar
+        <br />
+        reparación
       </Button>
       <Button
         variant="contained"
@@ -127,7 +133,9 @@ const TablaTurnosReparacion = (props) => {
           setOpenConfirmarFinalizar(true);
         }}
       >
-        Finalizar registro
+        Finalizar
+        <br />
+        registro
       </Button>
     </Box>
   );

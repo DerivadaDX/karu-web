@@ -102,7 +102,9 @@ const TablaTurnosTerminados = (props) => {
           setOpenVerMas(true);
         }}
       >
-        Ver más
+        Ver
+        <br />
+        más
       </Button>
     </Box>
   );
