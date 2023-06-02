@@ -1,3 +1,5 @@
+/* eslint-disable react/no-unstable-nested-components */
+/* eslint-disable react/prop-types */
 /* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable no-unused-vars */
 import {
@@ -10,21 +12,30 @@ import Snackbar from '@mui/material/Snackbar';
 import {
   getTurnosEnProceso,
   patchFinalizarTurno,
-  getDetalleTurno,
+  getCancelarTurno,
 } from '../../services/services-Turnos';
 import Alerts from '../../components/common/Alerts';
 import Popup from '../../components/common/DialogPopup';
+import DetalleTurno from '../../components/common/DetalleTurno';
+import LittleHeader from '../../components/common/LittleHeader';
 
-const idTaller = 'S002';
+const TablaTurnosEnProgreso = (props) => {
+  const { idTaller } = props;
 
-const TablaTurnosEnProgreso = () => {
   const [turnosEnProceso, setTurnosEnProceso] = useState([]);
   const [loading, setLoading] = useState(true);
+  // Para el detalle del turno
   const [openVerMas, setVerMas] = useState(false);
+  const [rowDetalle, setRowDetalle] = useState({});
+
   const [openFinalizar, setOpenFinalizar] = useState(false);
-  const [detalleTurno, setDetalleTurno] = useState([]);
   const [resFinalizar, setResFinalizar] = useState([]);
   const [idTurnoFinalizar, setIdTurnoFinalizar] = useState(0);
+
+  const [idTurnoCancelar, setIdTurnoCancelar] = useState(0);
+  const [resCancelar, setResCancelar] = useState([]);
+  const [openCancelar, setOpenCancelar] = useState(false);
+
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [actualizarTabla, setActualizarTabla] = useState(false);
 
@@ -51,22 +62,8 @@ const TablaTurnosEnProgreso = () => {
   useEffect(() => {
     traerTurnos();
     setActualizarTabla(false); // Reiniciar el estado de actualizarTabla
+    setAlertType('');
   }, [traerTurnos, actualizarTabla]);
-
-  const obtenerDetalle = (idTurno) => {
-    getDetalleTurno(idTurno)
-      .then((response) => {
-        setDetalleTurno(response.data);
-      })
-      .catch((error) => {
-        setVerMas(false);
-        setAlertType('error');
-        setAlertTitle('Error de servidor');
-        setAlertMessage(
-          'Error al mostrar el detalle. Por favor, vuelva a intentarlo nuevamente.',
-        );
-      });
-  };
 
   const finalizarTurno = (idTurno) => {
     patchFinalizarTurno(idTurno)
@@ -75,7 +72,18 @@ const TablaTurnosEnProgreso = () => {
         setActualizarTabla(true); // Para actualizar la tabla despues de cancelar turno
       })
       .catch((error) => {
-        setResFinalizar(error.message);
+        setResFinalizar(error.response.data);
+      });
+  };
+
+  const cancelarTurno = (idTurno) => {
+    getCancelarTurno(idTurno)
+      .then((response) => {
+        setResCancelar(response.data);
+        setActualizarTabla(true); // Para actualizar la tabla despues de cancelar turno
+      })
+      .catch((error) => {
+        setResCancelar(error.message);
       });
   };
 
@@ -97,10 +105,6 @@ const TablaTurnosEnProgreso = () => {
         header: 'Patente',
       },
       {
-        accessorKey: 'estado',
-        header: 'Estado',
-      },
-      {
         accessorKey: 'tipo',
         header: 'Tipo de Turno',
       },
@@ -116,10 +120,6 @@ const TablaTurnosEnProgreso = () => {
         accessorKey: 'tecnico_id',
         header: 'Tecnico id',
       },
-      {
-        accessorKey: 'nombre_completo',
-        header: 'Nombre del Tecnico',
-      },
     ],
     [],
   );
@@ -127,22 +127,38 @@ const TablaTurnosEnProgreso = () => {
   const renderRowActions = ({ row }) => (
     <Box
       style={{ display: 'flex', flexWrap: 'nowrap', gap: '0.5rem' }}
-      sx={{ height: '3.2em' }}
+      sx={{ height: '3.2em', padding: '0.2em' }}
     >
       <Button
         variant="contained"
-        sx={{ fontSize: '0.9em', backgroundColor: 'rgba(51,51,51,0.75)' }}
+        size="small"
+        sx={{ fontSize: '0.7em', backgroundColor: 'rgba(51,51,51,0.75)' }}
         onClick={() => {
-          // console.log('Ver más', row.original.id_turno);
-          obtenerDetalle(row.original.id_turno);
+          setRowDetalle(row.original);
           setVerMas(true);
         }}
       >
-        Ver más
+        Ver
+        <br />
+        más
       </Button>
       <Button
         variant="contained"
         color="error"
+        size="small"
+        sx={{ fontSize: '0.7em' }}
+        onClick={() => {
+          setOpenCancelar(true);
+          setIdTurnoCancelar(row.original.id_turno);
+        }}
+      >
+        Cancelar
+      </Button>
+      <Button
+        variant="contained"
+        color="primary"
+        size="small"
+        sx={{ fontSize: '0.7em' }}
         onClick={() => {
           // console.log('Finalizar', row.original);
           setIdTurnoFinalizar(row.original.id_turno);
@@ -166,25 +182,6 @@ const TablaTurnosEnProgreso = () => {
     </Box>
   );
 
-  const filaDetalle = (llave, valor) => {
-    if (llave === 'papeles_en_regla') {
-      return null;
-    }
-    return (
-      <>
-        <span>
-          <strong>
-            {llave}
-            :
-            {' '}
-          </strong>
-        </span>
-        <span>{valor}</span>
-
-      </>
-    );
-  };
-
   return (
     <>
       <Box
@@ -204,7 +201,8 @@ const TablaTurnosEnProgreso = () => {
         enableRowActions
         renderRowActions={renderRowActions}
         renderEmptyRowsFallback={noData}
-        defaultColumn={{ minSize: 10, maxSize: 100 }}
+        defaultColumn={{ minSize: 10, maxSize: 100, size: 30 }}
+        initialState={{ density: 'compact' }}
         muiTopToolbarProps={{
           sx: {
             display: 'flex',
@@ -214,9 +212,16 @@ const TablaTurnosEnProgreso = () => {
             maxHeight: '200px',
           },
         }}
+        muiTableHeadCellProps={{ align: 'center' }}
+        muiTableBodyCellProps={{ align: 'center' }}
+        displayColumnDefOptions={{
+          'mrt-row-actions': {
+            header: 'Acciones',
+          },
+        }}
       />
       <Popup
-        title="Finalizar Turno"
+        title={<LittleHeader titulo="Finalizar turno" />}
         openDialog={openFinalizar}
         setOpenDialog={setOpenFinalizar}
         description="¿Está seguro que desea finalizar el turno? No se podrá modificar la acción una vez realizada."
@@ -246,41 +251,55 @@ const TablaTurnosEnProgreso = () => {
           </DialogActions>
         </Box>
       </Popup>
-
       <Snackbar
         message={resFinalizar}
         autoHideDuration={4000}
         open={openSnackbar}
         onClose={handleCloseSnackbar}
       />
-
       <Popup
-        title="Detalle del Turno"
-        openDialog={openVerMas}
-        setOpenDialog={setVerMas}
-        botonRetorno="Atras"
+        title={<LittleHeader titulo="Cancelar turno" />}
+        openDialog={openCancelar}
+        setOpenDialog={setOpenCancelar}
+        description="¿Está seguro que desea cancelar el turno? No se podrá modificar la acción una vez realizada."
       >
-        {
-              Object.entries(detalleTurno).map(([key, value]) => (
-                <div key={key}>
-                  {filaDetalle(key, value)}
-                </div>
-              ))
-}
         <Box>
           <DialogActions>
             <Button
               color="primary"
               variant="outlined"
-              sx={{ marginTop: '10px' }}
               onClick={() => {
-                setVerMas(false);
+                cancelarTurno(idTurnoCancelar);
+                setOpenCancelar(false);
+                setOpenSnackbar(true);
               }}
             >
-              Atras
+              Aceptar
+            </Button>
+            <Button
+              color="error"
+              variant="outlined"
+              onClick={() => {
+                setOpenCancelar(false);
+              }}
+            >
+              Cancelar
             </Button>
           </DialogActions>
         </Box>
+      </Popup>
+      <Snackbar
+        message={resCancelar}
+        autoHideDuration={4000}
+        open={openSnackbar}
+        onClose={handleCloseSnackbar}
+      />
+      <Popup
+        title={<LittleHeader titulo="Detalle de turno" />}
+        openDialog={openVerMas}
+        setOpenDialog={setVerMas}
+      >
+        <DetalleTurno openDialog={openVerMas} setOpenDialog={setVerMas} row={rowDetalle} />
       </Popup>
     </>
   );

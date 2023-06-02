@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-shadow */
 /* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable no-unused-vars */
 import {
@@ -11,23 +13,28 @@ import Snackbar from '@mui/material/Snackbar';
 import DialogActions from '@mui/material/DialogActions';
 import Alerts from '../../components/common/Alerts';
 import Popup from '../../components/common/DialogPopup';
+import LittleHeader from '../../components/common/LittleHeader';
+import DetalleTurno from '../../components/common/DetalleTurno';
 
 import {
-  getDetalleTurno,
   getCancelarTurno,
   getTurnosPendientes,
 } from '../../services/services-Turnos';
 
 import PanelDeAsignacion from '../asignacion-de-tecnico/PanelDeAsignacion';
+import { AgregarTurno } from './AgregarTurno';
+import PopupAgregarTurno from './PopupAgregarTurno';
 
-const idTaller = 'S002';
+const TablaTurnosPendientes = (props) => {
+  const { idTaller } = props;
 
-const TablaTurnosPendientes = () => {
   const [turnosPendientes, setTurnosPendientes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [openDialog, setOpenDialog] = useState(false);
+
   const [openVerMas, setVerMas] = useState(false);
-  const [detalleTurno, setDetalleTurno] = useState([]);
+  const [rowDetalle, setRowDetalle] = useState({});
+
   const [resCancelar, setResCancelar] = useState([]);
   const [idTurnoCancelar, setIdTurnoCancelar] = useState(0);
   const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -36,6 +43,9 @@ const TablaTurnosPendientes = () => {
   // Para abrir el formulario de asignacion
   const [idTurnoAsignar, setIdTurnoAsignar] = useState(0);
   const [openAsignacion, setOpenAsignacion] = useState(false);
+
+  // Para abrir el agregar turno
+  const [openAgregarTurno, setOpenAgregarTurno] = useState(false);
 
   // alertas de la API
   const [alertType, setAlertType] = useState('');
@@ -55,10 +65,6 @@ const TablaTurnosPendientes = () => {
       {
         accessorKey: 'patente',
         header: 'Patente',
-      },
-      {
-        accessorKey: 'estado',
-        header: 'Estado',
       },
       {
         accessorKey: 'fecha_inicio',
@@ -91,6 +97,7 @@ const TablaTurnosPendientes = () => {
     try {
       traerTurnos();
       setActualizarTabla(false); // Reiniciar el estado de actualizarTabla
+      setAlertType('');
     } catch (error) {
       setAlertType('error');
       setAlertTitle('Error de servidor');
@@ -99,21 +106,6 @@ const TablaTurnosPendientes = () => {
       );
     }
   }, [traerTurnos, actualizarTabla]);
-
-  const obtenerDetalle = (idTurno) => {
-    getDetalleTurno(idTurno)
-      .then((response) => {
-        setDetalleTurno(response.data);
-      })
-      .catch((error) => {
-        setVerMas(false);
-        setAlertType('error');
-        setAlertTitle('Error de servidor');
-        setAlertMessage(
-          'Error al mostrar el detalle. Por favor, reacargue la página y vuelva a intentarlo nuevamente.',
-        );
-      });
-  };
 
   const cancelarTurno = (idTurno) => {
     getCancelarTurno(idTurno)
@@ -136,39 +128,46 @@ const TablaTurnosPendientes = () => {
   const renderRowActions = ({ row }) => (
     <Box
       style={{ display: 'flex', flexWrap: 'nowrap', gap: '0.5rem' }}
-      sx={{ height: '3.2em' }}
+      sx={{ height: '3.2em', padding: '0.2em' }}
     >
       <Button
         variant="contained"
-        sx={{ fontSize: '0.9em', backgroundColor: 'rgba(51,51,51,0.75)' }}
+        size="small"
+        sx={{ fontSize: '0.7em', backgroundColor: 'rgba(51,51,51,0.75)' }}
         onClick={() => {
-          obtenerDetalle(row.original.id_turno);
+          setRowDetalle(row.original);
           setVerMas(true);
         }}
       >
-        Ver más
+        Ver
+        <br />
+        más
       </Button>
       <Button
         variant="contained"
         color="secondary"
-        sx={{ fontSize: '0.9em' }}
+        size="small"
+        sx={{ fontSize: '0.7em' }}
         onClick={() => {
           setOpenAsignacion(true);
           setIdTurnoAsignar(row.original.id_turno);
         }}
       >
-        Asignar Tecnico
+        Asignar
+        <br />
+        Tecnico
       </Button>
       <Button
         variant="contained"
         color="error"
-        sx={{ fontSize: '0.9em' }}
+        size="small"
+        sx={{ fontSize: '0.7em' }}
         onClick={() => {
           setOpenDialog(true);
           setIdTurnoCancelar(row.original.id_turno);
         }}
       >
-        Cancelar Turno
+        Cancelar
       </Button>
     </Box>
   );
@@ -198,32 +197,13 @@ const TablaTurnosPendientes = () => {
           },
         }}
         onClick={() => {
-          // console.log('Agregar turno');
+          setOpenAgregarTurno(true);
         }}
       >
         Agregar turno
       </Button>
     </Tooltip>
   );
-
-  const filaDetalle = (llave, valor) => {
-    if (llave === 'papeles_en_regla') {
-      return null;
-    }
-    return (
-      <>
-        <span>
-          <strong>
-            {llave}
-            :
-            {' '}
-          </strong>
-        </span>
-        <span>{valor}</span>
-
-      </>
-    );
-  };
 
   return (
     <>
@@ -252,18 +232,29 @@ const TablaTurnosPendientes = () => {
         }}
         positionActionsColumn="last"
         enableRowActions
+        initialState={{ density: 'compact' }}
         renderRowActions={renderRowActions}
         renderEmptyRowsFallback={noData}
-        defaultColumn={{ minSize: 10, maxSize: 100 }}
+        defaultColumn={{ minSize: 10, maxSize: 100, size: 30 }}
+        muiTableHeadCellProps={{ align: 'center', padding: 'none' }}
+        muiTableBodyCellProps={{ align: 'center', padding: 'none' }}
+        displayColumnDefOptions={{
+          'mrt-row-actions': {
+            header: 'Acciones',
+          },
+        }}
       />
 
       <Popup
-        title="Cancelar Turno"
+        title={<LittleHeader titulo="Cancelar turno" />}
         openDialog={openDialog}
         setOpenDialog={setOpenDialog}
         description="¿Está seguro que desea cancelar el turno? No se podrá modificar la acción una vez realizada."
       >
-        <Box>
+        <Box sx={{
+          display: 'flex', justifyContent: 'center', alignItems: 'center',
+        }}
+        >
           <DialogActions>
             <Button
               color="primary"
@@ -295,34 +286,14 @@ const TablaTurnosPendientes = () => {
         onClose={handleCloseSnackbar}
       />
       <Popup
-        title="Detalle del Turno"
+        title={<LittleHeader titulo="Detalle de turno" />}
         openDialog={openVerMas}
         setOpenDialog={setVerMas}
       >
-        {
-              Object.entries(detalleTurno).map(([key, value]) => (
-                <div key={key}>
-                  {filaDetalle(key, value)}
-                </div>
-              ))
-}
-        <Box>
-          <DialogActions>
-            <Button
-              color="primary"
-              variant="outlined"
-              sx={{ marginTop: '10px' }}
-              onClick={() => {
-                setVerMas(false);
-              }}
-            >
-              Atras
-            </Button>
-          </DialogActions>
-        </Box>
+        <DetalleTurno openDialog={openVerMas} setOpenDialog={setVerMas} row={rowDetalle} />
       </Popup>
       <Popup
-        title="Asignar Turno a un Técnico"
+        title={<LittleHeader titulo="Asignar turno a un técnico" />}
         openDialog={openAsignacion}
         setOpenDialog={setOpenAsignacion}
       >
@@ -334,6 +305,18 @@ const TablaTurnosPendientes = () => {
           setActualizar={setActualizarTabla}
         />
       </Popup>
+      <PopupAgregarTurno
+        title={<LittleHeader titulo="Agregar turno" />}
+        openDialog={openAgregarTurno}
+        setOpenDialog={setOpenAgregarTurno}
+        description="Complete únicamente el formulario del tipo de turno que desea dar de alta."
+      >
+        <AgregarTurno
+          idTaller={idTaller}
+          setOpenAgregarTurno={setOpenAgregarTurno}
+          openAgregarTurno={openAgregarTurno}
+        />
+      </PopupAgregarTurno>
     </>
   );
 };

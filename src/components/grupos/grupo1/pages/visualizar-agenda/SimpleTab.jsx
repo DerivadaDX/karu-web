@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable import/prefer-default-export */
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/prop-types */
@@ -11,6 +12,8 @@ import TablaTurnosPendientes from './TablaTurnosPendientes';
 import TablaTurnosEnProgreso from './TablaTurnosEnProgreso';
 import TablaTurnosTerminados from './TablaTurnosTerminados';
 import TablaTurnosPendientesDeAprobacion from './TablaTurnosPendientesAprobacion';
+import TablaTurnosCancelados from './TablaTurnosCancelados';
+import TablaTurnosNoValidos from './TablaTurnosNoValidos';
 
 const TabPanel = (props) => {
   const {
@@ -24,7 +27,7 @@ const TabPanel = (props) => {
       {...other}
     >
       {value === index && (
-        <Box sx={{ p: 3 }}>
+        <Box sx={{ p: 0.5 }}>
           <Box>{children}</Box>
         </Box>
       )}
@@ -45,8 +48,9 @@ function allyProps(index) {
   };
 }
 
-export const SimpleTabTurnos = () => {
+export const SimpleTabTurnos = (props) => {
   const [value, setValue] = useState(0);
+  const { idTaller } = props;
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -67,19 +71,27 @@ export const SimpleTabTurnos = () => {
           <Tab label="Pendientes de aprobación" {...allyProps(1)} />
           <Tab label="En Proceso" {...allyProps(2)} />
           <Tab label="Terminados" {...allyProps(3)} />
+          <Tab label="Cancelados" {...allyProps(4)} />
+          <Tab label="No válidos" {...allyProps(5)} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        <TablaTurnosPendientes />
+        <TablaTurnosPendientes idTaller={idTaller} />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <TablaTurnosPendientesDeAprobacion />
+        <TablaTurnosPendientesDeAprobacion idTaller={idTaller} />
       </TabPanel>
       <TabPanel value={value} index={2}>
-        <TablaTurnosEnProgreso />
+        <TablaTurnosEnProgreso idTaller={idTaller} />
       </TabPanel>
       <TabPanel value={value} index={3}>
-        <TablaTurnosTerminados />
+        <TablaTurnosTerminados idTaller={idTaller} />
+      </TabPanel>
+      <TabPanel value={value} index={4}>
+        <TablaTurnosCancelados idTaller={idTaller} />
+      </TabPanel>
+      <TabPanel value={value} index={5}>
+        <TablaTurnosNoValidos idTaller={idTaller} />
       </TabPanel>
     </Box>
   );
