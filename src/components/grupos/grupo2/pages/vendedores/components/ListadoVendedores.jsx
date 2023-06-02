@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 
 import VendedoresService from '../services/vendedores-service';
 import SucursalService from '../services/sucursal-service';
+import PopUpCrearVendedor from './PopUpCrearVendedor';
 
 const ListadoVendedores = ({ sucursal }) => {
   const [vendedores, setVendedores] = useState([]);
@@ -64,6 +65,12 @@ const ListadoVendedores = ({ sucursal }) => {
       });
   };
 
+  const renderCrearVendedor = () => (
+    <PopUpCrearVendedor
+      onSuccess={obtenerVendedoresDeSucursales}
+    />
+  );
+
   const columnas = useMemo(
     () => [
       {
@@ -119,6 +126,7 @@ const ListadoVendedores = ({ sucursal }) => {
         columns={columnas}
         data={vendedores}
         state={{ isLoading: cargando }}
+        renderTopToolbarCustomActions={renderCrearVendedor}
         defaultColumn={{ minSize: 10, maxSize: 100 }}
         displayColumnDefOptions={{
           'mrt-row-actions': {
