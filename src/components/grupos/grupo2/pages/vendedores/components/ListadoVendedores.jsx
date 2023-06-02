@@ -5,7 +5,7 @@ import MaterialReactTable from 'material-react-table';
 import PropTypes from 'prop-types';
 
 import VendedoresService from '../services/vendedores-service';
-import SucursalService from '../../sucursales/services/sucursal-service';
+import SucursalService from '../services/sucursal-service';
 
 const ListadoVendedores = ({ sucursal }) => {
   const [vendedores, setVendedores] = useState([]);
@@ -14,9 +14,11 @@ const ListadoVendedores = ({ sucursal }) => {
   const renderSucursal = ({ row }) => {
     const sucursalId = row.original.sucursal_id;
     const [sucursalName, setSucursalName] = useState('');
-    SucursalService.obtenerSucursal(sucursalId).then((response) => {
-      setSucursalName(response.data.nombre);
-    });
+
+    SucursalService.obtenerSucursal(sucursalId)
+      .then((response) => {
+        setSucursalName(response.data.nombre);
+      });
 
     return (
       <Typography
@@ -46,18 +48,20 @@ const ListadoVendedores = ({ sucursal }) => {
 
   const obtenerVendedoresDeSucursal = () => {
     setCargando(true);
-    VendedoresService.obtenerVendedoresDeSucursal(sucursal).then((response) => {
-      setVendedores(response.data);
-      setCargando(false);
-    });
+    VendedoresService.obtenerVendedoresDeSucursal(sucursal)
+      .then((response) => {
+        setVendedores(response.data);
+        setCargando(false);
+      });
   };
 
   const obtenerVendedoresDeSucursales = () => {
     setCargando(true);
-    VendedoresService.obtenerVendedores().then((response) => {
-      setVendedores(response.data);
-      setCargando(false);
-    });
+    VendedoresService.obtenerVendedores()
+      .then((response) => {
+        setVendedores(response.data);
+        setCargando(false);
+      });
   };
 
   const columnas = useMemo(
