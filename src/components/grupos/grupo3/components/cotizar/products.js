@@ -122,7 +122,7 @@ export const products = [
   },
   {
     id: 21,
-    patente: 'XYZ987',
+    patente: 'XYZ-987',
     sucursal: 'Sucursal B',
     marca: 'Volkswagen',
     anio: 2021,
