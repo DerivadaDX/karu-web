@@ -39,17 +39,6 @@ const Boleta = () => {
   /* declara una variable de estado para almacenar la fecha actual */
   const [fecha, setFechaActual] = useState(new Date());
 
-  cotizacion.gastosAdministrativos.forEach((gasto) => {
-    console.log(gasto.nombre);
-    console.log(gasto.importe);
-  });
-  const seguroObj = cotizacion.gastosAdministrativos.find((gasto) => gasto.nombre === 'SEGUROS');
-  const garantiaObj = cotizacion.gastosAdministrativos.find((gasto) => gasto.nombre === 'GARANTIA');
-  const registroObj = cotizacion.gastosAdministrativos.find((gasto) => gasto.nombre === 'REGISTRO_AUTOMOTOR');
-  const legalesObj = cotizacion.gastosAdministrativos.find((gasto) => gasto.nombre === 'LEGALES');
-  const docObj = cotizacion.gastosAdministrativos.find((gasto) => gasto.nombre === 'DOCUMENTACION');
-  const grabadoObj = cotizacion.gastosAdministrativos.find((gasto) => gasto.nombre === 'GRABADO_AUTOPARTES');
-
   return (
     <Container className="my-0">
       <div id="boleta" className="boleta-compra">
@@ -108,13 +97,8 @@ const Boleta = () => {
             <p><strong>Garantía Extendida</strong></p>
             <p><strong>Gastos Administrativos</strong></p>
             <hr />
-            <p>Seguro </p>
-            <p>Garantía</p>
-            <p>Registro Automotor</p>
-            <p>Legales</p>
-            <p>Documentación</p>
-            <p>Grabado de autopartes</p>
-
+            { cotizacion.gastosAdministrativos.map((gasto) => (
+              <p key={gasto.id}>{gasto.nombre}</p>))}
             <hr />
             <p><strong>TotalGastosAdministrativos: ${cotizacion.importeTotalGastosAdministrativos}</strong></p>
           </Col>
@@ -126,12 +110,8 @@ const Boleta = () => {
             <br />
             <hr style={{ border: '1px solid transparent' }} />
             {/* Obtener el campo seguro del objeto */}
-            <p>{seguroObj.importe}</p>
-            <p>{garantiaObj.importe}</p>
-            <p>{registroObj.importe}</p>
-            <p>{legalesObj.importe}</p>
-            <p>{docObj.importe}</p>
-            <p>{grabadoObj.importe}</p>
+            { cotizacion.gastosAdministrativos.map((gasto) => (
+              <p key={gasto.id}>{gasto.importe}</p>))}
           </Col>
           <hr />
           <Col xs={6}><p><strong>Total:</strong></p></Col>
