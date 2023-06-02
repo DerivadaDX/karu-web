@@ -22,6 +22,8 @@ import {
 } from '../../services/services-Turnos';
 
 import PanelDeAsignacion from '../asignacion-de-tecnico/PanelDeAsignacion';
+import { AgregarTurno } from './AgregarTurno';
+import PopupAgregarTurno from './PopupAgregarTurno';
 
 const TablaTurnosPendientes = (props) => {
   const { idTaller } = props;
@@ -41,6 +43,9 @@ const TablaTurnosPendientes = (props) => {
   // Para abrir el formulario de asignacion
   const [idTurnoAsignar, setIdTurnoAsignar] = useState(0);
   const [openAsignacion, setOpenAsignacion] = useState(false);
+
+  // Para abrir el agregar turno
+  const [openAgregarTurno, setOpenAgregarTurno] = useState(false);
 
   // alertas de la API
   const [alertType, setAlertType] = useState('');
@@ -192,7 +197,7 @@ const TablaTurnosPendientes = (props) => {
           },
         }}
         onClick={() => {
-          // console.log('Agregar turno');
+          setOpenAgregarTurno(true);
         }}
       >
         Agregar turno
@@ -246,7 +251,10 @@ const TablaTurnosPendientes = (props) => {
         setOpenDialog={setOpenDialog}
         description="¿Está seguro que desea cancelar el turno? No se podrá modificar la acción una vez realizada."
       >
-        <Box>
+        <Box sx={{
+          display: 'flex', justifyContent: 'center', alignItems: 'center',
+        }}
+        >
           <DialogActions>
             <Button
               color="primary"
@@ -285,7 +293,7 @@ const TablaTurnosPendientes = (props) => {
         <DetalleTurno openDialog={openVerMas} setOpenDialog={setVerMas} row={rowDetalle} />
       </Popup>
       <Popup
-        title="Asignar Turno a un Técnico"
+        title={<LittleHeader titulo="Asignar turno a un técnico" />}
         openDialog={openAsignacion}
         setOpenDialog={setOpenAsignacion}
       >
@@ -297,6 +305,18 @@ const TablaTurnosPendientes = (props) => {
           setActualizar={setActualizarTabla}
         />
       </Popup>
+      <PopupAgregarTurno
+        title={<LittleHeader titulo="Agregar turno" />}
+        openDialog={openAgregarTurno}
+        setOpenDialog={setOpenAgregarTurno}
+        description="Complete únicamente el formulario del tipo de turno que desea dar de alta."
+      >
+        <AgregarTurno
+          taller={idTaller}
+          setOpenAgregarTurno={setOpenAgregarTurno}
+          openAgregarTurno={openAgregarTurno}
+        />
+      </PopupAgregarTurno>
     </>
   );
 };

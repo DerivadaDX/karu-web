@@ -48,7 +48,7 @@ const ModificarTaller = (props) => {
   });
   // Para validar form
   const [sucursalSeleccionada, setSucursalSeleccionada] = useState(null);
-  const [cambioEstado, setCambioEstado] = useState(false);
+  const [cambioEstado, setCambioEstado] = useState(true);
   const [nombreEsValido, setNombreEsValido] = useState(true);
   const [dirEsValida, setDirEsValida] = useState(true);
   const [mailEsValido, setMailEsValido] = useState(true);
@@ -59,7 +59,8 @@ const ModificarTaller = (props) => {
   // Para confirmar  y validar form
   const [openConfirmar, setOpenConfirmar] = useState(false);
   const [openError, setOpenError] = useState(false);
-  const mensajeExitoso = `Se ha modificado exitosamente el Taller ${nombreNuevo}`;
+  const mensajeExitoso = `Se ha modificado exitosamente el Taller ${nombreNuevo}.`;
+  const [mensajeWarning, setmensajeWarning] = useState([]);
   const [openMensajeExitoso, setOpenMensajeExitoso] = useState(false);
 
   // Error al enviar
@@ -227,7 +228,12 @@ const ModificarTaller = (props) => {
       capacidad: capacidadNueva,
       cant_tecnicos: cantTecnicosNuevo,
     })
-      .then(() => {
+      .then((response) => {
+        if (response.data.warnings.length === 0) {
+          setmensajeWarning('');
+        } else {
+          setmensajeWarning(`${response.data.warnings}.`);
+        }
         setOpenMensajeExitoso(true);
         setActualizar(true);
       })
@@ -583,7 +589,14 @@ const ModificarTaller = (props) => {
         title={<LittleHeader titulo="Taller modificado exitosamente" />}
         openDialog={openMensajeExitoso}
         setOpenDialog={setOpenMensajeExitoso}
-        description={mensajeExitoso}
+        description={(
+          <>
+            {mensajeExitoso}
+            <br />
+            <br />
+            <strong>{mensajeWarning}</strong>
+          </>
+)}
       >
         <Box sx={{
           display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 2,

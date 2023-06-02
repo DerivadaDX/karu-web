@@ -55,6 +55,8 @@ const TablaTurnosPendientesDeAprobacion = (props) => {
   useEffect(() => {
     try {
       traerTurnos();
+      setActualizarTabla(false); // Reiniciar el estado de actualizarTabla
+      setAlertType('');
     } catch (error) {
       setAlertType('error');
       setAlertTitle('Error de servidor');
@@ -62,8 +64,6 @@ const TablaTurnosPendientesDeAprobacion = (props) => {
         'Error al traer los turnos. Por favor, recargue la página y vuelva a intentarlo nuevamente.',
       );
     }
-    setActualizarTabla(false); // Reiniciar el estado de actualizarTabla
-    setAlertType('');
   }, [traerTurnos, actualizarTabla]);
 
   const cancelarTurno = (idTurno) => {
