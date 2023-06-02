@@ -1,34 +1,27 @@
 import React, { createRef, useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 
 import {
   Box,
   Button,
-
   Dialog,
   DialogActions,
   DialogTitle,
-
   FormControl,
-
   FormControlLabel,
-
   InputLabel,
-
   MenuItem,
-
   Paper,
   Select,
   Stack,
   Switch,
   TextField,
 } from '@mui/material';
-import PropTypes from 'prop-types';
 import AddIcon from '@mui/icons-material/Add';
-
-import { IMaskInput } from 'react-imask';
 import { DatePicker } from '@mui/x-date-pickers';
+import PropTypes from 'prop-types';
+import { IMaskInput } from 'react-imask';
 
-import { Controller, useForm } from 'react-hook-form';
 import VendedoresServices from '../services/vendedores-service';
 import SucursalService from '../../sucursales/services/sucursal-service';
 
@@ -46,7 +39,7 @@ const CuitComponent = React.forwardRef((props, inputRef) => {
       // eslint-disable-next-line react/jsx-props-no-spreading
       {...other}
       ref={ref}
-      mask="00-0000000[0]-0"
+      mask="00-00000000[0]-0"
       inputRef={inputRef}
       onChange={() => undefined}
       value={value}
@@ -67,9 +60,7 @@ const PopUpCrearVendedor = ({ onSuccess }) => {
   const [mostrarPopUpCrearVendedor, setMostrarPopUpCrearVendedor] = useState(false);
   const [mostrarPopUpCreacionExitosa, setMostrarPopUpCreacionExitosa] = useState(false);
   const [sucursales, setSucursales] = useState({});
-  const {
-    handleSubmit, control, formState: { errors, isValid },
-  } = useForm({
+  const { handleSubmit, control, formState: { errors, isValid } } = useForm({
     mode: 'onBlur',
     defaultValues: {
       nombre: '',
@@ -79,15 +70,17 @@ const PopUpCrearVendedor = ({ onSuccess }) => {
       fecha_nacimiento: null,
       fecha_ingreso: null,
       sucursal_id: '',
-      activa: false,
+      activo: false,
     },
   });
+
   const onSubmit = async (data) => {
     const nuevaData = {
       ...data,
       fecha_ingreso: data.fecha_ingreso.toISOString().slice(0, 10),
       fecha_nacimiento: data.fecha_nacimiento.toISOString().slice(0, 10),
     };
+
     VendedoresServices.crearVendedor(nuevaData)
       .then(() => {
         setMostrarPopUpCreacionExitosa(true);
@@ -108,7 +101,7 @@ const PopUpCrearVendedor = ({ onSuccess }) => {
   const obtenerSucursales = () => {
     SucursalService.obtenerSucursales()
       .then((response) => {
-        setSucursales(response.data);
+        setSucursales(response.data.filter((sucursal) => sucursal.activa));
       });
   };
 
@@ -221,7 +214,7 @@ const PopUpCrearVendedor = ({ onSuccess }) => {
                 required: 'El cuit es requerido',
                 pattern: {
                   value: /^(20|23|24|27|30|33|34)(-\d{8}-\d)$/,
-                  message: 'Ingrese una CUIT válida',
+                  message: 'Ingrese un CUIT válido',
                 },
               }}
             />
@@ -260,7 +253,6 @@ const PopUpCrearVendedor = ({ onSuccess }) => {
                   label="Fecha de Ingreso"
                   error={errors.fecha}
                   slotProps={{ textField: { variant: 'standard', margin: 'dense' } }}
-
                 />
               )}
               rules={{
@@ -301,20 +293,18 @@ const PopUpCrearVendedor = ({ onSuccess }) => {
               }}
             />
             <Controller
-              name="activa"
+              name="activo"
               control={control}
               render={({ field: { onChange, onBlur, value } }) => (
                 <FormControlLabel
-                  id="activa"
-                  name="activa"
+                  id="activo"
+                  name="activo"
                   value={value}
                   onBlur={onBlur}
                   label="¿Está habilitado/a?"
                   labelPlacement="start"
                   control={(
-                    <Switch
-                      onChange={onChange}
-                    />
+                    <Switch onChange={onChange} />
                   )}
                   sx={{
                     marginTop: '2ch',
@@ -342,4 +332,5 @@ const PopUpCrearVendedor = ({ onSuccess }) => {
 PopUpCrearVendedor.propTypes = {
   onSuccess: PropTypes.func.isRequired,
 };
+
 export default PopUpCrearVendedor;
