@@ -19,25 +19,22 @@ const styles = {
   },
 };
 
-const LoggedInLayout = ({ children }) => {
-  const [open, setOpen] = React.useState(false);
-  const toggleDrawer = () => setOpen(!open);
-
-  return (
-    <Box sx={styles.mainBox}>
-      <CssBaseline />
-      <NavBar drawerWidth={240} open={open} toggleDrawer={toggleDrawer} />
-      <SideBar drawerWidth={240} open={open} toggleDrawer={toggleDrawer} />
-      <Box component="main" sx={styles.secondaryBox}>
-        <Toolbar />
-        {children}
-      </Box>
+const LoggedInLayout = ({ children, sideBarIsOpened, toggleDrawer }) => (
+  <Box sx={styles.mainBox}>
+    <CssBaseline />
+    <NavBar drawerWidth={240} open={sideBarIsOpened} toggleDrawer={toggleDrawer} />
+    <SideBar drawerWidth={240} open={sideBarIsOpened} toggleDrawer={toggleDrawer} />
+    <Box component="main" sx={styles.secondaryBox}>
+      <Toolbar />
+      {children}
     </Box>
-  );
-};
+  </Box>
+);
 
 LoggedInLayout.propTypes = {
   children: PropTypes.node.isRequired,
+  sideBarIsOpened: PropTypes.bool.isRequired,
+  toggleDrawer: PropTypes.func.isRequired,
 };
 
 export default LoggedInLayout;
