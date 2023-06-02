@@ -85,7 +85,7 @@ const ListadoVendedores = ({ sucursal }) => {
       },
       {
         accessorKey: 'email',
-        header: 'email',
+        header: 'Email',
       },
       {
         accessorKey: 'sucursal',
@@ -94,7 +94,7 @@ const ListadoVendedores = ({ sucursal }) => {
       },
       {
         accessorKey: 'activo',
-        header: 'Activo',
+        header: 'Estado',
         Cell: renderEstadoVendedor,
       },
     ],
