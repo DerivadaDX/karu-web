@@ -1,8 +1,9 @@
 /*eslint-disable */
 import { useState } from 'react';
+import { Alert, Paper, TextField } from '@mui/material';
 import '../assets/css/formRegister.css';
 
-const FormInput = (props: any) => {
+const FormInput = (props) => {
   const [focused, setFocused] = useState(false);
   const { label, errorMessage, onChange, id, ...inputProps } = props;
 
@@ -11,17 +12,16 @@ const FormInput = (props: any) => {
   };
 
   return (
-    <div className="inputs">
+    <Paper>
       <label>{label}</label>
-      <input
-        className="inputs-register"
+      <TextField
         {...inputProps}
         onChange={onChange}
         onBlur={handleFocus}
         focused={focused.toString()}
       />
-      <span className="spans">{errorMessage}</span>
-    </div>
+      <Alert severity="error">{errorMessage}</Alert>
+    </Paper>
   );
 };
 

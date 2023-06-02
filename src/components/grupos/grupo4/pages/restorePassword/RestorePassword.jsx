@@ -1,5 +1,13 @@
 import { Link } from 'react-router-dom';
 import React, { useContext, useEffect, useState } from 'react';
+import {
+  Alert,
+  Button,
+  Paper,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { UserContext } from '../../context/UsersContext';
 import '../../assets/css/formRestorePass.css';
 
@@ -28,36 +36,32 @@ const RestorePassword = () => {
   }, [isValidEmail]);
 
   return (
-    <div className="restore-pass-container">
-      <form
+    <Paper
+      sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+    >
+      <Stack
+        component="form"
         onSubmit={submitHandler}
-        className="form-restore-pass"
-        id="sign-up-form"
         autoComplete="off"
+        sx={{ width: '70%', display: 'flex', textAlign: 'center' }}
       >
-        <h2 className="restore-pass-container__form-h2">
-          Ingresar Correo Electrónico
-        </h2>
-        <input
-          className="inputs-restore-pass"
-          type="text"
+        <Typography variant="h2">Ingresar Correo Electrónico</Typography>
+        <TextField
           placeholder="example@gmail.com"
+          label="Correo Electronico"
           name="name"
+          variant="filled"
+          defaultValue=""
           onChange={(e) => {
             setEmailToChangePassState(e.target.value);
           }}
-          id="name-id"
           required
         />
-        <input
-          className="buttons-restore-pass"
-          type="submit"
-          value="Enviar"
-          id="sign-in-button"
-        />
-        <span
-          className="spans-restore-pass"
-          id="login-span"
+        <Button variant="contained" type="submit" sx={{ marginBottom: '2em' }}>
+          Enviar
+        </Button>
+        <Alert
+          severity="error"
           style={
             showSpanConfirmEmailError
               ? { display: 'block' }
@@ -65,12 +69,12 @@ const RestorePassword = () => {
           }
         >
           {saveConfirmEmailMessageError}
-        </span>
-        <Link to="/login" className="restore-pass-container__form-a">
-          <div>Volver al Login</div>
+        </Alert>
+        <Link to="/login">
+          <p>Volver al Login</p>
         </Link>
-      </form>
-    </div>
+      </Stack>
+    </Paper>
   );
 };
 

@@ -13,7 +13,7 @@ export const inputs = [
     name: 'debt',
     type: 'number',
     title: 'Deudas',
-    placeholder: 'Cantidad de Deudas',
+    placeholder: 'Valor de Deudas',
     required: true,
   },
   {

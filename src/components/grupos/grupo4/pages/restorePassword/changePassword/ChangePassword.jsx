@@ -1,4 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
+import {
+  Alert,
+  Button,
+  Paper,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { UserContext } from '../../../context/UsersContext';
 import '../../../assets/css/formChangePassword.css';
 
@@ -32,36 +40,30 @@ const ChangePassword = () => {
   }, [isValidPassword]);
 
   return (
-    <div className="change-password">
-      <form
+    <Paper
+      sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+    >
+      <Stack
+        sx={{ width: '70%', display: 'flex', textAlign: 'center' }}
         onSubmit={submitHandler}
-        className="form-change-password"
-        id="sign-up-form"
+        component="form"
         autoComplete="off"
       >
-        <h2 className="change-password-container__form-h2">
-          Escriba su nueva contraseña.
-        </h2>
-        <input
-          className="inputs-change-password"
+        <Typography variant="h4">Escriba su nueva contraseña.</Typography>
+        <TextField
           type="password"
-          placeholder="password"
-          name="name"
+          placeholder="Ingrese la nueva contraseña"
+          label="Nueva contraseña"
           onChange={(e) => {
             setNewPasswordState(e.target.value);
           }}
-          id="name-id"
           required
         />
-        <input
-          className="buttons-change-password"
-          type="submit"
-          value="Enviar"
-          id="sign-in-button"
-        />
-        <span
-          className="spans-Mfa"
-          id="mfa-span"
+        <Button variant="contained" type="submit" sx={{ marginBottom: '2em' }}>
+          Enviar
+        </Button>
+        <Alert
+          severity="error"
           style={
             showSpanChangePasswordError
               ? { display: 'block' }
@@ -69,9 +71,9 @@ const ChangePassword = () => {
           }
         >
           {changePasswordMessageError}
-        </span>
-      </form>
-    </div>
+        </Alert>
+      </Stack>
+    </Paper>
   );
 };
 

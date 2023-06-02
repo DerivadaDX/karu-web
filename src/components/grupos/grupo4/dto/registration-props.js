@@ -1,34 +1,4 @@
 /*eslint-disable */
-export interface RegistrationFormData {
-  username: string;
-  fullName: string;
-  document: string;
-  email: string;
-  phoneCode: string;
-  phoneNumber: string;
-  street: string;
-  streetNumber: string;
-  city: string;
-  state: string;
-  zipCode: string;
-  country: string;
-  password: string;
-  type: string;
-  branch: string;
-  technicalLevel: string;
-  [key: string]: string;
-}
-
-export interface ModifyUserProps {
-  username: string;
-  email: string;
-}
-
-export interface ModifyUserPasswordProps {
-  username: string;
-  oldPassword: string;
-  newPassword: string;
-}
 
 export const inputs = [
   {

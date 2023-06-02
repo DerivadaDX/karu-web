@@ -1,10 +1,22 @@
 /*eslint-disable */
 import { useContext, useEffect, useState } from 'react';
 import { inputs } from '../../dto/registration-props';
-import FormInput from '../../components/FormInput';
 import { UserContext } from '../../context/UsersContext';
 import '../../assets/css/formRegister.css';
 import { GetAllOffices, GetAllWorkshops } from '../../api/API-methods';
+import {
+  Alert,
+  Box,
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Paper,
+  Select,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { Link } from 'react-router-dom';
 
 const RegisterForm = () => {
@@ -85,7 +97,7 @@ const RegisterForm = () => {
     if (!isWorkshopDropdownInitialized) {
       updateWorkshopDropdown();
     }
-
+    console.log('values.type: ', values.type);
     if (values.type === 'TECNICO' || values.type === 'SUPERVISOR_TECNICO') {
       setShowWorkshopDropdown(true);
     } else {
@@ -111,16 +123,18 @@ const RegisterForm = () => {
   }, [values.type]);
 
   return (
-    <div className="register-container">
-      <form id="form" className="form" onSubmit={handleSubmit}>
-        <h2 className="register_form-h2">REGISTRO</h2>
+    <Paper sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <Stack component="form" onSubmit={handleSubmit} sx={{ width: '70%', display: 'flex', textAlign: 'center' }}>
+        <Typography variant="h2">REGISTRO</Typography>
         {inputs.map((input) => (
-          <FormInput
+          <TextField
+          type={input.type}
             key={input.id}
-            {...input}
-            value={values[input.name]}
+            variant="filled"
+            label={input.label}
             onChange={onChange}
-          />
+            name={input.name}
+          ></TextField>
         ))}
         <div className="inputs">
           <label>Tipo de usuario</label>
@@ -145,68 +159,79 @@ const RegisterForm = () => {
             <option value="VENDEDOR">Vendedor</option>
           </select>
         </div>
+        {/* <Paper>
+          <Box sx={{ minWidth: 120 }}>
+            <FormControl fullWidth>
+              <InputLabel>Elija un tipo de usuario</InputLabel>
+              <Select onChange={(e)=> {onChange(e)}} defaultValue=''>
+                <MenuItem value="GERENTE_GENERAL">Gerente general</MenuItem>
+                <MenuItem value="GERENTE_SUCURSAL">Gerente sucursal</MenuItem>
+                <MenuItem value="SUPERVISOR_VENTAS">
+                  Supervisor de ventas
+                </MenuItem>
+                <MenuItem value="SUPERVISOR_TECNICO">
+                  Supervisor tecnico
+                </MenuItem>
+                <MenuItem value="ADMINISTRADOR">Administrador</MenuItem>
+                <MenuItem value="IT">IT</MenuItem>
+                <MenuItem value="TECNICO">Tecnico</MenuItem>
+                <MenuItem value="VENDEDOR">Vendedor</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
+        </Paper> */}
         {showOfficeDropdown && (
-          <div className="inputs">
-            <label>Sucursal</label>
-            <select
-              name="branch"
-              defaultValue=""
-              className="select-style"
-              onChange={onChange}
-            >
-              <option value="" disabled hidden>
-                Seleccione una sucursal
-              </option>
-              {offices.map((office, index) => (
-                <option key={index} value={office.officeCode}>
-                  {office.officeName}
-                </option>
-              ))}
-            </select>
-          </div>
+          <Paper>
+            <Box sx={{ minWidth: 120 }}>
+              <FormControl fullWidth>
+                <InputLabel>Seleccione una Sucursal</InputLabel>
+                <Select onChange={onChange} defaultValue="" name="branch">
+                  {offices.map((office, index) => (
+                    <MenuItem key={index} value={office.officeCode}>
+                      {office.officeName}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Box>
+          </Paper>
         )}
         {showWorkshopDropdown && (
-          <div className="inputs">
-            <label>Taller</label>
-            <select
-              name="branch"
-              defaultValue=""
-              className="select-style"
-              onChange={onChange}
-            >
-              <option value="" disabled hidden>
-                Seleccione un taller
-              </option>
-              {workshops.map((workshop, index) => (
-                <option key={index} value={workshop.workshopCode}>
-                  {workshop.workshopName}
-                </option>
-              ))}
-            </select>
-          </div>
+          <Paper>
+            <Box sx={{ minWidth: 120 }}>
+              <FormControl fullWidth>
+                <InputLabel>Seleccione un Taller</InputLabel>
+                <Select onChange={onChange} defaultValue="">
+                  {workshops.map((workshop, index) => (
+                    <MenuItem key={index} value={workshop.workshopCode}>
+                      {workshop.workshopName}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Box>
+          </Paper>
         )}
         {showTechnicalLevel && (
-          <div className="inputs">
-            <label>Nivel tecnico</label>
-            <select
-              name="technicalLevel"
-              defaultValue=""
-              className="select-style"
-              onChange={onChange}
-            >
-              <option value="" disabled hidden>
-                Seleccione el nivel tecnico
-              </option>
-              <option value="A">A</option>
-              <option value="B">B</option>
-              <option value="C">C</option>
-            </select>
-          </div>
+          <Paper className="inputs">
+            <Box sx={{ minWidth: 120 }}>
+              <FormControl fullWidth>
+                <InputLabel>Seleccione el nivel tecnico</InputLabel>
+                <Select onChange={onChange} defaultValue="">
+                  <MenuItem value="A">A</MenuItem>
+                  <MenuItem value="B">B</MenuItem>
+                  <MenuItem value="C">C</MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
+          </Paper>
         )}
-        <button className="buttons-register">Enviar</button>
-        <div>
-          <span
-            className="spans"
+        <Button variant="contained" type="submit" sx={{ marginBottom: '2em' }}>
+          Enviar
+        </Button>
+        <Paper>
+          <Alert
+            severity="error"
             style={
               showSpanAlreadyExistsUser
                 ? { display: 'block' }
@@ -214,10 +239,13 @@ const RegisterForm = () => {
             }
           >
             {userValueError}
-          </span>
-        </div>
-      </form>
-    </div>
+          </Alert>
+        </Paper>
+      <Link to={'/'}>
+        <p>Volver al inicio</p>
+      </Link>
+      </Stack>
+    </Paper>
   );
 };
 

@@ -1,4 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
+import {
+  Alert,
+  Button,
+  Paper,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { UserContext } from '../../../context/UsersContext';
 import '../../../assets/css/formConfirmToken.css';
 
@@ -27,36 +35,31 @@ const ConfirmToken = () => {
   }, [isValidToken]);
 
   return (
-    <div className="confirm-token">
-      <form
+    <Paper
+      sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+    >
+      <Stack
+        component="form"
         onSubmit={submitHandler}
-        className="form-confirm-token"
-        id="sign-up-form"
         autoComplete="off"
+        sx={{ width: '70%', display: 'flex', textAlign: 'center' }}
       >
-        <h2 className="confirm-token-container__form-h2">
+        <Typography variant="h4">
           Confirmar TOKEN enviado por correo.
-        </h2>
-        <input
-          className="inputs-confirm-token"
-          type="text"
-          placeholder="token"
-          name="name"
+        </Typography>
+        <TextField
+          label="token"
+          placeholder="ingresar token"
           onChange={(e) => {
             setTokenToChangePassState(e.target.value);
           }}
-          id="name-id"
           required
         />
-        <input
-          className="buttons-confirm-token"
-          type="submit"
-          value="Enviar"
-          id="sign-in-button"
-        />
-        <span
-          className="spans-confirm-token"
-          id="login-span"
+        <Button variant="contained" type="submit" sx={{ marginBottom: '2em' }}>
+          Enviar
+        </Button>
+        <Alert
+          severity="error"
           style={
             showSpanConfirmTokenError
               ? { display: 'block' }
@@ -64,9 +67,9 @@ const ConfirmToken = () => {
           }
         >
           {saveConfirmTokenMessageError}
-        </span>
-      </form>
-    </div>
+        </Alert>
+      </Stack>
+    </Paper>
   );
 };
 

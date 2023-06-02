@@ -22,4 +22,16 @@ export const inputs = [
     pattern: '^[0-9]{1,10}$',
     required: true,
   },
+  {
+    id: 3,
+    name: 'dni',
+    label: 'Dni titular',
+    type: 'text',
+    placeholder: 'DNI',
+    errorMessage:
+      '¡El DNI debe tener 15 caracteres y no debe incluir ningún carácter especial!',
+    pattern: '^[0-9]{1,15}$',
+    required: true,
+  },
+
 ];

@@ -58,7 +58,7 @@ export const UserContextProvider = ({ children }) => {
     const user = cookie.get('user');
     if (user) {
       setIsAuthenticated(true);
-      navigate('/home');
+      navigate('/');
     }
   };
 
@@ -135,11 +135,11 @@ export const UserContextProvider = ({ children }) => {
   };
 
   async function saveUser(userData) {
+    console.log("LO QUE LE ENVIO AL BACK: ", userData)
     const postUser = await PostNewUser(userData);
     const { value, registeredUser } = postUser;
     if (registeredUser) {
       window.alert('REGISTRADO!');
-      navigate('/login');
     } else {
       if (value) {
         setUserValueErrorState(value);
@@ -152,8 +152,8 @@ export const UserContextProvider = ({ children }) => {
     const postUser = await PostNewVehicle(vehicleData);
     const { value, registeredVehicle } = postUser;
     if (registeredVehicle) {
-      window.alert('Datos del vehichulo cargados');
-      navigate('/home');
+      window.alert('Datos del vehiculo cargados');
+      navigate('/');
     } else {
       if (value) {
         setsaveVehicleMessageError(value);
@@ -163,6 +163,7 @@ export const UserContextProvider = ({ children }) => {
   }
 
   async function saveVehicleModel(modelData) {
+    console.log("LO QUE ENVIO AL BACK: ", modelData)
     const postUser = await PostNewVehicleModel(modelData);
     const { value, registeredVehicleModel } = postUser;
     if (registeredVehicleModel) {

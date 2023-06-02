@@ -5,12 +5,10 @@ const client = axios.create({
   baseURL: 'https://gadmin-backend-production.up.railway.app/api/v1',
 });
 
-export const authLogin = async (user: any) => {
+export const authLogin = async (user) => {
   try {
     const response = await client.post('/login/startLogin', user);
-    if (
-      response.data?.result.sessionStatus === 'USUARIO_ENCONTRADO'
-    ) {
+    if (response.data?.result.sessionStatus === 'USUARIO_ENCONTRADO') {
       return true;
     }
     return false;
@@ -19,13 +17,13 @@ export const authLogin = async (user: any) => {
   }
 };
 
-export const confirmMail = async (email: any) => {
+export const confirmMail = async (email) => {
   try {
     const response = await client.post('/resetPassword/validateEmail', {
       email,
     });
-    if (response.data?.result.value) {
-      return { errorMessage: response.data.result.value, validEmail: false };
+    if (response.data?.result.message) {
+      return { errorMessage: response.data.result.message, validEmail: false };
     }
     return { validEmail: true };
   } catch (error) {
@@ -33,13 +31,13 @@ export const confirmMail = async (email: any) => {
   }
 };
 
-export const tokenValidatorForChangePassword = async (token: any) => {
+export const tokenValidatorForChangePassword = async (token) => {
   try {
     const response = await client.post('/resetPassword/validateToken', {
       token,
     });
-    if (response.data?.result.value) {
-      return { errorMessage: response.data.result.value, validToken: false };
+    if (response.data?.result.message) {
+      return { errorMessage: response.data.result.message, validToken: false };
     }
     return { validToken: true };
   } catch (error) {
@@ -47,14 +45,14 @@ export const tokenValidatorForChangePassword = async (token: any) => {
   }
 };
 
-export const modifyPassword = async (userData: any) => {
+export const modifyPassword = async (userData) => {
   try {
     const response = await client.post(
       '/resetPassword/changePassword',
       userData
     );
     if (response.data?.result.value) {
-      return { errorMessage: response.data.result.value, validPassword: false };
+      return { errorMessage: response.data.result.message, validPassword: false };
     }
     return { validPassword: true };
   } catch (error) {
@@ -62,7 +60,7 @@ export const modifyPassword = async (userData: any) => {
   }
 };
 
-export const tokenValidator = async (loginRequest: any) => {
+export const tokenValidator = async (loginRequest) => {
   try {
     const response = await client.post('/login/twoFactorAuth', loginRequest);
     if (response.data.result.sessionStatus === 'SESION_CONFIRMADA') {
@@ -74,7 +72,7 @@ export const tokenValidator = async (loginRequest: any) => {
   }
 };
 
-export const sendPaperWork = async (vehicleDocumentation: any) => {
+export const sendPaperWork = async (vehicleDocumentation) => {
   try {
     const response = await client.post(
       '/vehicle/savePaperwork',
@@ -92,11 +90,12 @@ export const sendPaperWork = async (vehicleDocumentation: any) => {
   }
 };
 
-export const PostNewUser = async (user: any) => {
+export const PostNewUser = async (user) => {
   try {
     const response = await client.post('/signup/internal', user);
-    if (response.data.result.value) {
-      return { value: response.data.result.value, registeredUser: false };
+    console.log("RESPONSE DEL USER: ", response)
+    if (response.data.result.message) {
+      return { value: response.data.result.message, registeredUser: false };
     }
     return { registeredUser: true };
   } catch (error) {
@@ -104,7 +103,7 @@ export const PostNewUser = async (user: any) => {
   }
 };
 
-export const GetUser = async (user: any) => {
+export const GetUser = async (user) => {
   try {
     const response = await client.get(`/user/getByUser/${user}`);
     return response.data.result.email;
@@ -114,11 +113,11 @@ export const GetUser = async (user: any) => {
   }
 };
 
-export const ModifyUser = async (user: any) => {
+export const ModifyUser = async (user) => {
   try {
     const response = await client.put('/user/profile', user);
-    if (response.data.result.value) {
-      return { value: response.data.result.value, updatedUser: false };
+    if (response.data.result.message) {
+      return { value: response.data.result.message, updatedUser: false };
     }
     return { updatedUser: true };
   } catch (error) {
@@ -126,11 +125,11 @@ export const ModifyUser = async (user: any) => {
   }
 };
 
-export const ModifyPasswordUser = async (user: any) => {
+export const ModifyPasswordUser = async (user) => {
   try {
     const response = await client.put('/user/security', user);
-    if (response.data.result.value) {
-      return { value: response.data.result.value, updatedUser: false };
+    if (response.data.result.message) {
+      return { value: response.data.result.message, updatedUser: false };
     }
     return { updatedUser: true };
   } catch (error) {
@@ -138,11 +137,12 @@ export const ModifyPasswordUser = async (user: any) => {
   }
 };
 
-export const PostNewVehicle = async (vehicle: any) => {
+export const PostNewVehicle = async (vehicle) => {
   try {
     const response = await client.post('/vehicle/saveVehicle', vehicle);
-    if (response.data.result.value) {
-      return { value: response.data.result.value, registeredVehicle: false };
+    console.log("RESPONSE DEL VEHICULO: ", response)
+    if (response.data.result.message) {
+      return { value: response.data.result.message, registeredVehicle: false };
     }
     return { registeredVehicle: true };
   } catch (error) {
@@ -150,12 +150,12 @@ export const PostNewVehicle = async (vehicle: any) => {
   }
 };
 
-export const PostNewVehicleModel = async (vehicle: any) => {
+export const PostNewVehicleModel = async (vehicle) => {
   try {
     const response = await client.post('/vehicle/saveModel', vehicle);
-    if (response.data.result.value) {
+    if (response.data.result.message) {
       return {
-        value: response.data.result.value,
+        value: response.data.result.message,
         registeredVehicleModel: false,
       };
     }

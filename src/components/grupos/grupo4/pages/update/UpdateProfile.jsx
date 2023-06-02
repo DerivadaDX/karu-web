@@ -16,7 +16,7 @@ const UpdateProfile = () => {
     updateUserPasswordMessageError,
   } = useContext(UserContext);
   const cookieResult = cookie.get('user');
-
+  console.log("COOKIE RESULT: ", cookieResult)
   const [values, setValues] = useState({
     username: cookieResult.username,
     email: '',
@@ -147,7 +147,7 @@ const UpdateProfile = () => {
         </span>
         <button className="buttons">Enviar</button>
       </form>
-      <Link className="vehicle-container__form-a" to={'/home'}>
+      <Link className="vehicle-container__form-a" to={'/'}>
         <div>Volver al inicio</div>
       </Link>
     </div>

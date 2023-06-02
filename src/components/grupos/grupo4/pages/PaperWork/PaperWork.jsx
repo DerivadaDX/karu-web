@@ -4,14 +4,27 @@ import { inputs } from '../../dto/paperwork-props';
 import { UserContext } from '../../context/UsersContext';
 import '../../assets/css/formPaperWork.css';
 import { Link } from 'react-router-dom';
+import {
+  Alert,
+  Box,
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Paper,
+  Select,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
 
 const defaultState = {
   plate: '',
-  infractions: false,
+  infractions: null,
   debt: 0,
-  vpa: false,
-  rva: false,
-  vtv: false,
+  vpa: null,
+  rva: null,
+  vtv: null,
 };
 
 const PaperWork = () => {
@@ -21,60 +34,65 @@ const PaperWork = () => {
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
+    const inputValue = value === 'SI' ? true : value === 'NO' ? false : value;
     setState((prevState) => ({
       ...prevState,
-      [name]: value === 'SI' ? true : value === 'NO' ? false : value,
+      [name]: inputValue,
     }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await sendPaperWorkData(state);
+    const { plate, infractions, debt, vpa, rva, vtv } = state;
+    await sendPaperWorkData({ plate, infractions, debt, vpa, rva, vtv });
   };
 
   return (
     <>
-      <div className="documentation-container">
-        <form onSubmit={handleSubmit} className="form-paperWork">
-          <h2 className="form-h2">DOCUMENTACION DEL VEHICULO</h2>
-          {inputs.map((input) => (
-            <div key={input.id} className="input-group">
-              <label>
-                <p className="input-title">{input.title}</p>
-                {input.type === 'select' ? (
-                  <select
-                    className="select-style"
-                    name={input.name}
-                    value={state[input.name] ? 'SI' : 'NO'}
+      <Paper
+        sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+      >
+        <Stack
+          component="form"
+          onSubmit={handleSubmit}
+          sx={{ width: '70%', display: 'flex', textAlign: 'center' }}
+        >
+          <Typography variant="h2">DOCUMENTACION DEL VEHICULO</Typography>
+          {inputs.map((input) =>
+            input.type === 'select' ? (
+              <Box sx={{ minWidth: 120 }} key={input.id}>
+                <FormControl fullWidth>
+                  <InputLabel>{input.title}</InputLabel>
+                  <Select
                     onChange={handleInputChange}
+                    label={input.title}
+                    name={input.name}
                   >
-                    <option value="">Seleccione...</option>
-                    <option value="SI">SI</option>
-                    <option value="NO">NO</option>
-                  </select>
-                ) : (
-                  <input
-                    type={input.type}
-                    name={input.name}
-                    required={input.required}
-                    value={state[input.name]?.toString() || ''}
-                    onChange={handleInputChange}
-                    placeholder={input.placeholder}
-                    className="inputs-paperWork"
-                  />
-                )}
-              </label>
-            </div>
-          ))}
-          <input
-            className="buttons-paperWork"
-            type="submit"
-            value="Enviar"
-            id="send-paperWork-button"
-          />
-          <span
-            className="spans"
-            id="paperWork-span"
+                    <MenuItem value="">Seleccionar</MenuItem>
+                    <MenuItem value={'SI'}>SI</MenuItem>
+                    <MenuItem value={'NO'}>NO</MenuItem>
+                  </Select>
+                </FormControl>
+              </Box>
+            ) : (
+              <TextField
+                key={input.id}
+                type={input.type}
+                required={input.required}
+                name={input.name}
+                // value={state[input.name]?.toString() || ''}
+                defaultValue={''}
+                onChange={handleInputChange}
+                label={input.placeholder}
+                variant="filled"
+              />
+            )
+          )}
+          <Button variant="contained" type="submit">
+            Enviar
+          </Button>
+          <Alert
+            severity="error"
             style={
               showSpanPaperWorkError
                 ? { display: 'block' }
@@ -82,12 +100,12 @@ const PaperWork = () => {
             }
           >
             {paperWorkMessageError}
-          </span>
-          <Link className="vehicle-container__form-a" to="/home">
-            <div>Volver al inicio</div>
+          </Alert>
+          <Link className="vehicle-container__form-a" to="/">
+            <p>Volver al inicio</p>
           </Link>
-        </form>
-      </div>
+        </Stack>
+      </Paper>
     </>
   );
 };

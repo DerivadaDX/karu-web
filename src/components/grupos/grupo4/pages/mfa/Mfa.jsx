@@ -1,7 +1,15 @@
 /*eslint-disable */
-import { useContext, useEffect, useState } from "react";
-import { UserContext } from "../../context/UsersContext";
-import "../../assets/css/formMfa.css";
+import { useContext, useEffect, useState } from 'react';
+import { UserContext } from '../../context/UsersContext';
+import '../../assets/css/formMfa.css';
+import {
+  Alert,
+  Button,
+  Paper,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
 
 const Mfa = () => {
   const {
@@ -27,53 +35,48 @@ const Mfa = () => {
   useEffect(() => {
     if (isValidToken) {
       const Loggeduser = JSON.stringify({ username, password });
-      cookie.set("user", Loggeduser, { maxAge: 300 });
+      cookie.set('user', Loggeduser, { maxAge: 300 });
       login();
-      navigate("/");
+      navigate('/');
     }
   }, [isValidToken]);
 
   return (
-    <>
-      <div className="mfa-container">
-        <form
-          onSubmit={submitHandler}
-          className="form"
-          id="sign-up-form"
-          autoComplete="off"
+    <Paper
+      sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+    >
+      <Stack
+        component="form"
+        onSubmit={submitHandler}
+        sx={{
+          width: '50%',
+          display: 'flex',
+          textAlign: 'center',
+          paddingBottom: '2em',
+        }}
+      >
+        <Typography variant="h3">TOKEN</Typography>
+        <TextField
+          variant="filled"
+          label="Ingrese el token enviado por mail"
+          onChange={(e) => {
+            setTokenState(e.target.value);
+          }}
+          required
+        />
+        <Button variant="contained" type="submit">
+          Enviar
+        </Button>
+        <Alert
+          severity="error"
+          style={
+            showSpanLoginTokenError ? { display: 'block' } : { display: 'none' }
+          }
         >
-          <h2 className="mfa-container__form-h2">TOKEN</h2>
-          <input
-            className="inputs-Mfa"
-            type="text"
-            placeholder="Ingrese el token enviado por mail"
-            name="name"
-            onChange={(e) => {
-              setTokenState(e.target.value);
-            }}
-            id="name-id"
-            required
-          />
-          <input
-            className="buttons-Mfa"
-            type="submit"
-            value="Enviar"
-            id="sign-in-button"
-          />
-          <span
-            className="spans-Mfa"
-            id="mfa-span"
-            style={
-              showSpanLoginTokenError
-                ? { display: "block" }
-                : { display: "none" }
-            }
-          >
-            Token invalido.
-          </span>
-        </form>
-      </div>
-    </>
+          Token invalido.
+        </Alert>
+      </Stack>
+    </Paper>
   );
 };
 
