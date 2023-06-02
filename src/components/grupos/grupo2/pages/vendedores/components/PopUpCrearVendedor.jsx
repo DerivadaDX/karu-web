@@ -195,8 +195,9 @@ const PopUpCrearVendedor = ({ onSuccess }) => {
                   value={value}
                   label="Fecha de Nacimiento"
                   error={errors.fecha}
+                  input
+                  format="DD/MM/YYYY"
                   slotProps={{ textField: { variant: 'standard', margin: 'dense' } }}
-
                 />
               )}
               rules={{
@@ -218,6 +219,7 @@ const PopUpCrearVendedor = ({ onSuccess }) => {
                   value={value}
                   label="Fecha de Ingreso"
                   error={errors.fecha}
+                  format="DD/MM/YYYY"
                   slotProps={{ textField: { variant: 'standard', margin: 'dense' } }}
                 />
               )}
