@@ -88,6 +88,7 @@ const CrearSucursal = ({ onCreate }) => {
               variant="standard"
               margin="dense"
               required
+              inputProps={{ maxLength: 50 }}
             />
             <TextField
               id="calle"
@@ -97,6 +98,7 @@ const CrearSucursal = ({ onCreate }) => {
               variant="standard"
               margin="dense"
               required
+              inputProps={{ maxLength: 50 }}
             />
             <TextField
               id="numero"
@@ -112,11 +114,11 @@ const CrearSucursal = ({ onCreate }) => {
               id="codigo_postal"
               value={codigoPostal}
               label="C.P."
-              onChange={(event) => setCodigoPostal(event.target.value)}
+              onChange={(event) => setCodigoPostal(event.target.value, 20)}
               variant="standard"
               margin="dense"
-              type="number"
               required
+              inputProps={{ maxLength: 20 }}
             />
             <TextField
               id="localidad"
@@ -126,6 +128,7 @@ const CrearSucursal = ({ onCreate }) => {
               variant="standard"
               margin="dense"
               required
+              inputProps={{ maxLength: 50 }}
             />
             <TextField
               id="provincia"
@@ -135,6 +138,7 @@ const CrearSucursal = ({ onCreate }) => {
               variant="standard"
               margin="dense"
               required
+              inputProps={{ maxLength: 50 }}
             />
             <FormControlLabel
               id="posee_taller"
