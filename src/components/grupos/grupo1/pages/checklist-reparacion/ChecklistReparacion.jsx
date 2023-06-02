@@ -67,7 +67,6 @@ const ChecklistReparacion = (props) => {
         setComentario(response.data.detalle);
         setLoading(false);
         setAlertType('');
-        console.log(comentario);
       })
       .catch((error) => {
         setAlertMessage(error.response.data.error);
@@ -155,11 +154,9 @@ const ChecklistReparacion = (props) => {
     if (checked) {
       patchTareaHecha(idTask);
       setEstadoChecklist((prevState) => ({ ...prevState, [idTask]: true }));
-      console.log('tarea seleccionada:', idTask);
     } else {
       patchTareaPendiente(idTask);
       setEstadoChecklist((prevState) => ({ ...prevState, [idTask]: false }));
-      console.log('tarea deseleccionada:', idTask);
     }
   };
 
@@ -182,7 +179,6 @@ const ChecklistReparacion = (props) => {
   const isAllCheckboxesSelected = () => {
     // eslint-disable-next-line no-restricted-syntax, guard-for-in
     for (const key in estadoChecklist) {
-      console.log(estadoChecklist[key]);
       if (!estadoChecklist[key]) {
         return false;
       }
