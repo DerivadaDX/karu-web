@@ -30,7 +30,7 @@ const ListadoVendedores = ({ sucursal }) => {
   };
 
   const renderEstadoVendedor = ({ row }) => {
-    const vendedorActivo = row.original.activa;
+    const vendedorActivo = row.original.activo;
 
     return (
       <Typography
