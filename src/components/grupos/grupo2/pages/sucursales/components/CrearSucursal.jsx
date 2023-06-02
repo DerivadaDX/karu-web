@@ -55,6 +55,13 @@ const CrearSucursal = ({ onCreate }) => {
       .then(() => setMostrarPopUpCreacionExitosa(true));
   };
 
+  const limitarCaracteres = (valor, limite) => {
+    if (valor.length > limite) {
+      return valor.slice(0, limite);
+    }
+    return valor;
+  };
+
   return (
     <Box>
       <Button variant="contained" onClick={cambiarVisibilidadPopUpCrearSucursal}>
@@ -88,6 +95,7 @@ const CrearSucursal = ({ onCreate }) => {
               variant="standard"
               margin="dense"
               required
+              inputProps={{ maxLength: 50 }}
             />
             <TextField
               id="calle"
@@ -97,6 +105,7 @@ const CrearSucursal = ({ onCreate }) => {
               variant="standard"
               margin="dense"
               required
+              inputProps={{ maxLength: 50 }}
             />
             <TextField
               id="numero"
@@ -112,7 +121,7 @@ const CrearSucursal = ({ onCreate }) => {
               id="codigo_postal"
               value={codigoPostal}
               label="C.P."
-              onChange={(event) => setCodigoPostal(event.target.value)}
+              onChange={(event) => setCodigoPostal(limitarCaracteres(event.target.value, 20))}
               variant="standard"
               margin="dense"
               type="number"
@@ -126,6 +135,7 @@ const CrearSucursal = ({ onCreate }) => {
               variant="standard"
               margin="dense"
               required
+              inputProps={{ maxLength: 50 }}
             />
             <TextField
               id="provincia"
@@ -135,6 +145,7 @@ const CrearSucursal = ({ onCreate }) => {
               variant="standard"
               margin="dense"
               required
+              inputProps={{ maxLength: 50 }}
             />
             <FormControlLabel
               id="posee_taller"
