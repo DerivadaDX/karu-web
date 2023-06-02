@@ -21,7 +21,7 @@ const CuitComponent = forwardRef((props, inputRef) => {
     <IMaskInput
       {...other}
       ref={ref}
-      mask="00-00000000[0]-0"
+      mask="00-0000000[0]-0"
       inputRef={inputRef}
       onChange={() => undefined}
       value={value}
