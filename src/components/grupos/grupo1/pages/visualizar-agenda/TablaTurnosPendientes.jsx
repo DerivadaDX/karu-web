@@ -312,7 +312,7 @@ const TablaTurnosPendientes = (props) => {
         description="Complete únicamente el formulario del tipo de turno que desea dar de alta."
       >
         <AgregarTurno
-          taller={idTaller}
+          idTaller={idTaller}
           setOpenAgregarTurno={setOpenAgregarTurno}
           openAgregarTurno={openAgregarTurno}
         />

@@ -75,7 +75,11 @@ export const AgregarTurno = (props) => {
         />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <Formulario idTaller={idTaller} />
+        <Formulario
+          taller={idTaller}
+          setOpenAgregarTurno={setOpenAgregarTurno}
+          openAgregarTurno={openAgregarTurno}
+        />
       </TabPanel>
     </Box>
   );
