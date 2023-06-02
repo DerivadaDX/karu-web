@@ -1,18 +1,17 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable no-unused-vars */
 import { useState, useEffect, useMemo } from 'react';
 import { Box, Button } from '@mui/material';
-import DialogActions from '@mui/material/DialogActions';
 import MaterialReactTable from 'material-react-table';
-import { getTurnosTerminados, getDetalleTurno } from '../../services/services-Turnos';
+import { getTurnosTerminados } from '../../services/services-Turnos';
 import Alerts from '../../components/common/Alerts';
 import Popup from '../../components/common/DialogPopup';
 import LittleHeader from '../../components/common/LittleHeader';
 import DetalleTurno from '../../components/common/DetalleTurno';
 
-const idTaller = 'S002';
-
-const TablaTurnosTerminados = () => {
+const TablaTurnosTerminados = (props) => {
+  const { idTaller } = props;
   const [turnosTerminados, setTurnosTerminados] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -86,10 +85,6 @@ const TablaTurnosTerminados = () => {
         accessorKey: 'tecnico_id',
         header: 'Tecnico id',
       },
-      {
-        accessorKey: 'nombre_completo',
-        header: 'Nombre del Tecnico',
-      },
     ],
     [],
   );
@@ -126,25 +121,6 @@ const TablaTurnosTerminados = () => {
     </Box>
   );
 
-  const filaDetalle = (llave, valor) => {
-    if (llave === 'papeles_en_regla') {
-      return null;
-    }
-    return (
-      <>
-        <span>
-          <strong>
-            {llave}
-            :
-            {' '}
-          </strong>
-        </span>
-        <span>{valor}</span>
-
-      </>
-    );
-  };
-
   return (
     <>
       <Box
@@ -172,6 +148,13 @@ const TablaTurnosTerminados = () => {
             justifyContent: 'flex-end',
             overflow: 'auto',
             maxHeight: '200px',
+          },
+        }}
+        muiTableHeadCellProps={{ align: 'center' }}
+        muiTableBodyCellProps={{ align: 'center' }}
+        displayColumnDefOptions={{
+          'mrt-row-actions': {
+            header: 'Acciones',
           },
         }}
       />

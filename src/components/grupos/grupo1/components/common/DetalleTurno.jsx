@@ -23,6 +23,10 @@ export default function DetalleTurno(props) {
       return ('Cancelado');
     } if (estado === 'pendiente') {
       return ('Pendiente');
+    } if (estado === 'rechazado') {
+      return ('Rechazado');
+    } if (estado === 'ausente') {
+      return ('Ausente');
     }
   };
 
@@ -95,6 +99,13 @@ export default function DetalleTurno(props) {
           id="standard-disabled"
           label="Fecha de fin"
           defaultValue={row.fecha_fin}
+          variant="standard"
+        />
+        <TextField
+          disabled
+          id="standard-disabled"
+          label="Hora de fin"
+          defaultValue={row.hora_fin}
           variant="standard"
         />
         <TextField

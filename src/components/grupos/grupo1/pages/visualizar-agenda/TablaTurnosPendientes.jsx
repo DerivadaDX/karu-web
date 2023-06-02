@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-shadow */
 /* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable no-unused-vars */
 import {
@@ -21,9 +23,9 @@ import {
 
 import PanelDeAsignacion from '../asignacion-de-tecnico/PanelDeAsignacion';
 
-const idTaller = 'S002';
+const TablaTurnosPendientes = (props) => {
+  const { idTaller } = props;
 
-const TablaTurnosPendientes = () => {
   const [turnosPendientes, setTurnosPendientes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [openDialog, setOpenDialog] = useState(false);
@@ -195,25 +197,6 @@ const TablaTurnosPendientes = () => {
     </Tooltip>
   );
 
-  const filaDetalle = (llave, valor) => {
-    if (llave === 'papeles_en_regla') {
-      return null;
-    }
-    return (
-      <>
-        <span>
-          <strong>
-            {llave}
-            :
-            {' '}
-          </strong>
-        </span>
-        <span>{valor}</span>
-
-      </>
-    );
-  };
-
   return (
     <>
       <Box
@@ -244,6 +227,13 @@ const TablaTurnosPendientes = () => {
         renderRowActions={renderRowActions}
         renderEmptyRowsFallback={noData}
         defaultColumn={{ minSize: 10, maxSize: 100 }}
+        muiTableHeadCellProps={{ align: 'center' }}
+        muiTableBodyCellProps={{ align: 'center' }}
+        displayColumnDefOptions={{
+          'mrt-row-actions': {
+            header: 'Acciones',
+          },
+        }}
       />
 
       <Popup

@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable max-len */
 /* eslint-disable no-console */
 /* eslint-disable react/react-in-jsx-scope */
@@ -15,9 +16,8 @@ import ChecklistEvaluacion from '../checklist-evaluacion/Checklist';
 import LittleHeader from '../../components/common/LittleHeader';
 import DetalleTurno from '../../components/common/DetalleTurno';
 
-const idTecnico = 5;
-
-const TablaTurnosEvaluacion = () => {
+const TablaTurnosEvaluacion = (props) => {
+  const { idTecnico } = props;
   const [turnosEvaluacion, setTurnosEvaluacion] = useState([]);
   const [actualizarTabla, setActualizarTabla] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -185,6 +185,13 @@ const TablaTurnosEvaluacion = () => {
             justifyContent: 'flex-end',
             overflow: 'auto',
             maxHeight: '200px',
+          },
+        }}
+        muiTableHeadCellProps={{ align: 'center' }}
+        muiTableBodyCellProps={{ align: 'center' }}
+        displayColumnDefOptions={{
+          'mrt-row-actions': {
+            header: 'Acciones',
           },
         }}
       />

@@ -118,7 +118,6 @@ const ChecklistEvaluacion = (props) => {
       [name]: value,
     }));
     evaluacion.detalle = value;
-    console.log('Comentario ', evaluacion.detalle);
   };
 
   const renderRowActions = ({ row }) => {
@@ -168,10 +167,6 @@ const ChecklistEvaluacion = (props) => {
 
   return (
     <>
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <Alerts alertType={alertType} description={alertMessage} title={alertTitle} />
-      </Box>
-
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <Alerts alertType={alertType} description={alertMessage} title={alertTitle} />
       </Box>

@@ -1,7 +1,6 @@
 import React from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
-import Box from '@mui/material/Box';
-import { Toolbar } from '@mui/material';
+import { Box, Toolbar } from '@mui/material';
 import PropTypes from 'prop-types';
 import NavBar from './NavBar';
 import SideBar from './SideBar';
