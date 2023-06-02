@@ -22,7 +22,7 @@ import { DatePicker } from '@mui/x-date-pickers';
 import PropTypes from 'prop-types';
 
 import CuitComponent from './CuitComponent';
-import VendedoresServices from '../services/vendedores-service';
+import VendedorService from '../services/vendedor-service';
 import SucursalService from '../services/sucursal-service';
 
 const PopUpCrearVendedor = ({ onSuccess }) => {
@@ -50,7 +50,7 @@ const PopUpCrearVendedor = ({ onSuccess }) => {
       fecha_nacimiento: data.fecha_nacimiento.toISOString().slice(0, 10),
     };
 
-    VendedoresServices.crearVendedor(nuevaData)
+    VendedorService.crearVendedor(nuevaData)
       .then(() => {
         setMostrarPopUpCreacionExitosa(true);
         onSuccess();

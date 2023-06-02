@@ -4,7 +4,7 @@ import { Box, Typography } from '@mui/material';
 import MaterialReactTable from 'material-react-table';
 import PropTypes from 'prop-types';
 
-import VendedoresService from '../services/vendedores-service';
+import VendedorService from '../services/vendedor-service';
 import SucursalService from '../services/sucursal-service';
 import PopUpCrearVendedor from './PopUpCrearVendedor';
 
@@ -49,7 +49,7 @@ const ListadoVendedores = ({ sucursal }) => {
 
   const obtenerVendedoresDeSucursal = () => {
     setCargando(true);
-    VendedoresService.obtenerVendedoresDeSucursal(sucursal)
+    VendedorService.obtenerVendedoresDeSucursal(sucursal)
       .then((response) => {
         setVendedores(response.data);
         setCargando(false);
@@ -58,7 +58,7 @@ const ListadoVendedores = ({ sucursal }) => {
 
   const obtenerVendedoresDeSucursales = () => {
     setCargando(true);
-    VendedoresService.obtenerVendedores()
+    VendedorService.obtenerVendedores()
       .then((response) => {
         setVendedores(response.data);
         setCargando(false);
