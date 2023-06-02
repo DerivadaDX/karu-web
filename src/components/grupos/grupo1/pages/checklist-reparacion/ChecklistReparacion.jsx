@@ -200,9 +200,9 @@ const ChecklistReparacion = (props) => {
     }
   };
 
-  const urlReparacionTerminada = `https://autotech2.onrender.com/reparaciones/finalizar/${idTurnoPadre}`;
-  const handleEnviarReparacion = () => {
-    axios.post(urlReparacionTerminada)
+  const urlReparacionTerminada = `https://autotech2.onrender.com/reparaciones/finalizar/${idTurnoPadre}/`;
+  const patchEnviarReparacion = () => {
+    axios.patch(urlReparacionTerminada)
       .then(() => {
         setOpenReparacionEnviada(true);
         setActualizar(true);
@@ -215,7 +215,7 @@ const ChecklistReparacion = (props) => {
   };
 
   async function handleSubmit() {
-    handleEnviarReparacion();
+    patchEnviarReparacion();
   }
 
   useEffect(() => {
@@ -377,7 +377,7 @@ const ChecklistReparacion = (props) => {
         title={<LittleHeader titulo="Reparación guardada exitosamente." />}
         openDialog={openReparacionEnviada}
         setOpenDialog={setOpenReparacionEnviada}
-        description="Se ha guardado las tareas hechas."
+        description="Se han guardado las reparaciones hechas."
       >
         <Box sx={{
           display: 'flex', justifyContent: 'center', alignItems: 'center',

@@ -39,7 +39,7 @@ const ChecklistEvaluacion = (props) => {
   // Para que se mantengan seteados los valores de los sliders al cambiar de página
   const [valoresSlider, setValoresSlider] = useState({});
   evaluacion.id_turno = idTurnoPadre;
-  const msjErrorDefault = 'Ha ocurrido un error, disculpe las molestias. Intente nuevamente. Si el error persiste comunicarse con soporte: soporte-tecnico@KarU.com';
+
   const tableInstanceRef = useRef(null);
 
   const [valoresEvaluacion, setValoresEvaluacion] = useState({
