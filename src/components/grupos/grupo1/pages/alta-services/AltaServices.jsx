@@ -111,17 +111,10 @@ const AltaServiceForm = () => {
           setOpenPopupSeleccion(true);
         })
         .catch((error) => {
-          if (error.response.data.includes('la patente ingresada ya tiene un turno de ese tipo registrado en el sistema')) {
-            setOpenError(true);
-            setAlertError('error');
-            setAlertTitulo('Ha ocurrido un problema');
-            setAlertMensaje('Ya existe un turno para esa patente y tipo de turno.');
-          } else {
-            setOpenError(true);
-            setAlertError('error');
-            setAlertTitulo('Ha ocurrido un error');
-            setAlertMensaje('Si el problema persiste, comuniquese con insomnia.front@gmail.com');
-          }
+          setOpenError(true);
+          setAlertError('error');
+          setAlertTitulo('Ha ocurrido un error');
+          setAlertMensaje(error.response.data.error);
         });
     } else {
       setOpenPopupNoSeleccion(true);
@@ -175,16 +168,36 @@ const AltaServiceForm = () => {
       });
   }, []);
 
+  // const handleRowsSelected = (rowData) => {
+  //   if (Array.isArray(rowData)) {
+  //     setSelectedItems(rowData);
+  //   }
+  //   const selectedItemId = rowData.row.id;
+  //   setSelectedItems((prevSelectedItems) => {
+  //     if (prevSelectedItems.includes(selectedItemId)) {
+  //       // Item is already selected, remove it from the selectedItems array
+  //       return prevSelectedItems.filter((itemId) => itemId !== selectedItemId);
+  //     }
+  //     // Item is not selected, add it to the selectedItems array
+  //     return [...prevSelectedItems, selectedItemId];
+  //   });
+  // };
   const handleRowsSelected = (rowData) => {
-    const selectedItemId = rowData.row.id;
-    setSelectedItems((prevSelectedItems) => {
-      if (prevSelectedItems.includes(selectedItemId)) {
-        // Item is already selected, remove it from the selectedItems array
-        return prevSelectedItems.filter((itemId) => itemId !== selectedItemId);
-      }
-      // Item is not selected, add it to the selectedItems array
-      return [...prevSelectedItems, selectedItemId];
-    });
+    if (Array.isArray(rowData)) {
+      // Multiple rows selected
+      setSelectedItems(rowData);
+    } else if (rowData && rowData.row && rowData.row.id) {
+      // Single row clicked or selected
+      const selectedItemId = rowData.row.id;
+      setSelectedItems((prevSelectedItems) => {
+        if (prevSelectedItems.includes(selectedItemId)) {
+          // Item is already selected, remove it from the selectedItems array
+          return prevSelectedItems.filter((itemId) => itemId !== selectedItemId);
+        }
+        // Item is not selected, add it to the selectedItems array
+        return [...prevSelectedItems, selectedItemId];
+      });
+    }
   };
 
   // Termina lo de la CHECKLIST
@@ -268,6 +281,7 @@ const AltaServiceForm = () => {
             { field: 'duracion', headerName: 'Duracion', width: 130 },
           ]}
           checkboxSelection
+          onRowSelectionModelChange={(rowSelectionModel) => handleRowsSelected(rowSelectionModel)}
           onCellClick={(rowData) => handleRowsSelected(rowData)}
           selectionModel={selectedItems}
           pageSize={5}
