@@ -13,11 +13,13 @@ import Alerts from '../../components/common/Alerts';
 import Popup from '../../components/common/DialogPopup';
 
 const AltaServiceForm = () => {
-  // Para mostrar en la pantalla lo que pone el cliente
+  // El id del supervisor está harcodeado pero lo recibe como prop
+  const idSuperv = 43;
+
   const [kilometros, setKilometros] = useState('');
-  const [marca, setMarca] = useState('');
-  const [modelo, setModelo] = useState('');
-  // Para crear el turno, redondeado
+  const [marcaService, setMarca] = useState('');
+  const [modeloService, setModelo] = useState('');
+  // Para enviar el km redondeado
   const [frecuenciaKm, setFrecuenciaKM] = useState('');
   // Para los mensajes de confirmar o avisar que complete todos los campos
   const [openPopupNoSeleccion, setOpenPopupNoSeleccion] = useState(false);
@@ -26,7 +28,7 @@ const AltaServiceForm = () => {
   // Para validar el km
   const [isKmValido, setIsKmValido] = useState(true);
 
-  const msjTurnoCreado = `Se ha creado un service de ${frecuenciaKm} kilómetros para la marca ${marca} y modelo ${modelo}.`;
+  const msjServiceCreado = `Se ha creado un service de ${frecuenciaKm} kilómetros para ${marcaService} ${modeloService}.`;
 
   // Para el manejo de errores de la API para crear el turno
   const [openError, setOpenError] = useState(false);
@@ -90,46 +92,39 @@ const AltaServiceForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    try {
-      if (
-        marca && modelo && frecuenciaKm && isKmValido && selectedItems.length !== 0) {
-        // await axios({
-        //   method: 'post',
-        //   url: 'https://autotech2.onrender.com/service/crear/',
-        //   data: {
-        //     patente: patenteTurno,
-        //     fecha_inicio: fecha,
-        //     hora_inicio: hora,
-        //     frecuencia_km: frecuenciaKm,
-        //     taller_id: taller,
-        //   },
-        // });
-        /** Recibe:
-         * {
-   marca: "Generico",
-   modelo: "Generico",
-   frecuencia_km: 10000,
-   costo_base: 7000.0,
-   id_supervisor: 38,
-   id_tasks:"[1,2,3,4,5,6,7,8,9,10]"
-}
-         */
-        setOpenPopupSeleccion(true);
-      } else {
-        setOpenPopupNoSeleccion(true);
-      }
-    } catch (error) {
-      if (error.response.data.includes('la patente ingresada ya tiene un turno de ese tipo registrado en el sistema')) {
-        setOpenError(true);
-        setAlertError('error');
-        setAlertTitulo('Ha ocurrido un problema');
-        setAlertMensaje('Ya existe un turno para esa patente y tipo de turno.');
-      } else {
-        setOpenError(true);
-        setAlertError('error');
-        setAlertTitulo('Ha ocurrido un error');
-        setAlertMensaje('Si el problema persiste, comuniquese con insomnia.front@gmail.com');
-      }
+    if (
+      marcaService && modeloService && frecuenciaKm && isKmValido && selectedItems.length !== 0) {
+      const idTareasEnString = JSON.stringify(selectedItems);
+      await axios({
+        method: 'post',
+        url: 'https://autotech2.onrender.com/service/crear/',
+        data: {
+          marca: marcaService,
+          modelo: modeloService,
+          frecuencia_km: frecuenciaKm,
+          costo_base: 7000.0,
+          id_supervisor: idSuperv,
+          id_tasks: idTareasEnString,
+        },
+      })
+        .then(() => {
+          setOpenPopupSeleccion(true);
+        })
+        .catch((error) => {
+          if (error.response.data.includes('la patente ingresada ya tiene un turno de ese tipo registrado en el sistema')) {
+            setOpenError(true);
+            setAlertError('error');
+            setAlertTitulo('Ha ocurrido un problema');
+            setAlertMensaje('Ya existe un turno para esa patente y tipo de turno.');
+          } else {
+            setOpenError(true);
+            setAlertError('error');
+            setAlertTitulo('Ha ocurrido un error');
+            setAlertMensaje('Si el problema persiste, comuniquese con insomnia.front@gmail.com');
+          }
+        });
+    } else {
+      setOpenPopupNoSeleccion(true);
     }
   };
 
@@ -142,7 +137,10 @@ const AltaServiceForm = () => {
       );
       return response.data;
     } catch (error) {
-      console.error(error);
+      setOpenError(true);
+      setAlertError('error');
+      setAlertTitulo('Ha ocurrido un error');
+      setAlertMensaje('Si el problema persiste, comuniquese con insomnia.front@gmail.com');
       throw error;
     }
   };
@@ -162,21 +160,22 @@ const AltaServiceForm = () => {
           }));
           setChecklistData(rows);
         } else {
-          console.error('Invalid format:', data);
+          setOpenError(true);
+          setAlertError('error');
+          setAlertTitulo('Ha ocurrido un error');
+          setAlertMensaje('Si el problema persiste, comuniquese con insomnia.front@gmail.com');
         }
       })
-      .catch((error) => console.error(error));
+      .catch((error) => {
+        setOpenError(true);
+        setAlertError('error');
+        setAlertTitulo('Ha ocurrido un error');
+        setAlertMensaje('Si el problema persiste, comuniquese con insomnia.front@gmail.com');
+        throw error;
+      });
   }, []);
 
-  // const handleRowsSelected = (rowData) => {
-  //   const selectedItemId = rowData.row.id;
-  //   const selItem = checklistData.find(
-  //     (item) => item.id === selectedItemId,
-  //   );
-  //   setSelectedItems(selItem);
-  // };
   const handleRowsSelected = (rowData) => {
-    console.log(rowData);
     const selectedItemId = rowData.row.id;
     setSelectedItems((prevSelectedItems) => {
       if (prevSelectedItems.includes(selectedItemId)) {
@@ -188,26 +187,6 @@ const AltaServiceForm = () => {
     });
   };
 
-  const guardarItemsSeleccionados = () => {
-    // Acá tengo que ver para pasar una lista o un json de todos los ítems seleccionados
-    if (selectedItems) {
-      console.log(selectedItems);
-      // const idTecnico = selectedItems.id;
-      // const urlAsignarTecnico = `https://autotech2.onrender.com/turnos/asignar-tecnico/${idTecnico}/`;
-
-      // axios
-      //   .post(urlAsignarTecnico)
-      //   .then(() => {
-      //     console.log('Técnico asignado:', selectedItems.id);
-      //     setOpenPopupSeleccion(true);
-      //   });
-      // .catch((error) => {
-      //   setMsjError(error.response.data);
-      // });
-    } else {
-      setOpenPopupNoSeleccion(true);
-    }
-  };
   // Termina lo de la CHECKLIST
 
   return (
@@ -230,7 +209,7 @@ const AltaServiceForm = () => {
               margin="normal"
               required
               fullWidth
-              value={marca}
+              value={marcaService}
               id="marca"
               label="Marca"
               name="marca"
@@ -242,7 +221,7 @@ const AltaServiceForm = () => {
               margin="normal"
               required
               fullWidth
-              value={modelo}
+              value={modeloService}
               id="modelo"
               label="Modelo"
               name="modelo"
@@ -264,44 +243,8 @@ const AltaServiceForm = () => {
               onChange={guardarKilometraje}
             />
             {!isKmValido && <Alerts alertType="warning" description="Coberturas válidas: de 5000 a 200000 km." title="Kilometraje inválido" />}
-            {/* eslint-disable-next-line max-len */}
-            {/* {msjError && <Alerts alertType="error" description={msjError} title="No se encontró service." />} */}
           </Box>
-          <Popup
-            title="Error en datos requeridos."
-            description="Por favor complete todos los campos y verifique la correctitud del DNI, la patente y el kilometraje."
-            openDialog={openPopupNoSeleccion}
-            setOpenDialog={setOpenPopupNoSeleccion}
-          >
-            <Box
-              sx={{ margin: '15px', display: 'flex', justifyContent: 'center' }}
-            >
-              <Button
-                color="error"
-                onClick={() => setOpenPopupNoSeleccion(false)}
-              >
-                Cerrar
-              </Button>
-            </Box>
-          </Popup>
-          <Popup
-            title="Turno reservado con éxito."
-            description={msjTurnoCreado}
-            openDialog={openPopupSeleccion}
-            setOpenDialog={setOpenPopupSeleccion}
-          >
-            <Box
-              sx={{ margin: '15px', display: 'flex', justifyContent: 'center' }}
-            >
-              <Button
-                color="success"
-                onClick={() => setOpenPopupSeleccion(false)}
-              >
-                Cerrar
-              </Button>
-            </Box>
-          </Popup>
-          {/* Popup para mostrar mensaje de error, cuando sea enviado el turno */}
+          {/* Popup para mostrar mensaje de error, cuando se envíen los datos al back */}
           <Popup
             openDialog={openError}
             setOpenDialog={setOpenError}
@@ -325,36 +268,13 @@ const AltaServiceForm = () => {
             { field: 'duracion', headerName: 'Duracion', width: 130 },
           ]}
           checkboxSelection
-          // onRowClick={(rowData) => handleRowsSelected(rowData)}
-          // Set the selected item ID as the selectionModel
           onCellClick={(rowData) => handleRowsSelected(rowData)}
           selectionModel={selectedItems}
           pageSize={5}
         />
-        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-          <Button
-            variant="outlined"
-            color="primary"
-            sx={{ fontSize: '1em', marginTop: '10px', margin: '10px' }}
-            onClick={() => {
-              guardarItemsSeleccionados();
-            }}
-          >
-            Guardar
-          </Button>
-          <Button
-            variant="outlined"
-            color="error"
-            sx={{ fontSize: '1em', margin: '10px' }}
-          >
-            Cancelar
-          </Button>
-        </Box>
-        {/* eslint-disable-next-line max-len */}
-        {/* msjError && <Alerts alertType="error" description={msjError} title="No se puede asignar." /> */}
         <Popup
-          title="Error en Asignación"
-          description="No ha seleccionado un técnico. Por favor, seleccione uno antes de terminar con el proceso."
+          title="Error en la creación"
+          description="Complete todos los campos, por favor. Y asegúrese de elegir al menos un elemento de la checklist para crear el service."
           openDialog={openPopupNoSeleccion}
           setOpenDialog={setOpenPopupNoSeleccion}
         >
@@ -370,27 +290,37 @@ const AltaServiceForm = () => {
           </Box>
         </Popup>
         <Popup
-          title="Asignación completada"
-          description="La asignación del turno al técnico correspondiente ha sido exitosa."
+          title="Service creado"
+          description={msjServiceCreado}
           openDialog={openPopupSeleccion}
           setOpenDialog={setOpenPopupSeleccion}
         >
           <Box
             sx={{ margin: '15px', display: 'flex', justifyContent: 'center' }}
           >
-            <Button>Aceptar</Button>
+            <Button
+              color="success"
+              onClick={() => {
+                window.location.href = '/';
+              }}
+            >
+              Aceptar
+            </Button>
           </Box>
         </Popup>
         {/* Hasta acá es lo nuevo para agregar la checklist */}
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          color="secondary"
-          sx={{ mt: 3, mb: 2 }}
-        >
-          Crear Service
-        </Button>
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ display: 'flex', justifyContent: 'center' }}>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="secondary"
+            sx={{ mt: 3, mb: 2 }}
+            onSubmit={handleSubmit}
+          >
+            Crear Service
+          </Button>
+        </Box>
       </div>
     </Container>
   );
