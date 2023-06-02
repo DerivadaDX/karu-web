@@ -64,6 +64,7 @@ const ListadoSucursales = () => {
 
   const renderAccionesFila = ({ row }) => {
     const sucursal = row.original;
+
     return (
       <ModificarSucursal
         sucursal={sucursal}
