@@ -7,14 +7,18 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+// eslint-disable-next-line import/no-named-as-default
+import UserContextProvider from './components/grupos/grupo4/context/UsersContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <App />
-      </LocalizationProvider>
+      <UserContextProvider>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <App />
+        </LocalizationProvider>
+      </UserContextProvider>
     </BrowserRouter>
   </React.StrictMode>,
 );
