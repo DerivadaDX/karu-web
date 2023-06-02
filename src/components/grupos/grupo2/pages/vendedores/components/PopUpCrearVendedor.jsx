@@ -1,4 +1,4 @@
-import React, { createRef, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 import {
@@ -20,41 +20,10 @@ import {
 import AddIcon from '@mui/icons-material/Add';
 import { DatePicker } from '@mui/x-date-pickers';
 import PropTypes from 'prop-types';
-import { IMaskInput } from 'react-imask';
 
+import CuitComponent from './CuitComponent';
 import VendedoresServices from '../services/vendedores-service';
 import SucursalService from '../../sucursales/services/sucursal-service';
-
-const CuitComponent = React.forwardRef((props, inputRef) => {
-  const { onChange, ...other } = props;
-  const ref = createRef();
-  const [value, setValue] = useState('');
-
-  useEffect(() => {
-    onChange({ target: { name: other.name, value } });
-  }, [value]);
-
-  return (
-    <IMaskInput
-      // eslint-disable-next-line react/jsx-props-no-spreading
-      {...other}
-      ref={ref}
-      mask="00-00000000[0]-0"
-      inputRef={inputRef}
-      onChange={() => undefined}
-      value={value}
-      onAccept={(newValue) => {
-        setValue(newValue);
-      }}
-      overwrite
-    />
-  );
-});
-
-CuitComponent.propTypes = {
-  name: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-};
 
 const PopUpCrearVendedor = ({ onSuccess }) => {
   const [mostrarPopUpCrearVendedor, setMostrarPopUpCrearVendedor] = useState(false);
