@@ -12,6 +12,7 @@ import { getTurnosReparacion, patchFinalizarRegistroReparacion } from '../../ser
 import Popup from '../../components/common/DialogPopup';
 import DetalleTurno from '../../components/common/DetalleTurno';
 import LittleHeader from '../../components/common/LittleHeader';
+import ChecklistReparacion from '../checklist-reparacion/ChecklistReparacion';
 
 const TablaTurnosReparacion = (props) => {
   const { idTecnico } = props;
@@ -254,11 +255,37 @@ const TablaTurnosReparacion = (props) => {
         </Box>
       </Popup>
       <Popup
-        title="Checklist"
+        title={(
+          <LittleHeader
+            titulo="Reparación del automóvil"
+            subtitulo="Checklist de reparación"
+          />
+)}
         openDialog={openChecklist}
         setOpenDialog={setOpenChecklist}
+        description={(
+          <>
+            <strong>Aclaración</strong>
+            <p>
+              Para concluir la reparación y garantizar su registro, es fundamental completar
+              todas las tareas de reparación y enviar el correspondiente registro.
+              <br />
+              <b style={{ fontSize: '0.8rem' }}>
+                Nota: En caso de no poder finalizar la reparación en el mismo día,
+                los comentarios y las tareas marcadas seguirán siendo visibles en pantalla,
+                permitiéndole retomar desde donde se dejó.
+              </b>
+            </p>
+          </>
+)}
       >
-        Checklist
+        <ChecklistReparacion
+          idTurnoPadre={idTurno}
+          setOpen={setOpenChecklist}
+          open={openChecklist}
+          actualizar={actualizarTabla}
+          setActualizar={setActualizarTabla}
+        />
       </Popup>
     </>
   );
