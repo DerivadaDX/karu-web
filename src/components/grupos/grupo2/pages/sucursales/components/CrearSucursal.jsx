@@ -74,6 +74,10 @@ const CrearSucursal = ({ onCreate }) => {
           </DialogActions>
         </Dialog>
 
+        <DialogTitle sx={{ textAlign: 'center', fontSize: '2rem' }}>
+          Crear Sucursal
+        </DialogTitle>
+
         <Paper>
           <Stack
             component="form"
