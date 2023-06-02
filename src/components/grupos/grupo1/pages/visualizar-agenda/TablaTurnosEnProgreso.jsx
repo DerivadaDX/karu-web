@@ -160,18 +160,6 @@ const TablaTurnosEnProgreso = (props) => {
         size="small"
         sx={{ fontSize: '0.7em' }}
         onClick={() => {
-          setOpenCancelar(true);
-          setIdTurnoCancelar(row.original.id_turno);
-        }}
-      >
-        Cancelar
-      </Button>
-      <Button
-        variant="contained"
-        color="primary"
-        size="small"
-        sx={{ fontSize: '0.7em' }}
-        onClick={() => {
           // console.log('Finalizar', row.original);
           setIdTurnoFinalizar(row.original.id_turno);
           setOpenFinalizar(true);

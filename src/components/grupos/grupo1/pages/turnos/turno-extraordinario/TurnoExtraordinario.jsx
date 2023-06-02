@@ -145,7 +145,7 @@ const FormularioExtraordinario = (props) => {
                 // sx={{ mt: 1, mb: 2, ml: 1 }}
                 onClick={() => setOpenAgregarTurno(false)}
               >
-                Atras
+                Atrás
               </Button>
             </Box>
           </Box>
