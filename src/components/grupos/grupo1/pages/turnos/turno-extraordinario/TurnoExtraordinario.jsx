@@ -19,6 +19,23 @@ import LittleHeader from '../../../components/common/LittleHeader';
 
 const FormularioExtraordinario = (props) => {
   const { taller, setOpenAgregarTurno, openAgregarTurno } = props;
+  // El endpoint toma número naturales y le estamos pasando un string 'T002', debería
+  // tomar el 2
+  function obtenerPrimerNumero(str) {
+    // Expresión regular para encontrar el primer número que comienza con un dígito distinto de cero
+    const regex = /[1-9][0-9]*/;
+
+    // Buscar el primer número en el string
+    const match = str.match(regex);
+
+    // Devolver el número encontrado o null si no se encontró ninguna coincidencia
+    if (match !== null) {
+      // eslint-disable-next-line radix
+      return parseInt(match[0]);
+    }
+    return null;
+  }
+  const tallerNro = obtenerPrimerNumero(taller);
   // const [taller, setTaller] = useState(); -> Lo recibe del popup lo harcodeo por ahora
   const [patenteReparacion, setPatente] = useState();
   const [fecha, setFecha] = useState();
@@ -35,7 +52,7 @@ const FormularioExtraordinario = (props) => {
 
   // Cambiar endpoint por el de excecpcional -> Uso el de disponibilidad común, pues me interesa
   // saber qué día está disponible, total dura una hora como cualquier evaluación
-  const endPointDisponibilidad = `https://autotech2.onrender.com/turnos/dias-horarios-disponibles/${taller}/`;
+  const endPointDisponibilidad = `https://autotech2.onrender.com/turnos/dias-horarios-disponibles/${tallerNro}/`;
   // Para setear el límite del calendario
   const limite = 45;
 
@@ -100,9 +117,9 @@ const FormularioExtraordinario = (props) => {
             alignItems: 'center',
           }}
         >
-          <Typography sx={{ marginBottom: 3, marginTop: 1 }}>
+          <Box sx={{ marginBottom: 3, marginTop: 1 }}>
             <LittleHeader titulo="Alta para turno extraodinario" />
-          </Typography>
+          </Box>
           <Typography variant="body1" sx={{ marginBottom: 2 }}>
             Por favor, ingrese la patente del vehículo al cual desea atender.
           </Typography>
@@ -133,7 +150,7 @@ const FormularioExtraordinario = (props) => {
                 variant="contained"
                 color="secondary"
                 size="medium"
-                // sx={{ mt: 1, mb: 2, mr: 1 }}
+              // sx={{ mt: 1, mb: 2, mr: 1 }}
               >
                 Crear Turno
               </Button>
