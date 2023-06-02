@@ -74,13 +74,13 @@ const GROUP_4_PAGES_CONFIG = [
     page: <ChangePassword />,
     soloUrl: true,
   },
-  {
-    id: 'g4-updateuser',
-    name: 'Actualizar usuario',
-    href: '/update-user',
-    icon: <StoreIcon />,
-    page: <UpdateProfile />,
-  },
+  // {
+  //   id: 'g4-updateuser',
+  //   name: 'Actualizar usuario',
+  //   href: '/update-user',
+  //   icon: <StoreIcon />,
+  //   page: <UpdateProfile />,
+  // },
   {
     id: 'g4-vehicleForm',
     name: 'Cargar datos del Vehículo',
