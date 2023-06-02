@@ -23,7 +23,7 @@ import PropTypes from 'prop-types';
 
 import CuitComponent from './CuitComponent';
 import VendedoresServices from '../services/vendedores-service';
-import SucursalService from '../../sucursales/services/sucursal-service';
+import SucursalService from '../services/sucursal-service';
 
 const PopUpCrearVendedor = ({ onSuccess }) => {
   const [mostrarPopUpCrearVendedor, setMostrarPopUpCrearVendedor] = useState(false);
@@ -68,10 +68,7 @@ const PopUpCrearVendedor = ({ onSuccess }) => {
   };
 
   const obtenerSucursales = () => {
-    SucursalService.obtenerSucursales()
-      .then((response) => {
-        setSucursales(response.data.filter((sucursal) => sucursal.activa));
-      });
+    SucursalService.obtenerSucursalesActivas().then(setSucursales);
   };
 
   useEffect(obtenerSucursales, []);
