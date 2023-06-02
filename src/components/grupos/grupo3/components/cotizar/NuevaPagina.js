@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable object-shorthand */
 /* eslint-disable react/jsx-filename-extension */
 /* eslint-disable max-len */
