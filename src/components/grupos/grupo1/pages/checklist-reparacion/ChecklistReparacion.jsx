@@ -1,25 +1,22 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-console */
-/* eslint-disable no-unused-vars */
 import {
-  Alert,
   Box,
   Button,
   Container,
   DialogActions,
   Divider,
-  Snackbar,
   TextField,
+  Checkbox,
 } from '@mui/material';
 import {
-  useState, useEffect, useMemo, React, useRef,
+  useState, useEffect, useMemo, React,
 } from 'react';
 import axios from 'axios';
 import MaterialReactTable from 'material-react-table';
-import Slider from '@mui/material/Slider';
-import Header from '../../components/common/Header';
 import Alerts from '../../components/common/Alerts';
-import { getChecklistReparacion } from '../../services/services-checklistReparacion';
+import { getChecklistReparacion, getRegistroReparacion } from '../../services/services-checklistReparacion';
 // import reparacion from './reparacion.json';
 import Popup from '../../components/common/DialogPopup';
 import LittleHeader from '../../components/common/LittleHeader';
@@ -28,23 +25,17 @@ const ChecklistReparacion = (props) => {
   const {
     idTurnoPadre, setOpen,
   } = props;
-  const [reparaciones, setEvaluaciones] = useState([]);
+  const [reparaciones, setReparaciones] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [resError, setResError] = useState([]);
-  // Para los popups de confirmacion y manejo de errores
 
   const [openNoSeleccion, setOpenNoSeleccion] = useState(false);
-  const [openConfirmarEvaluacion, setOpenConfirmarEvaluacion] = useState(false);
-  const [openEvaluacionEnviada, setOpenEvaluacionEnviada] = useState(false);
-  // Para que se mantengan seteados los valores de los sliders al cambiar de página
-  const [valoresSlider, setValoresSlider] = useState({});
-  // reparacion.id_turno = idTurnoPadre;
-  const tableInstanceRef = useRef(null);
+  const [openConfirmarReparacion, setOpenConfirmarReparacion] = useState(false);
+  const [openReparacionEnviada, setOpenReparacionEnviada] = useState(false);
+  const idTurno = 188;
 
-  const [valoresReparacion, setValoresReparacion] = useState({
-
-    comentarios: '',
-  });
+  const [estadoAnteriorChecklist, setEstadoAnteriorChecklist] = useState([]);
+  const [estadoChecklist, setEstadoChecklist] = useState({});
+  const [comentario, setComentario] = useState('');
 
   // alertas de la API
   const [alertType, setAlertType] = useState('');
@@ -54,14 +45,30 @@ const ChecklistReparacion = (props) => {
   const [alertError, setAlertError] = useState('');
   const [alertMensaje, setAlertmensaje] = useState('');
   const [alertTitulo, setAlertTitulo] = useState('');
-  const id = 128;
 
-  const traerChecklist = () => {
-    getChecklistReparacion(id)
+  const getChecklist = () => {
+    getChecklistReparacion(idTurno)
       .then((response) => {
-        setEvaluaciones(response.data);
+        setReparaciones(response.data);
         setLoading(false);
         setAlertType('');
+      })
+      .catch((error) => {
+        setAlertMessage(error.response.data.error);
+        setAlertType('error');
+        setAlertTitle('Error');
+      });
+  };
+
+  const getEstadoChecklist = () => {
+    getRegistroReparacion(idTurno)
+      .then((response) => {
+        setEstadoChecklist(response.data.tasks);
+        setEstadoAnteriorChecklist(response.data);
+        setComentario(response.data.detalle);
+        setLoading(false);
+        setAlertType('');
+        console.log(comentario);
       })
       .catch((error) => {
         setAlertMessage(error.response.data.error);
@@ -91,47 +98,132 @@ const ChecklistReparacion = (props) => {
     ],
     [],
   );
-  // Controla que todas las filas hayan sido seleccionadas, si hay alguna sin seleccionar
-  // Se abrirá un popup explicando que hay filas sin seleccionar
-  const handleCheckAllRows = () => {
-    const isAllRowsSelected = tableInstanceRef.current?.getIsAllRowsSelected();
-    if (isAllRowsSelected) {
-      console.log('Todas las filas estan seleccionadas');
-      setOpenConfirmarEvaluacion(true);
+
+  const urlTareaHecha = 'https://autotech2.onrender.com/reparaciones/modificar-tareas-hechas/';
+  const patchTareaHecha = (idTask) => {
+    axios.patch(urlTareaHecha, {
+      id_turno: idTurno,
+      id_task: idTask.toString(),
+    })
+      .then(() => {
+      })
+      .catch(() => {
+        setAlertmensaje('Ha ocurrido un error.');
+        setAlertError('error');
+        setAlertTitulo('Error de servidor');
+      });
+  };
+
+  const urlTareaPendiente = 'https://autotech2.onrender.com/reparaciones/modificar-tareas-pendientes/';
+  const patchTareaPendiente = (idTask) => {
+    axios.patch(urlTareaPendiente, {
+      id_turno: idTurno,
+      id_task: idTask.toString(),
+    })
+      .then(() => {
+      })
+      .catch(() => {
+        setAlertmensaje('Ha ocurrido un error.');
+        setAlertError('error');
+        setAlertTitulo('Error de servidor');
+      });
+  };
+
+  const urlComentario = 'https://autotech2.onrender.com/reparaciones/modificar-detalle-reparacion/';
+  const patchModificarComentario = (detalleReparacion) => {
+    axios.patch(urlComentario, {
+      id_turno: idTurno,
+      detalle: detalleReparacion,
+    })
+      .then(() => {
+      })
+      .catch(() => {
+        setAlertmensaje('Ha ocurrido un error.');
+        setAlertError('error');
+        setAlertTitulo('Error de servidor');
+      });
+  };
+
+  const handleChangeComment = (event) => {
+    const { value } = event.target;
+    setComentario(value);
+    patchModificarComentario(value);
+  };
+
+  const handleChangeCheckbox = (event, idTask) => {
+    const { checked } = event.target;
+
+    if (checked) {
+      patchTareaHecha(idTask);
+      setEstadoChecklist((prevState) => ({ ...prevState, [idTask]: true }));
+      console.log('tarea seleccionada:', idTask);
     } else {
+      patchTareaPendiente(idTask);
+      setEstadoChecklist((prevState) => ({ ...prevState, [idTask]: false }));
+      console.log('tarea deseleccionada:', idTask);
+    }
+  };
+
+  const renderRowActions = ({ row }) => {
+    const isSelected = estadoChecklist[row.original.id_task] === true;
+    return (
+      <Box
+        style={{ display: 'flex', flexWrap: 'nowrap', gap: '0.5rem' }}
+        sx={{ height: '3.5em', marginLeft: '0.2rem', marginRight: '0.2rem' }}
+      >
+        <Checkbox
+          color="secondary"
+          checked={isSelected}
+          onChange={(event) => handleChangeCheckbox(event, row.original.id_task)}
+        />
+      </Box>
+    );
+  };
+
+  const isAllCheckboxesSelected = () => {
+    // eslint-disable-next-line no-restricted-syntax, guard-for-in
+    for (const key in estadoChecklist) {
+      console.log(estadoChecklist[key]);
+      if (!estadoChecklist[key]) {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  const handleCheckAllRows = () => {
+    const allSelected = isAllCheckboxesSelected();
+
+    if (allSelected) {
+      console.log('Todas las checkboxes están seleccionadas');
+      setOpenConfirmarReparacion(true);
+    } else {
+      console.log('No están todas las checkboxes seleccionadas');
       setOpenNoSeleccion(true);
     }
   };
 
-  const handleChangeComment = (event) => {
-    const { name, value } = event.target;
-    setValoresReparacion((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-    // reparacion.detalle = value;
-    // console.log('Comentario ', reparacion.detalle);
+  const urlReparacionTerminada = `https://autotech2.onrender.com/reparaciones/finalizar/${idTurno}`;
+  const handleEnviarReparacion = () => {
+    axios.post(urlReparacionTerminada)
+      .then(() => {
+        setOpenReparacionEnviada(true);
+        // setActualizar(true);
+      })
+      .catch(() => {
+        setAlertmensaje('Ha ocurrido un error.');
+        setAlertError('error');
+        setAlertTitulo('Error de servidor');
+      });
   };
 
-  /* const handleEnviarReparacion = () => {
-      axios.post(url, reparacion)
-        .then(() => {
-          setOpenEvaluacionEnviada(true);
-          setActualizar(true);
-        })
-        .catch(() => {
-          setAlertmensaje('Ha ocurrido un error.');
-          setAlertError('error');
-          setAlertTitulo('Error de servidor');
-        });
-    };
-  */
   async function handleSubmit() {
-    // handleEnviarReparacion();
+    handleEnviarReparacion();
   }
 
   useEffect(() => {
-    traerChecklist();
+    getChecklist();
+    getEstadoChecklist();
   }, []);
 
   return (
@@ -148,16 +240,20 @@ const ChecklistReparacion = (props) => {
           data={reparaciones}
           state={{ isLoading: loading }}
           enableToolbarInternalActions={false}
-          enableRowSelection
           positionActionsColumn="last"
-          // enableRowActions
-          // renderRowActions={renderRowActions}
+          enableRowActions
+          renderRowActions={renderRowActions}
           defaultColumn={{ minSize: 10, maxSize: 100 }}
           positionPagination="top"
           initialState={{
             pagination: {
               pageSize: 5,
               pageIndex: 0,
+            },
+          }}
+          displayColumnDefOptions={{
+            'mrt-row-actions': {
+              header: 'Tarea hecha',
             },
           }}
           muiTablePaginationProps={{
@@ -172,12 +268,13 @@ const ChecklistReparacion = (props) => {
           muiSelectCheckboxProps={{
             color: 'secondary',
           }}
-          tableInstanceRef={tableInstanceRef}
         />
+
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <TextField
             id="standard-multiline-static"
             placeholder="Comentarios"
+            value={comentario}
             multiline
             rows={5}
             variant="outlined"
@@ -198,10 +295,10 @@ const ChecklistReparacion = (props) => {
           sx={{ mt: 3, ml: 1 }}
           color="secondary"
           onClick={() => {
-            handleSubmit();
+            handleCheckAllRows();
           }}
         >
-          Guardar
+          Terminar reparación
         </Button>
         <Button
           variant="contained"
@@ -216,11 +313,73 @@ const ChecklistReparacion = (props) => {
         </Button>
       </Box>
 
-      {/* Popup confirmando que se envio de la evaluación */}
+      {/* Popup para mostrar en caso de que no haya seleccionado ningun item */}
+      <Popup
+        title={<LittleHeader titulo="Checklist incompleta" />}
+        openDialog={openNoSeleccion}
+        setOpenDialog={setOpenNoSeleccion}
+        description="No ha seleccionado todas las checkboxes correspondientes. Por favor, verifique que haya revisado todas las tareas para terminar la reparación."
+      >
+        <Box sx={{
+          display: 'flex', justifyContent: 'center', alignItems: 'center',
+        }}
+        >
+          <DialogActions>
+            <Button
+              color="secondary"
+              variant="outlined"
+              onClick={() => {
+                setOpenNoSeleccion(false);
+              }}
+            >
+              Aceptar
+            </Button>
+          </DialogActions>
+        </Box>
+      </Popup>
+
+      {/* Popup cuando estan todas las rows seleccionadas para confirmar reparación */}
+      <Popup
+        title={<LittleHeader titulo="Reparación Terminada" />}
+        openDialog={openConfirmarReparacion}
+        setOpenDialog={setOpenConfirmarReparacion}
+        description="¿Está seguro que desea enviar la reparación? No se podrá modificar una vez realizada."
+      >
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Alerts alertType={alertError} description={alertMensaje} title={alertTitulo} />
+        </Box>
+        <Box sx={{
+          display: 'flex', justifyContent: 'center', alignItems: 'center',
+        }}
+        >
+          <DialogActions>
+            <Button
+              color="secondary"
+              variant="outlined"
+              onClick={() => {
+                handleSubmit();
+              }}
+            >
+              Enviar
+            </Button>
+            <Button
+              color="error"
+              variant="outlined"
+              onClick={() => {
+                setOpenConfirmarReparacion(false);
+              }}
+            >
+              Cerrar
+            </Button>
+          </DialogActions>
+        </Box>
+      </Popup>
+
+      {/* Popup confirmando que se envio de la reparación */}
       <Popup
         title={<LittleHeader titulo="Reparación guardada exitosamente." />}
-        openDialog={openEvaluacionEnviada}
-        setOpenDialog={setOpenEvaluacionEnviada}
+        openDialog={openReparacionEnviada}
+        setOpenDialog={setOpenReparacionEnviada}
         description="Se ha guardado las tareas hechas."
       >
         <Box sx={{

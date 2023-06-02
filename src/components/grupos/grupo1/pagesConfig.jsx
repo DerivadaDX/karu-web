@@ -21,6 +21,7 @@ import Services from './pages/visualizar-services/Services';
 import FormularioEvaluacionAdmin from './pages/turnos/turno-evaluacion-admin/TurnoEvaluacionParaAdmin';
 import FormularioEvaluacionCliente from './pages/turnos/turno-evaluacion-cliente/TurnoEvaluacionCliente';
 import FormularioExtraordinario from './pages/turnos/turno-extraordinario/TurnoExtraordinario';
+import ChecklistReparacion from './pages/checklist-reparacion/ChecklistReparacion';
 
 const GROUP_1_PAGES_CONFIG = [
   {
@@ -99,6 +100,13 @@ const GROUP_1_PAGES_CONFIG = [
     href: '/turno-extraordinario',
     icon: <TooltipCus icon={<TaxiAlertIcon />} title="Turno Extraordinario" />,
     page: <FormularioExtraordinario />,
+  },
+  {
+    id: 'g1-ChecklistReparacion',
+    name: 'Check Reparacion',
+    href: '/checklist-reparacion',
+    icon: <TooltipCus icon={<TaxiAlertIcon />} title="Turno Extraordinario" />,
+    page: <ChecklistReparacion />,
   },
 ];
 
