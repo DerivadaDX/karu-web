@@ -37,7 +37,7 @@ const AltaServiceForm = () => {
   // Para traer los datos de la CHECKLIST
   const [checklistData, setChecklistData] = useState('');
   // Debería tener los ítems seleccionados de la checklist
-  const [selectedItems, setSelectedItems] = useState(null);
+  const [selectedItems, setSelectedItems] = useState([]);
   // Fin de datos para CHECKLIST
 
   const guardarKilometraje = (e) => {
@@ -92,10 +92,10 @@ const AltaServiceForm = () => {
     event.preventDefault();
     try {
       if (
-        marca && modelo && frecuenciaKm && isKmValido) {
+        marca && modelo && frecuenciaKm && isKmValido && selectedItems.length !== 0) {
         // await axios({
         //   method: 'post',
-        //   url: 'https://autotech2.onrender.com/turnos/crear-turno-service/',
+        //   url: 'https://autotech2.onrender.com/service/crear/',
         //   data: {
         //     patente: patenteTurno,
         //     fecha_inicio: fecha,
@@ -104,6 +104,16 @@ const AltaServiceForm = () => {
         //     taller_id: taller,
         //   },
         // });
+        /** Recibe:
+         * {
+   marca: "Generico",
+   modelo: "Generico",
+   frecuencia_km: 10000,
+   costo_base: 7000.0,
+   id_supervisor: 38,
+   id_tasks:"[1,2,3,4,5,6,7,8,9,10]"
+}
+         */
         setOpenPopupSeleccion(true);
       } else {
         setOpenPopupNoSeleccion(true);
@@ -133,6 +143,7 @@ const AltaServiceForm = () => {
       return response.data;
     } catch (error) {
       console.error(error);
+      throw error;
     }
   };
 
@@ -140,8 +151,8 @@ const AltaServiceForm = () => {
     // Fetch checklist data from API
     fetchChecklistData()
       .then((data) => {
-        if (typeof data === 'object' && Array.isArray(data.checklist)) {
-          const rows = data.checklist.map((item) => ({
+        if (Array.isArray(data)) {
+          const rows = data.map((item) => ({
             id: item.id_task,
             elemento: item.elemento,
             tarea: item.tarea,
@@ -151,32 +162,45 @@ const AltaServiceForm = () => {
           }));
           setChecklistData(rows);
         } else {
-          console.error('Invalid tecnicos data format:', data);
+          console.error('Invalid format:', data);
         }
       })
       .catch((error) => console.error(error));
   }, []);
 
-  const handleRowSelected = (rowData) => {
+  // const handleRowsSelected = (rowData) => {
+  //   const selectedItemId = rowData.row.id;
+  //   const selItem = checklistData.find(
+  //     (item) => item.id === selectedItemId,
+  //   );
+  //   setSelectedItems(selItem);
+  // };
+  const handleRowsSelected = (rowData) => {
+    console.log(rowData);
     const selectedItemId = rowData.row.id;
-    const selItem = checklistData.find(
-      (item) => item.id === selectedItemId,
-    );
-    setSelectedItems(selItem);
+    setSelectedItems((prevSelectedItems) => {
+      if (prevSelectedItems.includes(selectedItemId)) {
+        // Item is already selected, remove it from the selectedItems array
+        return prevSelectedItems.filter((itemId) => itemId !== selectedItemId);
+      }
+      // Item is not selected, add it to the selectedItems array
+      return [...prevSelectedItems, selectedItemId];
+    });
   };
 
   const guardarItemsSeleccionados = () => {
     // Acá tengo que ver para pasar una lista o un json de todos los ítems seleccionados
     if (selectedItems) {
-      const idTecnico = selectedItems.id;
-      const urlAsignarTecnico = `https://autotech2.onrender.com/turnos/asignar-tecnico/${idTecnico}/`;
+      console.log(selectedItems);
+      // const idTecnico = selectedItems.id;
+      // const urlAsignarTecnico = `https://autotech2.onrender.com/turnos/asignar-tecnico/${idTecnico}/`;
 
-      axios
-        .post(urlAsignarTecnico)
-        .then(() => {
-          console.log('Técnico asignado:', selectedItems.id);
-          setOpenPopupSeleccion(true);
-        });
+      // axios
+      //   .post(urlAsignarTecnico)
+      //   .then(() => {
+      //     console.log('Técnico asignado:', selectedItems.id);
+      //     setOpenPopupSeleccion(true);
+      //   });
       // .catch((error) => {
       //   setMsjError(error.response.data);
       // });
@@ -187,7 +211,7 @@ const AltaServiceForm = () => {
   // Termina lo de la CHECKLIST
 
   return (
-    <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
+    <Container component="main" maxWidth="xxl" sx={{ mb: 20 }}>
       <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
         <CssBaseline />
         <Box
@@ -295,17 +319,16 @@ const AltaServiceForm = () => {
         <DataGrid
           rows={checklistData}
           columns={[
-            { field: 'id', headerName: 'ID', width: 170 },
-            { field: 'nombre', headerName: 'Nombre', width: 380 },
-            { field: 'dni', headerName: 'DNI', width: 230 },
-            { field: 'categoria', headerName: 'Categoría', width: 230 },
-            { field: 'taller', headerName: 'Taller', width: 130 },
+            { field: 'id', headerName: 'ID', width: 10 },
+            { field: 'elemento', headerName: 'Elemento', width: 580 },
+            { field: 'costo', headerName: 'Costo', width: 230 },
+            { field: 'duracion', headerName: 'Duracion', width: 130 },
           ]}
-          disableMultipleSelection
-          checkboxSelection={false}
-          onRowClick={(rowData) => handleRowSelected(rowData)}
+          checkboxSelection
+          // onRowClick={(rowData) => handleRowsSelected(rowData)}
           // Set the selected item ID as the selectionModel
-          selectionModel={selectedItems ? [selectedItems.id] : []}
+          onCellClick={(rowData) => handleRowsSelected(rowData)}
+          selectionModel={selectedItems}
           pageSize={5}
         />
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -377,13 +400,8 @@ const AltaServiceForm = () => {
 const EnhancedTableToolbar = ({ titulo }) => (
   <Toolbar>
     <Typography
-      sx={{ flex: '1 1 100%' }}
-      color="inherit"
-      variant="subtitle1"
-      component="div"
-    />
-    <Typography
-      sx={{ flex: '1 0.7 100%', justifyContent: 'center' }}
+      sx={{ flex: '1 1 100%', justifyContent: 'center' }}
+      align="center"
       variant="h6"
       id="tableTitle"
       component="div"
