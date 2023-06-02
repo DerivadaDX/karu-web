@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Container from '@mui/material/Container';
 import { Route, Routes } from 'react-router-dom';
@@ -18,10 +18,21 @@ const styles = {
 };
 
 const buildRoute = (routeConfig) => (
-  <Route key={routeConfig.id} path={routeConfig.href} element={routeConfig.page} />
+  <Route
+    key={routeConfig.id}
+    path={routeConfig.href}
+    element={routeConfig.page}
+  />
 );
 
 const Main = () => {
+  const [open, setOpen] = useState(false);
+
+  const toggleDrawer = () => {
+    sessionStorage.setItem('sideBarIsOpened', !open);
+    setOpen(!open);
+  };
+
   const mdTheme = createTheme({
     palette: {
       type: 'light',
@@ -77,9 +88,16 @@ const Main = () => {
     },
   });
 
+  useEffect(() => {
+    const sideBarIsOpenedRaw = sessionStorage.getItem('sideBarIsOpened');
+    const sideBarIsOpened = sideBarIsOpenedRaw === 'true';
+
+    setOpen(sideBarIsOpened);
+  }, []);
+
   return (
     <ThemeProvider theme={mdTheme}>
-      <LoggedInLayout>
+      <LoggedInLayout sideBarIsOpened={open} toggleDrawer={toggleDrawer}>
         <Container maxWidth="xl" sx={styles.container}>
           <Routes>
             <Route path="/" element={<Home />} />

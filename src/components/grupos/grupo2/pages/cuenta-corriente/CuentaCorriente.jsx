@@ -1,21 +1,19 @@
 import React from 'react';
 
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
+import {
+  Box,
+  Grid,
+  Paper,
+} from '@mui/material';
+
+import Encabezado from '../common/Encabezado';
 import EstadoCuenta from './components/EstadoCuenta';
 import ListadoMovimientos from './components/ListadoMovimientos';
 import InformacionSucursal from './components/InformacionSucursal';
 
 const styles = {
-  container: {
-    mt: 4,
-    mb: 4,
-  },
   paper: {
-    p: 2,
-    display: 'flex',
-    flexDirection: 'column',
+    padding: 2,
   },
 };
 
@@ -31,7 +29,8 @@ styles.paperInferior = {
 };
 
 const CuentaCorriente = () => (
-  <Container maxWidth="lg" sx={styles.container}>
+  <Box>
+    <Encabezado titulo="Cuenta corriente" subtitulo="Consultar saldo actual, datos de la sucursal y últimos movimientos" />
     <Grid container spacing={3}>
       <Grid item xs={12} md={4} lg={3}>
         <Paper sx={styles.paperSuperior}>
@@ -49,7 +48,7 @@ const CuentaCorriente = () => (
         </Paper>
       </Grid>
     </Grid>
-  </Container>
+  </Box>
 );
 
 export default CuentaCorriente;

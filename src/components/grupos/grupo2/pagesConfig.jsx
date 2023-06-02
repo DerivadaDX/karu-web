@@ -1,8 +1,10 @@
 import React from 'react';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import StoreIcon from '@mui/icons-material/Store';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import CuentaCorriente from './pages/cuenta-corriente/CuentaCorriente';
 import Sucursales from './pages/sucursales/Sucursales';
+import Vendedores from './pages/vendedores/Vendedores';
 
 const GROUP_2_PAGES_CONFIG = [
   {
@@ -19,6 +21,14 @@ const GROUP_2_PAGES_CONFIG = [
     icon: <StoreIcon />,
     page: <Sucursales />,
   },
+  {
+    id: 'g2-Vendedores',
+    name: 'Vendedores',
+    href: '/vendedores',
+    icon: <PeopleAltIcon />,
+    page: <Vendedores />,
+  },
+
 ];
 
 export default GROUP_2_PAGES_CONFIG;
