@@ -68,13 +68,14 @@ const NuevaPagina = () => {
       // updateGarantiaExtendida(garantiaExtendida);
 
       // paso datos al back
-      const url = 'http://34.139.89.18:8080/api-gc/cotizaciones/save';
+      const url = 'http://34.139.89.18:8181/api-gc/cotizaciones/save';
       const cotizacionData = {
         sucursal: 'S-01',
         nombreCliente: nombreC,
         patente: productSelected.patente, // infoCotizacion.patente,
         email: mail,
         idVendedor: 123,
+        precioBase: 1000000,
         garantiaExtendida: garantiaCheck,
       };
       axios.post(url, cotizacionData)

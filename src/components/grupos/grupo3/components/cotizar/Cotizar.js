@@ -134,7 +134,7 @@ const Cotizar = () => {
     },
     {
       id: '10',
-      patente: 'BCD890',
+      patente: 'BCD-890',
       sucursal: 'Sucursal A',
       anio: 2021,
       marca: 'Ford',

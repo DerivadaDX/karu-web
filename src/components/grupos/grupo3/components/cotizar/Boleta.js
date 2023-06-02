@@ -55,17 +55,6 @@ const Boleta = (props) => {
   /* declara una variable de estado para almacenar la fecha actual */
   const [fecha, setFechaActual] = useState(new Date());
 
-  const sucursal = 'Surcusal del vendedor';
-  const numeroCotizacion = '890';
-  const idVendedor = '123';
-  const id = '60';
-  const precioBase = '';
-  const precioTraslado = '';
-  const importeIVA = '';
-  const gastosAdministrativos = '';
-  const gastosGarantia = '';
-  const total = 'total';
-
   return (
     <div id="boleta" className="">
 
@@ -130,9 +119,9 @@ const Boleta = (props) => {
               <td>{cotizacion.importeIVA}</td>
 
               {/* dividir los datos de gastos administrrativos */}
-              <td>{gastosAdministrativos}</td>
+              <td>gastosAdministrativos</td>
 
-              <td>{gastosGarantia}</td>
+              <td>gastosGarantia</td>
               <td>
                 {cotizacion.garantiaExtendida ? 'Sí' : 'No'}
               </td>
