@@ -10,6 +10,8 @@ import {
 
   FormControl,
 
+  FormControlLabel,
+
   InputLabel,
 
   MenuItem,
@@ -17,6 +19,7 @@ import {
   Paper,
   Select,
   Stack,
+  Switch,
   TextField,
 } from '@mui/material';
 import PropTypes from 'prop-types';
@@ -76,6 +79,7 @@ const PopUpCrearVendedor = ({ onSuccess }) => {
       fecha_nacimiento: null,
       fecha_ingreso: null,
       sucursal_id: '',
+      activa: false,
     },
   });
   const onSubmit = async (data) => {
@@ -295,6 +299,30 @@ const PopUpCrearVendedor = ({ onSuccess }) => {
               rules={{
                 required: 'La sucursal es requerida',
               }}
+            />
+            <Controller
+              name="activa"
+              control={control}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <FormControlLabel
+                  id="activa"
+                  name="activa"
+                  value={value}
+                  onBlur={onBlur}
+                  label="¿Está habilitado/a?"
+                  labelPlacement="start"
+                  control={(
+                    <Switch
+                      onChange={onChange}
+                    />
+                  )}
+                  sx={{
+                    marginTop: '2ch',
+                    justifyContent: 'space-between',
+                    marginLeft: '0ch',
+                  }}
+                />
+              )}
             />
             <Button
               disabled={!isValid}
