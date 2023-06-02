@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 
 import Encabezado from '../common/Encabezado';
-import ListadoVendedores from './componentes/ListadoVendedores';
+import ListadoVendedores from './components/ListadoVendedores';
 import SucursalService from '../sucursales/services/sucursal-service';
 
 const styles = {
