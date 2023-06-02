@@ -29,7 +29,7 @@ import { IMaskInput } from 'react-imask';
 import { DatePicker } from '@mui/x-date-pickers';
 
 import { Controller, useForm } from 'react-hook-form';
-import VendedorService from '../services/vendedor-service';
+import VendedoresServices from '../services/vendedores-service';
 import SucursalService from '../../sucursales/services/sucursal-service';
 
 const CuitComponent = React.forwardRef((props, inputRef) => {
@@ -88,7 +88,7 @@ const PopUpCrearVendedor = ({ onSuccess }) => {
       fecha_ingreso: data.fecha_ingreso.toISOString().slice(0, 10),
       fecha_nacimiento: data.fecha_nacimiento.toISOString().slice(0, 10),
     };
-    VendedorService.crearVendedor(nuevaData)
+    VendedoresServices.crearVendedor(nuevaData)
       .then(() => {
         setMostrarPopUpCreacionExitosa(true);
         onSuccess();
