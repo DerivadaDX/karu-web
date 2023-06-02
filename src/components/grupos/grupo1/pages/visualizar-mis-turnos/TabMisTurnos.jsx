@@ -26,7 +26,7 @@ const TabPanel = (props) => {
       {...other}
     >
       {value === index && (
-        <Box sx={{ p: 3 }}>
+        <Box sx={{ p: 0.5 }}>
           <Box>{children}</Box>
         </Box>
       )}
@@ -47,8 +47,9 @@ function allyProps(index) {
   };
 }
 
-export const TabMisTurnos = () => {
+export const TabMisTurnos = (props) => {
   const [value, setValue] = useState(0);
+  const { idTecnico } = props;
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -66,19 +67,19 @@ export const TabMisTurnos = () => {
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        <TablaTurnosEvaluacion />
+        <TablaTurnosEvaluacion idTecnico={idTecnico} />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <TablaTurnosReparacion />
+        <TablaTurnosReparacion idTecnico={idTecnico} />
       </TabPanel>
       <TabPanel value={value} index={2}>
-        <TablaTurnosService />
+        <TablaTurnosService idTecnico={idTecnico} />
       </TabPanel>
       <TabPanel value={value} index={3}>
-        <TablaTurnosParticulares />
+        <TablaTurnosParticulares idTecnico={idTecnico} />
       </TabPanel>
       <TabPanel value={value} index={4}>
-        <TablaTurnosTerminados />
+        <TablaTurnosTerminados idTecnico={idTecnico} />
       </TabPanel>
     </Box>
   );

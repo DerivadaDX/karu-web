@@ -3,6 +3,8 @@ import { Box, Container, Divider } from '@mui/material';
 import Header from '../../components/common/Header';
 import { TabMisTurnos } from './TabMisTurnos';
 
+const idTecnico = 47;
+
 const MisTurnos = () => (
   <>
     <Box mt="5px">
@@ -12,7 +14,7 @@ const MisTurnos = () => (
     </Box>
     <Divider sx={{ color: 'silver' }} />
     <Container maxWidth="xxl" sx={{ mb: 2 }}>
-      <TabMisTurnos />
+      <TabMisTurnos idTecnico={idTecnico} />
     </Container>
   </>
 );

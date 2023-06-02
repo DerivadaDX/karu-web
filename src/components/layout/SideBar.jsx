@@ -113,7 +113,7 @@ const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
           {openAdminMenu ? <ExpandLess /> : <ExpandMore />}
         </ListItemButton>
         <Collapse in={openAdminMenu} timeout="auto" unmountOnExit>
-          <List component="Box" disablePadding>
+          <List disablePadding>
             {GROUP_2_PAGES_CONFIG.filter(filtrarElementosSoloUrl).map(buildCollapsableMenu)}
             {GROUP_4_PAGES_CONFIG.filter(filtrarElementosSoloUrl).map(buildCollapsableMenu)}
           </List>
@@ -128,7 +128,7 @@ const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
           {openTechnicalMenu ? <ExpandLess /> : <ExpandMore />}
         </ListItemButton>
         <Collapse in={openTechnicalMenu} timeout="auto" unmountOnExit>
-          <List component="Box" disablePadding>
+          <List disablePadding>
             {GROUP_1_PAGES_CONFIG.filter(filtrarElementosSoloUrl).map(buildCollapsableMenu)}
           </List>
         </Collapse>
@@ -142,7 +142,7 @@ const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
           {openCommercialMenu ? <ExpandLess /> : <ExpandMore />}
         </ListItemButton>
         <Collapse in={openCommercialMenu} timeout="auto" unmountOnExit>
-          <List component="Box" disablePadding>
+          <List disablePadding>
             {GROUP_3_PAGES_CONFIG.filter(filtrarElementosSoloUrl).map(buildCollapsableMenu)}
           </List>
         </Collapse>

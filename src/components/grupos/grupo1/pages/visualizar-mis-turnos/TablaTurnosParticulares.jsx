@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable no-unused-vars */
 import {
@@ -5,22 +6,22 @@ import {
 } from 'react';
 
 import MaterialReactTable from 'material-react-table';
-import { Button, Box, DialogActions } from '@mui/material';
-import { getDetalleTurno } from '../../services/services-Turnos';
+import { Button, Box } from '@mui/material';
 import Alerts from '../../components/common/Alerts';
 import { getTurnosExtraodinario } from '../../services/services-tecnicos';
 import Popup from '../../components/common/DialogPopup';
+import DetalleTurno from '../../components/common/DetalleTurno';
+import LittleHeader from '../../components/common/LittleHeader';
 
-const idTecnico = 5;
-
-const TablaTurnosParticulares = () => {
+const TablaTurnosParticulares = (props) => {
+  const { idTecnico } = props;
   const [turnosParticulares, setTurnosParticulares] = useState([]);
   const [actualizarTabla, setActualizarTabla] = useState([]);
   const [loading, setLoading] = useState(true);
 
   // Para ver los detalles del turno antes de realizarlo
   const [openVerMas, setOpenVerMas] = useState(false);
-  const [detalle, setDetalle] = useState([]);
+  const [rowDetalle, setRowDetalle] = useState({});
 
   // Para abrir el popup con la checklist
   const [idTurno, setIdTurno] = useState(0);
@@ -78,45 +79,37 @@ const TablaTurnosParticulares = () => {
     setAlertType('');
   }, [traerTurnos, actualizarTabla]);
 
-  const obtenerDetalle = (idTurnoRow) => {
-    getDetalleTurno(idTurnoRow)
-      .then((response) => {
-        setDetalle(response.data);
-      })
-      .catch((error) => {
-        setOpenVerMas(false);
-        setAlertType('error');
-        setAlertTitle('Error de servidor');
-        setAlertMessage(
-          'Error al mostrar el detalle. Por favor, vuelva a intentarlo nuevamente. Si el problema persiste, comuníquese con el área técnica de KarU. ✉: insomia.autotech@gmail.com',
-        );
-      });
-  };
-
   const renderRowActions = ({ row }) => (
     <Box
       style={{ display: 'flex', flexWrap: 'nowrap', gap: '0.5rem' }}
-      sx={{ height: '3.2em' }}
+      sx={{ height: '3.2em', paddin: '0.2em' }}
     >
       <Button
         variant="contained"
-        sx={{ fontSize: '0.9em', backgroundColor: 'rgba(51,51,51,0.75)' }}
+        size="small"
+        sx={{ fontSize: '0.7em', backgroundColor: 'rgba(51,51,51,0.75)' }}
         onClick={() => {
-          obtenerDetalle(row.original.id_turno);
+          setRowDetalle(row.original);
           setOpenVerMas(true);
         }}
       >
-        Ver más
+        Ver
+        <br />
+        más
       </Button>
       <Button
         variant="contained"
         color="secondary"
+        size="small"
+        sx={{ fontSize: '0.7em' }}
         onClick={() => {
           setIdTurno(row.original.id_turno);
           setOpenChecklist(true);
         }}
       >
-        Realizar turno
+        Realizar
+        <br />
+        turno
       </Button>
     </Box>
   );
@@ -132,24 +125,6 @@ const TablaTurnosParticulares = () => {
       />
     </Box>
   );
-
-  const filaDetalle = (llave, valor) => {
-    if (llave === 'papeles_en_regla') {
-      return null;
-    }
-    return (
-      <>
-        <span>
-          <strong>
-            {llave}
-            :
-            {' '}
-          </strong>
-        </span>
-        <span>{valor}</span>
-      </>
-    );
-  };
 
   return (
     <>
@@ -170,7 +145,8 @@ const TablaTurnosParticulares = () => {
         enableRowActions
         renderRowActions={renderRowActions}
         renderEmptyRowsFallback={noData}
-        defaultColumn={{ minSize: 10, maxSize: 100 }}
+        defaultColumn={{ minSize: 10, maxSize: 100, size: 30 }}
+        initialState={{ density: 'compact' }}
         muiTopToolbarProps={{
           sx: {
             display: 'flex',
@@ -180,33 +156,21 @@ const TablaTurnosParticulares = () => {
             maxHeight: '200px',
           },
         }}
+        muiTableHeadCellProps={{ align: 'center' }}
+        muiTableBodyCellProps={{ align: 'center' }}
+        displayColumnDefOptions={{
+          'mrt-row-actions': {
+            header: 'Acciones',
+          },
+        }}
       />
       <Popup
-        title="Detalle del Turno"
+        title={<LittleHeader titulo="Detalle de turno" />}
         openDialog={openVerMas}
         setOpenDialog={setOpenVerMas}
       >
-        {
-              Object.entries(detalle).map(([key, value]) => (
-                <div key={key}>
-                  {filaDetalle(key, value)}
-                </div>
-              ))
-}
-        <Box>
-          <DialogActions>
-            <Button
-              color="primary"
-              variant="outlined"
-              sx={{ marginTop: '10px' }}
-              onClick={() => {
-                setOpenVerMas(false);
-              }}
-            >
-              Atrás
-            </Button>
-          </DialogActions>
-        </Box>
+        <DetalleTurno row={rowDetalle} openDialog={openVerMas} setOpenDialog={setOpenVerMas} />
+
       </Popup>
       <Popup
         title="Checklist"

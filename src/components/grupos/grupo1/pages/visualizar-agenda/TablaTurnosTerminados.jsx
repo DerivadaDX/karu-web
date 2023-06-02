@@ -1,19 +1,21 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable no-unused-vars */
 import { useState, useEffect, useMemo } from 'react';
 import { Box, Button } from '@mui/material';
-import DialogActions from '@mui/material/DialogActions';
 import MaterialReactTable from 'material-react-table';
-import { getTurnosTerminados, getDetalleTurno } from '../../services/services-Turnos';
+import { getTurnosTerminados } from '../../services/services-Turnos';
 import Alerts from '../../components/common/Alerts';
 import Popup from '../../components/common/DialogPopup';
+import LittleHeader from '../../components/common/LittleHeader';
+import DetalleTurno from '../../components/common/DetalleTurno';
 
-const idTaller = 'S002';
-
-const TablaTurnosTerminados = () => {
+const TablaTurnosTerminados = (props) => {
+  const { idTaller } = props;
   const [turnosTerminados, setTurnosTerminados] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [detalleTurno, setDetalleTurno] = useState([]);
+
+  const [rowDetalle, setRowDetalle] = useState({});
   const [openVerMas, setVerMas] = useState(false);
 
   // alertas de la API
@@ -39,6 +41,7 @@ const TablaTurnosTerminados = () => {
   useEffect(() => {
     try {
       traerTurnos();
+      setAlertType('');
     } catch (error) {
       setAlertType('error');
       setAlertTitle('Error de servidor');
@@ -47,21 +50,6 @@ const TablaTurnosTerminados = () => {
       );
     }
   }, []);
-
-  const obtenerDetalle = (idTurno) => {
-    getDetalleTurno(idTurno).then((response) => {
-      setDetalleTurno(response.data);
-      // console.log(detalleTurno);
-    })
-      .catch((error) => {
-        setVerMas(false);
-        setAlertType('error');
-        setAlertTitle('Error de servidor');
-        setAlertMessage(
-          'Error al mostrar el detalle. Por favor, recargue la página y  vuelva a intentarlo nuevamente.',
-        );
-      });
-  };
 
   const columnas = useMemo(
     () => [
@@ -72,10 +60,6 @@ const TablaTurnosTerminados = () => {
       {
         accessorKey: 'patente',
         header: 'Patente',
-      },
-      {
-        accessorKey: 'estado',
-        header: 'Estado',
       },
       {
         accessorKey: 'tipo',
@@ -101,10 +85,6 @@ const TablaTurnosTerminados = () => {
         accessorKey: 'tecnico_id',
         header: 'Tecnico id',
       },
-      {
-        accessorKey: 'nombre_completo',
-        header: 'Nombre del Tecnico',
-      },
     ],
     [],
   );
@@ -112,19 +92,21 @@ const TablaTurnosTerminados = () => {
   const renderRowActions = ({ row }) => (
     <Box
       style={{ display: 'flex', flexWrap: 'nowrap', gap: '0.5rem' }}
-      sx={{ height: '3.5em' }}
+      sx={{ height: '3.5em', padding: '0.2em' }}
     >
       <Button
         variant="contained"
-        color="secondary"
-        sx={{ fontSize: '1em' }}
+        size="small"
+        sx={{ fontSize: '0.7em', backgroundColor: 'rgba(51,51,51,0.75)' }}
         onClick={() => {
           // console.log('Ver mas', row.original.id_turno);
-          obtenerDetalle(row.original.id_turno);
+          setRowDetalle(row.original);
           setVerMas(true);
         }}
       >
-        Ver más
+        Ver
+        <br />
+        más
       </Button>
     </Box>
   );
@@ -140,25 +122,6 @@ const TablaTurnosTerminados = () => {
       />
     </Box>
   );
-
-  const filaDetalle = (llave, valor) => {
-    if (llave === 'papeles_en_regla') {
-      return null;
-    }
-    return (
-      <>
-        <span>
-          <strong>
-            {llave}
-            :
-            {' '}
-          </strong>
-        </span>
-        <span>{valor}</span>
-
-      </>
-    );
-  };
 
   return (
     <>
@@ -179,7 +142,8 @@ const TablaTurnosTerminados = () => {
         enableRowActions
         renderRowActions={renderRowActions}
         renderEmptyRowsFallback={noData}
-        defaultColumn={{ minSize: 10, maxSize: 120 }}
+        defaultColumn={{ minSize: 10, maxSize: 100, size: 30 }}
+        initialState={{ density: 'compact' }}
         muiTopToolbarProps={{
           sx: {
             display: 'flex',
@@ -189,33 +153,20 @@ const TablaTurnosTerminados = () => {
             maxHeight: '200px',
           },
         }}
+        muiTableHeadCellProps={{ align: 'center' }}
+        muiTableBodyCellProps={{ align: 'center' }}
+        displayColumnDefOptions={{
+          'mrt-row-actions': {
+            header: 'Acciones',
+          },
+        }}
       />
       <Popup
-        title="Detalle del Turno"
+        title={<LittleHeader titulo="Detalle de turno" />}
         openDialog={openVerMas}
         setOpenDialog={setVerMas}
       >
-        {
-              Object.entries(detalleTurno).map(([key, value]) => (
-                <div key={key}>
-                  {filaDetalle(key, value)}
-                </div>
-              ))
-}
-        <Box>
-          <DialogActions>
-            <Button
-              color="primary"
-              variant="outlined"
-              sx={{ marginTop: '10px' }}
-              onClick={() => {
-                setVerMas(false);
-              }}
-            >
-              Atras
-            </Button>
-          </DialogActions>
-        </Box>
+        <DetalleTurno openDialog={openVerMas} setOpenDialog={setVerMas} row={rowDetalle} />
       </Popup>
     </>
   );

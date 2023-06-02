@@ -8,6 +8,8 @@ import Header from '../../components/common/Header';
 import TablaTurnosEnProgreso from '../visualizar-agenda/TablaTurnosEnProgreso';
 import LittleTitle from '../../components/common/LittleTitle';
 
+const idTaller = 'T002';
+
 const Home = () => (
   <>
     <Box m="5px">
@@ -99,7 +101,7 @@ const Home = () => (
             style={{ borderRadius: 15 }}
           >
             <LittleTitle title="Turnos en progreso" icon={<ArticleIcon sx={{ marginRight: '10px', color: 'darkgray' }} />} />
-            <TablaTurnosEnProgreso />
+            <TablaTurnosEnProgreso idTaller={idTaller} />
           </Paper>
         </Grid>
       </Grid>
