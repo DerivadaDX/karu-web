@@ -55,13 +55,6 @@ const CrearSucursal = ({ onCreate }) => {
       .then(() => setMostrarPopUpCreacionExitosa(true));
   };
 
-  const limitarCaracteres = (valor, limite) => {
-    if (valor.length > limite) {
-      return valor.slice(0, limite);
-    }
-    return valor;
-  };
-
   return (
     <Box>
       <Button variant="contained" onClick={cambiarVisibilidadPopUpCrearSucursal}>
@@ -121,11 +114,11 @@ const CrearSucursal = ({ onCreate }) => {
               id="codigo_postal"
               value={codigoPostal}
               label="C.P."
-              onChange={(event) => setCodigoPostal(limitarCaracteres(event.target.value, 20))}
+              onChange={(event) => setCodigoPostal(event.target.value, 20)}
               variant="standard"
               margin="dense"
-              type="number"
               required
+              inputProps={{ maxLength: 20 }}
             />
             <TextField
               id="localidad"
