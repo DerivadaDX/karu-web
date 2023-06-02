@@ -23,7 +23,7 @@ import LittleHeader from '../../components/common/LittleHeader';
 
 const ChecklistReparacion = (props) => {
   const {
-    idTurnoPadre, setOpen,
+    idTurnoPadre, setOpen, open, actualizar, setActualizar,
   } = props;
   const [reparaciones, setReparaciones] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -31,7 +31,6 @@ const ChecklistReparacion = (props) => {
   const [openNoSeleccion, setOpenNoSeleccion] = useState(false);
   const [openConfirmarReparacion, setOpenConfirmarReparacion] = useState(false);
   const [openReparacionEnviada, setOpenReparacionEnviada] = useState(false);
-  const idTurno = 188;
 
   const [estadoAnteriorChecklist, setEstadoAnteriorChecklist] = useState([]);
   const [estadoChecklist, setEstadoChecklist] = useState({});
@@ -47,7 +46,7 @@ const ChecklistReparacion = (props) => {
   const [alertTitulo, setAlertTitulo] = useState('');
 
   const getChecklist = () => {
-    getChecklistReparacion(idTurno)
+    getChecklistReparacion(idTurnoPadre)
       .then((response) => {
         setReparaciones(response.data);
         setLoading(false);
@@ -61,7 +60,7 @@ const ChecklistReparacion = (props) => {
   };
 
   const getEstadoChecklist = () => {
-    getRegistroReparacion(idTurno)
+    getRegistroReparacion(idTurnoPadre)
       .then((response) => {
         setEstadoChecklist(response.data.tasks);
         setEstadoAnteriorChecklist(response.data);
@@ -102,7 +101,7 @@ const ChecklistReparacion = (props) => {
   const urlTareaHecha = 'https://autotech2.onrender.com/reparaciones/modificar-tareas-hechas/';
   const patchTareaHecha = (idTask) => {
     axios.patch(urlTareaHecha, {
-      id_turno: idTurno,
+      id_turno: idTurnoPadre,
       id_task: idTask.toString(),
     })
       .then(() => {
@@ -117,7 +116,7 @@ const ChecklistReparacion = (props) => {
   const urlTareaPendiente = 'https://autotech2.onrender.com/reparaciones/modificar-tareas-pendientes/';
   const patchTareaPendiente = (idTask) => {
     axios.patch(urlTareaPendiente, {
-      id_turno: idTurno,
+      id_turno: idTurnoPadre,
       id_task: idTask.toString(),
     })
       .then(() => {
@@ -132,7 +131,7 @@ const ChecklistReparacion = (props) => {
   const urlComentario = 'https://autotech2.onrender.com/reparaciones/modificar-detalle-reparacion/';
   const patchModificarComentario = (detalleReparacion) => {
     axios.patch(urlComentario, {
-      id_turno: idTurno,
+      id_turno: idTurnoPadre,
       detalle: detalleReparacion,
     })
       .then(() => {
@@ -195,20 +194,18 @@ const ChecklistReparacion = (props) => {
     const allSelected = isAllCheckboxesSelected();
 
     if (allSelected) {
-      console.log('Todas las checkboxes están seleccionadas');
       setOpenConfirmarReparacion(true);
     } else {
-      console.log('No están todas las checkboxes seleccionadas');
       setOpenNoSeleccion(true);
     }
   };
 
-  const urlReparacionTerminada = `https://autotech2.onrender.com/reparaciones/finalizar/${idTurno}`;
+  const urlReparacionTerminada = `https://autotech2.onrender.com/reparaciones/finalizar/${idTurnoPadre}`;
   const handleEnviarReparacion = () => {
     axios.post(urlReparacionTerminada)
       .then(() => {
         setOpenReparacionEnviada(true);
-        // setActualizar(true);
+        setActualizar(true);
       })
       .catch(() => {
         setAlertmensaje('Ha ocurrido un error.');
@@ -253,7 +250,7 @@ const ChecklistReparacion = (props) => {
           }}
           displayColumnDefOptions={{
             'mrt-row-actions': {
-              header: 'Tarea hecha',
+              header: 'Reparación hecha',
             },
           }}
           muiTablePaginationProps={{
@@ -273,7 +270,7 @@ const ChecklistReparacion = (props) => {
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <TextField
             id="standard-multiline-static"
-            placeholder="Comentarios"
+            placeholder="Comentario"
             value={comentario}
             multiline
             rows={5}
@@ -318,7 +315,7 @@ const ChecklistReparacion = (props) => {
         title={<LittleHeader titulo="Checklist incompleta" />}
         openDialog={openNoSeleccion}
         setOpenDialog={setOpenNoSeleccion}
-        description="No ha seleccionado todas las checkboxes correspondientes. Por favor, verifique que haya revisado todas las tareas para terminar la reparación."
+        description="No ha seleccionado todas las checkboxes correspondientes. Por favor, verifique que haya completado todas las tareas para terminar la reparación."
       >
         <Box sx={{
           display: 'flex', justifyContent: 'center', alignItems: 'center',
@@ -340,10 +337,10 @@ const ChecklistReparacion = (props) => {
 
       {/* Popup cuando estan todas las rows seleccionadas para confirmar reparación */}
       <Popup
-        title={<LittleHeader titulo="Reparación Terminada" />}
+        title={<LittleHeader titulo="Terminar reparación" />}
         openDialog={openConfirmarReparacion}
         setOpenDialog={setOpenConfirmarReparacion}
-        description="¿Está seguro que desea enviar la reparación? No se podrá modificar una vez realizada."
+        description="¿Está seguro que desea terminar la reparación? No se podrá modificar una vez terminada."
       >
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <Alerts alertType={alertError} description={alertMensaje} title={alertTitulo} />
