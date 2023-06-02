@@ -4,8 +4,9 @@ import { Box, Typography } from '@mui/material';
 import MaterialReactTable from 'material-react-table';
 import PropTypes from 'prop-types';
 
-import VendedoresService from '../services/vendedores-service';
+import VendedorService from '../services/vendedor-service';
 import SucursalService from '../services/sucursal-service';
+import PopUpCrearVendedor from './PopUpCrearVendedor';
 
 const ListadoVendedores = ({ sucursal }) => {
   const [vendedores, setVendedores] = useState([]);
@@ -48,7 +49,7 @@ const ListadoVendedores = ({ sucursal }) => {
 
   const obtenerVendedoresDeSucursal = () => {
     setCargando(true);
-    VendedoresService.obtenerVendedoresDeSucursal(sucursal)
+    VendedorService.obtenerVendedoresDeSucursal(sucursal)
       .then((response) => {
         setVendedores(response.data);
         setCargando(false);
@@ -57,12 +58,18 @@ const ListadoVendedores = ({ sucursal }) => {
 
   const obtenerVendedoresDeSucursales = () => {
     setCargando(true);
-    VendedoresService.obtenerVendedores()
+    VendedorService.obtenerVendedores()
       .then((response) => {
         setVendedores(response.data);
         setCargando(false);
       });
   };
+
+  const renderCrearVendedor = () => (
+    <PopUpCrearVendedor
+      onSuccess={obtenerVendedoresDeSucursales}
+    />
+  );
 
   const columnas = useMemo(
     () => [
@@ -119,6 +126,7 @@ const ListadoVendedores = ({ sucursal }) => {
         columns={columnas}
         data={vendedores}
         state={{ isLoading: cargando }}
+        renderTopToolbarCustomActions={renderCrearVendedor}
         defaultColumn={{ minSize: 10, maxSize: 100 }}
         displayColumnDefOptions={{
           'mrt-row-actions': {
