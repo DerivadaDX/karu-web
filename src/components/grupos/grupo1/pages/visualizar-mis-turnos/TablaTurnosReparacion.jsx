@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable no-unused-vars */
 import {
@@ -7,14 +8,14 @@ import {
 import MaterialReactTable from 'material-react-table';
 import { Button, Box } from '@mui/material';
 import Alerts from '../../components/common/Alerts';
-import { getTurnosReparacion } from '../../services/services-tecnicos';
+import { getTurnosReparacion, patchFinalizarRegistroReparacion } from '../../services/services-tecnicos';
 import Popup from '../../components/common/DialogPopup';
 import DetalleTurno from '../../components/common/DetalleTurno';
 import LittleHeader from '../../components/common/LittleHeader';
+import ChecklistReparacion from '../checklist-reparacion/ChecklistReparacion';
 
-const idTecnico = 5;
-
-const TablaTurnosReparacion = () => {
+const TablaTurnosReparacion = (props) => {
+  const { idTecnico } = props;
   const [turnosReparacion, setTurnosReparacion] = useState([]);
   const [actualizarTabla, setActualizarTabla] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -86,27 +87,36 @@ const TablaTurnosReparacion = () => {
   const renderRowActions = ({ row }) => (
     <Box
       style={{ display: 'flex', flexWrap: 'nowrap', gap: '0.5rem' }}
-      sx={{ height: '3.2em' }}
+      sx={{ height: '3.2em', padding: '0.2em' }}
     >
       <Button
         variant="contained"
-        sx={{ fontSize: '0.9em', backgroundColor: 'rgba(51,51,51,0.75)' }}
+        size="small"
+        sx={{
+          fontSize: '0.7em', backgroundColor: 'rgba(51,51,51,0.75)',
+        }}
         onClick={() => {
           setRowDetalle(row.original);
           setOpenVerMas(true);
         }}
       >
-        Ver más
+        Ver
+        <br />
+        más
       </Button>
       <Button
         variant="contained"
         color="secondary"
+        size="small"
+        sx={{ fontSize: '0.7em' }}
         onClick={() => {
           setIdTurno(row.original.id_turno);
           setOpenChecklist(true);
         }}
       >
-        Realizar reparación
+        Realizar
+        <br />
+        reparación
       </Button>
     </Box>
   );
@@ -142,7 +152,8 @@ const TablaTurnosReparacion = () => {
         enableRowActions
         renderRowActions={renderRowActions}
         renderEmptyRowsFallback={noData}
-        defaultColumn={{ minSize: 10, maxSize: 100 }}
+        defaultColumn={{ minSize: 10, maxSize: 100, size: 30 }}
+        initialState={{ density: 'compact' }}
         muiTopToolbarProps={{
           sx: {
             display: 'flex',
@@ -150,6 +161,13 @@ const TablaTurnosReparacion = () => {
             justifyContent: 'flex-end',
             overflow: 'auto',
             maxHeight: '200px',
+          },
+        }}
+        muiTableHeadCellProps={{ align: 'center' }}
+        muiTableBodyCellProps={{ align: 'center' }}
+        displayColumnDefOptions={{
+          'mrt-row-actions': {
+            header: 'Acciones',
           },
         }}
       />
@@ -161,11 +179,37 @@ const TablaTurnosReparacion = () => {
         <DetalleTurno openDialog={openVerMas} setOpenDialog={setOpenVerMas} row={rowDetalle} />
       </Popup>
       <Popup
-        title="Checklist"
+        title={(
+          <LittleHeader
+            titulo="Reparación del automóvil"
+            subtitulo="Checklist de reparación"
+          />
+)}
         openDialog={openChecklist}
         setOpenDialog={setOpenChecklist}
+        description={(
+          <>
+            <strong>Aclaración</strong>
+            <p>
+              Para concluir la reparación y garantizar su registro, es fundamental completar
+              todas las tareas de reparación y enviar el correspondiente registro.
+              <br />
+              <b style={{ fontSize: '0.8rem' }}>
+                Nota: En caso de no poder finalizar la reparación en el mismo día,
+                los comentarios y las tareas marcadas seguirán siendo visibles en pantalla,
+                permitiéndole retomar desde donde se dejó.
+              </b>
+            </p>
+          </>
+)}
       >
-        Checklist
+        <ChecklistReparacion
+          idTurnoPadre={idTurno}
+          setOpen={setOpenChecklist}
+          open={openChecklist}
+          actualizar={actualizarTabla}
+          setActualizar={setActualizarTabla}
+        />
       </Popup>
     </>
   );

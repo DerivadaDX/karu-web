@@ -23,6 +23,10 @@ export default function DetalleTurno(props) {
       return ('Cancelado');
     } if (estado === 'pendiente') {
       return ('Pendiente');
+    } if (estado === 'rechazado') {
+      return ('Rechazado');
+    } if (estado === 'ausente') {
+      return ('Ausente');
     }
   };
 
@@ -100,12 +104,22 @@ export default function DetalleTurno(props) {
         <TextField
           disabled
           id="standard-disabled"
+          label="Hora de fin"
+          defaultValue={row.hora_fin}
+          variant="standard"
+        />
+        <TextField
+          disabled
+          id="standard-disabled"
           label="Frecuencia de KM"
           defaultValue={row.frecuencia_km === null ? '-' : row.frecuencia_km}
           variant="standard"
         />
       </Stack>
-      <Box>
+      <Box sx={{
+        display: 'flex', justifyContent: 'center', alignItems: 'center',
+      }}
+      >
         <DialogActions>
           <Button
             color="primary"

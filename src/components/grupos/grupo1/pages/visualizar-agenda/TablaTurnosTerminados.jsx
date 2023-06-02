@@ -1,18 +1,17 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable no-unused-vars */
 import { useState, useEffect, useMemo } from 'react';
 import { Box, Button } from '@mui/material';
-import DialogActions from '@mui/material/DialogActions';
 import MaterialReactTable from 'material-react-table';
-import { getTurnosTerminados, getDetalleTurno } from '../../services/services-Turnos';
+import { getTurnosTerminados } from '../../services/services-Turnos';
 import Alerts from '../../components/common/Alerts';
 import Popup from '../../components/common/DialogPopup';
 import LittleHeader from '../../components/common/LittleHeader';
 import DetalleTurno from '../../components/common/DetalleTurno';
 
-const idTaller = 'S002';
-
-const TablaTurnosTerminados = () => {
+const TablaTurnosTerminados = (props) => {
+  const { idTaller } = props;
   const [turnosTerminados, setTurnosTerminados] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -86,10 +85,6 @@ const TablaTurnosTerminados = () => {
         accessorKey: 'tecnico_id',
         header: 'Tecnico id',
       },
-      {
-        accessorKey: 'nombre_completo',
-        header: 'Nombre del Tecnico',
-      },
     ],
     [],
   );
@@ -97,19 +92,21 @@ const TablaTurnosTerminados = () => {
   const renderRowActions = ({ row }) => (
     <Box
       style={{ display: 'flex', flexWrap: 'nowrap', gap: '0.5rem' }}
-      sx={{ height: '3.5em' }}
+      sx={{ height: '3.5em', padding: '0.2em' }}
     >
       <Button
         variant="contained"
-        color="secondary"
-        sx={{ fontSize: '1em' }}
+        size="small"
+        sx={{ fontSize: '0.7em', backgroundColor: 'rgba(51,51,51,0.75)' }}
         onClick={() => {
           // console.log('Ver mas', row.original.id_turno);
           setRowDetalle(row.original);
           setVerMas(true);
         }}
       >
-        Ver más
+        Ver
+        <br />
+        más
       </Button>
     </Box>
   );
@@ -125,25 +122,6 @@ const TablaTurnosTerminados = () => {
       />
     </Box>
   );
-
-  const filaDetalle = (llave, valor) => {
-    if (llave === 'papeles_en_regla') {
-      return null;
-    }
-    return (
-      <>
-        <span>
-          <strong>
-            {llave}
-            :
-            {' '}
-          </strong>
-        </span>
-        <span>{valor}</span>
-
-      </>
-    );
-  };
 
   return (
     <>
@@ -164,7 +142,8 @@ const TablaTurnosTerminados = () => {
         enableRowActions
         renderRowActions={renderRowActions}
         renderEmptyRowsFallback={noData}
-        defaultColumn={{ minSize: 10, maxSize: 120 }}
+        defaultColumn={{ minSize: 10, maxSize: 100, size: 30 }}
+        initialState={{ density: 'compact' }}
         muiTopToolbarProps={{
           sx: {
             display: 'flex',
@@ -172,6 +151,13 @@ const TablaTurnosTerminados = () => {
             justifyContent: 'flex-end',
             overflow: 'auto',
             maxHeight: '200px',
+          },
+        }}
+        muiTableHeadCellProps={{ align: 'center' }}
+        muiTableBodyCellProps={{ align: 'center' }}
+        displayColumnDefOptions={{
+          'mrt-row-actions': {
+            header: 'Acciones',
           },
         }}
       />

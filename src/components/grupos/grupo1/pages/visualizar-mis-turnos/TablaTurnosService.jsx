@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable no-unused-vars */
 import {
@@ -12,9 +13,8 @@ import Popup from '../../components/common/DialogPopup';
 import LittleHeader from '../../components/common/LittleHeader';
 import DetalleTurno from '../../components/common/DetalleTurno';
 
-const idTecnico = 5;
-
-const TablaTurnosService = () => {
+const TablaTurnosService = (props) => {
+  const { idTecnico } = props;
   const [turnosService, setTurnosService] = useState([]);
   const [actualizarTabla, setActualizarTabla] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -86,27 +86,34 @@ const TablaTurnosService = () => {
   const renderRowActions = ({ row }) => (
     <Box
       style={{ display: 'flex', flexWrap: 'nowrap', gap: '0.5rem' }}
-      sx={{ height: '3.2em' }}
+      sx={{ height: '3.2em', padding: '0.2em' }}
     >
       <Button
         variant="contained"
-        sx={{ fontSize: '0.9em', backgroundColor: 'rgba(51,51,51,0.75)' }}
+        size="small"
+        sx={{ fontSize: '0.7em', backgroundColor: 'rgba(51,51,51,0.75)' }}
         onClick={() => {
           setRowDetalle(row.original);
           setOpenVerMas(true);
         }}
       >
-        Ver más
+        Ver
+        <br />
+        más
       </Button>
       <Button
         variant="contained"
         color="secondary"
+        size="small"
+        sx={{ fontSize: '0.7em' }}
         onClick={() => {
           setIdTurno(row.original.id_turno);
           setOpenChecklist(true);
         }}
       >
-        Realizar service
+        Realizar
+        <br />
+        service
       </Button>
     </Box>
   );
@@ -141,8 +148,9 @@ const TablaTurnosService = () => {
         positionActionsColumn="last"
         enableRowActions
         renderRowActions={renderRowActions}
+        initialState={{ density: 'compact' }}
         renderEmptyRowsFallback={noData}
-        defaultColumn={{ minSize: 10, maxSize: 100 }}
+        defaultColumn={{ minSize: 10, maxSize: 100, size: 30 }}
         muiTopToolbarProps={{
           sx: {
             display: 'flex',
@@ -150,6 +158,13 @@ const TablaTurnosService = () => {
             justifyContent: 'flex-end',
             overflow: 'auto',
             maxHeight: '200px',
+          },
+        }}
+        muiTableHeadCellProps={{ align: 'center' }}
+        muiTableBodyCellProps={{ align: 'center' }}
+        displayColumnDefOptions={{
+          'mrt-row-actions': {
+            header: 'Acciones',
           },
         }}
       />

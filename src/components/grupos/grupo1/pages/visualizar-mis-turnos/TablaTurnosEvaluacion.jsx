@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable max-len */
 /* eslint-disable no-console */
 /* eslint-disable react/react-in-jsx-scope */
@@ -15,9 +16,8 @@ import ChecklistEvaluacion from '../checklist-evaluacion/Checklist';
 import LittleHeader from '../../components/common/LittleHeader';
 import DetalleTurno from '../../components/common/DetalleTurno';
 
-const idTecnico = 5;
-
-const TablaTurnosEvaluacion = () => {
+const TablaTurnosEvaluacion = (props) => {
+  const { idTecnico } = props;
   const [turnosEvaluacion, setTurnosEvaluacion] = useState([]);
   const [actualizarTabla, setActualizarTabla] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -132,28 +132,35 @@ const TablaTurnosEvaluacion = () => {
   const renderRowActions = ({ row }) => (
     <Box
       style={{ display: 'flex', flexWrap: 'nowrap', gap: '0.5rem' }}
-      sx={{ height: '3.2em' }}
+      sx={{ height: '3.2em', padding: '0.2em' }}
     >
       <Button
         variant="contained"
-        sx={{ fontSize: '0.9em', backgroundColor: 'rgba(51,51,51,0.75)' }}
+        size="small"
+        sx={{ fontSize: '0.7em', backgroundColor: 'rgba(51,51,51,0.75)' }}
         onClick={() => {
           setRowDetalle(row.original);
           setOpenVerMas(true);
         }}
       >
-        Ver más
+        Ver
+        <br />
+        más
       </Button>
       <Button
         variant="contained"
         color="secondary"
+        size="small"
+        sx={{ fontSize: '0.7em' }}
         onClick={() => {
           controlarTiempo({ row });
           // setIdTurnoEvaluacion(row.original.id_turno);
           // setOpenChecklist(true);
         }}
       >
-        Realizar evaluación
+        Realizar
+        <br />
+        evaluación
       </Button>
     </Box>
   );
@@ -177,7 +184,7 @@ const TablaTurnosEvaluacion = () => {
         enableRowActions
         renderRowActions={renderRowActions}
         renderEmptyRowsFallback={noData}
-        defaultColumn={{ minSize: 10, maxSize: 100 }}
+        defaultColumn={{ minSize: 10, maxSize: 100, size: 30 }}
         muiTopToolbarProps={{
           sx: {
             display: 'flex',
@@ -185,6 +192,14 @@ const TablaTurnosEvaluacion = () => {
             justifyContent: 'flex-end',
             overflow: 'auto',
             maxHeight: '200px',
+          },
+        }}
+        muiTableHeadCellProps={{ align: 'center' }}
+        muiTableBodyCellProps={{ align: 'center' }}
+        initialState={{ density: 'compact' }}
+        displayColumnDefOptions={{
+          'mrt-row-actions': {
+            header: 'Acciones',
           },
         }}
       />
