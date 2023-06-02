@@ -14,7 +14,7 @@ const GROUP_3_PAGES_CONFIG = [
     page: <Cotizar />,
   },
   {
-    id: 'g3-nuevaPagina',
+    id: 'g3-cotizacion',
     href: '/cotizar/:productId',
     icon: <DriveEtaIcon />,
     page: <NuevaPagina />,

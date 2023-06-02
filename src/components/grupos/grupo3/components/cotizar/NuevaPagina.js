@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+/* eslint-disable object-shorthand */
 /* eslint-disable react/jsx-filename-extension */
 /* eslint-disable max-len */
 /* eslint-disable no-unused-vars */
@@ -6,8 +8,10 @@ import {
   Form, Button, Row, Col,
 } from 'react-bootstrap';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
 import { products } from './products';
 import { AppContext } from './AppContext';
+
 /*
 cuanto presion el boton cotizar pongo un input donde tiene que rellenar esto datos
 *Sucursal : String ---> (se obtiene del auto logrado)
@@ -29,8 +33,8 @@ const NuevaPagina = () => {
   //  updateNombreC, updateEmail, updatePatente, updateGarantiaExtendida,
   // } = useContext(AppContext);
   const [nombreC, setNombreC] = useState('');
-  const [email, setEmail] = useState('');
-  const [garantiaExtendida, setGarantiaExtendida] = useState(false);
+  const [mail, setMail] = useState('');
+  const [garantiaCheck, setGarantiaExtendida] = useState(false);
 
   const navigate = useNavigate();
 
@@ -45,7 +49,7 @@ const NuevaPagina = () => {
 
   const [validated, setValidated] = useState(false);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();// para que no se actualice la pantalla al hacer clic
 
     /* primero valida formulario */
@@ -55,23 +59,38 @@ const NuevaPagina = () => {
       event.stopPropagation();
       setValidated(true);
     } else {
-      /* Aquí puedes utilizar los valores de nombreC y email para realizar las acciones que necesites
-            tiene que estar adentro del handleSubmit, no anda por el Link
-            aca afuera tira error */
-      /* agrego- 16-05 */
-      // updateNombreC(nombreC);
-      // updateEmail(email);
-      // updatePatente(productSelected.patente);
-      // updateGarantiaExtendida(garantiaExtendida);
-      const infoCotizacion = {
-        nombreC,
-        email,
-        garantiaExtendida,
-        patente: productSelected.patente,
-      };
-      sessionStorage.setItem('cotizacion', JSON.stringify(infoCotizacion));
-      /* no hace fata darle clic,x eso uso navigate() */
-      navigate('/boleta-cotizacion');
+      try {
+        /* Aquí puedes utilizar los valores de nombreC y email para realizar las acciones que necesites
+              tiene que estar adentro del handleSubmit, no anda por el Link
+              aca afuera tira error */
+        /* agrego- 16-05 */
+        // updateNombreC(nombreC);
+        // updateEmail(email);
+        // updatePatente(productSelected.patente);
+        // updateGarantiaExtendida(garantiaExtendida);
+
+        // paso datos al back
+        const url = 'http://34.139.89.18:8181/api-gc/cotizaciones/save';
+        const cotizacionData = {
+          sucursal: 'S-01',
+          nombreCliente: nombreC,
+          patente: productSelected.patente, // infoCotizacion.patente,
+          email: mail,
+          idVendedor: 123,
+          precioBase: 1000000,
+          garantiaExtendida: garantiaCheck,
+        };
+        const response = await axios.post(url, cotizacionData);
+        console.log(response.data);
+
+        const infoCotizacion = response.data;
+        sessionStorage.setItem('cotizacion', JSON.stringify(infoCotizacion));
+
+        navigate('/boleta-cotizacion');
+      } catch (error) {
+        console.error(error);
+      }
+      // sessionStorage.setItem('cotizacion', JSON.stringify(infoCotizacion))
     }
   };
 
@@ -129,8 +148,8 @@ const NuevaPagina = () => {
             <Form.Control
               type="email"
               placeholder="Agregue el mail del cliente"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
+              value={mail}
+              onChange={(event) => setMail(event.target.value)}
               required
             />
 
@@ -172,7 +191,7 @@ const NuevaPagina = () => {
         <Form.Group className="mb-3" controlId="checkGarantia">
           <Form.Check
             label="Garantía extendida"
-            checked={garantiaExtendida}
+            checked={garantiaCheck}
             onChange={(event) => setGarantiaExtendida(event.target.checked)}
           />
         </Form.Group>
