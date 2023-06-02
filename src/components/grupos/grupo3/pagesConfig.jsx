@@ -2,7 +2,7 @@ import DriveEtaIcon from '@mui/icons-material/DriveEta';
 
 import React from 'react';
 import Cotizar from './components/cotizar/Cotizar';
-import Cotizacion from './components/cotizar/Cotizacion';
+import NuevaPagina from './components/cotizar/NuevaPagina';
 import Boleta from './components/cotizar/Boleta';
 
 const GROUP_3_PAGES_CONFIG = [
@@ -17,7 +17,7 @@ const GROUP_3_PAGES_CONFIG = [
     id: 'g3-cotizacion',
     href: '/cotizar/:productId',
     icon: <DriveEtaIcon />,
-    page: <Cotizacion />,
+    page: <NuevaPagina />,
     soloUrl: true,
   },
   {

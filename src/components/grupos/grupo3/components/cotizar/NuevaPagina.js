@@ -25,7 +25,7 @@ patente del auto que se filtro, el id del vendedor lo consultamos por la sesion 
 y la garantia extendida del check que tenemos que hacer
 */
 
-const Cotizacion = () => {
+const NuevaPagina = () => {
   const idVendedor = 'Id del Vendedor';
 
   // const {
@@ -219,4 +219,4 @@ const Cotizacion = () => {
   );
 };
 
-export default Cotizacion;
+export default NuevaPagina;
