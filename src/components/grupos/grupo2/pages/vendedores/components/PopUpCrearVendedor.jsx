@@ -96,6 +96,10 @@ const PopUpCrearVendedor = ({ onSuccess, onClose, sucursales }) => {
               )}
               rules={{
                 required: 'El nombre es requerido',
+                maxLength: {
+                  value: 50,
+                  message: 'Debe tener un maximo de 50 letras',
+                },
               }}
             />
             <Controller
@@ -115,6 +119,10 @@ const PopUpCrearVendedor = ({ onSuccess, onClose, sucursales }) => {
               )}
               rules={{
                 required: 'El apellido es requerido',
+                maxLength: {
+                  value: 50,
+                  message: 'Debe tener un maximo de 50 letras',
+                },
               }}
             />
             <Controller
@@ -134,6 +142,10 @@ const PopUpCrearVendedor = ({ onSuccess, onClose, sucursales }) => {
               )}
               rules={{
                 required: 'El email es requerido',
+                maxLength: {
+                  value: 50,
+                  message: 'Debe tener un maximo de 50 letras',
+                },
                 validate: {
                   matchPattern: (v) => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'Escriba el email correctamente',
                 },
