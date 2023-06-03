@@ -62,7 +62,7 @@ const Vendedores = () => {
                 ))}
               </Select>
             </FormControl>
-            <ListadoVendedores sucursal={sucursalSeleccionada} />
+            <ListadoVendedores sucursal={sucursalSeleccionada} sucursales={sucursales} />
           </Paper>
         )
       }

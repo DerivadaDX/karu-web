@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 import {
@@ -17,18 +17,14 @@ import {
   Switch,
   TextField,
 } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
 import { DatePicker } from '@mui/x-date-pickers';
 import PropTypes from 'prop-types';
 
 import CuitComponent from './CuitComponent';
 import VendedorService from '../services/vendedor-service';
-import SucursalService from '../services/sucursal-service';
 
-const PopUpCrearVendedor = ({ onSuccess }) => {
-  const [mostrarPopUpCrearVendedor, setMostrarPopUpCrearVendedor] = useState(false);
+const PopUpCrearVendedor = ({ onSuccess, onClose, sucursales }) => {
   const [mostrarPopUpCreacionExitosa, setMostrarPopUpCreacionExitosa] = useState(false);
-  const [sucursales, setSucursales] = useState({});
   const { handleSubmit, control, formState: { errors, isValid } } = useForm({
     mode: 'onBlur',
     defaultValues: {
@@ -58,29 +54,14 @@ const PopUpCrearVendedor = ({ onSuccess }) => {
       .catch(() => setMostrarPopUpCreacionExitosa(false));
   };
 
-  const cambiarVisibilidadPopUpCrearVendedor = () => {
-    setMostrarPopUpCrearVendedor(!mostrarPopUpCrearVendedor);
-  };
-
   const cambiarVisibilidadPopUpCreacionExitosa = () => {
     setMostrarPopUpCreacionExitosa(false);
-    setMostrarPopUpCrearVendedor(false);
+    onClose();
   };
-
-  const obtenerSucursales = () => {
-    SucursalService.obtenerSucursalesActivas().then(setSucursales);
-  };
-
-  useEffect(obtenerSucursales, []);
 
   return (
     <Box>
-      <Button variant="contained" color="primary" onClick={cambiarVisibilidadPopUpCrearVendedor}>
-        <AddIcon />
-        Crear Vendedor
-      </Button>
-
-      <Dialog open={mostrarPopUpCrearVendedor} onClose={cambiarVisibilidadPopUpCrearVendedor}>
+      <Dialog open onClose={onClose}>
         <Dialog open={mostrarPopUpCreacionExitosa} onClose={cambiarVisibilidadPopUpCreacionExitosa}>
           <DialogTitle id="alert-dialog-title">
             Creación Exitosa!
@@ -299,6 +280,9 @@ const PopUpCrearVendedor = ({ onSuccess }) => {
 
 PopUpCrearVendedor.propTypes = {
   onSuccess: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  sucursales: PropTypes.array.isRequired,
 };
 
 export default PopUpCrearVendedor;

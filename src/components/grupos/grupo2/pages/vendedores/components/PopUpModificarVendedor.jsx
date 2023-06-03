@@ -9,7 +9,6 @@ import {
   DialogTitle,
   FormControl,
   FormControlLabel,
-  IconButton,
   InputLabel,
   MenuItem,
   Paper,
@@ -17,9 +16,8 @@ import {
   Stack,
   Switch,
   TextField,
-  Tooltip,
 } from '@mui/material';
-import EditIcon from '@mui/icons-material/Edit';
+
 import { DatePicker } from '@mui/x-date-pickers';
 import PropTypes from 'prop-types';
 import dayjs from 'dayjs';
@@ -27,10 +25,9 @@ import CuitComponent from './CuitComponent';
 import VendedorService from '../services/vendedor-service';
 import SucursalService from '../services/sucursal-service';
 
-const PopUpModificarVendedor = ({ onEdit, vendedor }) => {
-  const [mostrarPopUpModificarVendedor, setMostrarPopUpModificarVendedor] = useState(false);
+const PopUpModificarVendedor = ({ onEdit, vendedor, onClose }) => {
   const [mostrarPopUpCreacionExitosa, setMostrarPopUpCreacionExitosa] = useState(false);
-  const [sucursales, setSucursales] = useState({});
+  const [sucursales, setSucursales] = useState([]);
   const { handleSubmit, control, formState: { errors, isValid, isDirty } } = useForm({
     mode: 'onBlur',
     defaultValues: {
@@ -52,21 +49,12 @@ const PopUpModificarVendedor = ({ onEdit, vendedor }) => {
       fecha_nacimiento: data.fecha_nacimiento.toISOString().slice(0, 10),
     };
 
-    VendedorService.crearVendedor(nuevaData)
+    VendedorService.modificarVendedor(vendedor.id, nuevaData)
       .then(() => {
         setMostrarPopUpCreacionExitosa(true);
         onEdit();
       })
       .catch(() => setMostrarPopUpCreacionExitosa(false));
-  };
-
-  const cambiarVisibilidadPopUpModificarVendedor = () => {
-    setMostrarPopUpModificarVendedor(!mostrarPopUpModificarVendedor);
-  };
-
-  const cambiarVisibilidadPopUpCreacionExitosa = () => {
-    setMostrarPopUpCreacionExitosa(false);
-    setMostrarPopUpModificarVendedor(false);
   };
 
   const obtenerSucursales = () => {
@@ -75,16 +63,17 @@ const PopUpModificarVendedor = ({ onEdit, vendedor }) => {
 
   useEffect(obtenerSucursales, []);
 
+  const cambiarVisibilidadPopUpCreacionExitosa = () => {
+    setMostrarPopUpCreacionExitosa(false);
+    onClose();
+  };
+
   return (
     <Box>
-      <Tooltip title="Editar">
-        <IconButton onClick={cambiarVisibilidadPopUpModificarVendedor}>
-          <EditIcon />
-        </IconButton>
-      </Tooltip>
+
       <Dialog
-        open={mostrarPopUpModificarVendedor}
-        onClose={cambiarVisibilidadPopUpModificarVendedor}
+        open
+        onClose={onClose}
       >
         <Dialog open={mostrarPopUpCreacionExitosa} onClose={cambiarVisibilidadPopUpCreacionExitosa}>
           <DialogTitle id="alert-dialog-title">
@@ -292,7 +281,7 @@ const PopUpModificarVendedor = ({ onEdit, vendedor }) => {
               <Button
                 fullWidth
                 sx={{ marginTop: '2ch' }}
-                onClick={cambiarVisibilidadPopUpModificarVendedor}
+                onClick={onClose}
               >
                 Cerrar
               </Button>
@@ -315,6 +304,7 @@ const PopUpModificarVendedor = ({ onEdit, vendedor }) => {
 
 PopUpModificarVendedor.propTypes = {
   onEdit: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
   vendedor: PropTypes.shape({
     id: PropTypes.number,
     nombre: PropTypes.string,

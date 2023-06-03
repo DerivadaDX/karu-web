@@ -1,34 +1,33 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
-import { Box, Typography } from '@mui/material';
+import {
+  Box, Button, IconButton, Tooltip, Typography,
+} from '@mui/material';
 import MaterialReactTable from 'material-react-table';
 import PropTypes from 'prop-types';
-
+import EditIcon from '@mui/icons-material/Edit';
+import AddIcon from '@mui/icons-material/Add';
 import VendedorService from '../services/vendedor-service';
-import SucursalService from '../services/sucursal-service';
 import PopUpCrearVendedor from './PopUpCrearVendedor';
 import PopUpModificarVendedor from './PopUpModificarVendedor';
 
-const ListadoVendedores = ({ sucursal }) => {
+const ListadoVendedores = ({ sucursal, sucursales }) => {
   const [vendedores, setVendedores] = useState([]);
   const [cargando, setCargando] = useState(true);
+  const [mostrarPopUpModificarVendedores, setMostrarPopUpModificarVendedores] = useState(false);
+  const [mostrarPopUpCrearVendedores, setMostrarPopUpCrearVendedores] = useState(false);
+  const [vendedor, setVendedor] = useState({});
 
   const renderSucursal = ({ row }) => {
     const sucursalId = row.original.sucursal_id;
-    const [sucursalName, setSucursalName] = useState('');
-
-    SucursalService.obtenerSucursal(sucursalId)
-      .then((response) => {
-        setSucursalName(response.data.nombre);
-      });
-
+    const sucursalDelVendedor = sucursales.find((s) => s.id === sucursalId);
     return (
       <Typography
         variant="body1"
         component="span"
         sx={{ fontWeight: 'bold' }}
       >
-        {sucursalName}
+        {sucursalDelVendedor.nombre}
       </Typography>
     );
   };
@@ -69,29 +68,32 @@ const ListadoVendedores = ({ sucursal }) => {
   const actualizarDatosDeVendedor = (vendedorModificado) => {
     const actualizarVendedorModificado = (vendedorActual) => {
       const esElVendedorModificado = vendedorActual.id === vendedorModificado.id;
-      const vendedor = esElVendedorModificado ? vendedorModificado : vendedorActual;
+      const vendedorn = esElVendedorModificado ? vendedorModificado : vendedorActual;
 
-      return vendedor;
+      return vendedorn;
     };
 
     setVendedores((vendedoresActuales) => vendedoresActuales.map(actualizarVendedorModificado));
   };
 
-  const renderAccionesFila = ({ row }) => {
-    const vendedor = row.original;
-
-    return (
-      <PopUpModificarVendedor
-        vendedor={vendedor}
-        onEdit={actualizarDatosDeVendedor}
-      />
-    );
-  };
+  const renderAccionesFila = ({ row }) => (
+    <Tooltip title="Editar">
+      <IconButton onClick={() => {
+        setVendedor(row.original);
+        setMostrarPopUpModificarVendedores(true);
+      }}
+      >
+        <EditIcon />
+      </IconButton>
+    </Tooltip>
+  );
 
   const renderCrearVendedor = () => (
-    <PopUpCrearVendedor
-      onSuccess={obtenerVendedoresDeSucursales}
-    />
+    <Button variant="contained" color="primary" onClick={() => setMostrarPopUpCrearVendedores(true)}>
+      <AddIcon />
+      Crear Vendedor
+    </Button>
+
   );
 
   const columnas = useMemo(
@@ -145,6 +147,20 @@ const ListadoVendedores = ({ sucursal }) => {
 
   return (
     <Box>
+      {mostrarPopUpModificarVendedores && (
+        <PopUpModificarVendedor
+          onClose={() => setMostrarPopUpModificarVendedores(false)}
+          vendedor={vendedor}
+          onEdit={actualizarDatosDeVendedor}
+        />
+      )}
+      {mostrarPopUpCrearVendedores && (
+      <PopUpCrearVendedor
+        onClose={() => setMostrarPopUpCrearVendedores(false)}
+        sucursales={sucursales}
+        onSuccess={obtenerVendedoresDeSucursales}
+      />
+      )}
       <MaterialReactTable
         columns={columnas}
         data={vendedores}
@@ -174,6 +190,8 @@ const ListadoVendedores = ({ sucursal }) => {
 
 ListadoVendedores.propTypes = {
   sucursal: PropTypes.number.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  sucursales: PropTypes.array.isRequired,
 };
 
 export default ListadoVendedores;
