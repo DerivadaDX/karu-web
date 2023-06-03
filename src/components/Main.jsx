@@ -5,15 +5,11 @@ import { Route, Routes } from 'react-router-dom';
 import Copyright from './layout/Copyright';
 import Home from './layout/Home';
 import LoggedInLayout from './layout/LoggedInLayout';
-import Copyright from './layout/Copyright';
-import Home from './layout/Home';
-import LoggedInLayout from './layout/LoggedInLayout';
 import GROUP_1_PAGES_CONFIG from './grupos/grupo1/pagesConfig';
 import GROUP_2_PAGES_CONFIG from './grupos/grupo2/pagesConfig';
 import GROUP_3_PAGES_CONFIG from './grupos/grupo3/pagesConfig';
 import GROUP_4_PAGES_CONFIG from './grupos/grupo4/pagesConfig';
 
-const styles = {
 const styles = {
   container: {
     mt: 4,
