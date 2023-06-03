@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-shadow */
 /* eslint-disable react/react-in-jsx-scope */
@@ -8,6 +9,7 @@ import {
 import { Box, Button, DialogActions } from '@mui/material';
 import Snackbar from '@mui/material/Snackbar';
 import MaterialReactTable from 'material-react-table';
+import { MRT_Localization_ES } from 'material-react-table/locales/es';
 import {
   getTurnosPendientesDeAprobacion,
   getCancelarTurno,
@@ -175,7 +177,8 @@ const TablaTurnosPendientesDeAprobacion = (props) => {
         enableRowActions
         renderRowActions={renderRowActions}
         renderEmptyRowsFallback={noData}
-        defaultColumn={{ minSize: 10, maxSize: 100, size: 30 }}
+        defaultColumn={{ size: 5 }}
+        localization={MRT_Localization_ES}
         muiTopToolbarProps={{
           sx: {
             display: 'flex',

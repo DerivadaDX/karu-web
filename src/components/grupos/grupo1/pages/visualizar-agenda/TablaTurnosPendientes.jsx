@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-shadow */
 /* eslint-disable react/react-in-jsx-scope */
@@ -7,6 +8,7 @@ import {
 } from 'react';
 import { Box, Button } from '@mui/material';
 import MaterialReactTable from 'material-react-table';
+import { MRT_Localization_ES } from 'material-react-table/locales/es';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import Tooltip from '@mui/material/Tooltip';
 import Snackbar from '@mui/material/Snackbar';
@@ -235,7 +237,8 @@ const TablaTurnosPendientes = (props) => {
         initialState={{ density: 'compact' }}
         renderRowActions={renderRowActions}
         renderEmptyRowsFallback={noData}
-        defaultColumn={{ minSize: 10, maxSize: 100, size: 30 }}
+        defaultColumn={{ size: 5 }}
+        localization={MRT_Localization_ES}
         muiTableHeadCellProps={{ align: 'center', padding: 'none' }}
         muiTableBodyCellProps={{ align: 'center', padding: 'none' }}
         displayColumnDefOptions={{
