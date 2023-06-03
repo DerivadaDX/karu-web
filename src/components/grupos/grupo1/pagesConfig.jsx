@@ -18,6 +18,7 @@ import FormularioCliente from './pages/turnos/turno-service-cliente/TurnoCliente
 import Services from './pages/visualizar-services/Services';
 import FormularioEvaluacionAdmin from './pages/turnos/turno-evaluacion-admin/TurnoEvaluacionParaAdmin';
 import FormularioEvaluacionCliente from './pages/turnos/turno-evaluacion-cliente/TurnoEvaluacionCliente';
+import ChecklistEvaluacion from './pages/checklist-evaluacion-extraordinaria/ChecklistEvaluacionExtraordinaria';
 import AltaServiceForm from './pages/alta-services/AltaServices';
 
 const GROUP_1_PAGES_CONFIG = [
@@ -90,6 +91,13 @@ const GROUP_1_PAGES_CONFIG = [
     href: '/alta-service',
     icon: <TooltipCus icon={<HomeRepairServiceIcon />} title="Alta de Services" />,
     page: <AltaServiceForm />,
+  },
+  {
+    id: 'g1-CheckExtraordinaria',
+    name: 'CheckExtraordinaria',
+    href: '/CheckExtraordinaria',
+    icon: <TooltipCus icon={<HomeRepairServiceIcon />} />,
+    page: <ChecklistEvaluacion />,
   },
 ];
 
