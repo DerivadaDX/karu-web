@@ -86,6 +86,7 @@ const ChecklistEvaluacionExtraordinaria = (props) => {
       ...prevState,
       [name]: value,
     }));
+    valoresEvaluacion.comentarios = value;
   };
 
   const handleChangeCheckbox = (event, idTask) => {
@@ -139,7 +140,7 @@ const ChecklistEvaluacionExtraordinaria = (props) => {
   const postEnviarEvaluacion = () => {
     axios.post(url, {
       id_turno: idTurnoPadre,
-      id_task: valoresEvaluacion.tareas,
+      id_tasks: `[${valoresEvaluacion.tareas.toString()}]`,
       detalle: valoresEvaluacion.comentarios,
     })
       .then(() => {

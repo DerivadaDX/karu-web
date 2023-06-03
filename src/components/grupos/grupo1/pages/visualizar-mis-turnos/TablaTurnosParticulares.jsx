@@ -186,7 +186,7 @@ const TablaTurnosParticulares = (props) => {
           <>
             <strong>Aclaración</strong>
             <p>
-              Por favor, marque las partes que considere
+              Marque las partes que considere
               necesarias reparar.
             </p>
           </>
