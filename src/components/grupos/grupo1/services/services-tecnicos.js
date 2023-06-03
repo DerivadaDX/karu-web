@@ -8,7 +8,7 @@ const getTurnosEvaluacion = async (tecnicoId) => axios.get(`${urlEvaluacion}/lis
 
 const getTurnosService = async (tecnicoId) => axios.get(`${url}/trabajos-en-proceso-service/${tecnicoId}/`);
 
-const getTurnosReparacion = async (tecnicoId) => axios.get(`${urlReparacion}/listar-pendientes/${tecnicoId}/`);
+const getTurnosReparacion = async (tecnicoId) => axios.get(`${urlReparacion}/listar-en-proceso/${tecnicoId}/`);
 
 const getTurnosExtraodinario = async (tecnicoId) => axios.get(`${url}/trabajos-en-proceso-extraordinario/${tecnicoId}/`);
 

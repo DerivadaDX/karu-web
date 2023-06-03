@@ -1,10 +1,14 @@
+/* eslint-disable no-unused-vars */
 import DriveEtaIcon from '@mui/icons-material/DriveEta';
-import EuroIcon from '@mui/icons-material/Euro';
+import { Search } from '@mui/icons-material';import EuroIcon from '@mui/icons-material/Euro';
 
 import React from 'react';
 import Cotizar from './components/cotizar/Cotizar';
 import NuevaPagina from './components/cotizar/NuevaPagina';
 import Boleta from './components/cotizar/Boleta';
+import FiltroDeVehiculos from './pages/SeleccionDeVehiculo';
+import PageVehiculoIndividual from './pages/PageVehiculoIndividual';
+import ConsultaCliente from './pages/consultaCliente';
 import Reserva from './components/cotizar/Reserva';
 
 const GROUP_3_PAGES_CONFIG = [
@@ -23,7 +27,14 @@ const GROUP_3_PAGES_CONFIG = [
     page: <Reserva />,
   },
   {
-    id: 'g3-nuevaPagina',
+    id: 'g3-Reserva',
+    name: 'Reserva',
+    href: '/reserva',
+    icon: <EuroIcon />,
+    page: <Reserva />,
+  },
+  {
+    id: 'g3-cotizacion',
     href: '/cotizar/:productId',
     icon: <DriveEtaIcon />,
     page: <NuevaPagina />,
@@ -34,6 +45,29 @@ const GROUP_3_PAGES_CONFIG = [
     href: '/boleta-cotizacion',
     icon: <DriveEtaIcon />,
     page: <Boleta />,
+    soloUrl: true,
+  },
+  {
+    id: 'g3-Filtrar vehiculos',
+    name: 'Filtrar vehiculos',
+    href: '/filtrarVehiculos',
+    icon: <Search />,
+    page: <FiltroDeVehiculos />,
+  },
+  {
+    id: 'g3-BORRADOR vehiculo',
+    name: 'BORRADOR vehiculo',
+    href: '/vehiculoIndividual',
+    icon: <Search />,
+    page: <PageVehiculoIndividual />,
+    soloUrl: true,
+  },
+  {
+    id: 'g3-BORRADOR consulta',
+    name: 'BORRADOR consulta',
+    href: '/consulta',
+    icon: <Search />,
+    page: <ConsultaCliente />,
     soloUrl: true,
   },
 ];

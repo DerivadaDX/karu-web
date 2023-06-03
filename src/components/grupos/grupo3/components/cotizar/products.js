@@ -110,7 +110,7 @@ export const products = [
   },
   {
     id: '10',
-    patente: 'BCD890',
+    patente: 'BCD-890',
     sucursal: 'Sucursal A',
     anio: 2021,
     marca: 'Ford',
@@ -122,7 +122,7 @@ export const products = [
   },
   {
     id: 21,
-    patente: 'XYZ987',
+    patente: 'XYZ-987',
     sucursal: 'Sucursal B',
     marca: 'Volkswagen',
     anio: 2021,

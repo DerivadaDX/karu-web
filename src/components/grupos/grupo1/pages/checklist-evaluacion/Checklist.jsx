@@ -39,7 +39,7 @@ const ChecklistEvaluacion = (props) => {
   // Para que se mantengan seteados los valores de los sliders al cambiar de página
   const [valoresSlider, setValoresSlider] = useState({});
   evaluacion.id_turno = idTurnoPadre;
-  const msjErrorDefault = 'Ha ocurrido un error, disculpe las molestias. Intente nuevamente. Si el error persiste comunicarse con soporte: soporte-tecnico@KarU.com';
+
   const tableInstanceRef = useRef(null);
 
   const [valoresEvaluacion, setValoresEvaluacion] = useState({
@@ -56,7 +56,7 @@ const ChecklistEvaluacion = (props) => {
   const [alertMensaje, setAlertmensaje] = useState('');
   const [alertTitulo, setAlertTitulo] = useState('');
 
-  const traerChecklist = () => {
+  const getChecklistEvaluacion = () => {
     getChecklistEvaluaciones()
       .then((response) => {
         setEvaluaciones(response.data);
@@ -144,7 +144,7 @@ const ChecklistEvaluacion = (props) => {
   };
 
   const url = 'https://autotech2.onrender.com/evaluaciones/registros/crear/';
-  const handleEnviarEvaluacion = () => {
+  const postEnviarEvaluacion = () => {
     axios.post(url, evaluacion)
       .then(() => {
         setOpenEvaluacionEnviada(true);
@@ -158,11 +158,11 @@ const ChecklistEvaluacion = (props) => {
   };
 
   async function handleSubmit(event) {
-    handleEnviarEvaluacion();
+    postEnviarEvaluacion();
   }
 
   useEffect(() => {
-    traerChecklist();
+    getChecklistEvaluacion();
   }, []);
 
   return (
@@ -278,6 +278,7 @@ const ChecklistEvaluacion = (props) => {
           </DialogActions>
         </Box>
       </Popup>
+
       {/* Popup cuando estan todas las rows seleccionadas para confirmar evaluacion */}
       <Popup
         title={<LittleHeader titulo="Evaluación Terminada" />}
@@ -314,6 +315,7 @@ const ChecklistEvaluacion = (props) => {
           </DialogActions>
         </Box>
       </Popup>
+
       {/* Popup confirmando que se envio de la evaluación */}
       <Popup
         title={<LittleHeader titulo="Evaluación cargada exitosamente." />}

@@ -116,7 +116,10 @@ export default function DetalleTurno(props) {
           variant="standard"
         />
       </Stack>
-      <Box>
+      <Box sx={{
+        display: 'flex', justifyContent: 'center', alignItems: 'center',
+      }}
+      >
         <DialogActions>
           <Button
             color="primary"

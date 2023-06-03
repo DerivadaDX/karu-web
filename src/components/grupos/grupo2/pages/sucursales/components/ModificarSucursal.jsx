@@ -126,6 +126,7 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
               variant="standard"
               margin="dense"
               required
+              inputProps={{ maxLength: 50 }}
             />
             <TextField
               id="calle"
@@ -136,6 +137,7 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
               variant="standard"
               margin="dense"
               required
+              inputProps={{ maxLength: 50 }}
             />
             <TextField
               id="numero"
@@ -157,6 +159,7 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
               variant="standard"
               margin="dense"
               required
+              inputProps={{ maxLength: 20 }}
             />
             <TextField
               id="localidad"
@@ -167,6 +170,7 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
               variant="standard"
               margin="dense"
               required
+              inputProps={{ maxLength: 50 }}
             />
             <TextField
               id="provincia"
@@ -177,6 +181,7 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
               variant="standard"
               margin="dense"
               required
+              inputProps={{ maxLength: 50 }}
             />
             <FormControlLabel
               id="posee_taller"

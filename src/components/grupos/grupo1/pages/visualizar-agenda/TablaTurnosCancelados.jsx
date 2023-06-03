@@ -86,24 +86,27 @@ const TablaTurnosCancelados = (props) => {
   const renderRowActions = ({ row }) => (
     <Box
       style={{ display: 'flex', flexWrap: 'nowrap', gap: '0.5rem' }}
-      sx={{ height: '3.5em' }}
+      sx={{ height: '3.5em', padding: '0.2em' }}
     >
       <Button
         variant="contained"
-        color="secondary"
-        sx={{ fontSize: '1em' }}
+        size="small"
+        sx={{ fontSize: '0.7em', backgroundColor: 'rgba(51,51,51,0.75)' }}
         onClick={() => {
           // console.log('Ver mas', row.original.id_turno);
           setRowDetalle(row.original);
           setVerMas(true);
         }}
       >
-        Ver más
+        Ver
+        <br />
+        más
       </Button>
       <Button
         variant="contained"
         color="primary"
-        sx={{ fontSize: '1em' }}
+        size="small"
+        sx={{ fontSize: '0.7em' }}
         onClick={() => {
           setTurnoReprogramar(row.original.id_turno);
           setOpenReprogramar(true);
@@ -145,7 +148,7 @@ const TablaTurnosCancelados = (props) => {
         enableRowActions
         renderRowActions={renderRowActions}
         renderEmptyRowsFallback={noData}
-        defaultColumn={{ minSize: 10, maxSize: 120 }}
+        defaultColumn={{ minSize: 10, maxSize: 100, size: 30 }}
         muiTopToolbarProps={{
           sx: {
             display: 'flex',
@@ -156,6 +159,7 @@ const TablaTurnosCancelados = (props) => {
           },
         }}
         muiTableHeadCellProps={{ align: 'center' }}
+        initialState={{ density: 'compact' }}
         muiTableBodyCellProps={{ align: 'center' }}
         displayColumnDefOptions={{
           'mrt-row-actions': {

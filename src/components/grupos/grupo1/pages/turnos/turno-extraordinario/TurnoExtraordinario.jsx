@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import axios from 'axios';
 import TextField from '@mui/material/TextField';
@@ -10,13 +12,31 @@ import Disponibilidad from '../Componentes/FechasHorarios';
 import ValidarPatente from '../Helpers/validar-patente';
 import Alerts from '../../../components/common/Alerts';
 import Popup from '../../../components/common/DialogPopup';
+import LittleHeader from '../../../components/common/LittleHeader';
 
 // Recibe el taller con el contexto
 // (tal vez en el popup que abre al agregar turno se lo puede pasar)
 
-const FormularioExtraordinario = () => {
+const FormularioExtraordinario = (props) => {
+  const { taller, setOpenAgregarTurno, openAgregarTurno } = props;
+  // El endpoint toma número naturales y le estamos pasando un string 'T002', debería
+  // tomar el 2
+  function obtenerPrimerNumero(str) {
+    // Expresión regular para encontrar el primer número que comienza con un dígito distinto de cero
+    const regex = /[1-9][0-9]*/;
+
+    // Buscar el primer número en el string
+    const match = str.match(regex);
+
+    // Devolver el número encontrado o null si no se encontró ninguna coincidencia
+    if (match !== null) {
+      // eslint-disable-next-line radix
+      return parseInt(match[0]);
+    }
+    return null;
+  }
+  const tallerNro = obtenerPrimerNumero(taller);
   // const [taller, setTaller] = useState(); -> Lo recibe del popup lo harcodeo por ahora
-  const taller = 2;
   const [patenteReparacion, setPatente] = useState();
   const [fecha, setFecha] = useState();
   const [hora, setHora] = useState();
@@ -32,7 +52,7 @@ const FormularioExtraordinario = () => {
 
   // Cambiar endpoint por el de excecpcional -> Uso el de disponibilidad común, pues me interesa
   // saber qué día está disponible, total dura una hora como cualquier evaluación
-  const endPointDisponibilidad = `https://autotech2.onrender.com/turnos/dias-horarios-disponibles/${taller}/`;
+  const endPointDisponibilidad = `https://autotech2.onrender.com/turnos/dias-horarios-disponibles/${tallerNro}/`;
   // Para setear el límite del calendario
   const limite = 45;
 
@@ -86,19 +106,22 @@ const FormularioExtraordinario = () => {
   };
 
   return (
-    <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
-      <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
+    <Container component="main" maxWidth="sm">
+      <Paper variant="outlined" sx={{ my: { xs: 1, md: 3 }, p: { xs: 2, md: 3 } }}>
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 7,
+            marginTop: 1,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
           }}
         >
-          <Typography component="h1" variant="h5" sx={{ marginBottom: 5 }}>
-            Turno Extraordinario
+          <Box sx={{ marginBottom: 3, marginTop: 1 }}>
+            <LittleHeader titulo="Alta para turno extraodinario" />
+          </Box>
+          <Typography variant="body1" sx={{ marginBottom: 2 }}>
+            Por favor, ingrese la patente del vehículo al cual desea atender.
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
@@ -117,15 +140,31 @@ const FormularioExtraordinario = () => {
             {/* eslint-disable-next-line max-len */}
             {patenteReparacion && <Disponibilidad endPoint={endPointDisponibilidad} setFecha={setFecha} setHora={setHora} msjError={setMsjError} limite={limite} />}
             {msjError && <Alerts alertType="error" description={msjError} title="Surgió un error." />}
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="secondary"
-              sx={{ mt: 3, mb: 2 }}
+            <Box sx={{
+              display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 3, gap: '16px',
+            }}
             >
-              Crear Turno
-            </Button>
+              <Button
+                type="submit"
+                // fullWidth
+                variant="contained"
+                color="secondary"
+                size="medium"
+              // sx={{ mt: 1, mb: 2, mr: 1 }}
+              >
+                Crear Turno
+              </Button>
+              <Button
+                // fullWidth
+                variant="contained"
+                color="primary"
+                size="medium"
+                // sx={{ mt: 1, mb: 2, ml: 1 }}
+                onClick={() => setOpenAgregarTurno(false)}
+              >
+                Atrás
+              </Button>
+            </Box>
           </Box>
           <Popup
             title="Error en datos requeridos."
