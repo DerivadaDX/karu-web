@@ -131,7 +131,6 @@ const Hora = ({ diasYhorarios, fecha, setHoraSeleccionada }) => {
         width="50px"
         label="Horarios Disponibles"
       >
-        <MenuItem value="">Elija una hora, por favor</MenuItem>
         {horariosDisponibles
           && horariosDisponibles.map((horaItem) => (
             <MenuItem key={horaItem} value={horaItem}>
