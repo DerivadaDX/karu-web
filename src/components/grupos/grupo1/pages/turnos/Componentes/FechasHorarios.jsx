@@ -69,7 +69,7 @@ const Disponibilidad = ({
       >
         <DateCalendar
           margin="normal"
-          fullwidth
+          fullwidth="true"
           required
           label="Fecha"
           format="DD/MM/YYYY"
@@ -122,7 +122,7 @@ const Hora = ({ diasYhorarios, fecha, setHoraSeleccionada }) => {
     ?.find((item) => item.dia === fecha)?.horarios_disponibles;
 
   return (
-    <FormControl fullwidth>
+    <FormControl fullwidth="true">
       <InputLabel>Horarios Disponibles</InputLabel>
       <Select
         required

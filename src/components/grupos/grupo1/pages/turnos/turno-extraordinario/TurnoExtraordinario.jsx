@@ -18,7 +18,9 @@ import LittleHeader from '../../../components/common/LittleHeader';
 // (tal vez en el popup que abre al agregar turno se lo puede pasar)
 
 const FormularioExtraordinario = (props) => {
-  const { taller, setOpenAgregarTurno, openAgregarTurno } = props;
+  const {
+    taller, setOpenAgregarTurno, openAgregarTurno, setActualizarTabla,
+  } = props;
   // El endpoint toma número naturales y le estamos pasando un string 'T002', debería
   // tomar el 2
   function obtenerPrimerNumero(str) {
@@ -160,7 +162,10 @@ const FormularioExtraordinario = (props) => {
                 color="primary"
                 size="medium"
                 // sx={{ mt: 1, mb: 2, ml: 1 }}
-                onClick={() => setOpenAgregarTurno(false)}
+                onClick={() => {
+                  setOpenAgregarTurno(false);
+                  setActualizarTabla(true);
+                }}
               >
                 Atrás
               </Button>
