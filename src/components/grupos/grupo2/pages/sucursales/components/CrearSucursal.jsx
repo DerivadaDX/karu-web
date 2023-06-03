@@ -32,9 +32,20 @@ const CrearSucursal = ({ onCreate }) => {
     setMostrarPopUpCrearSucursal(!mostrarPopUpCrearSucursal);
   };
 
+  const limpiarFormulario = () => {
+    setNombre('');
+    setCalle('');
+    setNumero('');
+    setCodigoPostal('');
+    setLocalidad('');
+    setProvincia('');
+    setPoseeTaller(false);
+  };
+
   const cambiarVisibilidadPopUpCreacionExitosa = () => {
     setMostrarPopUpCreacionExitosa(false);
     setMostrarPopUpCrearSucursal(false);
+    limpiarFormulario();
     onCreate();
   };
 
