@@ -1,6 +1,6 @@
-/* eslint-disable no-unused-vars */
 import DriveEtaIcon from '@mui/icons-material/DriveEta';
-import { Search } from '@mui/icons-material';import EuroIcon from '@mui/icons-material/Euro';
+import { Search } from '@mui/icons-material';
+import EuroIcon from '@mui/icons-material/Euro';
 
 import React from 'react';
 import Cotizar from './components/cotizar/Cotizar';
