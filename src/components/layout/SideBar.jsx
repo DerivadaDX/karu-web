@@ -1,4 +1,5 @@
 import React from 'react';
+import React from 'react';
 import { styled } from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
 import Toolbar from '@mui/material/Toolbar';
@@ -16,7 +17,9 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import Collapse from '@mui/material/Collapse';
 import { Box, Tooltip } from '@mui/material';
+import { Box, Tooltip } from '@mui/material';
 import PropTypes from 'prop-types';
+import TooltipCus from '../grupos/grupo1/components/common/Tooltip';
 import TooltipCus from '../grupos/grupo1/components/common/Tooltip';
 import GROUP_1_PAGES_CONFIG from '../grupos/grupo1/pagesConfig';
 import GROUP_2_PAGES_CONFIG from '../grupos/grupo2/pagesConfig';
@@ -35,6 +38,31 @@ const styles = {
   },
 };
 
+const filtrarElementosSoloUrl = (menuItemConfig) => {
+  const esSoloUrl = menuItemConfig.soloUrl === true;
+
+  return !esSoloUrl;
+};
+
+const buildCollapsableMenu = (menuItemConfig) => {
+  const iconIsTooltip = menuItemConfig.icon.name === TooltipCus.name;
+  const icon = !iconIsTooltip
+    ? (
+      <Tooltip title={menuItemConfig.name} placement="right">
+        <Box>{menuItemConfig.icon}</Box>
+      </Tooltip>
+    )
+    : menuItemConfig.icon;
+
+  return (
+    <ListItemButton key={menuItemConfig.id} sx={styles.listItemButton} href={menuItemConfig.href}>
+      <ListItemIcon>
+        {icon}
+      </ListItemIcon>
+      <ListItemText primary={menuItemConfig.name} />
+    </ListItemButton>
+  );
+};
 const filtrarElementosSoloUrl = (menuItemConfig) => {
   const esSoloUrl = menuItemConfig.soloUrl === true;
 
@@ -108,6 +136,9 @@ const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
             <Tooltip title="Administración" placement="right">
               <Box><AdminPanelSettingsIcon /></Box>
             </Tooltip>
+            <Tooltip title="Administración" placement="right">
+              <Box><AdminPanelSettingsIcon /></Box>
+            </Tooltip>
           </ListItemIcon>
           <ListItemText primary="Administración" />
           {openAdminMenu ? <ExpandLess /> : <ExpandMore />}
@@ -120,6 +151,9 @@ const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
         </Collapse>
         <ListItemButton onClick={toggleTechnicalAreaMenu}>
           <ListItemIcon>
+            <Tooltip title="Área técnica" placement="right">
+              <Box><EngineeringIcon /></Box>
+            </Tooltip>
             <Tooltip title="Área técnica" placement="right">
               <Box><EngineeringIcon /></Box>
             </Tooltip>
@@ -137,7 +171,11 @@ const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
             <Tooltip title="Área comercial" placement="right">
               <Box><LocalAtmIcon /></Box>
             </Tooltip>
+            <Tooltip title="Área comercial" placement="right">
+              <Box><LocalAtmIcon /></Box>
+            </Tooltip>
           </ListItemIcon>
+          <ListItemText primary="Área comercial" />
           <ListItemText primary="Área comercial" />
           {openCommercialMenu ? <ExpandLess /> : <ExpandMore />}
         </ListItemButton>

@@ -9,14 +9,19 @@ import Vendedores from './pages/vendedores/Vendedores';
 const GROUP_2_PAGES_CONFIG = [
   {
     id: 'g2-CuentaCorriente',
+    id: 'g2-CuentaCorriente',
     name: 'Cuenta corriente',
     href: '/cuenta-corriente',
+    href: '/cuenta-corriente',
     icon: <AccountBalanceWalletIcon />,
+    page: <CuentaCorriente />,
     page: <CuentaCorriente />,
   },
   {
     id: 'g2-Sucursales',
+    id: 'g2-Sucursales',
     name: 'Sucursales',
+    href: '/sucursales',
     href: '/sucursales',
     icon: <StoreIcon />,
     page: <Sucursales />,

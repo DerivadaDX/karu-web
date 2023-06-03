@@ -3,6 +3,11 @@
   # KarU Web · ![ci status](https://github.com/DerivadaDX/karu-web/actions/workflows/ci.yml/badge.svg)
 
 </div>
+<div align="center">
+
+  # KarU Web · ![ci status](https://github.com/DerivadaDX/karu-web/actions/workflows/ci.yml/badge.svg)
+
+</div>
 
 ## Primeros pasos
 
@@ -61,6 +66,11 @@ const GROUP_2_PAGES_CONFIG = [
     // Si es true no se va a crear un elemento en el menú lateral.
     // Si es false o no está definido, se va a agregar un elemento en el menú lateral.
     soloUrl: true,
+
+    // Indica si esta configuración es solo de una ruta.
+    // Si es true no se va a crear un elemento en el menú lateral.
+    // Si es false o no está definido, se va a agregar un elemento en el menú lateral.
+    soloUrl: true,
   },
 ];
 ```
@@ -68,14 +78,18 @@ const GROUP_2_PAGES_CONFIG = [
 Esta configuración es únicamente para declarar las páginas a las cuales se pretende que el usuario acceda por medio del menú lateral.
 
 ## Estilo
+## Estilo
 
 El proyecto está configurado con [ESLint](https://eslint.org/) para seguir la guía de estilo de [Airbnb](https://github.com/airbnb/javascript/tree/master/react).
 
 Se definió el script `lint:check` para validar que la guía se esté siguiendo. También se puede instalar el [plugin](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) para VSCode.
 Para correrlo se debe ejecutar `npm run lint:check` en la terminal.
+Se definió el script `lint:check` para validar que la guía se esté siguiendo. También se puede instalar el [plugin](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) para VSCode.
+Para correrlo se debe ejecutar `npm run lint:check` en la terminal.
 
 Algunos errores del linter pueden corregirse automáticamente mediante el script `lint:fix`. Para correrlo se debe ejecutar `npm run lint:fix` en la terminal.
 
+## Branching
 ## Branching
 
 El repositorio cuenta con dos branch principales: `main` y `dev`. En `main` se encontrará la versión de producción, mientras que en `dev` la versión de desarrollo.

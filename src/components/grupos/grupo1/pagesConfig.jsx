@@ -91,6 +91,7 @@ const GROUP_1_PAGES_CONFIG = [
     icon: <TooltipCus icon={<HomeRepairServiceIcon />} title="Alta de Services" />,
     page: <AltaServiceForm />,
   },
+
 ];
 
 export default GROUP_1_PAGES_CONFIG;
