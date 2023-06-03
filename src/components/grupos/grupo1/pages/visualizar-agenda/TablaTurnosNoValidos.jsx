@@ -141,7 +141,6 @@ const TablaTurnosNoValidos = (props) => {
             display: 'flex',
             flexWrap: 'inherit',
             justifyContent: 'flex-end',
-            overflow: 'auto',
             maxHeight: '200px',
           },
         }}
