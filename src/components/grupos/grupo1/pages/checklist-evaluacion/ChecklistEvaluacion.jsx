@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
@@ -16,6 +17,7 @@ import {
 } from 'react';
 import axios from 'axios';
 import MaterialReactTable from 'material-react-table';
+import { MRT_Localization_ES } from 'material-react-table/locales/es';
 import Slider from '@mui/material/Slider';
 import Header from '../../components/common/Header';
 import Alerts from '../../components/common/Alerts';
@@ -183,6 +185,7 @@ const ChecklistEvaluacion = (props) => {
           positionActionsColumn="last"
           enableRowActions
           renderRowActions={renderRowActions}
+          localization={MRT_Localization_ES}
           muiTableBodyCellProps={{ align: 'center' }}
           muiTableHeadCellProps={{ align: 'center' }}
           displayColumnDefOptions={{
