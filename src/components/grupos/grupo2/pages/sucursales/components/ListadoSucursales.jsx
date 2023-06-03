@@ -10,6 +10,7 @@ import MaterialReactTable from 'material-react-table';
 
 import SucursalService from '../services/sucursal-service';
 import ModificarSucursal from './ModificarSucursal';
+import CrearSucursal from './CrearSucursal';
 
 const ListadoSucursales = () => {
   const [sucursales, setSucursales] = useState([]);
@@ -54,6 +55,12 @@ const ListadoSucursales = () => {
       </Typography>
     );
   };
+
+  const renderCrearSucursal = () => (
+    <CrearSucursal
+      onCreate={obtenerSucursales}
+    />
+  );
 
   const renderAccionesFila = ({ row }) => {
     const sucursal = row.original;
@@ -118,6 +125,7 @@ const ListadoSucursales = () => {
         columns={columnas}
         data={sucursales}
         state={{ isLoading: cargando }}
+        renderTopToolbarCustomActions={renderCrearSucursal}
         enableRowActions
         positionActionsColumn="last"
         renderRowActions={renderAccionesFila}
