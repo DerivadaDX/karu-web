@@ -3,6 +3,7 @@ import axios from 'axios';
 const url = 'https://autotech2.onrender.com/tecnicos';
 const urlEvaluacion = 'https://autotech2.onrender.com/evaluaciones/registros';
 const urlReparacion = 'https://autotech2.onrender.com/reparaciones';
+const urlExtraordinario = 'https://autotech2.onrender.com/evaluaciones/registros-extraordinario';
 
 const getTurnosEvaluacion = async (tecnicoId) => axios.get(`${urlEvaluacion}/listar/${tecnicoId}/`);
 
@@ -10,7 +11,7 @@ const getTurnosService = async (tecnicoId) => axios.get(`${url}/trabajos-en-proc
 
 const getTurnosReparacion = async (tecnicoId) => axios.get(`${urlReparacion}/listar-en-proceso/${tecnicoId}/`);
 
-const getTurnosExtraodinario = async (tecnicoId) => axios.get(`${url}/trabajos-en-proceso-extraordinario/${tecnicoId}/`);
+const getTurnosExtraodinario = async (tecnicoId) => axios.get(`${urlExtraordinario}/listar/${tecnicoId}`);
 
 const getTurnosTerminados = async (tecnicoId) => axios.get(`${url}/trabajos-terminados/${tecnicoId}/`);
 
