@@ -199,7 +199,10 @@ const FormularioExtraordinario = (props) => {
             >
               <Button
                 color="success"
-                onClick={() => setOpenPopupSeleccion(false)}
+                onClick={() => {
+                  setOpenPopupSeleccion(false);
+                  setActualizarTabla(true);
+                }}
               >
                 Cerrar
               </Button>
