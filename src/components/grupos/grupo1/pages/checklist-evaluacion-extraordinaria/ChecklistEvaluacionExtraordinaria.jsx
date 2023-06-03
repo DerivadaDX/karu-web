@@ -23,15 +23,15 @@ import { getChecklistEvaluaciones } from '../../services/services-checklist';
 import Popup from '../../components/common/DialogPopup';
 import LittleHeader from '../../components/common/LittleHeader';
 
-const ChecklistEvaluacion = (props) => {
+const ChecklistEvaluacionExtraordinaria = (props) => {
   const {
     idTurnoPadre, open, setOpen, actualizar, setActualizar,
   } = props;
   const [evaluaciones, setEvaluaciones] = useState([]);
   const [loading, setLoading] = useState(true);
   const [resError, setResError] = useState([]);
-  // Para los popups de confirmacion y manejo de errores
 
+  // Para los popups de confirmacion y manejo de errores
   const [openNoSeleccion, setOpenNoSeleccion] = useState(false);
   const [openConfirmarEvaluacion, setOpenConfirmarEvaluacion] = useState(false);
   const [openEvaluacionEnviada, setOpenEvaluacionEnviada] = useState(false);
@@ -40,6 +40,20 @@ const ChecklistEvaluacion = (props) => {
     tareas: [],
     comentarios: '',
   });
+
+  const columnas = useMemo(
+    () => [
+      {
+        accessorKey: 'elemento',
+        header: 'Partes del auto',
+      },
+      {
+        accessorKey: 'tarea',
+        header: 'Tarea',
+      },
+    ],
+    [],
+  );
 
   // alertas de la API
   const [alertType, setAlertType] = useState('');
@@ -66,20 +80,6 @@ const ChecklistEvaluacion = (props) => {
       });
   };
 
-  const columnas = useMemo(
-    () => [
-      {
-        accessorKey: 'elemento',
-        header: 'Partes del auto',
-      },
-      {
-        accessorKey: 'tarea',
-        header: 'Tarea',
-      },
-    ],
-    [],
-  );
-
   const handleChangeComment = (event) => {
     const { name, value } = event.target;
     setValoresEvaluacion((prevState) => ({
@@ -95,7 +95,7 @@ const ChecklistEvaluacion = (props) => {
       valoresEvaluacion.tareas.push(idTask);
     } else {
       const index = valoresEvaluacion.tareas.indexOf(idTask);
-      if (index > -1) {
+      if (index >= 0) {
         valoresEvaluacion.tareas.splice(index, 1);
       }
     }
@@ -103,7 +103,9 @@ const ChecklistEvaluacion = (props) => {
 
   const renderRowActions = ({ row }) => (
     <Box
-      style={{ display: 'flex', flexWrap: 'nowrap', gap: '0.5rem' }}
+      style={{
+        display: 'flex', flexWrap: 'nowrap', gap: '0.5rem', alignItems: 'center', justifyContent: 'center',
+      }}
       sx={{ height: '3.5em', marginLeft: '0.2rem', marginRight: '0.2rem' }}
     >
       <Checkbox
@@ -112,6 +114,26 @@ const ChecklistEvaluacion = (props) => {
       />
     </Box>
   );
+
+  const seSeleccionoAlgunaCheckbox = () => {
+    // eslint-disable-next-line no-restricted-syntax, guard-for-in
+    for (const key in valoresEvaluacion.tareas) {
+      if (valoresEvaluacion.tareas[key]) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  const handleCheckboxSelect = () => {
+    const algunaSeleccionada = seSeleccionoAlgunaCheckbox();
+
+    if (algunaSeleccionada) {
+      setOpenConfirmarEvaluacion(true);
+    } else {
+      setOpenNoSeleccion(true);
+    }
+  };
 
   const url = 'https://autotech2.onrender.com/evaluaciones/registro-extraordinario/crear/';
   const postEnviarEvaluacion = () => {
@@ -156,6 +178,8 @@ const ChecklistEvaluacion = (props) => {
           positionActionsColumn="last"
           enableRowActions
           renderRowActions={renderRowActions}
+          muiTableBodyCellProps={{ align: 'center' }}
+          muiTableHeadCellProps={{ align: 'center' }}
           displayColumnDefOptions={{
             'mrt-row-actions': {
               header: 'Necesita reparación',
@@ -204,7 +228,7 @@ const ChecklistEvaluacion = (props) => {
           sx={{ mt: 3, ml: 1 }}
           color="secondary"
           onClick={() => {
-            setOpenConfirmarEvaluacion(true);
+            handleCheckboxSelect();
           }}
         >
           Terminar evaluación
@@ -222,9 +246,43 @@ const ChecklistEvaluacion = (props) => {
         </Button>
       </Box>
 
-      {/* Popup cuando estan todas las rows seleccionadas para confirmar evaluacion */}
+      {/* Popup para mostrar en caso de que no haya seleccionado ningun item */}
       <Popup
-        title={<LittleHeader titulo="Evaluación Terminada" />}
+        title={<LittleHeader titulo="No ha seleccionado nada" />}
+        openDialog={openNoSeleccion}
+        setOpenDialog={setOpenNoSeleccion}
+        description="No ha seleccionado ninguna tarea. Si está seguro de esto, presione 'Aceptar'; de lo contrario, vuelva a verificar."
+      >
+        <Box sx={{
+          display: 'flex', justifyContent: 'center', alignItems: 'center',
+        }}
+        >
+          <DialogActions>
+            <Button
+              color="secondary"
+              variant="outlined"
+              onClick={() => {
+                setOpenConfirmarEvaluacion(true);
+                setOpenNoSeleccion(false);
+              }}
+            >
+              Aceptar
+            </Button>
+            <Button
+              color="error"
+              variant="outlined"
+              onClick={() => {
+                setOpenNoSeleccion(false);
+              }}
+            >
+              Cerrar
+            </Button>
+          </DialogActions>
+        </Box>
+      </Popup>
+
+      <Popup
+        title={<LittleHeader titulo="Evaluación terminada" />}
         openDialog={openConfirmarEvaluacion}
         setOpenDialog={setOpenConfirmarEvaluacion}
         description="¿Está seguro que desea enviar la evaluación? No se podrá modificar una vez realizada."
@@ -287,4 +345,4 @@ const ChecklistEvaluacion = (props) => {
   );
 };
 
-export default ChecklistEvaluacion;
+export default ChecklistEvaluacionExtraordinaria;
