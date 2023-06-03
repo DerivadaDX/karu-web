@@ -315,6 +315,7 @@ const TablaTurnosPendientes = (props) => {
           idTaller={idTaller}
           setOpenAgregarTurno={setOpenAgregarTurno}
           openAgregarTurno={openAgregarTurno}
+          setActualizarTabla={setActualizarTabla}
         />
       </PopupAgregarTurno>
     </>
