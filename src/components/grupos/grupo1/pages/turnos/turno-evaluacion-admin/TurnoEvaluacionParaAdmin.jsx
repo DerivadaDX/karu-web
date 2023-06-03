@@ -165,7 +165,10 @@ const FormularioEvaluacionAdmin = () => {
             >
               <Button
                 color="success"
-                onClick={() => setOpenPopupSeleccion(false)}
+                // onClick={() => setOpenPopupSeleccion(false)}
+                onClick={() => {
+                  window.location.href = '/';
+                }}
               >
                 Cerrar
               </Button>

@@ -163,7 +163,9 @@ const FormularioEvaluacionCliente = () => {
             >
               <Button
                 color="success"
-                onClick={() => setOpenPopupSeleccion(false)}
+                onClick={() => {
+                  window.location.href = '/';
+                }}
               >
                 Cerrar
               </Button>
