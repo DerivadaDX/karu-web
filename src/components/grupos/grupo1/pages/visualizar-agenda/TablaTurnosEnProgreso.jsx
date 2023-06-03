@@ -114,6 +114,7 @@ const TablaTurnosEnProgreso = (props) => {
       {
         accessorKey: 'patente',
         header: 'Patente',
+
       },
       {
         accessorKey: 'tipo',
@@ -134,6 +135,10 @@ const TablaTurnosEnProgreso = (props) => {
     ],
     [],
   );
+
+  const tablaStyle = {
+    overflow: 'scroll',
+  };
 
   const renderRowActions = ({ row }) => (
     <Box
@@ -213,7 +218,7 @@ const TablaTurnosEnProgreso = (props) => {
         renderRowActions={renderRowActions}
         renderEmptyRowsFallback={noData}
         localization={MRT_Localization_ES}
-        defaultColumn={{ minSize: 10, maxSize: 100, size: 30 }}
+        defaultColumn={{ size: 5 }}
         initialState={{ density: 'compact' }}
         muiTopToolbarProps={{
           sx: {
