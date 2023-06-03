@@ -77,11 +77,11 @@ const FormularioCliente = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    try {
-      if (msjError !== '') {
-        setOpenPopupNoSeleccion(true);
-      } else if (
-        taller && patenteTurno && isPatenteValida && fecha && hora && frecuenciaKm && isKmValido) {
+    if (msjError !== '') {
+      setOpenPopupNoSeleccion(true);
+    } else if (
+      taller && patenteTurno && isPatenteValida && fecha && hora && frecuenciaKm && isKmValido) {
+      try {
         await axios({
           method: 'post',
           url: 'https://autotech2.onrender.com/turnos/crear-turno-service/',
@@ -94,21 +94,36 @@ const FormularioCliente = () => {
           },
         });
         setOpenPopupSeleccion(true);
-      } else {
-        setOpenPopupNoSeleccion(true);
+      } catch (error) {
+        if (error.response && error.response.data) {
+          const responseData = error.response.data;
+          if (responseData.includes('la patente ingresada ya tiene un turno de ese tipo registrado en el sistema')) {
+            setOpenError(true);
+            setAlertError('error');
+            setAlertTitulo('No se puede asignar un turno');
+            setAlertMensaje('Ya existe un turno para esa patente y tipo de turno.');
+            // Hablar con Luci, porque pongo una patente que tiene turno y su error dice que
+            // no pertenece a un cliente y entra acá, y en realidad debería entrar en el de arriba
+          } else if (responseData.includes('la patente no está registrada como perteneciente a un cliente')) {
+            setOpenError(true);
+            setAlertError('error');
+            setAlertTitulo('Error de patente');
+            setAlertMensaje('La patente ingresada no pertenece a ningún cliente.');
+          } else {
+            setOpenError(true);
+            setAlertError('error');
+            setAlertTitulo('Ha ocurrido un error');
+            setAlertMensaje('Si el problema persiste, comuníquese con insomnia.front@gmail.com');
+          }
+        } else {
+          setOpenError(true);
+          setAlertError('error');
+          setAlertTitulo('Ha ocurrido un error');
+          setAlertMensaje('Si el problema persiste, comuníquese con insomnia.front@gmail.com');
+        }
       }
-    } catch (error) {
-      if (error.response.data.includes('la patente ingresada ya tiene un turno de ese tipo registrado en el sistema')) {
-        setOpenError(true);
-        setAlertError('error');
-        setAlertTitulo('Ha ocurrido un problema');
-        setAlertMensaje('Ya existe un turno para esa patente y tipo de turno.');
-      } else {
-        setOpenError(true);
-        setAlertError('error');
-        setAlertTitulo('Ha ocurrido un error');
-        setAlertMensaje('Si el problema persiste, comuniquese con insomnia.front@gmail.com');
-      }
+    } else {
+      setOpenPopupNoSeleccion(true);
     }
   };
 

@@ -13,7 +13,7 @@ import Dashboard from './pages/dashboard/Dashboard';
 import MisTurnos from './pages/visualizar-mis-turnos/MisTurnos';
 import AgendaTaller from './pages/visualizar-agenda/AgendaTaller';
 import Talleres from './pages/talleres/Talleres';
-import FormularioCliente from './pages/turnos/turno-service-cliente/TurnoCliente';
+import FormularioCliente from './pages/turnos/turno-service-cliente/TurnoServiceCliente';
 import Services from './pages/visualizar-services/Services';
 import FormularioEvaluacionAdmin from './pages/turnos/turno-evaluacion-admin/TurnoEvaluacionParaAdmin';
 import FormularioEvaluacionCliente from './pages/turnos/turno-evaluacion-cliente/TurnoEvaluacionCliente';

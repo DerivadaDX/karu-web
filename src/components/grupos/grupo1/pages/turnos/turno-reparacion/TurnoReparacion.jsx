@@ -127,6 +127,7 @@ const Formulario = (props) => {
               onChange={guardarPatente}
             />
             {!isValid && <Alerts alertType="warning" description="Ejemplos de patentes válidas: AA111AA o ABC123" title="Patente inválida" />}
+            { /* Los talleres NO deben aparecer acá, se heredan del contexto en el que está */}
             <Talleres setTallerSeleccionado={setTaller} />
             {/* eslint-disable-next-line max-len */}
             {patenteReparacion && taller && origenReparacion && <Disponibilidad endPoint={endPointDisponibilidad} setFecha={setFecha} setHora={setHora} msjError={setMsjError} limite={limite} />}
@@ -140,7 +141,7 @@ const Formulario = (props) => {
                 // fullWidth
                 variant="contained"
                 color="secondary"
-                // sx={{ mt: 3, mb: 2 }}
+              // sx={{ mt: 3, mb: 2 }}
               >
                 Crear Turno
               </Button>
