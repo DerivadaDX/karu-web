@@ -111,6 +111,11 @@ const Formulario = (props) => {
           setAlertError('error');
           setAlertTitulo('Error de patente');
           setAlertMensaje('La patente ingresada no pertenece a la de un auto evaluado en el taller.');
+        } else if (responseData.includes('pertenece a un vehiculo que ha sido evaluado y no necesita reparaciones')) {
+          setOpenError(true);
+          setAlertError('error');
+          setAlertTitulo('No aplica reparación para este vehículo');
+          setAlertMensaje('La patente ingresada pertenece a un vehiculo que ha sido evaluado y resultó no necesitar reparaciones');
         } else {
           setOpenError(true);
           setAlertError('error');
