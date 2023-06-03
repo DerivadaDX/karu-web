@@ -28,10 +28,6 @@ const CrearSucursal = ({ onCreate }) => {
   const [provincia, setProvincia] = useState('');
   const [poseeTaller, setPoseeTaller] = useState(false);
 
-  const cambiarVisibilidadPopUpCrearSucursal = () => {
-    setMostrarPopUpCrearSucursal(!mostrarPopUpCrearSucursal);
-  };
-
   const limpiarFormulario = () => {
     setNombre('');
     setCalle('');
@@ -42,10 +38,14 @@ const CrearSucursal = ({ onCreate }) => {
     setPoseeTaller(false);
   };
 
+  const cambiarVisibilidadPopUpCrearSucursal = () => {
+    limpiarFormulario();
+    setMostrarPopUpCrearSucursal(!mostrarPopUpCrearSucursal);
+  };
+
   const cambiarVisibilidadPopUpCreacionExitosa = () => {
     setMostrarPopUpCreacionExitosa(false);
     setMostrarPopUpCrearSucursal(false);
-    limpiarFormulario();
     onCreate();
   };
 
