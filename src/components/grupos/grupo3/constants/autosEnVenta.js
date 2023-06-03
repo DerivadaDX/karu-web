@@ -1,7 +1,10 @@
-/* eslint-disable import/prefer-default-export */
-export const products = [
+import autoUsado from './autoUsado.jpg';
+
+const autosEnVenta = [
   {
     id: '1',
+    imagenAuto: autoUsado,
+    precio: 2835000,
     patente: 'ABC123',
     sucursal: 'Sucursal A',
     anio: 2020,
@@ -14,6 +17,8 @@ export const products = [
   },
   {
     id: '2',
+    imagenAuto: autoUsado,
+    precio: 10560000,
     patente: 'DEF456',
     sucursal: 'Sucursal B',
     anio: 2019,
@@ -26,6 +31,8 @@ export const products = [
   },
   {
     id: '3',
+    imagenAuto: autoUsado,
+    precio: 13009400,
     patente: 'GHI789',
     sucursal: 'Sucursal C',
     anio: 2021,
@@ -38,6 +45,8 @@ export const products = [
   },
   {
     id: '4',
+    imagenAuto: autoUsado,
+    precio: 5000000,
     patente: 'JKL012',
     sucursal: 'Sucursal A',
     anio: 2022,
@@ -50,6 +59,8 @@ export const products = [
   },
   {
     id: '5',
+    imagenAuto: autoUsado,
+    precio: 2000000,
     patente: 'MNO345',
     sucursal: 'Sucursal B',
     anio: 2020,
@@ -62,6 +73,8 @@ export const products = [
   },
   {
     id: '6',
+    imagenAuto: autoUsado,
+    precio: 10375000,
     patente: 'PQR678',
     sucursal: 'Sucursal C',
     anio: 2019,
@@ -74,6 +87,8 @@ export const products = [
   },
   {
     id: '7',
+    imagenAuto: autoUsado,
+    precio: 8560000,
     patente: 'STU901',
     sucursal: 'Sucursal A',
     anio: 2021,
@@ -86,6 +101,8 @@ export const products = [
   },
   {
     id: '8',
+    imagenAuto: autoUsado,
+    precio: 14790000,
     patente: 'VWX234',
     sucursal: 'Sucursal B',
     anio: 2022,
@@ -98,6 +115,8 @@ export const products = [
   },
   {
     id: '9',
+    precio: 13456700,
+    imagenAuto: autoUsado,
     patente: 'YZA567',
     sucursal: 'Sucursal C',
     anio: 2020,
@@ -110,7 +129,9 @@ export const products = [
   },
   {
     id: '10',
-    patente: 'BCD-890',
+    imagenAuto: autoUsado,
+    precio: 3897456,
+    patente: 'BCD890',
     sucursal: 'Sucursal A',
     anio: 2021,
     marca: 'Ford',
@@ -122,7 +143,9 @@ export const products = [
   },
   {
     id: 21,
-    patente: 'XYZ-987',
+    imagenAuto: autoUsado,
+    precio: 9456000,
+    patente: 'XYZ987',
     sucursal: 'Sucursal B',
     marca: 'Volkswagen',
     anio: 2021,
@@ -133,3 +156,5 @@ export const products = [
     reserva: 'si',
   },
 ];
+
+export default autosEnVenta;

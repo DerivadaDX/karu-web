@@ -1,0 +1,86 @@
+.form-restore-pass {
+    margin: auto;
+    border-radius: 10px;
+}
+
+.inputs-restore-pass {
+
+    width: 30em;
+    height: 50px;
+    border-radius: 20px;
+    
+    display: block;
+    padding: 0.1em;
+    font-size: 17px;
+    margin: 1.24em auto;
+    padding: 0.31em;
+    color: #000;
+    transition: all .2s ease;
+}
+
+.inputs-restore-pass-red {
+    width: 30em;
+    height: 50px;
+    border-radius: 20px;
+    display: block;
+    padding: 0.1em;
+    font-size: 17px;
+    margin: 0.74em auto;
+    padding: 0.31em;
+    color: #000;
+    transition: all .2s ease;
+    border-bottom: 2px solid #ff0000;
+    transition: all .2s ease;
+}
+
+.inputs-restore-pass:focus {
+    border-bottom: 4px solid #0726d6
+}
+
+.spans-restore-pass {
+    color: red;
+    font-size: 12px;
+    font-weight: 700;
+    display: none;
+}
+
+.restore-pass-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 7em auto;
+    width: 20%;
+    text-align: center;
+}
+
+.restore-pass-container__form-h2 {
+    color: #272992;
+    font-size: 30px;
+}
+
+.buttons-restore-pass {
+    margin: 0.5em 0.3em;
+    width: 11em;
+    border: none;
+    font-weight: 700;
+    font-size: 17px;
+    padding: 0.31em;
+    cursor: pointer;
+    background: #0726d6;
+    border-radius: 33px;
+    color: white;
+    height: 59px;
+    transition: all .3s ease;
+}
+
+@media only screen and (max-width: 1024px) {
+    .inputs {
+        width: 25em;
+    }
+}
+
+@media only screen and (max-width: 856px) {
+    .inputs {
+        width: 20em;
+    }
+}
