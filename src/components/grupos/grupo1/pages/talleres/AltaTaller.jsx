@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable radix */
 /* eslint-disable max-len */
 /* eslint-disable no-console */
@@ -11,6 +12,7 @@ import DialogActions from '@mui/material/DialogActions';
 import {
   Box, TextField, Button, InputLabel, Select, MenuItem, Container, Grid,
 } from '@mui/material';
+import LoadingButton from '@mui/lab/LoadingButton';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { getSucursalesSinTaller } from '../../services/services-talleres';
@@ -48,7 +50,8 @@ const AltaTaller = (props) => {
   const [openError, setOpenError] = useState(false);
   const [openMensajeExitoso, setOpenMensajeExitoso] = useState(false);
   const [mensajeExitoso, setMensajeExistoso] = useState();
-
+  const [loading, setLoading] = useState(false);
+  const [loadingConfirmacion, setLoadingConfirmacion] = useState(false);
   // Error al enviar
   const [openErrorCrear, setOpenErrorCrear] = useState(false);
 
@@ -147,6 +150,7 @@ const AltaTaller = (props) => {
   };
 
   const validarForm = () => {
+    setLoading(true);
     const todoCompleto = sucursalSeleccionada && nombre && direccion && mail && telefono && capacidad && cantTecnicos;
     const todoValido = nombreEsValido && dirEsValida && mailEsValido && telefonoEsValido && capacidadEsValida && cantTecnicosEsValido;
     const todoCorrecto = todoCompleto && todoValido;
@@ -412,7 +416,8 @@ const AltaTaller = (props) => {
       }}
       >
         <DialogActions>
-          <Button
+          <LoadingButton
+            loading={loading}
             color="secondary"
             variant="outlined"
             sx={{ marginTop: 5 }}
@@ -420,8 +425,8 @@ const AltaTaller = (props) => {
               validarForm();
             }}
           >
-            Crear taller
-          </Button>
+            <span>Crear taller</span>
+          </LoadingButton>
           <Button
             color="primary"
             variant="outlined"
@@ -445,15 +450,18 @@ const AltaTaller = (props) => {
         }}
         >
           <DialogActions>
-            <Button
+            <LoadingButton
+              loading={loadingConfirmacion}
               color="primary"
               variant="outlined"
               onClick={() => {
                 handleSubmit();
+                setLoading(false);
+                setLoadingConfirmacion(true);
               }}
             >
-              Aceptar
-            </Button>
+              <span>Aceptar</span>
+            </LoadingButton>
             <Button
               color="error"
               variant="outlined"

@@ -183,6 +183,8 @@ const ChecklistEvaluacion = (props) => {
           positionActionsColumn="last"
           enableRowActions
           renderRowActions={renderRowActions}
+          muiTableBodyCellProps={{ align: 'center' }}
+          muiTableHeadCellProps={{ align: 'center' }}
           displayColumnDefOptions={{
             'mrt-row-actions': {
               header: 'Puntaje',

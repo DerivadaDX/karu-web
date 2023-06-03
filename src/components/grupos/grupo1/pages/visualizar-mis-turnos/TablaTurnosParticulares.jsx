@@ -12,6 +12,7 @@ import { getTurnosExtraodinario } from '../../services/services-tecnicos';
 import Popup from '../../components/common/DialogPopup';
 import DetalleTurno from '../../components/common/DetalleTurno';
 import LittleHeader from '../../components/common/LittleHeader';
+import ChecklistEvaluacionExtraordinaria from '../checklist-evaluacion-extraordinaria/ChecklistEvaluacionExtraordinaria';
 
 const TablaTurnosParticulares = (props) => {
   const { idTecnico } = props;
@@ -173,11 +174,31 @@ const TablaTurnosParticulares = (props) => {
 
       </Popup>
       <Popup
-        title="Checklist"
+        title={(
+          <LittleHeader
+            titulo="Evaluación técnica particular"
+            subtitulo="Checklist"
+          />
+      )}
         openDialog={openChecklist}
         setOpenDialog={setOpenChecklist}
+        description={(
+          <>
+            <strong>Aclaración</strong>
+            <p>
+              Marque las partes que considere
+              necesarias reparar.
+            </p>
+          </>
+)}
       >
-        Checklist
+        <ChecklistEvaluacionExtraordinaria
+          idTurnoPadre={idTurno}
+          open={openChecklist}
+          setOpen={setOpenChecklist}
+          actualizar={actualizarTabla}
+          setActualizar={setActualizarTabla}
+        />
       </Popup>
     </>
   );
