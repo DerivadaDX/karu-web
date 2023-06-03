@@ -6,9 +6,9 @@ import { useState, useEffect } from 'react';
 import InputLabel from '@mui/material/InputLabel';
 
 const tallerAPI = axios.create({
-  baseURL: 'https://autotech2.onrender.com/talleres_admin/',
+  baseURL: 'https://autotech2.onrender.com/talleres/list-activos/',
 });
-
+// https://autotech2.onrender.com/talleres/list-activos/
 // eslint-disable-next-line react/prop-types
 const Talleres = ({ setTallerSeleccionado }) => {
   const [talleres, setTalleres] = useState([]);
