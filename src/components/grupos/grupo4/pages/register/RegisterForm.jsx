@@ -43,6 +43,8 @@ const RegisterForm = () => {
   const [showTechnicalLevel, setShowTechnicalLevel] = useState(false);
   const [showOfficeDropdown, setShowOfficeDropdown] = useState(false);
 
+  const [errors, setErrors] = useState({});
+
   const [isOfficeDropdownInitialized, setIsOfficeDropdownInitialized] =
     useState(false);
   const [isWorkshopDropdownInitialized, setIsWorkshopDropdownInitialized] =
@@ -66,6 +68,19 @@ const RegisterForm = () => {
   };
 
   const onChange = (e) => {
+    if (e.target.name !== "type" && e.target.name !== "branch" && e.target.name !== "technicalLevel") {
+      const { name } = e.target;
+      const inputElement = e.target;
+      const isValid = inputElement.checkValidity();
+      const errorMessage = inputs.map((input) =>
+        input.name === name? input.errorMessage : ""
+      )
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [name]: isValid ? '' : errorMessage,
+      }));
+    }
+
     setValues({ ...values, [e.target.name]: e.target.value });
     setSpanAlreadyExistsUser(false);
   };
@@ -134,36 +149,17 @@ const RegisterForm = () => {
             label={input.label}
             onChange={onChange}
             name={input.name}
+            inputProps={{ pattern: input.pattern }}
+            error={Boolean(errors[input.name])} // Show error message if exists
+            helperText={errors[input.name]} // Show error message
+            required
           ></TextField>
         ))}
-        <div className="inputs">
-          <label>Tipo de usuario</label>
-          <select
-            name="type"
-            size={1}
-            className="select-style"
-            onChange={onChange}
-            defaultValue=""
-          >
-            <option value="" disabled hidden>
-              {' '}
-              Elija un tipo de usuario...
-            </option>
-            <option value="GERENTE_GENERAL">Gerente general</option>
-            <option value="GERENTE_SUCURSAL">Gerente sucursal</option>
-            <option value="SUPERVISOR_VENTAS">Supervisor de ventas</option>
-            <option value="SUPERVISOR_TECNICO">Supervisor tecnico</option>
-            <option value="ADMINISTRADOR">Administrador</option>
-            <option value="IT">IT</option>
-            <option value="TECNICO">Tecnico</option>
-            <option value="VENDEDOR">Vendedor</option>
-          </select>
-        </div>
-        {/* <Paper>
+        <Paper>
           <Box sx={{ minWidth: 120 }}>
             <FormControl fullWidth>
               <InputLabel>Elija un tipo de usuario</InputLabel>
-              <Select onChange={(e)=> {onChange(e)}} defaultValue=''>
+              <Select onChange={onChange} defaultValue='' name='type'>
                 <MenuItem value="GERENTE_GENERAL">Gerente general</MenuItem>
                 <MenuItem value="GERENTE_SUCURSAL">Gerente sucursal</MenuItem>
                 <MenuItem value="SUPERVISOR_VENTAS">
@@ -179,7 +175,7 @@ const RegisterForm = () => {
               </Select>
             </FormControl>
           </Box>
-        </Paper> */}
+        </Paper>
         {showOfficeDropdown && (
           <Paper>
             <Box sx={{ minWidth: 120 }}>
@@ -201,7 +197,7 @@ const RegisterForm = () => {
             <Box sx={{ minWidth: 120 }}>
               <FormControl fullWidth>
                 <InputLabel>Seleccione un Taller</InputLabel>
-                <Select onChange={onChange} defaultValue="">
+                <Select onChange={onChange} defaultValue="" name='branch'>
                   {workshops.map((workshop, index) => (
                     <MenuItem key={index} value={workshop.workshopCode}>
                       {workshop.workshopName}
@@ -217,10 +213,11 @@ const RegisterForm = () => {
             <Box sx={{ minWidth: 120 }}>
               <FormControl fullWidth>
                 <InputLabel>Seleccione el nivel tecnico</InputLabel>
-                <Select onChange={onChange} defaultValue="">
+                <Select onChange={onChange} defaultValue="" name='technicalLevel'>
                   <MenuItem value="A">A</MenuItem>
                   <MenuItem value="B">B</MenuItem>
                   <MenuItem value="C">C</MenuItem>
+                  <MenuItem value="D">D</MenuItem>
                 </Select>
               </FormControl>
             </Box>

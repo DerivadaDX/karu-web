@@ -7,6 +7,9 @@ export const inputs = [
     title: 'Patente',
     placeholder: 'Ingresar Patente',
     required: true,
+    errorMessage:
+    '¡Las letras de la patente deben estar en mayuscula, se escribe sin espacios ni guiones, el tamaño es de 6 o 7 caracteres!',
+    pattern: '^[A-Z0-9]{6,7}$',
   },
   {
     id: 2,
