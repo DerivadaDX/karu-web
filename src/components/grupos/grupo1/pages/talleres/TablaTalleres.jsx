@@ -73,7 +73,7 @@ const TablaTalleres = () => {
       },
       {
         accessorKey: 'estado',
-        header: 'estado',
+        header: 'Estado',
 
         Cell: ({ cell }) => (
           <span style={{
