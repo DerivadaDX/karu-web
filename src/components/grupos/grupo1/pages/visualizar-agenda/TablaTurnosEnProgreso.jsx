@@ -1,3 +1,5 @@
+/* eslint-disable import/no-duplicates */
+/* eslint-disable camelcase */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/react-in-jsx-scope */
@@ -9,6 +11,7 @@ import { Box, Button } from '@mui/material';
 import MaterialReactTable from 'material-react-table';
 import DialogActions from '@mui/material/DialogActions';
 import Snackbar from '@mui/material/Snackbar';
+import { MRT_Localization_ES } from 'material-react-table/locales/es';
 import {
   getTurnosEnProceso,
   patchFinalizarTurno,
@@ -209,6 +212,7 @@ const TablaTurnosEnProgreso = (props) => {
         enableRowActions
         renderRowActions={renderRowActions}
         renderEmptyRowsFallback={noData}
+        localization={MRT_Localization_ES}
         defaultColumn={{ minSize: 10, maxSize: 100, size: 30 }}
         initialState={{ density: 'compact' }}
         muiTopToolbarProps={{
