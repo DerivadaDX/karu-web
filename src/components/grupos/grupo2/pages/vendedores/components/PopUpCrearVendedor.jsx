@@ -25,7 +25,9 @@ import VendedorService from '../services/vendedor-service';
 
 const PopUpCrearVendedor = ({ onSuccess, onClose, sucursales }) => {
   const [mostrarPopUpCreacionExitosa, setMostrarPopUpCreacionExitosa] = useState(false);
-  const { handleSubmit, control, formState: { errors, isValid } } = useForm({
+  const {
+    handleSubmit, control, setError, formState: { errors, isValid },
+  } = useForm({
     mode: 'onBlur',
     defaultValues: {
       nombre: '',
@@ -51,7 +53,16 @@ const PopUpCrearVendedor = ({ onSuccess, onClose, sucursales }) => {
         setMostrarPopUpCreacionExitosa(true);
         onSuccess();
       })
-      .catch(() => setMostrarPopUpCreacionExitosa(false));
+      .catch((e) => {
+        console.log(e.response.data);
+        if (e.response.data.email) {
+          setError('email', { type: 'custom', message: 'El email ingresado ya se encuentra registrado' });
+        }
+        if (e.response.data.cuit) {
+          setError('cuit', { type: 'custom', message: 'El cuit ingresado ya se encuentra registrado' });
+        }
+        setMostrarPopUpCreacionExitosa(false);
+      });
   };
 
   const cambiarVisibilidadPopUpCreacionExitosa = () => {
