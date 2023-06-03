@@ -10,9 +10,8 @@
 /* eslint-disable no-unused-vars */
 import DialogActions from '@mui/material/DialogActions';
 import {
-  Box, TextField, Button, InputLabel, Select, MenuItem, Container, Grid,
+  Box, TextField, Button, InputLabel, Select, MenuItem, Container, Grid, CircularProgress,
 } from '@mui/material';
-import LoadingButton from '@mui/lab/LoadingButton';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { getSucursalesSinTaller } from '../../services/services-talleres';
@@ -50,7 +49,6 @@ const AltaTaller = (props) => {
   const [openError, setOpenError] = useState(false);
   const [openMensajeExitoso, setOpenMensajeExitoso] = useState(false);
   const [mensajeExitoso, setMensajeExistoso] = useState();
-  const [loading, setLoading] = useState(false);
   const [loadingConfirmacion, setLoadingConfirmacion] = useState(false);
   // Error al enviar
   const [openErrorCrear, setOpenErrorCrear] = useState(false);
@@ -150,7 +148,6 @@ const AltaTaller = (props) => {
   };
 
   const validarForm = () => {
-    setLoading(true);
     const todoCompleto = sucursalSeleccionada && nombre && direccion && mail && telefono && capacidad && cantTecnicos;
     const todoValido = nombreEsValido && dirEsValida && mailEsValido && telefonoEsValido && capacidadEsValida && cantTecnicosEsValido;
     const todoCorrecto = todoCompleto && todoValido;
@@ -416,17 +413,17 @@ const AltaTaller = (props) => {
       }}
       >
         <DialogActions>
-          <LoadingButton
-            loading={loading}
-            color="secondary"
+          <Button
             variant="outlined"
-            sx={{ marginTop: 5 }}
             onClick={() => {
               validarForm();
             }}
+            color="secondary"
+            sx={{ marginTop: 5 }}
           >
-            <span>Crear taller</span>
-          </LoadingButton>
+            Crear taller
+          </Button>
+
           <Button
             color="primary"
             variant="outlined"
@@ -450,18 +447,32 @@ const AltaTaller = (props) => {
         }}
         >
           <DialogActions>
-            <LoadingButton
-              loading={loadingConfirmacion}
-              color="primary"
-              variant="outlined"
-              onClick={() => {
-                handleSubmit();
-                setLoading(false);
-                setLoadingConfirmacion(true);
-              }}
-            >
-              <span>Aceptar</span>
-            </LoadingButton>
+            <Box sx={{ m: 1, position: 'relative' }}>
+              <Button
+                variant="outlined"
+                disabled={loadingConfirmacion}
+                onClick={() => {
+                  handleSubmit();
+                  setLoadingConfirmacion(true);
+                }}
+                color="primary"
+              >
+                Aceptar
+              </Button>
+              {loadingConfirmacion && (
+              <CircularProgress
+                size={24}
+                sx={{
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  marginTop: '-12px',
+                  marginLeft: '-12px',
+                }}
+              />
+              )}
+            </Box>
+
             <Button
               color="error"
               variant="outlined"

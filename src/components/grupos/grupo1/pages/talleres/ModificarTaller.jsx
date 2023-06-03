@@ -11,10 +11,10 @@
 import DialogActions from '@mui/material/DialogActions';
 import {
   Box, TextField, Button, Container, Grid, InputLabel, Select, MenuItem, FormControl, FormControlLabel, Switch, Typography,
+  CircularProgress,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { LoadingButton } from '@mui/lab';
 import Alerts from '../../components/common/Alerts';
 import Popup from '../../components/common/DialogPopup';
 import LittleHeader from '../../components/common/LittleHeader';
@@ -507,21 +507,33 @@ const ModificarTaller = (props) => {
       }}
       >
         <DialogActions>
-          <LoadingButton
-            loading={loadingModificar}
-            color="secondary"
-            variant="outlined"
-            sx={{ marginTop: 3 }}
-            onClick={() => {
-              validarForm();
-            }}
-          >
-            <span>Modificar taller</span>
-          </LoadingButton>
+          <Box sx={{ m: 1, position: 'relative' }}>
+            <Button
+              variant="outlined"
+              disabled={loadingModificar}
+              onClick={() => {
+                validarForm();
+              }}
+              color="secondary"
+            >
+              Modificar taller
+            </Button>
+            {loadingModificar && (
+              <CircularProgress
+                size={24}
+                sx={{
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  marginTop: '-12px',
+                  marginLeft: '-12px',
+                }}
+              />
+            )}
+          </Box>
           <Button
             color="primary"
             variant="outlined"
-            sx={{ marginTop: 3 }}
             onClick={() => {
               setOpen(false);
             }}
@@ -541,16 +553,31 @@ const ModificarTaller = (props) => {
         }}
         >
           <DialogActions>
-            <LoadingButton
-              loading={loadingConfirmar}
-              color="primary"
-              variant="outlined"
-              onClick={() => {
-                handleSubmit();
-              }}
-            >
-              <span>Aceptar</span>
-            </LoadingButton>
+            <Box sx={{ m: 1, position: 'relative' }}>
+              <Button
+                variant="outlined"
+                disabled={loadingConfirmar}
+                onClick={() => {
+                  handleSubmit();
+                }}
+                color="primary"
+              >
+                Aceptar
+              </Button>
+              {loadingConfirmar && (
+              <CircularProgress
+                size={24}
+                sx={{
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  marginTop: '-12px',
+                  marginLeft: '-12px',
+                }}
+              />
+              )}
+            </Box>
+
             <Button
               color="error"
               variant="outlined"
