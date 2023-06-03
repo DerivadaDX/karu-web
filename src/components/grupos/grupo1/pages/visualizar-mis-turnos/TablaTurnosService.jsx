@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable no-unused-vars */
@@ -6,6 +7,7 @@ import {
 } from 'react';
 
 import MaterialReactTable from 'material-react-table';
+import { MRT_Localization_ES } from 'material-react-table/locales/es';
 import { Button, Box } from '@mui/material';
 import Alerts from '../../components/common/Alerts';
 import { getTurnosService } from '../../services/services-tecnicos';
@@ -150,7 +152,8 @@ const TablaTurnosService = (props) => {
         renderRowActions={renderRowActions}
         initialState={{ density: 'compact' }}
         renderEmptyRowsFallback={noData}
-        defaultColumn={{ minSize: 10, maxSize: 100, size: 30 }}
+        defaultColumn={{ size: 5 }}
+        localization={MRT_Localization_ES}
         muiTopToolbarProps={{
           sx: {
             display: 'flex',
