@@ -9,6 +9,7 @@ import {
   DialogTitle,
   FormControl,
   FormControlLabel,
+  IconButton,
   InputLabel,
   MenuItem,
   Paper,
@@ -16,30 +17,31 @@ import {
   Stack,
   Switch,
   TextField,
+  Tooltip,
 } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
+import EditIcon from '@mui/icons-material/Edit';
 import { DatePicker } from '@mui/x-date-pickers';
 import PropTypes from 'prop-types';
-
+import dayjs from 'dayjs';
 import CuitComponent from './CuitComponent';
 import VendedorService from '../services/vendedor-service';
 import SucursalService from '../services/sucursal-service';
 
-const PopUpCrearVendedor = ({ onSuccess }) => {
-  const [mostrarPopUpCrearVendedor, setMostrarPopUpCrearVendedor] = useState(false);
+const PopUpModificarVendedor = ({ onEdit, vendedor }) => {
+  const [mostrarPopUpModificarVendedor, setMostrarPopUpModificarVendedor] = useState(false);
   const [mostrarPopUpCreacionExitosa, setMostrarPopUpCreacionExitosa] = useState(false);
   const [sucursales, setSucursales] = useState({});
-  const { handleSubmit, control, formState: { errors, isValid } } = useForm({
+  const { handleSubmit, control, formState: { errors, isValid, isDirty } } = useForm({
     mode: 'onBlur',
     defaultValues: {
-      nombre: '',
-      apellido: '',
-      email: '',
-      cuit: '',
-      fecha_nacimiento: null,
-      fecha_ingreso: null,
-      sucursal_id: '',
-      activo: false,
+      nombre: vendedor.nombre,
+      apellido: vendedor.apellido,
+      email: vendedor.email,
+      cuit: vendedor.cuit,
+      fecha_nacimiento: dayjs(vendedor.fecha_nacimiento),
+      fecha_ingreso: dayjs(vendedor.fecha_ingreso),
+      sucursal_id: vendedor.sucursal_id,
+      activo: vendedor.activo,
     },
   });
 
@@ -53,18 +55,18 @@ const PopUpCrearVendedor = ({ onSuccess }) => {
     VendedorService.crearVendedor(nuevaData)
       .then(() => {
         setMostrarPopUpCreacionExitosa(true);
-        onSuccess();
+        onEdit();
       })
       .catch(() => setMostrarPopUpCreacionExitosa(false));
   };
 
-  const cambiarVisibilidadPopUpCrearVendedor = () => {
-    setMostrarPopUpCrearVendedor(!mostrarPopUpCrearVendedor);
+  const cambiarVisibilidadPopUpModificarVendedor = () => {
+    setMostrarPopUpModificarVendedor(!mostrarPopUpModificarVendedor);
   };
 
   const cambiarVisibilidadPopUpCreacionExitosa = () => {
     setMostrarPopUpCreacionExitosa(false);
-    setMostrarPopUpCrearVendedor(false);
+    setMostrarPopUpModificarVendedor(false);
   };
 
   const obtenerSucursales = () => {
@@ -75,15 +77,18 @@ const PopUpCrearVendedor = ({ onSuccess }) => {
 
   return (
     <Box>
-      <Button variant="contained" color="primary" onClick={cambiarVisibilidadPopUpCrearVendedor}>
-        <AddIcon />
-        Crear Vendedor
-      </Button>
-
-      <Dialog open={mostrarPopUpCrearVendedor} onClose={cambiarVisibilidadPopUpCrearVendedor}>
+      <Tooltip title="Editar">
+        <IconButton onClick={cambiarVisibilidadPopUpModificarVendedor}>
+          <EditIcon />
+        </IconButton>
+      </Tooltip>
+      <Dialog
+        open={mostrarPopUpModificarVendedor}
+        onClose={cambiarVisibilidadPopUpModificarVendedor}
+      >
         <Dialog open={mostrarPopUpCreacionExitosa} onClose={cambiarVisibilidadPopUpCreacionExitosa}>
           <DialogTitle id="alert-dialog-title">
-            Creación Exitosa!
+            Edición Exitosa!
           </DialogTitle>
           <DialogActions>
             <Button onClick={cambiarVisibilidadPopUpCreacionExitosa}>
@@ -161,7 +166,7 @@ const PopUpCrearVendedor = ({ onSuccess }) => {
             <Controller
               name="cuit"
               control={control}
-              render={({ field: { onChange, onBlur } }) => (
+              render={({ field: { onChange, onBlur, value } }) => (
                 <TextField
                   onBlur={onBlur}
                   onChange={onChange}
@@ -173,6 +178,7 @@ const PopUpCrearVendedor = ({ onSuccess }) => {
                   InputProps={{
                     inputComponent: CuitComponent,
                     name: 'cuit',
+                    defaultValue: value,
                   }}
                 />
               )}
@@ -273,7 +279,7 @@ const PopUpCrearVendedor = ({ onSuccess }) => {
                   labelPlacement="start"
                   control={(
                     <Switch onChange={onChange} />
-                  )}
+                                    )}
                   sx={{
                     marginTop: '2ch',
                     justifyContent: 'space-between',
@@ -282,14 +288,24 @@ const PopUpCrearVendedor = ({ onSuccess }) => {
                 />
               )}
             />
-            <Button
-              disabled={!isValid}
-              type="submit"
-              variant="contained"
-              sx={{ marginTop: '2ch' }}
-            >
-              Crear
-            </Button>
+            <DialogActions>
+              <Button
+                fullWidth
+                sx={{ marginTop: '2ch' }}
+                onClick={cambiarVisibilidadPopUpModificarVendedor}
+              >
+                Cerrar
+              </Button>
+              <Button
+                fullWidth
+                disabled={!isValid || !isDirty}
+                type="submit"
+                variant="contained"
+                sx={{ marginTop: '2ch' }}
+              >
+                Modificar
+              </Button>
+            </DialogActions>
           </Stack>
         </Paper>
       </Dialog>
@@ -297,8 +313,19 @@ const PopUpCrearVendedor = ({ onSuccess }) => {
   );
 };
 
-PopUpCrearVendedor.propTypes = {
-  onSuccess: PropTypes.func.isRequired,
+PopUpModificarVendedor.propTypes = {
+  onEdit: PropTypes.func.isRequired,
+  vendedor: PropTypes.shape({
+    id: PropTypes.number,
+    nombre: PropTypes.string,
+    apellido: PropTypes.string,
+    email: PropTypes.string,
+    cuit: PropTypes.string,
+    fecha_nacimiento: PropTypes.string,
+    fecha_ingreso: PropTypes.string,
+    sucursal_id: PropTypes.number,
+    activo: PropTypes.bool,
+  }).isRequired,
 };
 
-export default PopUpCrearVendedor;
+export default PopUpModificarVendedor;

@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import VendedorService from '../services/vendedor-service';
 import SucursalService from '../services/sucursal-service';
 import PopUpCrearVendedor from './PopUpCrearVendedor';
+import PopUpModificarVendedor from './PopUpModificarVendedor';
 
 const ListadoVendedores = ({ sucursal }) => {
   const [vendedores, setVendedores] = useState([]);
@@ -63,6 +64,28 @@ const ListadoVendedores = ({ sucursal }) => {
         setVendedores(response.data);
         setCargando(false);
       });
+  };
+
+  const actualizarDatosDeVendedor = (vendedorModificado) => {
+    const actualizarVendedorModificado = (vendedorActual) => {
+      const esElVendedorModificado = vendedorActual.id === vendedorModificado.id;
+      const vendedor = esElVendedorModificado ? vendedorModificado : vendedorActual;
+
+      return vendedor;
+    };
+
+    setVendedores((vendedoresActuales) => vendedoresActuales.map(actualizarVendedorModificado));
+  };
+
+  const renderAccionesFila = ({ row }) => {
+    const vendedor = row.original;
+
+    return (
+      <PopUpModificarVendedor
+        vendedor={vendedor}
+        onEdit={actualizarDatosDeVendedor}
+      />
+    );
   };
 
   const renderCrearVendedor = () => (
@@ -127,6 +150,9 @@ const ListadoVendedores = ({ sucursal }) => {
         data={vendedores}
         state={{ isLoading: cargando }}
         renderTopToolbarCustomActions={renderCrearVendedor}
+        enableRowActions
+        positionActionsColumn="last"
+        renderRowActions={renderAccionesFila}
         defaultColumn={{ minSize: 10, maxSize: 100 }}
         displayColumnDefOptions={{
           'mrt-row-actions': {
