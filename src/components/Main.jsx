@@ -18,7 +18,11 @@ const styles = {
 };
 
 const buildRoute = (routeConfig) => (
-  <Route key={routeConfig.id} path={routeConfig.href} element={routeConfig.page} />
+  <Route
+    key={routeConfig.id}
+    path={routeConfig.href}
+    element={routeConfig.page}
+  />
 );
 
 const Main = () => {

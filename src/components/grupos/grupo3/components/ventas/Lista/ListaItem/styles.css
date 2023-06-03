@@ -1,0 +1,33 @@
+.listItem-wrap img{
+    width: 100%;
+    border-radius: 15px;
+    height: 200px;
+    object-fit: cover;
+}
+
+.listItem-wrap header{
+    display: flex;
+    justify-content: space-between;
+    margin: 1rem 0;
+    align-items: center;
+}
+
+.listItem-wrap span{
+    font-size: .7rem;
+    background-color: #bdbbc5;
+    padding: 0.5rem;
+    border-radius: 10px;
+}
+
+.listItem-wrap footer{
+    font-size: .8rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.listItem-wrap footer p:first-child span{
+    color: rgba(0, 0, 0, 0.26);
+    font-weight: 600;
+    
+}
