@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable radix */
 /* eslint-disable max-len */
 /* eslint-disable no-console */
@@ -13,6 +14,7 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { LoadingButton } from '@mui/lab';
 import Alerts from '../../components/common/Alerts';
 import Popup from '../../components/common/DialogPopup';
 import LittleHeader from '../../components/common/LittleHeader';
@@ -63,6 +65,9 @@ const ModificarTaller = (props) => {
   const [mensajeWarning, setmensajeWarning] = useState([]);
   const [openMensajeExitoso, setOpenMensajeExitoso] = useState(false);
 
+  const [loadingModificar, setLoadingModificar] = useState(false);
+  const [loadingConfirmar, setLoadingConfirmar] = useState(false);
+
   // Error al enviar
   const [openErrorModificar, setOpenErrorModificar] = useState(false);
   const [respuestaError, setRespuestaError] = useState([]);
@@ -112,15 +117,6 @@ const ModificarTaller = (props) => {
   useEffect(() => {
     try {
       traerSucursales();
-      console.log(sucursalIdNuevo);
-      console.log(estadoNuevo);
-      console.log(nombreNuevo);
-      console.log(direccionNueva);
-      console.log(mailNuevo);
-      console.log(telefonoNuevo);
-      console.log(capacidadNueva);
-      console.log(cantTecnicosNuevo);
-      console.log('--------------------------');
       setAlertType('');
     } catch (error) {
       setAlertType('error');
@@ -205,12 +201,15 @@ const ModificarTaller = (props) => {
   };
 
   const validarForm = () => {
+    setLoadingModificar(true);
     const todoCompleto = sucursalIdNuevo && cambioEstado && nombreNuevo && direccionNueva && mailNuevo && telefonoNuevo && capacidadNueva && cantTecnicosNuevo;
     const todoValido = nombreEsValido && dirEsValida && mailEsValido && telefonoEsValido && capacidadEsValida && cantTecnicosEsValido;
     const todoCorrecto = todoCompleto && todoValido;
     if (todoCorrecto) {
+      setLoadingModificar(false);
       setOpenConfirmar(true);
     } else {
+      setLoadingModificar(false);
       setRespuestaError('Verifique que haya completado todos los campos con los datos de manera correcta.');
       setOpenError(true);
     }
@@ -218,6 +217,7 @@ const ModificarTaller = (props) => {
 
   const url = `https://autotech2.onrender.com/talleres/modificar/${idTaller}/`;
   const handleModificarTaller = () => {
+    setLoadingConfirmar(true);
     axios.put(url, {
       id_sucursal: sucursalIdNuevo,
       nombre: nombreNuevo,
@@ -235,10 +235,12 @@ const ModificarTaller = (props) => {
           setmensajeWarning(`${response.data.warnings}.`);
         }
         setOpenMensajeExitoso(true);
+        setLoadingConfirmar(false);
         setActualizar(true);
       })
       .catch((error) => {
         setOpenErrorModificar(open);
+        setLoadingConfirmar(false);
         setRespuestaError(error.response.data.error);
       });
   };
@@ -505,7 +507,8 @@ const ModificarTaller = (props) => {
       }}
       >
         <DialogActions>
-          <Button
+          <LoadingButton
+            loading={loadingModificar}
             color="secondary"
             variant="outlined"
             sx={{ marginTop: 3 }}
@@ -513,8 +516,8 @@ const ModificarTaller = (props) => {
               validarForm();
             }}
           >
-            Modificar taller
-          </Button>
+            <span>Modificar taller</span>
+          </LoadingButton>
           <Button
             color="primary"
             variant="outlined"
@@ -538,15 +541,16 @@ const ModificarTaller = (props) => {
         }}
         >
           <DialogActions>
-            <Button
+            <LoadingButton
+              loading={loadingConfirmar}
               color="primary"
               variant="outlined"
               onClick={() => {
                 handleSubmit();
               }}
             >
-              Aceptar
-            </Button>
+              <span>Aceptar</span>
+            </LoadingButton>
             <Button
               color="error"
               variant="outlined"

@@ -22,7 +22,9 @@ import Popup from '../../../components/common/DialogPopup';
 import LittleHeader from '../../../components/common/LittleHeader';
 
 const Formulario = (props) => {
-  const { idTaller, openAgregarTurno, setOpenAgregarTurno } = props;
+  const {
+    idTaller, openAgregarTurno, setOpenAgregarTurno, setActualizarTabla,
+  } = props;
   const [taller, setTaller] = useState();
   const [patenteReparacion, setPatente] = useState();
   const [fecha, setFecha] = useState();
