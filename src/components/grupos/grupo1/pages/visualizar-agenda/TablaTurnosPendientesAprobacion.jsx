@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-shadow */
 /* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable no-unused-vars */
 import {
@@ -8,23 +10,26 @@ import Snackbar from '@mui/material/Snackbar';
 import MaterialReactTable from 'material-react-table';
 import {
   getTurnosPendientesDeAprobacion,
-  getDetalleTurno,
   getCancelarTurno,
 } from '../../services/services-Turnos';
 import Alerts from '../../components/common/Alerts';
 import Popup from '../../components/common/DialogPopup';
+import LittleHeader from '../../components/common/LittleHeader';
+import DetalleTurno from '../../components/common/DetalleTurno';
 
-const idTaller = 'S002';
-
-const TablaTurnosPendientesDeAprobacion = () => {
+const TablaTurnosPendientesDeAprobacion = (props) => {
+  const { idTaller } = props;
   const [turnosPendientesDeAprobacion, setTurnosPendientesDeAprobacion] = useState([]);
   const [loading, setLoading] = useState(true);
+  // Para ver el detalle del turno
   const [openVerMas, setVerMas] = useState(false);
+  const [rowDetalle, setRowDetalle] = useState({});
+
   const [openCancel, setOpenCancel] = useState(false);
-  const [detalleTurno, setDetalleTurno] = useState([]);
   const [resCancelar, setResCancelar] = useState([]);
   const [idTurnoCancelar, setIdTurnoCancelar] = useState(0);
   const [openSnackbar, setOpenSnackbar] = useState(false);
+
   const [actualizarTabla, setActualizarTabla] = useState(false);
 
   // alertas de la API
@@ -50,6 +55,8 @@ const TablaTurnosPendientesDeAprobacion = () => {
   useEffect(() => {
     try {
       traerTurnos();
+      setActualizarTabla(false); // Reiniciar el estado de actualizarTabla
+      setAlertType('');
     } catch (error) {
       setAlertType('error');
       setAlertTitle('Error de servidor');
@@ -57,24 +64,7 @@ const TablaTurnosPendientesDeAprobacion = () => {
         'Error al traer los turnos. Por favor, recargue la página y vuelva a intentarlo nuevamente.',
       );
     }
-    setActualizarTabla(false); // Reiniciar el estado de actualizarTabla
   }, [traerTurnos, actualizarTabla]);
-
-  const obtenerDetalle = (idTurno) => {
-    getDetalleTurno(idTurno)
-      .then((response) => {
-        setDetalleTurno(response.data);
-        // console.log(detalleTurno);
-      })
-      .catch((error) => {
-        setVerMas(false);
-        setAlertType('error');
-        setAlertTitle('Error de servidor');
-        setAlertMessage(
-          'Error al mostrar el detalle. Por favor, reacargue la página y vuelva a intentarlo nuevamente.',
-        );
-      });
-  };
 
   const cancelarTurno = (idTurno) => {
     getCancelarTurno(idTurno)
@@ -105,10 +95,6 @@ const TablaTurnosPendientesDeAprobacion = () => {
         header: 'Patente',
       },
       {
-        accessorKey: 'estado',
-        header: 'Estado',
-      },
-      {
         accessorKey: 'tipo',
         header: 'Tipo de Turno',
       },
@@ -127,29 +113,33 @@ const TablaTurnosPendientesDeAprobacion = () => {
   const renderRowActions = ({ row }) => (
     <Box
       style={{ display: 'flex', flexWrap: 'nowrap', gap: '0.5rem' }}
-      sx={{ height: '3.2em' }}
+      sx={{ height: '3.2em', padding: '0.2em' }}
     >
       <Button
         variant="contained"
-        sx={{ fontSize: '0.9em', backgroundColor: 'rgba(51,51,51,0.75)' }}
+        size="small"
+        sx={{ fontSize: '0.7em', backgroundColor: 'rgba(51,51,51,0.75)' }}
         onClick={() => {
-          obtenerDetalle(row.original.id_turno);
+          setRowDetalle(row.original);
           setVerMas(true);
         }}
       >
-        Ver más
+        Ver
+        <br />
+        más
       </Button>
       <Button
         variant="contained"
         color="error"
-        sx={{ fontSize: '0.9em' }}
+        size="small"
+        sx={{ fontSize: '0.7em' }}
         onClick={() => {
           // console.log('Cancelar turno', row.original.id_turno);
           setIdTurnoCancelar(row.original.id_turno);
           setOpenCancel(true);
         }}
       >
-        Cancelar Turno
+        Cancelar
       </Button>
     </Box>
   );
@@ -165,25 +155,6 @@ const TablaTurnosPendientesDeAprobacion = () => {
       />
     </Box>
   );
-
-  const filaDetalle = (llave, valor) => {
-    if (llave === 'papeles_en_regla') {
-      return null;
-    }
-    return (
-      <>
-        <span>
-          <strong>
-            {llave}
-            :
-            {' '}
-          </strong>
-        </span>
-        <span>{valor}</span>
-
-      </>
-    );
-  };
 
   return (
     <>
@@ -204,7 +175,7 @@ const TablaTurnosPendientesDeAprobacion = () => {
         enableRowActions
         renderRowActions={renderRowActions}
         renderEmptyRowsFallback={noData}
-        defaultColumn={{ minSize: 10, maxSize: 100 }}
+        defaultColumn={{ minSize: 10, maxSize: 100, size: 30 }}
         muiTopToolbarProps={{
           sx: {
             display: 'flex',
@@ -214,9 +185,17 @@ const TablaTurnosPendientesDeAprobacion = () => {
             maxHeight: '200px',
           },
         }}
+        muiTableHeadCellProps={{ align: 'center' }}
+        muiTableBodyCellProps={{ align: 'center' }}
+        initialState={{ density: 'compact' }}
+        displayColumnDefOptions={{
+          'mrt-row-actions': {
+            header: 'Acciones',
+          },
+        }}
       />
       <Popup
-        title="Cancelar Turno"
+        title={<LittleHeader titulo="Cancelar turno" />}
         openDialog={openCancel}
         setOpenDialog={setOpenCancel}
         description="¿Está seguro que desea cancelar el turno? No se podrá modificar la acción una vez realizada."
@@ -253,32 +232,12 @@ const TablaTurnosPendientesDeAprobacion = () => {
         onClose={handleCloseSnackbar}
       />
       <Popup
-        title="Detalle del Turno"
+        title={<LittleHeader titulo="Detalle de turno" />}
         openDialog={openVerMas}
         setOpenDialog={setVerMas}
         botonRetorno="Atras"
       >
-        {
-              Object.entries(detalleTurno).map(([key, value]) => (
-                <div key={key}>
-                  {filaDetalle(key, value)}
-                </div>
-              ))
-}
-        <Box>
-          <DialogActions>
-            <Button
-              color="primary"
-              variant="outlined"
-              sx={{ marginTop: '10px' }}
-              onClick={() => {
-                setVerMas(false);
-              }}
-            >
-              Atras
-            </Button>
-          </DialogActions>
-        </Box>
+        <DetalleTurno openDialog={openVerMas} setOpenDialog={setVerMas} row={rowDetalle} />
       </Popup>
     </>
   );

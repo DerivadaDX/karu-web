@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
+import {
+  Box,
+  Typography,
+} from '@mui/material';
+import MaterialReactTable from 'material-react-table';
+
 import PopUpDetalleMovimiento from './PopUpDetalleMovimiento';
 import MovimientoService from '../services/movimiento-service';
 import DineroHelper from '../helpers/dinero-helper';
@@ -14,47 +15,97 @@ const CODIGO_CUENTA = '0000000000000000000001';
 
 const ListadoMovimientos = () => {
   const [movimientos, setMovimientos] = useState([]);
+  const [cargando, setCargando] = useState(true);
 
-  useEffect(() => {
+  const obtenerMovimientos = () => {
     MovimientoService.obtenerMovimientosDeCuenta(CODIGO_CUENTA)
-      .then((response) => setMovimientos(response.data));
-  }, []);
+      .then((response) => {
+        setMovimientos(response.data);
+        setCargando(false);
+      });
+  };
+
+  const renderFecha = ({ row }) => {
+    const fechaEnFormatoISO = row.original.fecha;
+
+    return (
+      <Typography variant="body1" component="span">
+        {FechaHelper.formatearComoFecha(fechaEnFormatoISO)}
+      </Typography>
+    );
+  };
+
+  const renderMonto = ({ row }) => {
+    const { monto, tipo } = row.original;
+    const movimientoEsDebito = tipo === 'D';
+
+    return (
+      <Typography
+        variant="body1"
+        component="span"
+        sx={{ fontWeight: 'bold', align: 'right' }}
+        align="right"
+        color={
+          (theme) => (movimientoEsDebito
+            ? theme.palette.error.main
+            : theme.palette.primary.main)
+        }
+      >
+        {DineroHelper.formatearComoDinero(monto)}
+      </Typography>
+    );
+  };
+
+  const renderAccionesFila = ({ row }) => (
+    <PopUpDetalleMovimiento movimiento={row.original} />
+  );
+
+  const columnas = useMemo(
+    () => [
+      {
+        accessorKey: 'fecha',
+        header: 'Fecha',
+        Cell: renderFecha,
+      },
+      {
+        accessorKey: 'id_cuenta_origen',
+        header: 'Cuenta origen',
+      },
+      {
+        accessorKey: 'id_cuenta_destino',
+        header: 'Cuenta destino',
+      },
+      {
+        accessorKey: 'concepto',
+        header: 'Concepto',
+      },
+      {
+        accessorKey: 'monto',
+        header: 'Monto',
+        Cell: renderMonto,
+      },
+      {
+        accessorKey: 'numero_operacion',
+        header: '# Operación',
+      },
+    ],
+    [],
+  );
+
+  useEffect(obtenerMovimientos, []);
 
   return (
-    <Table size="small">
-      <TableHead>
-        <TableRow>
-          <TableCell>Fecha</TableCell>
-          <TableCell>Cuenta Origen</TableCell>
-          <TableCell>Cuenta Destino</TableCell>
-          <TableCell>Concepto</TableCell>
-          <TableCell align="right">Monto</TableCell>
-          <TableCell>Numero de operación</TableCell>
-          <TableCell>Detalle</TableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {movimientos && movimientos.map((movimiento) => (
-          <TableRow key={movimiento.numero_operacion}>
-            <TableCell>{FechaHelper.formatearComoFecha(movimiento.fecha)}</TableCell>
-            <TableCell>{movimiento.id_cuenta_origen}</TableCell>
-            <TableCell>{movimiento.id_cuenta_destino}</TableCell>
-            <TableCell>{movimiento.concepto}</TableCell>
-            <TableCell
-              align="right"
-              sx={{
-                color: movimiento.id_cuenta_destino === CODIGO_CUENTA ? 'black' : 'red',
-                fontWeight: 'bold',
-              }}
-            >
-              {DineroHelper.formatearComoDinero(movimiento.monto)}
-            </TableCell>
-            <TableCell align="center">{movimiento.numero_operacion}</TableCell>
-            <TableCell><PopUpDetalleMovimiento movimientoId={movimiento.id} /></TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+    <Box>
+      <MaterialReactTable
+        columns={columnas}
+        data={movimientos}
+        state={{ isLoading: cargando }}
+        enableRowActions
+        positionActionsColumn="last"
+        renderRowActions={renderAccionesFila}
+        defaultColumn={{ minSize: 10, maxSize: 100 }}
+      />
+    </Box>
   );
 };
 

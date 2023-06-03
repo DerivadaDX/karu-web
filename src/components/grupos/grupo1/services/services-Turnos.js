@@ -14,6 +14,10 @@ const getTurnosEnProceso = async (branchId) => axios.get(`${url}/en-procesos/?br
 
 const getTurnosTerminados = async (branchId) => axios.get(`${url}/terminados/?branch=${branchId}`);
 
+const getTurnosCancelados = async (branchId) => axios.get(`${url}/cancelados/?branch=${branchId}`);
+
+const getTurnosNoValidos = async (branchId) => axios.get(`${url}/no-validos/?branch=${branchId}`);
+
 const getCancelarTurno = async (turnoId) => axios.patch(`${url}/cancelar-turno/${turnoId}/`);
 
 const patchFinalizarTurno = async (turnoId) => axios.patch(`${url}/actualizar-estado/${turnoId}/`);
@@ -25,6 +29,8 @@ export {
   getTurnosPendientesDeAprobacion,
   getTurnosEnProceso,
   getTurnosTerminados,
+  getTurnosCancelados,
+  getTurnosNoValidos,
   getCancelarTurno,
   patchFinalizarTurno,
 };
