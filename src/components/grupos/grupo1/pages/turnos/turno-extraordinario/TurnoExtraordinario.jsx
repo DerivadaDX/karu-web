@@ -85,7 +85,7 @@ const FormularioExtraordinario = (props) => {
             patente: patenteReparacion,
             fecha_inicio: fecha,
             hora_inicio: hora,
-            taller_id: taller,
+            taller_id: tallerNro,
           },
         });
         setOpenPopupSeleccion(true);
@@ -102,7 +102,7 @@ const FormularioExtraordinario = (props) => {
         setOpenError(true);
         setAlertError('error');
         setAlertTitulo('Ha ocurrido un error');
-        setAlertMensaje('Si el problema persiste, comuniquese con insomnia.front@gmail.com');
+        setAlertMensaje(error.response.data);
       }
     }
   };
@@ -209,10 +209,19 @@ const FormularioExtraordinario = (props) => {
           <Popup
             openDialog={openError}
             setOpenDialog={setOpenError}
-            title="Ha ocurrido un problema"
+            title={<LittleHeader titulo="Ha ocurrido un problema" />}
           >
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <Alerts alertType={alertError} description={alertMensaje} title={alertTitulo} />
+            </Box>
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              <Button
+                onClick={() => setOpenError(false)}
+                variant="outlined"
+                color="primary"
+              >
+                Cerrar
+              </Button>
             </Box>
           </Popup>
         </Box>
