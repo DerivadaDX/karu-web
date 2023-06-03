@@ -1,15 +1,15 @@
 
-
+/* 
 *,
 *::after,
 *::before{
 margin: 0
 }
 
-/* este es para ocultar la barra de scroll en chrome safari y opera*/
+este es para ocultar la barra de scroll en chrome safari y opera
 ::-webkit-scrollbar{
     display: none;
-}
+} */
 
 
 
