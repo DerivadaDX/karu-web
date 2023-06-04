@@ -101,7 +101,7 @@ const ListadoVendedores = ({ sucursal, sucursales }) => {
       {
         accessorKey: 'cuit',
         header: 'Cuit',
-        minSize: 110,
+        minSize: 120,
       },
       {
         accessorKey: 'nombre',
