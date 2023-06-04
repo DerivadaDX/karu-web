@@ -262,7 +262,7 @@ const PopUpModificarVendedor = ({
                   labelPlacement="start"
                   control={(
                     <Switch onChange={onChange} />
-                                    )}
+                  )}
                   sx={{
                     marginTop: '2ch',
                     justifyContent: 'space-between',
@@ -297,8 +297,19 @@ const PopUpModificarVendedor = ({
 };
 
 PopUpModificarVendedor.propTypes = {
-  // eslint-disable-next-line react/forbid-prop-types
-  sucursales: PropTypes.array.isRequired,
+  sucursales: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number,
+      nombre: PropTypes.string,
+      calle: PropTypes.string,
+      localidad: PropTypes.string,
+      provincia: PropTypes.string,
+      numero: PropTypes.number,
+      codigo_postal: PropTypes.string,
+      posee_taller: PropTypes.bool,
+      activa: PropTypes.bool,
+    }),
+  ).isRequired,
   onEdit: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
   vendedor: PropTypes.shape({
