@@ -22,7 +22,7 @@ export default function PopupAgregarTurno(props) {
       onClose={handleClose}
       PaperProps={{
         sx: {
-          width: '50%', height: '100%',
+          width: 'auto', height: 'auto',
         },
       }}
     >
