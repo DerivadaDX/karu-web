@@ -51,8 +51,13 @@ const PopUpModificarVendedor = ({
 
     VendedorService.modificarVendedor(vendedor.id, nuevaData)
       .then(() => {
+        const vendedorModificado = {
+          id: vendedor.id,
+          ...nuevaData,
+        };
+
         setMostrarPopUpCreacionExitosa(true);
-        onEdit();
+        onEdit(vendedorModificado);
       })
       .catch(() => setMostrarPopUpCreacionExitosa(false));
   };
