@@ -191,8 +191,19 @@ const ListadoVendedores = ({ sucursal, sucursales }) => {
 
 ListadoVendedores.propTypes = {
   sucursal: PropTypes.number.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
-  sucursales: PropTypes.array.isRequired,
+  sucursales: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number,
+      nombre: PropTypes.string,
+      calle: PropTypes.string,
+      localidad: PropTypes.string,
+      provincia: PropTypes.string,
+      numero: PropTypes.number,
+      codigo_postal: PropTypes.string,
+      posee_taller: PropTypes.bool,
+      activa: PropTypes.bool,
+    }),
+  ).isRequired,
 };
 
 export default ListadoVendedores;
