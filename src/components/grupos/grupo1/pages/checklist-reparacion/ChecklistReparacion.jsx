@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-console */
@@ -15,6 +16,7 @@ import {
 } from 'react';
 import axios from 'axios';
 import MaterialReactTable from 'material-react-table';
+import { MRT_Localization_ES } from 'material-react-table/locales/es';
 import Alerts from '../../components/common/Alerts';
 import { getChecklistReparacion, getRegistroReparacion } from '../../services/services-checklistReparacion';
 // import reparacion from './reparacion.json';
@@ -164,7 +166,9 @@ const ChecklistReparacion = (props) => {
     const isSelected = estadoChecklist[row.original.id_task] === true;
     return (
       <Box
-        style={{ display: 'flex', flexWrap: 'nowrap', gap: '0.5rem' }}
+        style={{
+          display: 'flex', flexWrap: 'nowrap', gap: '0.5rem', alignItems: 'center', justifyContent: 'center',
+        }}
         sx={{ height: '3.5em', marginLeft: '0.2rem', marginRight: '0.2rem' }}
       >
         <Checkbox
@@ -237,6 +241,7 @@ const ChecklistReparacion = (props) => {
           enableRowActions
           renderRowActions={renderRowActions}
           defaultColumn={{ minSize: 10, maxSize: 100 }}
+          localization={MRT_Localization_ES}
           positionPagination="top"
           initialState={{
             pagination: {
@@ -244,6 +249,8 @@ const ChecklistReparacion = (props) => {
               pageIndex: 0,
             },
           }}
+          muiTableBodyCellProps={{ align: 'center' }}
+          muiTableHeadCellProps={{ align: 'center' }}
           displayColumnDefOptions={{
             'mrt-row-actions': {
               header: 'Reparación hecha',

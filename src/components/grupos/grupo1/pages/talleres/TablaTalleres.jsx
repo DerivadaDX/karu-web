@@ -73,7 +73,7 @@ const TablaTalleres = () => {
       },
       {
         accessorKey: 'estado',
-        header: 'estado',
+        header: 'Estado',
 
         Cell: ({ cell }) => (
           <span style={{
@@ -242,7 +242,12 @@ const TablaTalleres = () => {
         renderEmptyRowsFallback={noData}
         defaultColumn={{ minSize: 10, maxSize: 100 }}
         muiTableHeadCellProps={{ align: 'center' }}
-        muiTableBodyCellProps={{ align: 'center' }}
+        muiTableBodyCellProps={{
+          align: 'center',
+          sx: {
+            overflow: 'auto',
+          },
+        }}
         displayColumnDefOptions={{
           'mrt-row-actions': {
             header: 'Acciones',

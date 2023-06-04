@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-shadow */
 /* eslint-disable react/react-in-jsx-scope */
@@ -5,6 +6,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Box, Button } from '@mui/material';
 import MaterialReactTable from 'material-react-table';
+import { MRT_Localization_ES } from 'material-react-table/locales/es';
 import { getTurnosNoValidos } from '../../services/services-Turnos';
 import Alerts from '../../components/common/Alerts';
 import Popup from '../../components/common/DialogPopup';
@@ -134,14 +136,14 @@ const TablaTurnosNoValidos = (props) => {
         enableRowActions
         renderRowActions={renderRowActions}
         renderEmptyRowsFallback={noData}
-        defaultColumn={{ minSize: 10, maxSize: 100, size: 30 }}
+        defaultColumn={{ size: 5 }}
+        localization={MRT_Localization_ES}
         initialState={{ density: 'compact' }}
         muiTopToolbarProps={{
           sx: {
             display: 'flex',
             flexWrap: 'inherit',
             justifyContent: 'flex-end',
-            overflow: 'auto',
             maxHeight: '200px',
           },
         }}

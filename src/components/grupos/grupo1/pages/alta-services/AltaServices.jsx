@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import TextField from '@mui/material/TextField';
@@ -11,10 +13,11 @@ import Container from '@mui/material/Container';
 import ValidarKm from '../turnos/Helpers/validar-km';
 import Alerts from '../../components/common/Alerts';
 import Popup from '../../components/common/DialogPopup';
+import LittleHeader from '../../components/common/LittleHeader';
 
-const AltaServiceForm = () => {
+const AltaServiceForm = (props) => {
   // El id del supervisor está harcodeado pero lo recibe como prop
-  const idSuperv = 43;
+  const { idSupervisor, setOpenAltaService, setActualizarTabla } = props;
 
   const [kilometros, setKilometros] = useState('');
   const [marcaService, setMarca] = useState('');
@@ -37,7 +40,7 @@ const AltaServiceForm = () => {
   const [alertTitulo, setAlertTitulo] = useState('');
 
   // Para traer los datos de la CHECKLIST
-  const [checklistData, setChecklistData] = useState('');
+  const [checklistData, setChecklistData] = useState([]);
   // Debería tener los ítems seleccionados de la checklist
   const [selectedItems, setSelectedItems] = useState([]);
   // Fin de datos para CHECKLIST
@@ -103,7 +106,7 @@ const AltaServiceForm = () => {
           modelo: modeloService,
           frecuencia_km: frecuenciaKm,
           costo_base: 7000.0,
-          id_supervisor: idSuperv,
+          id_supervisor: idSupervisor,
           id_tasks: idTareasEnString,
         },
       })
@@ -203,24 +206,35 @@ const AltaServiceForm = () => {
   // Termina lo de la CHECKLIST
 
   return (
-    <Container component="main" maxWidth="xxl" sx={{ mb: 20 }}>
-      <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
+    <Container component="main" maxWidth="xxl" sx={{ mb: 10 }}>
+      <Paper
+        variant="outlined"
+        sx={{
+          my: { xs: 1, md: 1 },
+          p: { xs: 1, md: 2 },
+          borderRadius: '15px',
+          borderBottom: '4px solid',
+          borderBottomColor: 'secondary.main',
+        }}
+      >
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 7,
+            marginTop: 1,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
           }}
         >
-          <Typography component="h1" variant="h5" sx={{ marginBottom: 5 }}>
-            Alta de Service
-          </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <Box sx={{ mb: 2 }}>
+            <LittleHeader titulo="Datos básicos" />
+          </Box>
+          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mb: 2 }}>
             <TextField
-              margin="normal"
+              margin="dense"
               required
+              // variant="standard"
+              color="secondary"
               fullWidth
               value={marcaService}
               id="marca"
@@ -231,7 +245,8 @@ const AltaServiceForm = () => {
               onChange={guardarMarca}
             />
             <TextField
-              margin="normal"
+              margin="dense"
+              color="secondary"
               required
               fullWidth
               value={modeloService}
@@ -243,8 +258,9 @@ const AltaServiceForm = () => {
               onChange={guardarModelo}
             />
             <TextField
-              margin="normal"
+              margin="dense"
               required
+              color="secondary"
               fullWidth
               value={kilometros}
               id="kilometraje"
@@ -261,7 +277,7 @@ const AltaServiceForm = () => {
           <Popup
             openDialog={openError}
             setOpenDialog={setOpenError}
-            title="Ha ocurrido un problema"
+            title={<LittleHeader titulo="Ha ocurrido un problema" />}
           >
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <Alerts alertType={alertError} description={alertMensaje} title={alertTitulo} />
@@ -270,7 +286,9 @@ const AltaServiceForm = () => {
         </Box>
       </Paper>
       {/* ACÁ empieza lo nuevo para agregar la checklist */}
-      <EnhancedTableToolbar titulo="Checklist" />
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <EnhancedTableToolbar titulo={<LittleHeader titulo="Checklist" />} />
+      </Box>
       <div style={{ height: 400, width: '100%' }}>
         <DataGrid
           rows={checklistData}
@@ -287,7 +305,7 @@ const AltaServiceForm = () => {
           pageSize={5}
         />
         <Popup
-          title="Error en la creación"
+          title={<LittleHeader titulo="Error en la creación" />}
           description="Complete todos los campos, por favor. Y asegúrese de elegir al menos un elemento de la checklist para crear el service."
           openDialog={openPopupNoSeleccion}
           setOpenDialog={setOpenPopupNoSeleccion}
@@ -304,7 +322,7 @@ const AltaServiceForm = () => {
           </Box>
         </Popup>
         <Popup
-          title="Service creado"
+          title={<LittleHeader titulo="Service creado" />}
           description={msjServiceCreado}
           openDialog={openPopupSeleccion}
           setOpenDialog={setOpenPopupSeleccion}
@@ -314,8 +332,11 @@ const AltaServiceForm = () => {
           >
             <Button
               color="success"
+              variant="outlined"
+              // window.location.href = '/';
               onClick={() => {
-                window.location.href = '/';
+                setActualizarTabla(true);
+                setOpenAltaService(false);
               }}
             >
               Aceptar
@@ -324,16 +345,32 @@ const AltaServiceForm = () => {
         </Popup>
         {/* Hasta acá es lo nuevo para agregar la checklist */}
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ display: 'flex', justifyContent: 'center' }}>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="secondary"
-            sx={{ mt: 3, mb: 2 }}
-            onSubmit={handleSubmit}
+          <Box sx={{
+            display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 3, gap: '16px',
+          }}
           >
-            Crear Service
-          </Button>
+            <Button
+              type="submit"
+            // fullWidth
+              variant="contained"
+              color="secondary"
+              onSubmit={handleSubmit}
+            >
+              Crear Service
+            </Button>
+            <Button
+                // fullWidth
+              variant="contained"
+              color="primary"
+              size="medium"
+                // sx={{ mt: 1, mb: 2, ml: 1 }}
+              onClick={() => {
+                setOpenAltaService(false);
+              }}
+            >
+              Atrás
+            </Button>
+          </Box>
         </Box>
       </div>
     </Container>

@@ -30,7 +30,10 @@ styles.paperInferior = {
 
 const CuentaCorriente = () => (
   <Box>
-    <Encabezado titulo="Cuenta corriente" subtitulo="Consultar saldo actual, datos de la sucursal y últimos movimientos" />
+    <Encabezado
+      titulo="Cuenta corriente"
+      subtitulo="Consultar saldo actual, datos de la sucursal y últimos movimientos"
+    />
     <Grid container spacing={3}>
       <Grid item xs={12} md={4} lg={3}>
         <Paper sx={styles.paperSuperior}>
