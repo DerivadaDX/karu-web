@@ -108,6 +108,10 @@ const PopUpModificarVendedor = ({
               )}
               rules={{
                 required: 'El nombre es requerido',
+                maxLength: {
+                  value: 50,
+                  message: 'Debe tener un máximo de 50 letras',
+                },
               }}
             />
             <Controller
@@ -127,6 +131,10 @@ const PopUpModificarVendedor = ({
               )}
               rules={{
                 required: 'El apellido es requerido',
+                maxLength: {
+                  value: 50,
+                  message: 'Debe tener un máximo de 50 letras',
+                },
               }}
             />
             <Controller
@@ -146,6 +154,10 @@ const PopUpModificarVendedor = ({
               )}
               rules={{
                 required: 'El email es requerido',
+                maxLength: {
+                  value: 50,
+                  message: 'Debe tener un máximo de 50 letras',
+                },
                 validate: {
                   matchPattern: (v) => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'Escriba el email correctamente',
                 },
