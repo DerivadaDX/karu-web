@@ -266,6 +266,7 @@ const TablaTalleres = () => {
         title={<LittleHeader titulo="Detalle de taller" />}
         openDialog={openDetalleTaller}
         setOpenDialog={setOpenDetalleTaller}
+        disableBackdropClick
       >
         <DetalleTaller
           openDialog={openDetalleTaller}
@@ -277,6 +278,7 @@ const TablaTalleres = () => {
         title={<LittleHeader titulo="Detalle de sucursal" />}
         openDialog={openDetalleSucursal}
         setOpenDialog={setOpenDetalleSucursal}
+        disableBackdropClick
       >
         <DetalleSucursal
           open={openDetalleSucursal}
@@ -288,6 +290,7 @@ const TablaTalleres = () => {
         title={<LittleHeader titulo="Alta de taller" />}
         openDialog={openAltaTaller}
         setOpenDialog={setOpenAltaTaller}
+        disableBackdropClick
       >
         <AltaTaller
           open={openAltaTaller}
@@ -300,6 +303,7 @@ const TablaTalleres = () => {
         title={<LittleHeader titulo="Modificar Taller" />}
         openDialog={openModificarTaller}
         setOpenDialog={setOpenModificarTaller}
+        disableBackdropClick
       >
         <ModificarTaller
           open={openModificarTaller}

@@ -178,6 +178,7 @@ const TablaTurnosReparacion = (props) => {
         title={<LittleHeader titulo="Detalle del turno " />}
         openDialog={openVerMas}
         setOpenDialog={setOpenVerMas}
+        disableBackdropClick
       >
         <DetalleTurno openDialog={openVerMas} setOpenDialog={setOpenVerMas} row={rowDetalle} />
       </Popup>
@@ -205,6 +206,7 @@ const TablaTurnosReparacion = (props) => {
             </p>
           </>
 )}
+        disableBackdropClick
       >
         <ChecklistReparacion
           idTurnoPadre={idTurno}

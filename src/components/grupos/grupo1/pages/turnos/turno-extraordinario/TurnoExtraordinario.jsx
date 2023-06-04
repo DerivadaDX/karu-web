@@ -176,6 +176,7 @@ const FormularioExtraordinario = (props) => {
             description="Por favor complete todos los campos y verifique que la patente sea correcta."
             openDialog={openPopupNoSeleccion}
             setOpenDialog={setOpenPopupNoSeleccion}
+            disableBackdropClick
           >
             <Box
               sx={{ margin: '15px', display: 'flex', justifyContent: 'center' }}
@@ -193,6 +194,7 @@ const FormularioExtraordinario = (props) => {
             description={msjTurnoCreado}
             openDialog={openPopupSeleccion}
             setOpenDialog={setOpenPopupSeleccion}
+            disableBackdropClick
           >
             <Box
               sx={{ margin: '15px', display: 'flex', justifyContent: 'center' }}
@@ -213,6 +215,7 @@ const FormularioExtraordinario = (props) => {
             openDialog={openError}
             setOpenDialog={setOpenError}
             title={<LittleHeader titulo="Ha ocurrido un problema" />}
+            disableBackdropClick
           >
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <Alerts alertType={alertError} description={alertMensaje} title={alertTitulo} />

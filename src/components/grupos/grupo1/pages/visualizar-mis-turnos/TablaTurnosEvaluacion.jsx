@@ -211,6 +211,7 @@ const TablaTurnosEvaluacion = (props) => {
         openDialog={noEsDateActual}
         setOpenDialog={setNoEsDateActual}
         description="Todavía no puede realizar el turno. Debe esperar la fecha y la hora del mismo para poder dar inicio."
+        disableBackdropClick
       >
         <Box>
           <DialogActions>
@@ -231,6 +232,7 @@ const TablaTurnosEvaluacion = (props) => {
         title={<LittleHeader titulo="Detalle de turno" />}
         openDialog={openVerMas}
         setOpenDialog={setOpenVerMas}
+        disableBackdropClick
       >
         <DetalleTurno openDialog={openVerMas} setOpenDialog={setOpenVerMas} row={rowDetalle} />
       </Popup>
@@ -254,6 +256,7 @@ const TablaTurnosEvaluacion = (props) => {
             </p>
           </>
 )}
+        disableBackdropClick
       >
         <ChecklistEvaluacion
           idTurnoPadre={idTurnoEvaluacion}

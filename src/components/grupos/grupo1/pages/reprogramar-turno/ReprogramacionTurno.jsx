@@ -138,6 +138,7 @@ const ReprogramacionTurno = (props) => {
           openDialog={openNoSeleccion}
           setOpenDialog={setOpenNoSeleccion}
           description="Debe seleccionar un día y/o algún horario, por favor."
+          disableBackdropClick
         >
           <Box sx={{
             display: 'flex', justifyContent: 'center', alignItems: 'center',
@@ -163,6 +164,7 @@ const ReprogramacionTurno = (props) => {
           openDialog={openConfirmarTurno}
           setOpenDialog={setOpenConfirmarTurno}
           description="¿Está seguro que desea crear el turno? No se podrá modificar una vez creado."
+          disableBackdropClick
         >
           <Box sx={{
             display: 'flex', justifyContent: 'center', alignItems: 'center',
@@ -208,6 +210,7 @@ const ReprogramacionTurno = (props) => {
           openDialog={openTurnoCreado}
           setOpenDialog={setOpenTurnoCreado}
           description="El turno creado se ha enviado existosamente."
+          disableBackdropClick
         >
           <Box sx={{
             display: 'flex', justifyContent: 'center', alignItems: 'center',

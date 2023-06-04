@@ -441,6 +441,7 @@ const AltaTaller = (props) => {
         openDialog={openConfirmar}
         setOpenDialog={setOpenConfirmar}
         description="¿Está seguro que todos los datos completados son correctos? La creación puede tardar unos segundos."
+        disableBackdropClick
       >
         <Box sx={{
           display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 2,
@@ -491,6 +492,7 @@ const AltaTaller = (props) => {
         openDialog={openErrorCrear}
         setOpenDialog={setOpenErrorCrear}
         description="Se produjo un error. Si persiste, comuniquese con el área técnica de KarU."
+        disableBackdropClick
       >
         <Box sx={{
           display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 2,
@@ -515,6 +517,7 @@ const AltaTaller = (props) => {
         openDialog={openMensajeExitoso}
         setOpenDialog={setOpenMensajeExitoso}
         description={mensajeExitoso}
+        disableBackdropClick
       >
         <Box sx={{
           display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 2,
@@ -538,6 +541,7 @@ const AltaTaller = (props) => {
         openDialog={openError}
         setOpenDialog={setOpenError}
         description="Por favor, verifique que haya completado todos los campos con los datos correspondientes."
+        disableBackdropClick
       >
         <Box sx={{
           display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 2,

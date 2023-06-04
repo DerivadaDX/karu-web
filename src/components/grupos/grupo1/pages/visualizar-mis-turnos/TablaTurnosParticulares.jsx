@@ -172,6 +172,7 @@ const TablaTurnosParticulares = (props) => {
         title={<LittleHeader titulo="Detalle de turno" />}
         openDialog={openVerMas}
         setOpenDialog={setOpenVerMas}
+        disableBackdropClick
       >
         <DetalleTurno row={rowDetalle} openDialog={openVerMas} setOpenDialog={setOpenVerMas} />
 
@@ -194,6 +195,7 @@ const TablaTurnosParticulares = (props) => {
             </p>
           </>
 )}
+        disableBackdropClick
       >
         <ChecklistEvaluacionExtraordinaria
           idTurnoPadre={idTurno}

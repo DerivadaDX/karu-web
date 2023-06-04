@@ -175,6 +175,7 @@ const TablaTurnosService = (props) => {
         title={<LittleHeader titulo="Detalle de turno " />}
         openDialog={openVerMas}
         setOpenDialog={setOpenVerMas}
+        disableBackdropClick
       >
         <DetalleTurno openDialog={openVerMas} setOpenDialog={setOpenVerMas} row={rowDetalle} />
       </Popup>
@@ -182,6 +183,7 @@ const TablaTurnosService = (props) => {
         title="Checklist"
         openDialog={openChecklist}
         setOpenDialog={setOpenChecklist}
+        disableBackdropClick
       >
         Checklist
       </Popup>

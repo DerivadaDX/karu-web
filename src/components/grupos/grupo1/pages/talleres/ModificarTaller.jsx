@@ -547,6 +547,7 @@ const ModificarTaller = (props) => {
         openDialog={openConfirmar}
         setOpenDialog={setOpenConfirmar}
         description="¿Está seguro que todos los datos completados son correctos? La modificación puede tardar unos segundos."
+        disableBackdropClick
       >
         <Box sx={{
           display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 2,
@@ -596,6 +597,7 @@ const ModificarTaller = (props) => {
         openDialog={openErrorModificar}
         setOpenDialog={setOpenErrorModificar}
         description={respuestaError}
+        disableBackdropClick
       >
         <Box sx={{
           display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 2,
@@ -628,6 +630,7 @@ const ModificarTaller = (props) => {
             <strong>{mensajeWarning}</strong>
           </>
 )}
+        disableBackdropClick
       >
         <Box sx={{
           display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 2,
@@ -651,6 +654,7 @@ const ModificarTaller = (props) => {
         openDialog={openError}
         setOpenDialog={setOpenError}
         description={respuestaError}
+        disableBackdropClick
       >
         <Box sx={{
           display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 2,

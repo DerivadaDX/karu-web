@@ -319,6 +319,7 @@ const ChecklistReparacion = (props) => {
         openDialog={openNoSeleccion}
         setOpenDialog={setOpenNoSeleccion}
         description="No ha seleccionado todas las checkboxes correspondientes. Por favor, verifique que haya completado todas las tareas para terminar la reparación."
+        disableBackdropClick
       >
         <Box sx={{
           display: 'flex', justifyContent: 'center', alignItems: 'center',
@@ -344,6 +345,7 @@ const ChecklistReparacion = (props) => {
         openDialog={openConfirmarReparacion}
         setOpenDialog={setOpenConfirmarReparacion}
         description="¿Está seguro que desea terminar la reparación? No se podrá modificar una vez terminada."
+        disableBackdropClick
       >
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <Alerts alertType={alertError} description={alertMensaje} title={alertTitulo} />
@@ -381,6 +383,7 @@ const ChecklistReparacion = (props) => {
         openDialog={openReparacionEnviada}
         setOpenDialog={setOpenReparacionEnviada}
         description="Se han guardado las reparaciones hechas."
+        disableBackdropClick
       >
         <Box sx={{
           display: 'flex', justifyContent: 'center', alignItems: 'center',

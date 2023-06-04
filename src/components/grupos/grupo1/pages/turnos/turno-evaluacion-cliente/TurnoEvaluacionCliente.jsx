@@ -153,6 +153,7 @@ const FormularioEvaluacionCliente = () => {
             description="Por favor complete todos los campos y verifique la correctitud de la patente."
             openDialog={openPopupNoSeleccion}
             setOpenDialog={setOpenPopupNoSeleccion}
+            disableBackdropClick
           >
             <Box
               sx={{ margin: '15px', display: 'flex', justifyContent: 'center' }}
@@ -170,6 +171,7 @@ const FormularioEvaluacionCliente = () => {
             description={msjTurnoCreado}
             openDialog={openPopupSeleccion}
             setOpenDialog={setOpenPopupSeleccion}
+            disableBackdropClick
           >
             <Box
               sx={{ margin: '15px', display: 'flex', justifyContent: 'center' }}

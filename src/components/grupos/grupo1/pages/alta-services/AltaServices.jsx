@@ -309,6 +309,7 @@ const AltaServiceForm = (props) => {
           description="Complete todos los campos, por favor. Y asegúrese de elegir al menos un elemento de la checklist para crear el service."
           openDialog={openPopupNoSeleccion}
           setOpenDialog={setOpenPopupNoSeleccion}
+          disableBackdropClick
         >
           <Box
             sx={{ margin: '15px', display: 'flex', justifyContent: 'center' }}
@@ -326,6 +327,7 @@ const AltaServiceForm = (props) => {
           description={msjServiceCreado}
           openDialog={openPopupSeleccion}
           setOpenDialog={setOpenPopupSeleccion}
+          disableBackdropClick
         >
           <Box
             sx={{ margin: '15px', display: 'flex', justifyContent: 'center' }}

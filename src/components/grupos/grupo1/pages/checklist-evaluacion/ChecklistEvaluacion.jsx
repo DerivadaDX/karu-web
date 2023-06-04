@@ -265,6 +265,7 @@ const ChecklistEvaluacion = (props) => {
         openDialog={openNoSeleccion}
         setOpenDialog={setOpenNoSeleccion}
         description="No ha seleccionado todas las checkboxes correspondientes. Por favor, verifique que haya revisado todas las tareas para registrar la evaluación."
+        disableBackdropClick
       >
         <Box sx={{
           display: 'flex', justifyContent: 'center', alignItems: 'center',
@@ -290,6 +291,7 @@ const ChecklistEvaluacion = (props) => {
         openDialog={openConfirmarEvaluacion}
         setOpenDialog={setOpenConfirmarEvaluacion}
         description="¿Está seguro que desea enviar la evaluación? No se podrá modificar una vez realizada."
+        disableBackdropClick
       >
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <Alerts alertType={alertError} description={alertMensaje} title={alertTitulo} />
@@ -327,6 +329,7 @@ const ChecklistEvaluacion = (props) => {
         openDialog={openEvaluacionEnviada}
         setOpenDialog={setOpenEvaluacionEnviada}
         description="La evaluación realizada se ha enviado existosamente."
+        disableBackdropClick
       >
         <Box sx={{
           display: 'flex', justifyContent: 'center', alignItems: 'center',

@@ -191,6 +191,7 @@ const TablaTurnosCancelados = (props) => {
         )}
         openDialog={openReprogramar}
         setOpenDialog={setOpenReprogramar}
+        disableBackdropClick
       >
         <ReprogramacionTurno
           idTurnoPadre={idTurnoReprogramar}

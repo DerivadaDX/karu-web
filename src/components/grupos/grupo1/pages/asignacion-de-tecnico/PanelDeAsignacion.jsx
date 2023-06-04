@@ -210,6 +210,7 @@ const AsignacionDeTecnicos = ({
           description="No ha seleccionado un técnico. Por favor, seleccione uno antes de terminar con el proceso."
           openDialog={openPopupNoSeleccion}
           setOpenDialog={setOpenPopupNoSeleccion}
+          disableBackdropClick
         >
           <Box
             sx={{ margin: '15px', display: 'flex', justifyContent: 'center' }}
@@ -227,6 +228,7 @@ const AsignacionDeTecnicos = ({
           description="La asignación del turno al técnico correspondiente ha sido exitosa."
           openDialog={openPopupSeleccion}
           setOpenDialog={setOpenPopupSeleccion}
+          disableBackdropClick
         >
           <Box
             sx={{ margin: '15px', display: 'flex', justifyContent: 'center' }}

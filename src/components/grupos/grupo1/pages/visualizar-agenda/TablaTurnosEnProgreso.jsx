@@ -242,6 +242,7 @@ const TablaTurnosEnProgreso = (props) => {
         openDialog={openFinalizar}
         setOpenDialog={setOpenFinalizar}
         description="¿Está seguro que desea finalizar el turno? No se podrá modificar la acción una vez realizada."
+        disableBackdropClick
       >
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <DialogActions>
@@ -279,6 +280,7 @@ const TablaTurnosEnProgreso = (props) => {
         openDialog={openCancelar}
         setOpenDialog={setOpenCancelar}
         description="¿Está seguro que desea cancelar el turno? No se podrá modificar la acción una vez realizada."
+        disableBackdropClick
       >
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <DialogActions>
@@ -315,6 +317,7 @@ const TablaTurnosEnProgreso = (props) => {
         title={<LittleHeader titulo="Detalle de turno" />}
         openDialog={openVerMas}
         setOpenDialog={setVerMas}
+        disableBackdropClick
       >
         <DetalleTurno openDialog={openVerMas} setOpenDialog={setVerMas} row={rowDetalle} />
       </Popup>

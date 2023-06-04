@@ -202,6 +202,7 @@ const TablaTurnosPendientesDeAprobacion = (props) => {
         openDialog={openCancel}
         setOpenDialog={setOpenCancel}
         description="¿Está seguro que desea cancelar el turno? No se podrá modificar la acción una vez realizada."
+        disableBackdropClick
       >
         <Box>
           <DialogActions>
@@ -239,6 +240,7 @@ const TablaTurnosPendientesDeAprobacion = (props) => {
         openDialog={openVerMas}
         setOpenDialog={setVerMas}
         botonRetorno="Atras"
+        disableBackdropClick
       >
         <DetalleTurno openDialog={openVerMas} setOpenDialog={setVerMas} row={rowDetalle} />
       </Popup>
