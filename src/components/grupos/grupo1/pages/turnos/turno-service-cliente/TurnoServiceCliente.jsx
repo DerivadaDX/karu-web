@@ -197,6 +197,7 @@ const FormularioCliente = () => {
             description="Por favor complete todos los campos y verifique la correctitud del DNI, la patente y el kilometraje."
             openDialog={openPopupNoSeleccion}
             setOpenDialog={setOpenPopupNoSeleccion}
+            disableBackdropClick
           >
             <Box
               sx={{ margin: '15px', display: 'flex', justifyContent: 'center' }}
@@ -214,6 +215,7 @@ const FormularioCliente = () => {
             description={msjTurnoCreado}
             openDialog={openPopupSeleccion}
             setOpenDialog={setOpenPopupSeleccion}
+            disableBackdropClick
           >
             <Box
               sx={{ margin: '15px', display: 'flex', justifyContent: 'center' }}
