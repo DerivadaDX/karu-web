@@ -54,7 +54,6 @@ const PopUpCrearVendedor = ({ onSuccess, onClose, sucursales }) => {
         onSuccess();
       })
       .catch((e) => {
-        console.log(e.response.data);
         if (e.response.data.email) {
           setError('email', { type: 'custom', message: 'El email ingresado ya se encuentra registrado' });
         }
