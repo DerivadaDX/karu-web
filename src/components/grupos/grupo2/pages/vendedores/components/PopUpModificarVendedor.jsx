@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 import {
@@ -23,11 +23,11 @@ import PropTypes from 'prop-types';
 import dayjs from 'dayjs';
 import CuitComponent from './CuitComponent';
 import VendedorService from '../services/vendedor-service';
-import SucursalService from '../services/sucursal-service';
 
-const PopUpModificarVendedor = ({ onEdit, vendedor, onClose }) => {
+const PopUpModificarVendedor = ({
+  sucursales, onEdit, vendedor, onClose,
+}) => {
   const [mostrarPopUpCreacionExitosa, setMostrarPopUpCreacionExitosa] = useState(false);
-  const [sucursales, setSucursales] = useState([]);
   const { handleSubmit, control, formState: { errors, isValid, isDirty } } = useForm({
     mode: 'onBlur',
     defaultValues: {
@@ -56,12 +56,6 @@ const PopUpModificarVendedor = ({ onEdit, vendedor, onClose }) => {
       })
       .catch(() => setMostrarPopUpCreacionExitosa(false));
   };
-
-  const obtenerSucursales = () => {
-    SucursalService.obtenerSucursalesActivas().then(setSucursales);
-  };
-
-  useEffect(obtenerSucursales, []);
 
   const cambiarVisibilidadPopUpCreacionExitosa = () => {
     setMostrarPopUpCreacionExitosa(false);
@@ -240,7 +234,7 @@ const PopUpModificarVendedor = ({ onEdit, vendedor, onClose }) => {
                     value={value}
                     onChange={onChange}
                   >
-                    {sucursales.map((sucursal) => (
+                    {sucursales.filter((s) => s.activa === true).map((sucursal) => (
                       <MenuItem
                         key={sucursal.id}
                         value={sucursal.id}
@@ -303,6 +297,8 @@ const PopUpModificarVendedor = ({ onEdit, vendedor, onClose }) => {
 };
 
 PopUpModificarVendedor.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
+  sucursales: PropTypes.array.isRequired,
   onEdit: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
   vendedor: PropTypes.shape({

@@ -248,7 +248,7 @@ const PopUpCrearVendedor = ({ onSuccess, onClose, sucursales }) => {
                     value={value}
                     onChange={onChange}
                   >
-                    {sucursales.map((sucursal) => (
+                    {sucursales.filter((s) => s.activa === true).map((sucursal) => (
                       <MenuItem
                         key={sucursal.id}
                         value={sucursal.id}

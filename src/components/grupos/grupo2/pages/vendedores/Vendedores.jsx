@@ -55,7 +55,7 @@ const Vendedores = () => {
                 <MenuItem value={0}>
                   Todas las sucursales
                 </MenuItem>
-                {sucursales.map((sucursal) => (
+                {sucursales.filter((s) => s.activa === true).map((sucursal) => (
                   <MenuItem key={sucursal.id} value={sucursal.id}>
                     {sucursal.nombre}
                   </MenuItem>

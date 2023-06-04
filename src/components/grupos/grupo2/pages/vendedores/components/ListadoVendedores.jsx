@@ -149,17 +149,18 @@ const ListadoVendedores = ({ sucursal, sucursales }) => {
     <Box>
       {mostrarPopUpModificarVendedores && (
         <PopUpModificarVendedor
+          sucursales={sucursales}
           onClose={() => setMostrarPopUpModificarVendedores(false)}
           vendedor={vendedor}
           onEdit={actualizarDatosDeVendedor}
         />
       )}
       {mostrarPopUpCrearVendedores && (
-      <PopUpCrearVendedor
-        onClose={() => setMostrarPopUpCrearVendedores(false)}
-        sucursales={sucursales}
-        onSuccess={obtenerVendedoresDeSucursales}
-      />
+        <PopUpCrearVendedor
+          onClose={() => setMostrarPopUpCrearVendedores(false)}
+          sucursales={sucursales}
+          onSuccess={obtenerVendedoresDeSucursales}
+        />
       )}
       <MaterialReactTable
         columns={columnas}
