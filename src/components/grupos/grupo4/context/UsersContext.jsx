@@ -134,7 +134,6 @@ export const UserContextProvider = ({ children }) => {
   };
 
   async function saveUser(userData) {
-    console.log("LO QUE LE ENVIO AL BACK: ", userData)
     const postUser = await PostNewUser(userData);
     const { value, registeredUser } = postUser;
     if (registeredUser) {
@@ -162,7 +161,6 @@ export const UserContextProvider = ({ children }) => {
   }
 
   async function saveVehicleModel(modelData) {
-    console.log("LO QUE ENVIO AL BACK: ", modelData)
     const postUser = await PostNewVehicleModel(modelData);
     const { value, registeredVehicleModel } = postUser;
     if (registeredVehicleModel) {

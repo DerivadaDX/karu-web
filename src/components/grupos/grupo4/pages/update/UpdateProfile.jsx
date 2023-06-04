@@ -24,7 +24,6 @@ const UpdateProfile = () => {
     updateUserPasswordMessageError,
   } = useContext(UserContext);
   const cookieResult = cookie.get('user');
-  console.log('COOKIE RESULT: ', cookieResult);
   const [values, setValues] = useState({
     username: cookieResult.username,
     email: '',
