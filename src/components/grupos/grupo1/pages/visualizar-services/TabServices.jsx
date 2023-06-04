@@ -44,7 +44,7 @@ function allyProps(index) {
 
 export const TabServices = (props) => {
   const [value, setValue] = useState(0);
-  const { idTaller } = props;
+  const { idSupervisor } = props;
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -65,7 +65,7 @@ export const TabServices = (props) => {
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        <TablaServices />
+        <TablaServices idSupervisor={idSupervisor} />
       </TabPanel>
     </Box>
   );

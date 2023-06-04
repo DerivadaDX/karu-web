@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable react/prop-types */
 /* eslint-disable max-len */
 /* eslint-disable no-console */
@@ -8,11 +9,12 @@ import {
 } from 'react';
 
 import MaterialReactTable from 'material-react-table';
+import { MRT_Localization_ES } from 'material-react-table/locales/es';
 import { Button, Box, DialogActions } from '@mui/material';
 import Alerts from '../../components/common/Alerts';
 import { getTurnosEvaluacion } from '../../services/services-tecnicos';
 import Popup from '../../components/common/DialogPopup';
-import ChecklistEvaluacion from '../checklist-evaluacion/Checklist';
+import ChecklistEvaluacion from '../checklist-evaluacion/ChecklistEvaluacion';
 import LittleHeader from '../../components/common/LittleHeader';
 import DetalleTurno from '../../components/common/DetalleTurno';
 
@@ -184,7 +186,8 @@ const TablaTurnosEvaluacion = (props) => {
         enableRowActions
         renderRowActions={renderRowActions}
         renderEmptyRowsFallback={noData}
-        defaultColumn={{ minSize: 10, maxSize: 100, size: 30 }}
+        defaultColumn={{ size: 5 }}
+        localization={MRT_Localization_ES}
         muiTopToolbarProps={{
           sx: {
             display: 'flex',
@@ -248,7 +251,6 @@ const TablaTurnosEvaluacion = (props) => {
               cuanto más alto, mayor es la gravedad.
               Ej.: si el puntaje es 0, entonces la parte evaluada
               está en perfectas condiciones. De 5 en adelante es porque la parte tiene fallas.
-
             </p>
           </>
 )}

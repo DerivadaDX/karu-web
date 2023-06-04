@@ -18,7 +18,9 @@ import LittleHeader from '../../../components/common/LittleHeader';
 // (tal vez en el popup que abre al agregar turno se lo puede pasar)
 
 const FormularioExtraordinario = (props) => {
-  const { taller, setOpenAgregarTurno, openAgregarTurno } = props;
+  const {
+    taller, setOpenAgregarTurno, openAgregarTurno, setActualizarTabla,
+  } = props;
   // El endpoint toma número naturales y le estamos pasando un string 'T002', debería
   // tomar el 2
   function obtenerPrimerNumero(str) {
@@ -83,7 +85,7 @@ const FormularioExtraordinario = (props) => {
             patente: patenteReparacion,
             fecha_inicio: fecha,
             hora_inicio: hora,
-            taller_id: taller,
+            taller_id: tallerNro,
           },
         });
         setOpenPopupSeleccion(true);
@@ -100,7 +102,7 @@ const FormularioExtraordinario = (props) => {
         setOpenError(true);
         setAlertError('error');
         setAlertTitulo('Ha ocurrido un error');
-        setAlertMensaje('Si el problema persiste, comuniquese con insomnia.front@gmail.com');
+        setAlertMensaje(error.response.data);
       }
     }
   };
@@ -160,7 +162,10 @@ const FormularioExtraordinario = (props) => {
                 color="primary"
                 size="medium"
                 // sx={{ mt: 1, mb: 2, ml: 1 }}
-                onClick={() => setOpenAgregarTurno(false)}
+                onClick={() => {
+                  setOpenAgregarTurno(false);
+                  setActualizarTabla(true);
+                }}
               >
                 Atrás
               </Button>
@@ -194,7 +199,10 @@ const FormularioExtraordinario = (props) => {
             >
               <Button
                 color="success"
-                onClick={() => setOpenPopupSeleccion(false)}
+                onClick={() => {
+                  setOpenPopupSeleccion(false);
+                  setActualizarTabla(true);
+                }}
               >
                 Cerrar
               </Button>
@@ -204,10 +212,19 @@ const FormularioExtraordinario = (props) => {
           <Popup
             openDialog={openError}
             setOpenDialog={setOpenError}
-            title="Ha ocurrido un problema"
+            title={<LittleHeader titulo="Ha ocurrido un problema" />}
           >
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <Alerts alertType={alertError} description={alertMensaje} title={alertTitulo} />
+            </Box>
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              <Button
+                onClick={() => setOpenError(false)}
+                variant="outlined"
+                color="primary"
+              >
+                Cerrar
+              </Button>
             </Box>
           </Popup>
         </Box>

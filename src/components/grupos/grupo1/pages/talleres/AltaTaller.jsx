@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable radix */
 /* eslint-disable max-len */
 /* eslint-disable no-console */
@@ -9,7 +10,7 @@
 /* eslint-disable no-unused-vars */
 import DialogActions from '@mui/material/DialogActions';
 import {
-  Box, TextField, Button, InputLabel, Select, MenuItem, Container, Grid,
+  Box, TextField, Button, InputLabel, Select, MenuItem, Container, Grid, CircularProgress,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
@@ -48,7 +49,7 @@ const AltaTaller = (props) => {
   const [openError, setOpenError] = useState(false);
   const [openMensajeExitoso, setOpenMensajeExitoso] = useState(false);
   const [mensajeExitoso, setMensajeExistoso] = useState();
-
+  const [loadingConfirmacion, setLoadingConfirmacion] = useState(false);
   // Error al enviar
   const [openErrorCrear, setOpenErrorCrear] = useState(false);
 
@@ -413,15 +414,16 @@ const AltaTaller = (props) => {
       >
         <DialogActions>
           <Button
-            color="secondary"
             variant="outlined"
-            sx={{ marginTop: 5 }}
             onClick={() => {
               validarForm();
             }}
+            color="secondary"
+            sx={{ marginTop: 5 }}
           >
             Crear taller
           </Button>
+
           <Button
             color="primary"
             variant="outlined"
@@ -445,15 +447,32 @@ const AltaTaller = (props) => {
         }}
         >
           <DialogActions>
-            <Button
-              color="primary"
-              variant="outlined"
-              onClick={() => {
-                handleSubmit();
-              }}
-            >
-              Aceptar
-            </Button>
+            <Box sx={{ m: 1, position: 'relative' }}>
+              <Button
+                variant="outlined"
+                disabled={loadingConfirmacion}
+                onClick={() => {
+                  handleSubmit();
+                  setLoadingConfirmacion(true);
+                }}
+                color="primary"
+              >
+                Aceptar
+              </Button>
+              {loadingConfirmacion && (
+              <CircularProgress
+                size={24}
+                sx={{
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  marginTop: '-12px',
+                  marginLeft: '-12px',
+                }}
+              />
+              )}
+            </Box>
+
             <Button
               color="error"
               variant="outlined"

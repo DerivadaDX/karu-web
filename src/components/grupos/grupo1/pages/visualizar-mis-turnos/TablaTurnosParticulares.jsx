@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable no-unused-vars */
@@ -6,12 +7,14 @@ import {
 } from 'react';
 
 import MaterialReactTable from 'material-react-table';
+import { MRT_Localization_ES } from 'material-react-table/locales/es';
 import { Button, Box } from '@mui/material';
 import Alerts from '../../components/common/Alerts';
 import { getTurnosExtraodinario } from '../../services/services-tecnicos';
 import Popup from '../../components/common/DialogPopup';
 import DetalleTurno from '../../components/common/DetalleTurno';
 import LittleHeader from '../../components/common/LittleHeader';
+import ChecklistEvaluacionExtraordinaria from '../checklist-evaluacion-extraordinaria/ChecklistEvaluacionExtraordinaria';
 
 const TablaTurnosParticulares = (props) => {
   const { idTecnico } = props;
@@ -145,7 +148,8 @@ const TablaTurnosParticulares = (props) => {
         enableRowActions
         renderRowActions={renderRowActions}
         renderEmptyRowsFallback={noData}
-        defaultColumn={{ minSize: 10, maxSize: 100, size: 30 }}
+        defaultColumn={{ size: 5 }}
+        localization={MRT_Localization_ES}
         initialState={{ density: 'compact' }}
         muiTopToolbarProps={{
           sx: {
@@ -173,11 +177,31 @@ const TablaTurnosParticulares = (props) => {
 
       </Popup>
       <Popup
-        title="Checklist"
+        title={(
+          <LittleHeader
+            titulo="Evaluación técnica particular"
+            subtitulo="Checklist"
+          />
+      )}
         openDialog={openChecklist}
         setOpenDialog={setOpenChecklist}
+        description={(
+          <>
+            <strong>Aclaración</strong>
+            <p>
+              Marque las partes que considere
+              necesarias reparar.
+            </p>
+          </>
+)}
       >
-        Checklist
+        <ChecklistEvaluacionExtraordinaria
+          idTurnoPadre={idTurno}
+          open={openChecklist}
+          setOpen={setOpenChecklist}
+          actualizar={actualizarTabla}
+          setActualizar={setActualizarTabla}
+        />
       </Popup>
     </>
   );
