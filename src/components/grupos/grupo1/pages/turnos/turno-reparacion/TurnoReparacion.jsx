@@ -95,6 +95,7 @@ const Formulario = (props) => {
           },
         });
         setOpenPopupSeleccion(true);
+        setActualizarTabla(true);
       } else {
         setOpenPopupNoSeleccion(true);
       }
@@ -229,7 +230,7 @@ const Formulario = (props) => {
             >
               <Button
                 color="success"
-                onClick={() => setOpenPopupSeleccion(false)}
+                onClick={() => setOpenAgregarTurno(false)}
               >
                 Cerrar
               </Button>

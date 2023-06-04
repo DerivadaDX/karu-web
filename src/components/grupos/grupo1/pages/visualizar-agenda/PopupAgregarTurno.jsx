@@ -16,7 +16,7 @@ export default function PopupAgregarTurno(props) {
       onClose={() => setOpenDialog(false)}
       PaperProps={{
         sx: {
-          width: '50%', height: '100%',
+          width: 'auto', height: 'auto',
         },
       }}
     >
