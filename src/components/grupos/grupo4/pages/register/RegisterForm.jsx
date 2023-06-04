@@ -97,7 +97,6 @@ const RegisterForm = () => {
     if (!isWorkshopDropdownInitialized) {
       updateWorkshopDropdown();
     }
-    console.log('values.type: ', values.type);
     if (values.type === 'TECNICO' || values.type === 'SUPERVISOR_TECNICO') {
       setShowWorkshopDropdown(true);
     } else {

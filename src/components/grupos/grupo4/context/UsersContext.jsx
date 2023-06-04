@@ -58,7 +58,6 @@ export const UserContextProvider = ({ children }) => {
     const user = cookie.get('user');
     if (user) {
       setIsAuthenticated(true);
-      navigate('/');
     }
   };
 
@@ -135,7 +134,6 @@ export const UserContextProvider = ({ children }) => {
   };
 
   async function saveUser(userData) {
-    console.log("LO QUE LE ENVIO AL BACK: ", userData)
     const postUser = await PostNewUser(userData);
     const { value, registeredUser } = postUser;
     if (registeredUser) {
@@ -163,7 +161,6 @@ export const UserContextProvider = ({ children }) => {
   }
 
   async function saveVehicleModel(modelData) {
-    console.log("LO QUE ENVIO AL BACK: ", modelData)
     const postUser = await PostNewVehicleModel(modelData);
     const { value, registeredVehicleModel } = postUser;
     if (registeredVehicleModel) {
@@ -182,7 +179,7 @@ export const UserContextProvider = ({ children }) => {
     const { value, updatedUser } = putUser;
     if (updatedUser) {
       window.alert('Email modificado!');
-      navigate('/home');
+      navigate('/');
     } else {
       if (value) {
         setupdateUserMessageError(value); //Cambiar logica
