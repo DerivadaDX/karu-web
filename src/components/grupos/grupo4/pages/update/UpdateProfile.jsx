@@ -4,6 +4,14 @@ import React, { useContext, useEffect, useState } from 'react';
 import { GetUser } from '../../api/API-methods';
 import { UserContext } from '../../context/UsersContext';
 import '../../assets/css/formRegister.css';
+import {
+  Alert,
+  Button,
+  Paper,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
 
 const UpdateProfile = () => {
   const {
@@ -16,7 +24,7 @@ const UpdateProfile = () => {
     updateUserPasswordMessageError,
   } = useContext(UserContext);
   const cookieResult = cookie.get('user');
-  console.log("COOKIE RESULT: ", cookieResult)
+  console.log('COOKIE RESULT: ', cookieResult);
   const [values, setValues] = useState({
     username: cookieResult.username,
     email: '',
@@ -68,48 +76,70 @@ const UpdateProfile = () => {
   }, []);
 
   return (
-    <div className="update-container">
-      <form id="form" className="form" onSubmit={handleSubmitEmail}>
-        <h2 className="register_form-h2">ACTUALIZAR EMAIL</h2>
-        <div className="inputs">
-          <input
-            className="inputs-register"
-            type="email"
-            value={emailActual}
-            readOnly
-          />
-        </div>
-        <div className="inputs">
-          <input
-            className="inputs-register"
+    <Paper sx={{ display: 'block', margin: 'auto' }}>
+      <Stack
+        component="form"
+        onSubmit={handleSubmitEmail}
+        sx={{
+          width: '50%',
+          display: 'flex',
+          textAlign: 'center',
+          margin: 'auto',
+          paddingBottom: '3em',
+        }}
+      >
+        <Typography variant="h4">ACTUALIZAR EMAIL</Typography>
+        <Paper>
+          <TextField type="email" label="Email" value={emailActual} readOnly />
+        </Paper>
+        <Paper>
+          <TextField
             name="email"
             type="email"
+            label="Email nuevo"
             placeholder="Email nuevo"
             pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
             required
             onChange={onChangeEmail}
           />
           {showMailError && (
-            <span className="error-message">
+            <Alert severity="warning">
               ¡Ingrese un correo valido! Ejemplo: ejemplo@gmail.com
-            </span>
+            </Alert>
           )}
-        </div>
-        <span
-          className="spans"
+        </Paper>
+        <Alert
+          severity="error"
           style={
             showSpanUpdateUserError ? { display: 'block' } : { display: 'none' }
           }
         >
           {updateUserMessageError}
-        </span>
-        <button className="buttons">Enviar</button>
-      </form>
-      <form id="form" className="form" onSubmit={handleSubmitPassword}>
-        <h2 className="register_form-h2">ACTUALIZAR CONTRASEÑA</h2>
-        <div className="inputs">
-          <input
-            className="inputs-register"
+        </Alert>
+        <Button variant="contained" type="submit">
+          Enviar
+        </Button>
+      </Stack>
+      <Stack
+        component="form"
+        onSubmit={handleSubmitPassword}
+        sx={{
+          width: '50%',
+          display: 'flex',
+          textAlign: 'center',
+          margin: 'auto',
+        }}
+      >
+        <Typography variant="h4">ACTUALIZAR CONTRASEÑA</Typography>
+        <Paper
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <TextField
+            label="contraseña actual"
             name="oldPassword"
             type="password"
             placeholder="Contraseña actual"
@@ -117,10 +147,16 @@ const UpdateProfile = () => {
             required
             onChange={onChangePassword}
           />
-        </div>
-        <div className="inputs">
-          <input
-            className="inputs-register"
+        </Paper>
+        <Paper
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <TextField
+            label="contraseña nueva"
             name="newPassword"
             type="password"
             placeholder="Contraseña nueva"
@@ -129,14 +165,14 @@ const UpdateProfile = () => {
             onChange={onChangePassword}
           />
           {showError && (
-            <span className="error-message">
+            <Alert severity="warning">
               ¡La contraseña debe tener entre 8 y 20 caracteres e incluir al
               menos 1 letra, 1 número y 1 carácter especial!.
-            </span>
+            </Alert>
           )}
-        </div>
-        <span
-          className="spans"
+        </Paper>
+        <Alert
+          severity="error"
           style={
             showSpanUpdateUserPasswordError
               ? { display: 'block' }
@@ -144,13 +180,15 @@ const UpdateProfile = () => {
           }
         >
           {updateUserPasswordMessageError}
-        </span>
-        <button className="buttons">Enviar</button>
-      </form>
-      <Link className="vehicle-container__form-a" to={'/'}>
-        <div>Volver al inicio</div>
-      </Link>
-    </div>
+        </Alert>
+        <Button variant="contained" type="submit" sx={{marginBottom:'2em'}}>
+          Enviar
+        </Button>
+        <Link to={'/'}>
+          <Paper>Volver al inicio</Paper>
+        </Link>
+      </Stack>
+    </Paper>
   );
 };
 

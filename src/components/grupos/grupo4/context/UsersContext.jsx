@@ -58,7 +58,6 @@ export const UserContextProvider = ({ children }) => {
     const user = cookie.get('user');
     if (user) {
       setIsAuthenticated(true);
-      navigate('/');
     }
   };
 
