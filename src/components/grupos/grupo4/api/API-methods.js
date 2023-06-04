@@ -9,11 +9,11 @@ export const authLogin = async (user) => {
   try {
     const response = await client.post('/login/startLogin', user);
     if (response.data?.result.sessionStatus === 'USUARIO_ENCONTRADO') {
-      return true;
+      return {userFound: true, type: response.data.result.type};
     }
-    return false;
+    return {userFound: false};
   } catch (error) {
-    return false;
+    return {userFound: false};
   }
 };
 
