@@ -179,7 +179,7 @@ export const UserContextProvider = ({ children }) => {
     const { value, updatedUser } = putUser;
     if (updatedUser) {
       window.alert('Email modificado!');
-      navigate('/home');
+      navigate('/');
     } else {
       if (value) {
         setupdateUserMessageError(value); //Cambiar logica

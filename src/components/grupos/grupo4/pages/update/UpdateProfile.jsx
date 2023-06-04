@@ -76,22 +76,22 @@ const UpdateProfile = () => {
 
   return (
     <Paper sx={{ display: 'block', margin: 'auto' }}>
-      <Stack
-        component="form"
-        onSubmit={handleSubmitEmail}
-        sx={{
-          width: '50%',
-          display: 'flex',
-          textAlign: 'center',
-          margin: 'auto',
-          paddingBottom: '3em',
-        }}
-      >
-        <Typography variant="h4">ACTUALIZAR EMAIL</Typography>
-        <Paper>
+      <Paper>
+        <Stack
+          component="form"
+          onSubmit={handleSubmitEmail}
+          direction="column"
+          spacing={1}
+          sx={{
+            width: '50%',
+            display: 'flex',
+            textAlign: 'center',
+            margin: 'auto',
+            paddingBottom: '3em',
+          }}
+        >
+          <Typography variant="h4">ACTUALIZAR EMAIL</Typography>
           <TextField type="email" label="Email" value={emailActual} readOnly />
-        </Paper>
-        <Paper>
           <TextField
             name="email"
             type="email"
@@ -106,37 +106,37 @@ const UpdateProfile = () => {
               ¡Ingrese un correo valido! Ejemplo: ejemplo@gmail.com
             </Alert>
           )}
-        </Paper>
-        <Alert
-          severity="error"
-          style={
-            showSpanUpdateUserError ? { display: 'block' } : { display: 'none' }
-          }
-        >
-          {updateUserMessageError}
-        </Alert>
-        <Button variant="contained" type="submit">
-          Enviar
-        </Button>
-      </Stack>
-      <Stack
-        component="form"
-        onSubmit={handleSubmitPassword}
-        sx={{
-          width: '50%',
-          display: 'flex',
-          textAlign: 'center',
-          margin: 'auto',
-        }}
-      >
-        <Typography variant="h4">ACTUALIZAR CONTRASEÑA</Typography>
-        <Paper
+          <Alert
+            severity="error"
+            style={
+              showSpanUpdateUserError
+                ? { display: 'block' }
+                : { display: 'none' }
+            }
+          >
+            {updateUserMessageError}
+          </Alert>
+          <Button variant="contained" type="submit">
+            Enviar
+          </Button>
+        </Stack>
+      </Paper>
+
+      <Paper>
+        <Stack
+          component="form"
+          direction="column"
+          spacing={1}
+          onSubmit={handleSubmitPassword}
           sx={{
+            width: '50%',
             display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
+            textAlign: 'center',
+            margin: 'auto',
+            paddingBottom: '3em',
           }}
         >
+          <Typography variant="h4">ACTUALIZAR CONTRASEÑA</Typography>
           <TextField
             label="contraseña actual"
             name="oldPassword"
@@ -146,14 +146,6 @@ const UpdateProfile = () => {
             required
             onChange={onChangePassword}
           />
-        </Paper>
-        <Paper
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
           <TextField
             label="contraseña nueva"
             name="newPassword"
@@ -169,24 +161,28 @@ const UpdateProfile = () => {
               menos 1 letra, 1 número y 1 carácter especial!.
             </Alert>
           )}
-        </Paper>
-        <Alert
-          severity="error"
-          style={
-            showSpanUpdateUserPasswordError
-              ? { display: 'block' }
-              : { display: 'none' }
-          }
-        >
-          {updateUserPasswordMessageError}
-        </Alert>
-        <Button variant="contained" type="submit" sx={{marginBottom:'2em'}}>
-          Enviar
-        </Button>
-        <Link to={'/'}>
-          <Paper>Volver al inicio</Paper>
-        </Link>
-      </Stack>
+          <Alert
+            severity="error"
+            style={
+              showSpanUpdateUserPasswordError
+                ? { display: 'block' }
+                : { display: 'none' }
+            }
+          >
+            {updateUserPasswordMessageError}
+          </Alert>
+          <Button
+            variant="contained"
+            type="submit"
+            sx={{ marginBottom: '2em' }}
+          >
+            Enviar
+          </Button>
+          <Link to={'/'}>
+            <Paper>Volver al inicio</Paper>
+          </Link>
+        </Stack>
+      </Paper>
     </Paper>
   );
 };
