@@ -6,6 +6,7 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Box } from '@mui/material';
+import { Link } from 'react-router-dom';
 import logo from '../../assets/pictures/karu.png';
 
 const styles = {
@@ -50,7 +51,9 @@ const NavBar = ({ open, drawerWidth, toggleDrawer }) => {
           <MenuIcon />
         </IconButton>
         <Box>
-          <img src={logo} alt="Logo KarU" style={{ height: '2.5rem' }} />
+          <Link to="/">
+            <img src={logo} alt="Logo KarU" style={{ height: '2.5rem' }} />
+          </Link>
         </Box>
       </Toolbar>
     </AppBar>
