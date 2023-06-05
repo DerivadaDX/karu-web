@@ -6,6 +6,7 @@ import {
 } from '@mui/material';
 import MaterialReactTable from 'material-react-table';
 
+import FormatoNumeroHelper from '../helpers/formato-numero-helper';
 import ComisionService from '../services/comision-service';
 
 const ListadoComisiones = () => {
@@ -36,9 +37,8 @@ const ListadoComisiones = () => {
   };
 
   const renderFormatoPorcentaje = ({ row }) => {
-    const valorDeComision = row.original.valor;
-    const numero = parseFloat(valorDeComision);
-    const porcentaje = numero.toLocaleString(undefined, { style: 'percent' });
+    const valorDeComision = parseFloat(row.original.valor);
+    const porcentaje = FormatoNumeroHelper.formatearComoPorcentaje(valorDeComision);
 
     return porcentaje;
   };
