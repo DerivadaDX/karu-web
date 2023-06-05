@@ -12,6 +12,7 @@ import ValidarPatente from '../Helpers/validar-patente';
 import ValidarKm from '../Helpers/validar-km';
 import Alerts from '../../../components/common/Alerts';
 import Popup from '../../../components/common/DialogPopup';
+import LittleHeader from '../../../components/common/LittleHeader';
 
 const FormularioCliente = () => {
   const [taller, setTaller] = useState();
@@ -193,7 +194,7 @@ const FormularioCliente = () => {
             </Button>
           </Box>
           <Popup
-            title="Error en datos requeridos."
+            title={<LittleHeader titulo="Error en datos requeridos" />}
             description="Por favor complete todos los campos y verifique la correctitud del DNI, la patente y el kilometraje."
             openDialog={openPopupNoSeleccion}
             setOpenDialog={setOpenPopupNoSeleccion}
@@ -204,6 +205,7 @@ const FormularioCliente = () => {
             >
               <Button
                 color="error"
+                variant="outlined"
                 onClick={() => setOpenPopupNoSeleccion(false)}
               >
                 Cerrar
@@ -211,7 +213,7 @@ const FormularioCliente = () => {
             </Box>
           </Popup>
           <Popup
-            title="Turno reservado con éxito."
+            title={<LittleHeader titulo="Turno reservado con éxito" />}
             description={msjTurnoCreado}
             openDialog={openPopupSeleccion}
             setOpenDialog={setOpenPopupSeleccion}
@@ -222,6 +224,7 @@ const FormularioCliente = () => {
             >
               <Button
                 color="success"
+                variant="outlined"
                 // onClick={() => setOpenPopupSeleccion(false)}
                 onClick={() => {
                   window.location.href = '/';
@@ -235,7 +238,7 @@ const FormularioCliente = () => {
           <Popup
             openDialog={openError}
             setOpenDialog={setOpenError}
-            title="Ha ocurrido un problema"
+            title={<LittleHeader titulo="Ha ocurrido un problema" />}
           >
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <Alerts alertType={alertError} description={alertMensaje} title={alertTitulo} />
