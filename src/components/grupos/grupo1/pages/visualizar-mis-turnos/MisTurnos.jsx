@@ -3,7 +3,7 @@ import { Box, Container, Divider } from '@mui/material';
 import Header from '../../components/common/Header';
 import { TabMisTurnos } from './TabMisTurnos';
 
-const idTecnico = 44;
+const idTecnico = 46;
 
 const MisTurnos = () => (
   <>
