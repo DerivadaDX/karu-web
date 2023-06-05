@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
@@ -62,7 +63,7 @@ const Formulario = (props) => {
   // Para el manejo de errores de la API para crear el turno
   const [openError, setOpenError] = useState(false);
   const [alertError, setAlertError] = useState('');
-  const [alertMensaje, setAlertMensaje] = useState('');
+  const [alertMensaje, setAlertMensaje] = useState([]);
   const [alertTitulo, setAlertTitulo] = useState('');
 
   const guardarOrigen = (event) => {
@@ -100,7 +101,7 @@ const Formulario = (props) => {
         setOpenPopupNoSeleccion(true);
       }
     } catch (error) {
-      if (error.response && error.response.data) {
+      /*
         const responseData = error.response.data;
         if (responseData.includes('la patente ingresada ya tiene un turno de ese tipo registrado en el sistema')) {
           setOpenError(true);
@@ -128,6 +129,13 @@ const Formulario = (props) => {
         setAlertError('error');
         setAlertTitulo('Ha ocurrido un error');
         setAlertMensaje('Si el problema persiste, comuniquese con insomnia.front@gmail.com');
+      }
+        */
+      if (error.response && error.response.data) {
+        setOpenError(true);
+        setAlertError('error');
+        setAlertTitulo('Ha ocurrido un error');
+        setAlertMensaje(error.response.data);
       }
     }
   };
@@ -203,7 +211,7 @@ const Formulario = (props) => {
             </Box>
           </Box>
           <Popup
-            title="Error en datos requeridos."
+            title={<LittleHeader titulo="Error en datos requeridos" />}
             description="Por favor complete todos los campos y verifique que la patente sea correcta."
             openDialog={openPopupNoSeleccion}
             setOpenDialog={setOpenPopupNoSeleccion}
@@ -214,6 +222,7 @@ const Formulario = (props) => {
             >
               <Button
                 color="error"
+                variant="outlined"
                 onClick={() => setOpenPopupNoSeleccion(false)}
               >
                 Cerrar
@@ -221,7 +230,7 @@ const Formulario = (props) => {
             </Box>
           </Popup>
           <Popup
-            title="Turno creado con éxito."
+            title={<LittleHeader titulo="Turno creado con éxito" />}
             description={msjTurnoCreado}
             openDialog={openPopupSeleccion}
             setOpenDialog={setOpenPopupSeleccion}
@@ -231,7 +240,8 @@ const Formulario = (props) => {
               sx={{ margin: '15px', display: 'flex', justifyContent: 'center' }}
             >
               <Button
-                color="success"
+                color="secondary"
+                variant="outlined"
                 onClick={() => setOpenAgregarTurno(false)}
               >
                 Cerrar
@@ -242,7 +252,7 @@ const Formulario = (props) => {
           <Popup
             openDialog={openError}
             setOpenDialog={setOpenError}
-            title="Ha ocurrido un problema"
+            title={<LittleHeader titulo="Ha ocurrido un problema" />}
           >
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <Alerts alertType={alertError} description={alertMensaje} title={alertTitulo} />

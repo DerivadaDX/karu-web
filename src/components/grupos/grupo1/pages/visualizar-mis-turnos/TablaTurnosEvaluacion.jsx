@@ -121,7 +121,7 @@ const TablaTurnosEvaluacion = (props) => {
 
     setIdTurnoEvaluacion(row.original.id_turno);
     setOpenChecklist(true);
-    { /*
+    /*
     if (dateActual < row.original.fecha_inicio) {
       setNoEsDateActual(true);
     } else if (dateActual === row.original.fecha_inicio) {
@@ -133,7 +133,7 @@ const TablaTurnosEvaluacion = (props) => {
         setNoEsDateActual(true);
       }
     }
-    */ }
+    */
   };
 
   const renderRowActions = ({ row }) => (

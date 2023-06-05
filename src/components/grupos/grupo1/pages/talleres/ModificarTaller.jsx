@@ -610,7 +610,7 @@ const ModificarTaller = (props) => {
               onClick={() => {
                 setOpenErrorModificar(false);
                 setOpenConfirmar(false);
-                setOpen(false);
+                // setOpen(false);
               }}
             >
               Cerrar

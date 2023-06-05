@@ -9,8 +9,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Popup from '../../components/common/DialogPopup';
 import Alerts from '../../components/common/Alerts';
-
-const idTaller = 'T002';
+import LittleHeader from '../../components/common/LittleHeader';
 
 const AsignacionDeTecnicos = ({
   idTurnoPadre,
@@ -18,6 +17,7 @@ const AsignacionDeTecnicos = ({
   setOpen,
   // actualizar,
   setActualizar,
+  idTaller,
 }) => {
   // eslint-disable-next-line max-len
   // actualizar y setActualizar son variables del padre para poder actualizar la tabla de turnos pendientes
@@ -145,7 +145,7 @@ const AsignacionDeTecnicos = ({
 
   return (
     <div>
-      <EnhancedTableToolbar titulo="Turno" />
+      <EnhancedTableToolbar titulo={<LittleHeader titulo="Turno" />} />
       <DataGrid
         rows={turnoInfo ? [turnoInfo] : []}
         columns={[
@@ -166,7 +166,7 @@ const AsignacionDeTecnicos = ({
         getRowId={(row) => row.id_turno}
       />
       <br />
-      <EnhancedTableToolbar titulo="Técnicos" />
+      <EnhancedTableToolbar titulo={<LittleHeader titulo="Técnicos" />} />
       <div style={{ height: 400, width: '100%' }}>
         <DataGrid
           rows={tecnicosData.filter((item) => tecnicosDisponibles.includes(item.id))}
@@ -206,7 +206,7 @@ const AsignacionDeTecnicos = ({
         </Box>
         {msjError && <Alerts alertType="error" description={msjError} title="No se puede asignar." />}
         <Popup
-          title="Error en Asignación"
+          title={<LittleHeader titulo="Error en Asignación" />}
           description="No ha seleccionado un técnico. Por favor, seleccione uno antes de terminar con el proceso."
           openDialog={openPopupNoSeleccion}
           setOpenDialog={setOpenPopupNoSeleccion}
@@ -217,6 +217,7 @@ const AsignacionDeTecnicos = ({
           >
             <Button
               color="error"
+              variant="outlined"
               onClick={() => setOpenPopupNoSeleccion(false)}
             >
               Aceptar
@@ -224,7 +225,7 @@ const AsignacionDeTecnicos = ({
           </Box>
         </Popup>
         <Popup
-          title="Asignación completada"
+          title={<LittleHeader titulo="Asignación completada" />}
           description="La asignación del turno al técnico correspondiente ha sido exitosa."
           openDialog={openPopupSeleccion}
           setOpenDialog={setOpenPopupSeleccion}
@@ -233,7 +234,13 @@ const AsignacionDeTecnicos = ({
           <Box
             sx={{ margin: '15px', display: 'flex', justifyContent: 'center' }}
           >
-            <Button onClick={() => setOpen(false)}>Aceptar</Button>
+            <Button
+              variant="outlined"
+              onClick={() => setOpen(false)}
+            >
+              Aceptar
+
+            </Button>
           </Box>
         </Popup>
       </div>

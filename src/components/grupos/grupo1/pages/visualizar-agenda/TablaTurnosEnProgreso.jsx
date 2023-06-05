@@ -87,7 +87,11 @@ const TablaTurnosEnProgreso = (props) => {
         setActualizarTabla(true); // Para actualizar la tabla despues de cancelar turno
       })
       .catch((error) => {
-        setResCancelar(error.message);
+        if (error.response && error.response.data && error.response.data.error) {
+          setResCancelar(error.response.data.error);
+        } else {
+          setResCancelar(error.message);
+        }
       });
   };
 
