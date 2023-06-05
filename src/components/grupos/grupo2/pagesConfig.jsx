@@ -33,7 +33,7 @@ const GROUP_2_PAGES_CONFIG = [
   {
     id: 'g2-Comisiones',
     name: 'Comisiones',
-    href: '/Comisiones',
+    href: '/comisiones',
     icon: <PaidIcon />,
     page: <Comisiones />,
   },
