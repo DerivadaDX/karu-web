@@ -1,10 +1,12 @@
 /* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable no-shadow */
 import { Box, Button, TextField } from '@mui/material';
+import axios from 'axios';
 import { useState } from 'react';
 
 const ConsultaCliente = () => {
-  const [email, setEmail] = useState('');
+  const [mail, setEmail] = useState('');
+  const [consulta, setConsulta] = useState('');
   const [error, setError] = useState({
     error: false,
     message: '',
@@ -16,9 +18,9 @@ const ConsultaCliente = () => {
     return regex.test(email);
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-    if (!emailValidation(email)) {
+    if (!emailValidation(mail)) {
       setError({
         error: true,
         message: 'El email no es valido',
@@ -27,14 +29,31 @@ const ConsultaCliente = () => {
     }
     setError({
       error: false,
-      message: '',
+      message: 'Se ha cargado exitosamente',
     });
+
+    try {
+      const url = 'http://34.139.89.18:8181/api-gc/consultas/save';
+      const consultaObject = {
+        nombre: 'asd',
+        apellido: 'apellidoFulanito ',
+        numTelefono: '1134418984',
+        email: mail,
+        mensaje: consulta,
+      };
+      const response = await axios.post(url, consultaObject);
+      // eslint-disable-next-line no-console
+      console.log(response.data);
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log(error);
+    }
   };
 
   return (
     <>
       <h1>Formulario de Consulta</h1>
-      <body3>Mandanos tu consulta! uno de nuestros vendedores te responderá a la brevedad.</body3>
+      <h3>Mandanos tu consulta! uno de nuestros vendedores te responderá a la brevedad.</h3>
       <Box
         component="form"
         onSubmit={onSubmit}
@@ -54,7 +73,7 @@ const ConsultaCliente = () => {
             error={error.error}
             helperText={error.message}
             onChange={(e) => setEmail(e.target.value)}
-            value={email}
+            value={mail}
           />
         </div>
         <div>
@@ -65,6 +84,8 @@ const ConsultaCliente = () => {
             fullWidth
             multiline
             required
+            onChange={(e) => setConsulta(e.target.value)}
+            value={consulta}
           />
         </div>
         <Button
