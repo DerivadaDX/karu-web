@@ -102,12 +102,12 @@ const TablaTurnosParticulares = (props) => {
     segundos = (`0${segundos}`).slice(-2);
     // const timeActual = `${horas}:${minutos}:${segundos}`;
 
-    // const dateActual = '2023-06-16';
-    // const timeActual = '13:00:00';
+    const dateActual = '2023-06-16';
+    const timeActual = '13:00:00';
 
     setIdTurno(row.original.id_turno);
     setOpenChecklist(true);
-    { /*
+    /*
     if (dateActual < row.original.fecha_inicio) {
       setNoEsDateActual(true);
     } else if (dateActual === row.original.fecha_inicio) {
@@ -118,7 +118,7 @@ const TablaTurnosParticulares = (props) => {
       } else {
         setNoEsDateActual(true);
       }
-    } */ }
+    } */
   };
 
   const renderRowActions = ({ row }) => (
