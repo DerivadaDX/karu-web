@@ -218,6 +218,7 @@ const AsignacionDeTecnicos = ({
           >
             <Button
               color="error"
+              variant="outlined"
               onClick={() => setOpenPopupNoSeleccion(false)}
             >
               Aceptar
@@ -234,7 +235,13 @@ const AsignacionDeTecnicos = ({
           <Box
             sx={{ margin: '15px', display: 'flex', justifyContent: 'center' }}
           >
-            <Button onClick={() => setOpen(false)}>Aceptar</Button>
+            <Button
+              variant="outlined"
+              onClick={() => setOpen(false)}
+            >
+              Aceptar
+
+            </Button>
           </Box>
         </Popup>
       </div>
