@@ -2,12 +2,9 @@
 /* eslint-disable no-unused-vars */
 import {
   Box,
-  InputLabel,
-  Select,
-  MenuItem,
-  Typography,
   Button,
   DialogActions,
+  CircularProgress,
 } from '@mui/material';
 import { React, useState } from 'react';
 import axios from 'axios';
@@ -28,6 +25,7 @@ const ReprogramacionTurno = (props) => {
   const [openConfirmarTurno, setOpenConfirmarTurno] = useState(false);
   const [openNoSeleccion, setOpenNoSeleccion] = useState(false);
   const [openError, setOpenError] = useState(false);
+  const [loadingButton, setLoadingButton] = useState(false);
 
   const urlHorarios = `https://autotech2.onrender.com/turnos/dias-horarios-disponibles-turno/${idTaller}/${idTurnoPadre}/`;
   const urlReprogramar = 'https://autotech2.onrender.com/turnos/reprogramar-turno/';
@@ -56,12 +54,14 @@ const ReprogramacionTurno = (props) => {
           setAlertError('error');
           setAlertTitulo('Ha ocurrido un problema');
           setAlertMensaje('Ya existe un turno para esa patente y tipo de turno.');
+          setLoadingButton(false);
         } else {
           setOpenConfirmarTurno(false);
           setOpenError(true);
           setAlertError('error');
           setAlertTitulo('Ha ocurrido un error');
-          setAlertMensaje('Si el problema persiste, comuniquese con insomnia.front@gmail.com');
+          setAlertMensaje(error.response.data);
+          setLoadingButton(false);
         }
       });
   };
@@ -171,18 +171,35 @@ const ReprogramacionTurno = (props) => {
           }}
           >
             <DialogActions>
-              <Button
-                color="secondary"
-                variant="outlined"
-                onClick={() => {
-                  handleSubmit();
-                }}
-              >
-                Enviar
-              </Button>
+              <Box sx={{ m: 1, position: 'relative' }}>
+                <Button
+                  color="secondary"
+                  variant="outlined"
+                  disabled={loadingButton}
+                  onClick={() => {
+                    handleSubmit();
+                    setLoadingButton(true);
+                  }}
+                >
+                  Enviar
+                </Button>
+                {loadingButton && (
+                <CircularProgress
+                  size={24}
+                  sx={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    marginTop: '-12px',
+                    marginLeft: '-12px',
+                  }}
+                />
+                )}
+              </Box>
               <Button
                 color="error"
                 variant="outlined"
+                disabled={loadingButton}
                 onClick={() => {
                   setOpenConfirmarTurno(false);
                 }}
