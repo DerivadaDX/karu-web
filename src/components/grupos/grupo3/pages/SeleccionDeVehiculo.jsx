@@ -6,7 +6,6 @@ import axios from 'axios';
 import BarraDeBusqueda from '../components/ventas/barraDeBusqueda/barraDeBusqueda';
 import VistaDeVehiculos from '../components/ventas/panelVehiculos/panelDeVehiculos';
 import PanelDeFiltros from '../components/ventas/filtros/panelDeFiltros';
-import { products } from '../components/cotizar/products';
 import List from '../components/ventas/Lista';
 import autosEnVenta from '../constants/autosEnVenta';
 import './styles.css';
@@ -21,12 +20,10 @@ const FiltroDeVehiculos = () => {
   const [data, setData] = useState(null);
   // aca deberia inicializar el hook con el data importado de la api.
   // const [list, setList] = useState(data);
-  const [list, setList] = useState(products);
+  const [list, setList] = useState(autosEnVenta);
   const [resultsFound, setResultsFound] = useState(true);
   const [searchInput, setSearchInput] = useState('');
 
-  // handles
-  /*
   const handleCategoriaSeleccionada = (event, value) => (
     !value ? null : setCategoriaSeleccionada(value));
   const handleChangePrice = (event, value) => setSelectedPrice(value);
@@ -42,6 +39,8 @@ const FiltroDeVehiculos = () => {
 
     // filtro de barra de busqueda
     if (searchInput) {
+      console.log('se muestra search imput');
+      console.log(searchInput);
       updatedList = updatedList.filter(
         (item) => item.marca.toLowerCase().search(searchInput.toLowerCase().trim())
           !== -1,
@@ -50,17 +49,22 @@ const FiltroDeVehiculos = () => {
 
     // filtra con el slider por el precio
     const minPrice = selectedPrice[0];
+    console.log('se muestra min price');
+    console.log(minPrice);
     const maxPrice = selectedPrice[1];
+    console.log('se muestra max price');
+    console.log(maxPrice);
 
     updatedList = updatedList.filter(
-      (item) => item.precio >= minPrice && item.price <= maxPrice,
+      (item) => item.precio >= minPrice && item.precio <= maxPrice,
     );
 
     setList(updatedList);
-    console.log(updatedList);
+    console.log('se muestra minimo precio');
     console.log(minPrice);
+    console.log('se muestra combustible seleccionado');
     console.log(categoriaSeleccionada);
-
+    console.log(updatedList.toString);
     !updatedList.length ? setResultsFound(false) : setResultsFound(true);
   };
 
@@ -68,8 +72,8 @@ const FiltroDeVehiculos = () => {
   useEffect(() => {
     aplicarFiltros();
   }, [categoriaSeleccionada, selectedPrice, searchInput]);
-*/
 
+  /*
   // llamada a la api de autos 05_06
   useEffect(() => {
     const fetchData = async () => {
@@ -84,6 +88,7 @@ const FiltroDeVehiculos = () => {
 
     fetchData();
   }, []);
+  */
 
   return (
     <div className="filtroDeVehiculos">
@@ -97,10 +102,10 @@ const FiltroDeVehiculos = () => {
         <div className="filtroDeVehiculos_panel-wrap">
           {/* Panel de filtros - aca se visualizan los posibles filtros */}
           <PanelDeFiltros
-            // toggleSeleccionado={handleCategoriaSeleccionada}
+            toggleSeleccionado={handleCategoriaSeleccionada}
             categoriaSeleccionada={categoriaSeleccionada}
             selectedPrice={selectedPrice}
-            // changedPrice={handleChangePrice}
+            changedPrice={handleChangePrice}
             selectedKM={selectedKM}
             // changedKM={handleChangeKM}
           />

@@ -27,9 +27,13 @@ const ListItem = ({
       <img src={imagenAuto} alt="item" />
     </Link>
     <header>
-      <h3>{marca} {modelo} {precio}</h3>
+      <h3>
+        {marca} {modelo}
+      </h3>
     </header>
     <footer>
+      <h3>${precio} </h3>
+      <p>Ars+iva</p>
       <p>
         <span>⛽ {combustible}</span>
         <span>⛽ {kilometraje}</span>
