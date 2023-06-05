@@ -110,7 +110,7 @@ const TablaTurnosService = (props) => {
 
     setIdTurno(row.original.id_turno);
     setOpenChecklist(true);
-    { /*
+    /*
     if (dateActual < row.original.fecha_inicio) {
       setNoEsDateActual(true);
     } else if (dateActual === row.original.fecha_inicio) {
@@ -122,7 +122,7 @@ const TablaTurnosService = (props) => {
         setNoEsDateActual(true);
       }
     }
-    */ }
+    */
   };
 
   const renderRowActions = ({ row }) => (
@@ -149,8 +149,9 @@ const TablaTurnosService = (props) => {
         size="small"
         sx={{ fontSize: '0.7em' }}
         onClick={() => {
-          setIdTurno(row.original.id_turno);
-          setOpenChecklist(true);
+          controlarTiempo({ row });
+          // setIdTurno(row.original.id_turno);
+          // setOpenChecklist(true);
         }}
       >
         Realizar
@@ -211,6 +212,26 @@ const TablaTurnosService = (props) => {
           },
         }}
       />
+      <Popup
+        title={<LittleHeader titulo="Atención" />}
+        openDialog={noEsDateActual}
+        setOpenDialog={setNoEsDateActual}
+        description="Todavía no puede realizar el turno. Debe esperar la fecha y la hora del mismo para poder dar inicio."
+        disableBackdropClick
+      >
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Button
+            color="primary"
+            variant="outlined"
+            sx={{ marginTop: '10px' }}
+            onClick={() => {
+              setNoEsDateActual(false);
+            }}
+          >
+            Cerrar
+          </Button>
+        </Box>
+      </Popup>
       <Popup
         title={<LittleHeader titulo="Detalle de turno " />}
         openDialog={openVerMas}
