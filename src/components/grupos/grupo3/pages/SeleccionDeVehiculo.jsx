@@ -2,6 +2,7 @@
 /* eslint-disable no-unused-expressions */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import BarraDeBusqueda from '../components/ventas/barraDeBusqueda/barraDeBusqueda';
 import VistaDeVehiculos from '../components/ventas/panelVehiculos/panelDeVehiculos';
 import PanelDeFiltros from '../components/ventas/filtros/panelDeFiltros';
@@ -16,9 +17,14 @@ const FiltroDeVehiculos = () => {
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(null);
   const [selectedPrice, setSelectedPrice] = useState([1000000, 30000000]);
   const [selectedKM, setSelectedKM] = useState([2000, 8000]);
+  // hook para la importacion de los autos 05_06
+  const [data, setData] = useState(null);
+  // aca deberia inicializar el hook con el data importado de la api.
+  // const [list, setList] = useState(data);
   const [list, setList] = useState(products);
   const [resultsFound, setResultsFound] = useState(true);
   const [searchInput, setSearchInput] = useState('');
+
   // handles
   /*
   const handleCategoriaSeleccionada = (event, value) => (
@@ -63,10 +69,29 @@ const FiltroDeVehiculos = () => {
     aplicarFiltros();
   }, [categoriaSeleccionada, selectedPrice, searchInput]);
 */
+
+  // llamada a la api de autos 05_06
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // llamar a la api de los chicos.
+        const response = await axios.get('https://api.example.com/data');
+        setData(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <div className="filtroDeVehiculos">
       {/* Barra de busqueda - busca x marca o modelo del auto .. me habia olvidado de este input */}
-      <BarraDeBusqueda value={searchInput} changeImput={(e) => setSearchInput(e.target.value)} />
+      <BarraDeBusqueda
+        value={searchInput}
+        changeImput={(e) => setSearchInput(e.target.value)}
+      />
 
       <div className="filtroDeVehiculos_panelist-wrap">
         <div className="filtroDeVehiculos_panel-wrap">
