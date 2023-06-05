@@ -298,7 +298,7 @@ const TablaTurnosPendientes = (props) => {
         <DetalleTurno openDialog={openVerMas} setOpenDialog={setVerMas} row={rowDetalle} />
       </Popup>
       <Popup
-        title={<LittleHeader titulo="Asignar turno a un técnico" />}
+        title={<LittleHeader titulo="Asignar turno" subtitulo="Selección" />}
         openDialog={openAsignacion}
         setOpenDialog={setOpenAsignacion}
         disableBackdropClick
@@ -312,7 +312,7 @@ const TablaTurnosPendientes = (props) => {
         />
       </Popup>
       <PopupAgregarTurno
-        title={<LittleHeader titulo="Agregar turno" />}
+        title={<LittleHeader titulo="Agregar turno" subtitulo="Formulario" />}
         openDialog={openAgregarTurno}
         setOpenDialog={setOpenAgregarTurno}
         description="Complete únicamente el formulario del tipo de turno que desea dar de alta."
