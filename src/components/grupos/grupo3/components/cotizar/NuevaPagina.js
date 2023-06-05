@@ -3,7 +3,7 @@
 /* eslint-disable react/jsx-filename-extension */
 /* eslint-disable max-len */
 /* eslint-disable no-unused-vars */
-import React, { useState, useContext } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import {
   Form, Button, Row, Col,
 } from 'react-bootstrap';
@@ -44,10 +44,41 @@ const NuevaPagina = () => {
   /* dentro de mi erreglo de productos busco
     el producto que en su propiedad id sea igual al productId que viene de los params
     en este caso product.id tiraba error, entonces TIENE que ser string ya que productId es string */
-
-  const productSelected = products.find((product) => product.id === productId);
+  // 5-6
+  // const productSelected = products.find((product) => product.id === productId);
+  // setear los hooks useState
+  const [vehiculo, setVehiculo] = useState([]);
+  // función para traer los datos de la API
+  const apiUrl = 'https://gadmin-backend-production.up.railway.app/api/v1/vehicle/getByPlate/';// sacar datos de un json
 
   const [validated, setValidated] = useState(false);
+
+  // Dentro de tu componente o función
+  const getProductData = async (product) => {
+    try {
+      const response = await axios.get(`${apiUrl}${product}`);
+      if (response) {
+        // const data = await response.json();
+        // Manejar los datos de respuesta aquí
+        console.log(response.data.result);
+        setVehiculo(response.data.result);
+      } else {
+        // Manejar el error en caso de que la respuesta no sea exitosa
+        // sale error
+      }
+    } catch (error) {
+      // Manejar el error de la solicitud
+      console.error(error);
+    }
+  };
+  // Llamar a la función para obtener los datos del producto por su ID
+  useEffect(() => {
+    // mostrar datos locales
+    // setVehiculos(localData);
+    // mostrar datos desde API
+    getProductData(productId);
+  }, []);
+  const productSelected = vehiculo;
 
   const handleSubmit = async (event) => {
     event.preventDefault();// para que no se actualice la pantalla al hacer clic
@@ -74,7 +105,7 @@ const NuevaPagina = () => {
         const cotizacionData = {
           sucursal: 'S-01',
           nombreCliente: nombreC,
-          patente: productSelected.patente, // infoCotizacion.patente,
+          patente: productSelected.plate, // infoCotizacion.patente,
           email: mail,
           idVendedor: 123,
           precioBase: 1000000,
@@ -173,7 +204,7 @@ const NuevaPagina = () => {
             Patente:
           </Form.Label>
           <Col sm="10">
-            <Form.Control plaintext readOnly defaultValue={productSelected.patente} />
+            <Form.Control plaintext readOnly defaultValue={productSelected.plate} />
           </Col>
         </Form.Group>
 

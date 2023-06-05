@@ -330,7 +330,7 @@ const Cotizar = () => {
                   <td>
                     {/* ---------- Agrego consegui patente  -------*/}
                     {/* ---------- interpolacion de varieables  -------*/}
-                    <Link to={`/cotizar/${user.id}`}>
+                    <Link to={`/cotizar/${user.plate}`}>
                       <Button variant="primary">Cotizar </Button>
                     </Link>
                   </td>
