@@ -36,9 +36,11 @@ const ListadoComisiones = () => {
   };
 
   const renderFormatoPorcentaje = ({ row }) => {
-    const valorDecimal = parseFloat(row.original.valor);
-    const valorPorcentaje = valorDecimal * 100;
-    return `${valorPorcentaje}%`;
+    const valorDeComision = row.original.valor;
+    const numero = parseFloat(valorDeComision);
+    const porcentaje = numero.toLocaleString(undefined, { style: 'percent' });
+
+    return porcentaje;
   };
 
   const columnas = useMemo(
