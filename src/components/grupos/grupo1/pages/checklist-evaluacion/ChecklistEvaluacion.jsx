@@ -87,7 +87,7 @@ const ChecklistEvaluacion = (props) => {
       })
       .catch((error) => {
         const mensajeError = error.response.data.error;
-        setAlertMensaje(`Detalle del problema: ${mensajeError}`);
+        setAlertMensaje(`${mensajeError}`);
         setAlertError('error');
         setAlertTitulo('Ha ocurrido algo inesperado');
         setLoadingButton(false);

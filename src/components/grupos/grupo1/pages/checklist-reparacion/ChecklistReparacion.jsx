@@ -60,7 +60,7 @@ const ChecklistReparacion = (props) => {
       .catch((error) => {
         setAlertMessage(error.response.data.error);
         setAlertType('error');
-        setAlertTitle('Ha ocurrido un inconveniente');
+        setAlertTitle('Ha ocurrido un problema');
       });
   };
 
@@ -76,7 +76,7 @@ const ChecklistReparacion = (props) => {
       .catch((error) => {
         setAlertMessage(error.response.data.error);
         setAlertType('error');
-        setAlertTitle('Ha ocurrido un inconveniente');
+        setAlertTitle('Ha ocurrido un problema');
       });
   };
 
@@ -212,9 +212,12 @@ const ChecklistReparacion = (props) => {
         setLoadingButton(false);
       })
       .catch((error) => {
-        setAlertMensaje('Detalle del problema: ', error.response.data.error);
+        const mensajeError = error.response.data.error;
+        setOpenConfirmarReparacion(false);
+        setOpenError(true);
+        setAlertMensaje(`${mensajeError}`);
         setAlertError('error');
-        setAlertTitulo('Ha ocurrido un inconveniente');
+        setAlertTitulo('Ha ocurrido un problema');
         setLoadingButton(false);
       });
   };
