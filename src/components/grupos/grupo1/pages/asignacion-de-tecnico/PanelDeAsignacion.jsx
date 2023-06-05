@@ -9,6 +9,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Popup from '../../components/common/DialogPopup';
 import Alerts from '../../components/common/Alerts';
+import LittleHeader from '../../components/common/LittleHeader';
 
 const idTaller = 'T002';
 
@@ -145,7 +146,7 @@ const AsignacionDeTecnicos = ({
 
   return (
     <div>
-      <EnhancedTableToolbar titulo="Turno" />
+      <EnhancedTableToolbar titulo={<LittleHeader titulo="Turno" />} />
       <DataGrid
         rows={turnoInfo ? [turnoInfo] : []}
         columns={[
@@ -166,7 +167,7 @@ const AsignacionDeTecnicos = ({
         getRowId={(row) => row.id_turno}
       />
       <br />
-      <EnhancedTableToolbar titulo="Técnicos" />
+      <EnhancedTableToolbar titulo={<LittleHeader titulo="Técnicos" />} />
       <div style={{ height: 400, width: '100%' }}>
         <DataGrid
           rows={tecnicosData.filter((item) => tecnicosDisponibles.includes(item.id))}
@@ -206,7 +207,7 @@ const AsignacionDeTecnicos = ({
         </Box>
         {msjError && <Alerts alertType="error" description={msjError} title="No se puede asignar." />}
         <Popup
-          title="Error en Asignación"
+          title={<LittleHeader titulo="Error en Asignación" />}
           description="No ha seleccionado un técnico. Por favor, seleccione uno antes de terminar con el proceso."
           openDialog={openPopupNoSeleccion}
           setOpenDialog={setOpenPopupNoSeleccion}
@@ -224,7 +225,7 @@ const AsignacionDeTecnicos = ({
           </Box>
         </Popup>
         <Popup
-          title="Asignación completada"
+          title={<LittleHeader titulo="Asignación completada" />}
           description="La asignación del turno al técnico correspondiente ha sido exitosa."
           openDialog={openPopupSeleccion}
           setOpenDialog={setOpenPopupSeleccion}
