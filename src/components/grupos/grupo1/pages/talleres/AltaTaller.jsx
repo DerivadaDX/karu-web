@@ -52,6 +52,7 @@ const AltaTaller = (props) => {
   const [loadingConfirmacion, setLoadingConfirmacion] = useState(false);
   // Error al enviar
   const [openErrorCrear, setOpenErrorCrear] = useState(false);
+  const [msjErrorCrear, setMsjErrorCrear] = useState([]);
 
   // Alertas de la API
   const [alertType, setAlertType] = useState('');
@@ -73,13 +74,6 @@ const AltaTaller = (props) => {
 
   useEffect(() => {
     try {
-      console.log(nombre);
-      console.log(direccion);
-      console.log(mail);
-      console.log(telefono);
-      console.log(capacidad);
-      console.log(sucursalId);
-      console.log(cantTecnicos);
       traerSucursales();
       setAlertType('');
     } catch (error) {
@@ -196,6 +190,11 @@ const AltaTaller = (props) => {
         limpiarFormulario();
       })
       .catch((error) => {
+        if (error.response && error.response.data && error.response.data.error) {
+          setMsjErrorCrear(error.response.data.error);
+        } else {
+          setMsjErrorCrear('Ocurrió un problema. Si persiste, comuníquese con el área técnica de KarU.');
+        }
         setOpenErrorCrear(open);
       });
   };
@@ -498,7 +497,7 @@ const AltaTaller = (props) => {
         title={<LittleHeader titulo="Error al crear el taller" />}
         openDialog={openErrorCrear}
         setOpenDialog={setOpenErrorCrear}
-        description="Se produjo un error. Si persiste, comuniquese con el área técnica de KarU."
+        description={msjErrorCrear}
         disableBackdropClick
       >
         <Box sx={{

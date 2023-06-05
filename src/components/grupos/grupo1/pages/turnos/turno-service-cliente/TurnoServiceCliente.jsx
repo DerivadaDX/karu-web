@@ -195,7 +195,7 @@ const FormularioCliente = () => {
           </Box>
           <Popup
             title={<LittleHeader titulo="Error en datos requeridos" />}
-            description="Por favor complete todos los campos y verifique la correctitud del DNI, la patente y el kilometraje."
+            description="Por favor complete todos los campos y verifique la correctitud de la patente y el kilometraje."
             openDialog={openPopupNoSeleccion}
             setOpenDialog={setOpenPopupNoSeleccion}
             disableBackdropClick

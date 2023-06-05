@@ -309,6 +309,7 @@ const TablaTurnosPendientes = (props) => {
           setOpen={setOpenAsignacion}
           actualizar={actualizarTabla}
           setActualizar={setActualizarTabla}
+          idTaller={idTaller}
         />
       </Popup>
       <PopupAgregarTurno
