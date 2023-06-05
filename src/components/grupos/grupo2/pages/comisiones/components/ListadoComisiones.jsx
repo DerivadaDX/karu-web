@@ -58,7 +58,7 @@ const ListadoComisiones = () => {
       },
       {
         accessorKey: 'categoria_id',
-        header: 'Categoria',
+        header: 'Categoría',
       },
       {
         accessorKey: 'activa',

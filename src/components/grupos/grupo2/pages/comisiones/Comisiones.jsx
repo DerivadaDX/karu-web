@@ -18,7 +18,7 @@ const Comisiones = () => (
   <Box>
     <Encabezado
       titulo="Comisiones"
-      subtitulo="Alta, baja y modificación de comisiones por ventas"
+      subtitulo="Alta, baja y modificación de comisiones por categoría de vehículo"
     />
     <Paper sx={styles.paper} elevation={5}>
       <ListadoComisiones />
