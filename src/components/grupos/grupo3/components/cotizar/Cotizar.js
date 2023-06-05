@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable max-len */
 /* eslint-disable react/prop-types */
