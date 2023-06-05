@@ -11,14 +11,13 @@ import Popup from '../../components/common/DialogPopup';
 import Alerts from '../../components/common/Alerts';
 import LittleHeader from '../../components/common/LittleHeader';
 
-const idTaller = 'T002';
-
 const AsignacionDeTecnicos = ({
   idTurnoPadre,
   // open,
   setOpen,
   // actualizar,
   setActualizar,
+  idTaller,
 }) => {
   // eslint-disable-next-line max-len
   // actualizar y setActualizar son variables del padre para poder actualizar la tabla de turnos pendientes
