@@ -1,3 +1,4 @@
+/* eslint-disable no-lone-blocks */
 /* eslint-disable camelcase */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/react-in-jsx-scope */
@@ -33,6 +34,9 @@ const TablaTurnosService = (props) => {
   const [alertType, setAlertType] = useState('');
   const [alertMessage, setAlertMessage] = useState('');
   const [alertTitle, setAlertTitle] = useState('');
+
+  // Para controlar la hora
+  const [noEsDateActual, setNoEsDateActual] = useState(false);
 
   const columnas = useMemo(
     () => [
@@ -84,6 +88,42 @@ const TablaTurnosService = (props) => {
     setActualizarTabla(false);
     setAlertType('');
   }, [traerTurnos, actualizarTabla]);
+
+  const controlarTiempo = ({ row }) => {
+    const today = new Date();
+    const anio = today.getFullYear();
+    const mes = String(today.getMonth() + 1).padStart(2, '0');
+    const dia = String(today.getDate()).padStart(2, '0');
+    // const dateActual = `${anio}-${mes}-${dia}`;
+
+    let horas = today.getHours();
+    let minutos = today.getMinutes();
+    let segundos = today.getSeconds();
+
+    horas = (`0${horas}`).slice(-2);
+    minutos = (`0${minutos}`).slice(-2);
+    segundos = (`0${segundos}`).slice(-2);
+    // const timeActual = `${horas}:${minutos}:${segundos}`;
+
+    const dateActual = '2023-06-04';
+    const timeActual = '09:00:00';
+
+    setIdTurno(row.original.id_turno);
+    setOpenChecklist(true);
+    { /*
+    if (dateActual < row.original.fecha_inicio) {
+      setNoEsDateActual(true);
+    } else if (dateActual === row.original.fecha_inicio) {
+      if (timeActual >= row.original.hora_inicio) {
+        console.log('Aca tenes que abrir la checklist');
+        setIdTurnoEvaluacion(row.original.id_turno);
+        setOpenChecklist(true);
+      } else {
+        setNoEsDateActual(true);
+      }
+    }
+    */ }
+  };
 
   const renderRowActions = ({ row }) => (
     <Box
