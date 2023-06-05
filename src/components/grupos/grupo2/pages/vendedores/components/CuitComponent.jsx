@@ -9,10 +9,9 @@ import PropTypes from 'prop-types';
 import { IMaskInput } from 'react-imask';
 
 const CuitComponent = forwardRef((props, inputRef) => {
-  const { onChange, ...other } = props;
+  const { onChange, defaultValue, ...other } = props;
   const ref = createRef();
-  const [value, setValue] = useState('');
-
+  const [value, setValue] = useState(defaultValue);
   useEffect(() => {
     onChange({ target: { name: other.name, value } });
   }, [value]);
@@ -32,9 +31,12 @@ const CuitComponent = forwardRef((props, inputRef) => {
     />
   );
 });
-
+CuitComponent.defaultProps = {
+  defaultValue: '',
+};
 CuitComponent.propTypes = {
   name: PropTypes.string.isRequired,
+  defaultValue: PropTypes.string,
   onChange: PropTypes.func.isRequired,
 };
 
