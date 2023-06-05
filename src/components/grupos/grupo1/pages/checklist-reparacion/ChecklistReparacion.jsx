@@ -10,6 +10,7 @@ import {
   Divider,
   TextField,
   Checkbox,
+  CircularProgress,
 } from '@mui/material';
 import {
   useState, useEffect, useMemo, React,
@@ -29,6 +30,8 @@ const ChecklistReparacion = (props) => {
   } = props;
   const [reparaciones, setReparaciones] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadingButton, setLoadingButton] = useState(false);
+  const [openError, setOpenError] = useState(false);
 
   const [openNoSeleccion, setOpenNoSeleccion] = useState(false);
   const [openConfirmarReparacion, setOpenConfirmarReparacion] = useState(false);
@@ -44,7 +47,7 @@ const ChecklistReparacion = (props) => {
   const [alertTitle, setAlertTitle] = useState('');
   // Alerta de la api post
   const [alertError, setAlertError] = useState('');
-  const [alertMensaje, setAlertmensaje] = useState('');
+  const [alertMensaje, setAlertMensaje] = useState('');
   const [alertTitulo, setAlertTitulo] = useState('');
 
   const getChecklist = () => {
@@ -57,7 +60,7 @@ const ChecklistReparacion = (props) => {
       .catch((error) => {
         setAlertMessage(error.response.data.error);
         setAlertType('error');
-        setAlertTitle('Error');
+        setAlertTitle('Ha ocurrido un inconveniente');
       });
   };
 
@@ -73,7 +76,7 @@ const ChecklistReparacion = (props) => {
       .catch((error) => {
         setAlertMessage(error.response.data.error);
         setAlertType('error');
-        setAlertTitle('Error');
+        setAlertTitle('Ha ocurrido un inconveniente');
       });
   };
 
@@ -108,7 +111,7 @@ const ChecklistReparacion = (props) => {
       .then(() => {
       })
       .catch(() => {
-        setAlertmensaje('Ha ocurrido un error.');
+        setAlertMensaje('Ha ocurrido un error.');
         setAlertError('error');
         setAlertTitulo('Error de servidor');
       });
@@ -123,7 +126,7 @@ const ChecklistReparacion = (props) => {
       .then(() => {
       })
       .catch(() => {
-        setAlertmensaje('Ha ocurrido un error.');
+        setAlertMensaje('Ha ocurrido un error.');
         setAlertError('error');
         setAlertTitulo('Error de servidor');
       });
@@ -138,7 +141,7 @@ const ChecklistReparacion = (props) => {
       .then(() => {
       })
       .catch(() => {
-        setAlertmensaje('Ha ocurrido un error.');
+        setAlertMensaje('Ha ocurrido un error.');
         setAlertError('error');
         setAlertTitulo('Error de servidor');
       });
@@ -206,11 +209,13 @@ const ChecklistReparacion = (props) => {
       .then(() => {
         setOpenReparacionEnviada(true);
         setActualizar(true);
+        setLoadingButton(false);
       })
-      .catch(() => {
-        setAlertmensaje('Ha ocurrido un error.');
+      .catch((error) => {
+        setAlertMensaje('Detalle del problema: ', error.response.data.error);
         setAlertError('error');
-        setAlertTitulo('Error de servidor');
+        setAlertTitulo('Ha ocurrido un inconveniente');
+        setLoadingButton(false);
       });
   };
 
@@ -347,26 +352,40 @@ const ChecklistReparacion = (props) => {
         description="¿Está seguro que desea terminar la reparación? No se podrá modificar una vez terminada."
         disableBackdropClick
       >
-        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <Alerts alertType={alertError} description={alertMensaje} title={alertTitulo} />
-        </Box>
         <Box sx={{
           display: 'flex', justifyContent: 'center', alignItems: 'center',
         }}
         >
           <DialogActions>
-            <Button
-              color="secondary"
-              variant="outlined"
-              onClick={() => {
-                handleSubmit();
-              }}
-            >
-              Enviar
-            </Button>
+            <Box sx={{ m: 1, position: 'relative' }}>
+              <Button
+                color="secondary"
+                variant="outlined"
+                disabled={loadingButton}
+                onClick={() => {
+                  handleSubmit();
+                  setLoadingButton(true);
+                }}
+              >
+                Enviar
+              </Button>
+              {loadingButton && (
+              <CircularProgress
+                size={24}
+                sx={{
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  marginTop: '-12px',
+                  marginLeft: '-12px',
+                }}
+              />
+              )}
+            </Box>
             <Button
               color="error"
               variant="outlined"
+              disabled={loadingButton}
               onClick={() => {
                 setOpenConfirmarReparacion(false);
               }}
@@ -374,6 +393,17 @@ const ChecklistReparacion = (props) => {
               Cerrar
             </Button>
           </DialogActions>
+        </Box>
+      </Popup>
+
+      {/* Popup para mostrar mensaje de error, cuando sea enviado el turno */}
+      <Popup
+        openDialog={openError}
+        setOpenDialog={setOpenError}
+        title={<LittleHeader titulo="Ha ocurrido un problema" />}
+      >
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Alerts alertType={alertError} description={alertMensaje} title={alertTitulo} />
         </Box>
       </Popup>
 
