@@ -73,6 +73,13 @@ const AltaTaller = (props) => {
 
   useEffect(() => {
     try {
+      console.log(nombre);
+      console.log(direccion);
+      console.log(mail);
+      console.log(telefono);
+      console.log(capacidad);
+      console.log(sucursalId);
+      console.log(cantTecnicos);
       traerSucursales();
       setAlertType('');
     } catch (error) {
@@ -505,6 +512,7 @@ const AltaTaller = (props) => {
               onClick={() => {
                 setOpenErrorCrear(false);
                 setOpenConfirmar(false);
+                setLoadingConfirmacion(false);
               }}
             >
               Cerrar
