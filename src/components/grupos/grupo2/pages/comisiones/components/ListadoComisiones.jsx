@@ -35,6 +35,12 @@ const ListadoComisiones = () => {
     );
   };
 
+  const renderFormatoPorcentaje = ({ row }) => {
+    const valorDecimal = parseFloat(row.original.valor);
+    const valorPorcentaje = valorDecimal * 100;
+    return `${valorPorcentaje}%`;
+  };
+
   const columnas = useMemo(
     () => [
       {
@@ -48,6 +54,7 @@ const ListadoComisiones = () => {
       {
         accessorKey: 'valor',
         header: 'Valor',
+        Cell: renderFormatoPorcentaje,
       },
       {
         accessorKey: 'categoria_id',
@@ -72,7 +79,7 @@ const ListadoComisiones = () => {
         state={{ isLoading: cargando }}
         enableRowActions
         positionActionsColumn="last"
-        defaultColumn={{ minSize: 10, maxSize: 100 }}
+        defaultColumn={{ minSize: 10, maxSize: 130 }}
         displayColumnDefOptions={{
           'mrt-row-actions': {
             header: 'Acciones',
