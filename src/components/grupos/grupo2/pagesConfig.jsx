@@ -37,7 +37,6 @@ const GROUP_2_PAGES_CONFIG = [
     icon: <PaidIcon />,
     page: <Comisiones />,
   },
-
 ];
 
 export default GROUP_2_PAGES_CONFIG;
