@@ -7,14 +7,20 @@ import DialogTitle from '@mui/material/DialogTitle';
 
 export default function Popup(props) {
   const {
-    title, description, children, openDialog, setOpenDialog,
+    title, description, children, openDialog, setOpenDialog, disableBackdropClick,
   } = props;
+
+  const handleClose = () => {
+    if (!disableBackdropClick) {
+      setOpenDialog(false);
+    }
+  };
 
   return (
     <Dialog
       open={openDialog}
       maxWidth="lg"
-      onClose={() => setOpenDialog(false)}
+      onClose={handleClose}
     >
       <DialogTitle id="alert-dialog-title">
         {title}
