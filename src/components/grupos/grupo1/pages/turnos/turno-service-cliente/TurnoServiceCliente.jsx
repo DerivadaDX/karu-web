@@ -223,7 +223,7 @@ const FormularioCliente = () => {
               sx={{ margin: '15px', display: 'flex', justifyContent: 'center' }}
             >
               <Button
-                color="success"
+                color="secondary"
                 variant="outlined"
                 // onClick={() => setOpenPopupSeleccion(false)}
                 onClick={() => {
