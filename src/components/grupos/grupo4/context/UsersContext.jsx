@@ -12,6 +12,9 @@ import {
   tokenValidator,
   modifyPassword,
   PostNewVehicleModel,
+  PostNewSellPrice,
+  PostNewPriceByModel,
+  PostNewPricesByInflation,
 } from '../api/API-methods';
 import Cookies from 'universal-cookie';
 import { useNavigate } from 'react-router-dom';
@@ -35,6 +38,9 @@ export const UserContextProvider = ({ children }) => {
   const [tokenToChangePass, setTokenToChangePass] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [saveModelMessageError, setsaveModelMessageError] = useState('');
+  const [updateSellPriceMessageError, setUpdateSellPriceMessageError] = useState('');
+  const [updatePriceOfAModelMessageError, setUpdatePriceOfAModelMessageError] = useState('');
+  const [updatePricesByInflationMessageError, setUpdatePricesByInflationMessageError] = useState('');
   const [updateUserMessageError, setupdateUserMessageError] = useState('');
   const [changePasswordMessageError, setChangePasswordMessageError] =
     useState('');
@@ -49,6 +55,9 @@ export const UserContextProvider = ({ children }) => {
   const [showSpanConfirmEmailError, setSpanConfirmEmailError] = useState(false);
   const [showSpanConfirmTokenError, setSpanConfirmTokenError] = useState(false);
   const [showSpansaveModelError, setSpansaveModelError] = useState(false);
+  const [showSpanUpdateSellPriceError, setSpanUpdateSellPriceError] = useState(false);
+  const [showSpanUpdatePriceOfAModelError, setSpanUpdatePriceOfAModelError] = useState(false);
+  const [showSpanUpdatePricesByInflationError, setSpanUpdatePricesByInflationError] = useState(false);
   const [showSpanUpdateUserError, setSpanUpdateUserError] = useState(false);
   const [showSpanLoginTokenError, setShowSpanLoginTokenError] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -177,6 +186,48 @@ export const UserContextProvider = ({ children }) => {
     }
   }
 
+  async function updateSellPrice(newPriceOfACar) {
+    console.log("LO QUE ENVIO AL BACK: ", newPriceOfACar)
+    const postNewPrice = await PostNewSellPrice(newPriceOfACar);
+    const { value, updatedSellPrice } = postNewPrice;
+    if (updatedSellPrice) {
+      window.alert('Precio actualizado');
+    } else {
+      if (value) {
+        setUpdateSellPriceMessageError(value);
+      }
+      setSpanUpdateSellPriceError(true); //TODO: RENOMBRAR
+    }
+  }
+
+  async function updatePriceByModel(newPriceOfAModel) {
+    console.log("LO QUE ENVIO AL BACK: ", newPriceOfAModel)
+    const postNewPriceOfAModel = await PostNewPriceByModel(newPriceOfAModel);
+    const { value, updatedPriceOfAModel } = postNewPriceOfAModel;
+    if (updatedPriceOfAModel) {
+      window.alert('Precio por modelo actualizado');
+    } else {
+      if (value) {
+        setUpdatePriceOfAModelMessageError(value);
+      }
+      setSpanUpdatePriceOfAModelError(true); //TODO: RENOMBRAR
+    }
+  }
+
+  async function updatePricesByInflation(newPriceByInflation) {
+    console.log("LO QUE ENVIO AL BACK: ", newPriceByInflation)
+    const postNewPricesByInflation = await PostNewPricesByInflation(newPriceByInflation);
+    const { value, updatedPricesByInflation } = postNewPricesByInflation;
+    if (updatedPricesByInflation) {
+      window.alert('Precios por inflacion actualizados');
+    } else {
+      if (value) {
+        setUpdatePricesByInflationMessageError(value);
+      }
+      setSpanUpdatePricesByInflationError(true); //TODO: RENOMBRAR
+    }
+  }
+
   async function updateUser(userData) {
     const putUser = await ModifyUser(userData);
     const { value, updatedUser } = putUser;
@@ -284,7 +335,13 @@ export const UserContextProvider = ({ children }) => {
     saveConfirmTokenMessageError,
     showSpanConfirmTokenError,
     saveModelMessageError,
+    updateSellPriceMessageError,
+    updatePriceOfAModelMessageError,
+    updatePricesByInflationMessageError,
     showSpansaveModelError,
+    showSpanUpdateSellPriceError,
+    showSpanUpdatePriceOfAModelError,
+    showSpanUpdatePricesByInflationError,
     showSpanLoginTokenError,
     changePasswordMessageError,
     showSpanChangePasswordError,

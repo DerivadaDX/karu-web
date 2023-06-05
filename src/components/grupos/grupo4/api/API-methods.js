@@ -192,3 +192,50 @@ export const GetAllWorkshops = async () => {
     return [];
   }
 };
+
+export const PostNewSellPrice = async (newPriceOfACar) => {
+  try {
+    const response = await client.post('/vehicle/updateSellPrice', newPriceOfACar);
+    if (response.data.result.message) {
+      return {
+        value: response.data.result.message,
+        updatedSellPrice: false,
+      };
+    }
+    return { updatedSellPrice: true };
+  } catch (error) {
+    return { updatedSellPrice: false };
+  }
+};
+
+export const PostNewPriceByModel = async (newPriceOfAModel) => {
+  try {
+    const response = await client.post('/vehicle/updatePriceByModel', newPriceOfAModel);
+    if (response.data.result.message) {
+      return {
+        value: response.data.result.message,
+        updatedPriceOfAModel: false,
+      };
+    }
+    return { updatedPriceOfAModel: true };
+  } catch (error) {
+    return { updatedPriceOfAModel: false };
+  }
+};
+
+export const PostNewPricesByInflation = async (inflation) => {
+  try {
+    const response = await client.post(`/vehicle/updatePricesByInflation?inflation=${inflation}`);
+    console.log("LO QUE RECIBO DEL BACK:", response)
+    if (response.data.result.message) {
+      return {
+        value: response.data.result.message,
+        updatedPricesByInflation: false,
+      };
+    }
+    return { updatedPricesByInflation: true };
+  } catch (error) {
+    return { updatedPricesByInflation: false };
+  }
+};
+
