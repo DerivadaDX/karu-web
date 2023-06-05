@@ -300,7 +300,7 @@ const TablaTalleres = () => {
         />
       </Popup>
       <Popup
-        title={<LittleHeader titulo="Modificar Taller" subtitulo="Formulario" />}
+        title={<LittleHeader titulo="Modificar taller" subtitulo="Formulario" />}
         openDialog={openModificarTaller}
         setOpenDialog={setOpenModificarTaller}
         disableBackdropClick
