@@ -1,10 +1,17 @@
 
+<<<<<<< HEAD
+/*
+=======
+>>>>>>> dev
 *,
 *::after,
 *::before{
 margin: 0
 }
 
+<<<<<<< HEAD
+*/
+=======
 /* este es para ocultar la barra de scroll en chrome safari y opera*/
 /* BORRARLO O PONERLO EN UNA CLASE, ASI LO LLAMAN DONDE NECESITEN
 YA QUE NOS AFECTA A TODOS
@@ -13,34 +20,38 @@ YA QUE NOS AFECTA A TODOS
 }
 */
 
+>>>>>>> dev
 
 .filtroDeVehiculos{
     display: flex;
     flex-direction: column;
+    text-align: left;
     height: 100vh;
-    scrollbar-width: none; /* ocultar barra de scroll en firefox*/
+    
 }
 
 .filtroDeVehiculos_panelist-wrap,
 .filtroDeVehiculos_panel-wrap,
 .filtroDeVehiculos_list-wrap{
     overflow-y: auto;
+    
 }
 
 .filtroDeVehiculos_panelist-wrap{
     display: flex;
     flex: 1;
+    
 }
 
 .filtroDeVehiculos_panel-wrap{
    /* background-color: red;*/
     flex-basis: 280px;
     padding: 1rem;
+    
 }
 
 .filtroDeVehiculos_list-wrap{
 
-    /*background-color: blue;*/
     flex: 1;
     padding: 1rem;
 }
