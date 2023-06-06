@@ -1,3 +1,4 @@
+
 .listItem-wrap img{
     width: 100%;
     border-radius: 15px;
@@ -14,7 +15,8 @@
 
 .listItem-wrap span{
     font-size: .7rem;
-    background-color: #bdbbc5;
+    color: white;
+    background-color: #141316;
     padding: 0.5rem;
     border-radius: 10px;
 }

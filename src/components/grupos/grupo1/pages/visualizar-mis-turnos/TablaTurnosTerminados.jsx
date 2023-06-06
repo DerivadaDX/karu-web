@@ -166,6 +166,7 @@ const TablaTurnosTerminados = (props) => {
         title={<LittleHeader titulo="Detalle de turno" />}
         openDialog={openVerMas}
         setOpenDialog={setOpenVerMas}
+        disableBackdropClick
       >
         <DetalleTurno openDialog={openVerMas} setOpenDialog={setOpenVerMas} row={rowDetalle} />
       </Popup>
@@ -173,6 +174,7 @@ const TablaTurnosTerminados = (props) => {
         title="Checklist"
         openDialog={openChecklist}
         setOpenDialog={setOpenChecklist}
+        disableBackdropClick
       >
         Checklist
       </Popup>

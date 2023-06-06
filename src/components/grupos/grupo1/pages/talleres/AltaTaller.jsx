@@ -52,6 +52,7 @@ const AltaTaller = (props) => {
   const [loadingConfirmacion, setLoadingConfirmacion] = useState(false);
   // Error al enviar
   const [openErrorCrear, setOpenErrorCrear] = useState(false);
+  const [msjErrorCrear, setMsjErrorCrear] = useState([]);
 
   // Alertas de la API
   const [alertType, setAlertType] = useState('');
@@ -189,6 +190,11 @@ const AltaTaller = (props) => {
         limpiarFormulario();
       })
       .catch((error) => {
+        if (error.response && error.response.data && error.response.data.error) {
+          setMsjErrorCrear(error.response.data.error);
+        } else {
+          setMsjErrorCrear('Ocurrió un problema. Si persiste, comuníquese con el área técnica de KarU.');
+        }
         setOpenErrorCrear(open);
       });
   };
@@ -441,6 +447,7 @@ const AltaTaller = (props) => {
         openDialog={openConfirmar}
         setOpenDialog={setOpenConfirmar}
         description="¿Está seguro que todos los datos completados son correctos? La creación puede tardar unos segundos."
+        disableBackdropClick
       >
         <Box sx={{
           display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 2,
@@ -490,7 +497,8 @@ const AltaTaller = (props) => {
         title={<LittleHeader titulo="Error al crear el taller" />}
         openDialog={openErrorCrear}
         setOpenDialog={setOpenErrorCrear}
-        description="Se produjo un error. Si persiste, comuniquese con el área técnica de KarU."
+        description={msjErrorCrear}
+        disableBackdropClick
       >
         <Box sx={{
           display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 2,
@@ -503,6 +511,7 @@ const AltaTaller = (props) => {
               onClick={() => {
                 setOpenErrorCrear(false);
                 setOpenConfirmar(false);
+                setLoadingConfirmacion(false);
               }}
             >
               Cerrar
@@ -515,6 +524,7 @@ const AltaTaller = (props) => {
         openDialog={openMensajeExitoso}
         setOpenDialog={setOpenMensajeExitoso}
         description={mensajeExitoso}
+        disableBackdropClick
       >
         <Box sx={{
           display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 2,
@@ -538,6 +548,7 @@ const AltaTaller = (props) => {
         openDialog={openError}
         setOpenDialog={setOpenError}
         description="Por favor, verifique que haya completado todos los campos con los datos correspondientes."
+        disableBackdropClick
       >
         <Box sx={{
           display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 2,

@@ -1,6 +1,8 @@
 import { Container, Box, Button } from '@mui/material';
 import React from 'react';
 import VehiculoIndividual from '../components/ventas/vehiculoIndividual/vehiculoIndividual';
+import AcordeonObservaciones from '../components/common/acordeonObservaciones';
+// import ConsultaDialog from '../components/common/consultaDialog';
 
 const PageVehiculoIndividual = () => (
   <Container>
@@ -12,6 +14,7 @@ const PageVehiculoIndividual = () => (
       gap: 2,
     }}
     >
+      <AcordeonObservaciones />
       <Button variant="contained">Reservar</Button>
     </Box>
   </Container>

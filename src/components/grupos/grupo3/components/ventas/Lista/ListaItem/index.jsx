@@ -21,21 +21,33 @@ const ListItem = ({
     importado,
     reserva,
   },
-}) => (
-  <div className="listItem-wrap">
-    <Link to="/vehiculoIndividual">
-      <img src={imagenAuto} alt="item" />
-    </Link>
-    <header>
-      <h3>{marca} {modelo} {precio}</h3>
-    </header>
-    <footer>
-      <p>
-        <span>⛽ {combustible}</span>
-        <span>⛽ {kilometraje}</span>
-        <span>⛽ {anio}</span>
-      </p>
-    </footer>
-  </div>
-);
+}) => {
+  sessionStorage.clear();
+  sessionStorage.setItem('patente', patente);
+  sessionStorage.setItem('precio', precio);
+  return (
+    <div className="listItem-wrap">
+      <Link to={`/vehiculoIndividual/${id}`}>
+        <img src={imagenAuto} alt="item" />
+      </Link>
+      <header>
+        <h2>
+          {marca} {modelo}
+        </h2>
+      </header>
+      <div className="precio">
+        <h4>${precio}</h4>
+      </div>
+      <footer>
+        <h4> </h4>
+        <p> Ars+iva</p>
+        <p>
+          <span>⛽ {combustible}</span>
+          <span>🚍{kilometraje}Km</span>
+          <span>📆 {anio}</span>
+        </p>
+      </footer>
+    </div>
+  );
+};
 export default ListItem;

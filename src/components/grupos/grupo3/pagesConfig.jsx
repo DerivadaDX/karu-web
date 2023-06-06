@@ -1,13 +1,13 @@
-/* eslint-disable no-unused-vars */
 import DriveEtaIcon from '@mui/icons-material/DriveEta';
 import { Search } from '@mui/icons-material';
 import React from 'react';
+import RequestPageIcon from '@mui/icons-material/RequestPage';
 import Cotizar from './components/cotizar/Cotizar';
 import NuevaPagina from './components/cotizar/NuevaPagina';
 import Boleta from './components/cotizar/Boleta';
 import FiltroDeVehiculos from './pages/SeleccionDeVehiculo';
 import PageVehiculoIndividual from './pages/PageVehiculoIndividual';
-import ConsultaCliente from './pages/consultaCliente';
+import ListadoCotizaciones from './pages/ListadoCotizaciones';
 
 const GROUP_3_PAGES_CONFIG = [
   {
@@ -34,25 +34,26 @@ const GROUP_3_PAGES_CONFIG = [
   {
     id: 'g3-Filtrar vehiculos',
     name: 'Filtrar vehiculos',
-    href: '/filtrarVehiculos',
+    href: '/filtrarVehiculos/',
     icon: <Search />,
     page: <FiltroDeVehiculos />,
   },
   {
     id: 'g3-BORRADOR vehiculo',
     name: 'BORRADOR vehiculo',
-    href: '/vehiculoIndividual',
+    href: '/vehiculoIndividual/:productId',
     icon: <Search />,
     page: <PageVehiculoIndividual />,
     soloUrl: true,
   },
+
   {
-    id: 'g3-BORRADOR consulta',
-    name: 'BORRADOR consulta',
-    href: '/consulta',
-    icon: <Search />,
-    page: <ConsultaCliente />,
-    soloUrl: true,
+    id: 'g3-Cotizaciones',
+    name: 'cotizaciones',
+    href: '/cotizaciones',
+    icon: <RequestPageIcon />,
+    page: <ListadoCotizaciones />,
+    // soloUrl: true,
   },
 ];
 
