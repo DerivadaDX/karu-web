@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable max-len */
 /* eslint-disable react/prop-types */
@@ -8,10 +9,11 @@ import React, { useState, useEffect, useContext } from 'react';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 const Cotizar = () => {
   // setear los hooks useState
-  const [users, setUsers] = useState([]);
+  const [vehiculos, setVehiculos] = useState([]);
   // valores del input
   const [searchAnio, setSearchAnio] = useState('');
   const [searchMarca, setSearchMarca] = useState('');
@@ -21,7 +23,7 @@ const Cotizar = () => {
   const [searchImportado, setImportado] = useState('');
 
   // función para traer los datos de la API
-  const URL = 'https://jsonplaceholder.typicode.com/users';// sacar datos de un json
+  const URL = 'https://gadmin-backend-production.up.railway.app/api/v1/vehicle/getByStatus/DISPONIBLE';// sacar datos de un json
   // para traer datos de localData en la tabla cotizar Vehiculos
   const localData = [
     {
@@ -160,10 +162,10 @@ const Cotizar = () => {
 
   // datos que traemos
   const showData = async () => {
-    const response = await fetch(URL);
-    const data = await response.json();
-    // console.log(data)
-    setUsers(data);
+    const response = await axios.get(URL);
+    // const data = await response.json();
+    console.log(response.data.result);
+    setVehiculos(response.data.result);
   };
   // función de búsqueda
   const searcher = (e) => {
@@ -186,38 +188,37 @@ const Cotizar = () => {
   /*  let results = []
     if(!search)
     {
-        results = users
+        results = vehiculos
     }else{
-         results = users.filter( (dato) =>
+         results = vehiculos.filter( (dato) =>
          dato.name.toLowerCase().includes(search.toLocaleLowerCase())
      )
     } */
 
   // metodo de filtrado 2   -recomendado- filtra por modelo o marca
   /* sirve solo que hago prueba
-    const results = !search ? users : users.filter((dato) => dato.modelo.toLowerCase().includes(search.toLocaleLowerCase()) || dato.marca.toLowerCase().includes(search.toLocaleLowerCase()))
+    const results = !search ? vehiculos : vehiculos.filter((dato) => dato.modelo.toLowerCase().includes(search.toLocaleLowerCase()) || dato.marca.toLowerCase().includes(search.toLocaleLowerCase()))
 */
-
-  const results = users.filter((user) => {
-    const anioMatch = user.anio.toString().includes(searchAnio);
-    const marcaMatch = user.marca.toLowerCase().includes(searchMarca.toLowerCase());
-    const modeloMatch = user.modelo.toLowerCase().includes(searchModelo.toLowerCase());
-    const kilometrajeMatch = user.kilometraje.toString().includes(searchKilometraje);
-    const combustibleMatch = user.combustible.toLowerCase().includes(searchCombustible.toLowerCase());
-    const importadoMatch = user.importado.toLowerCase().includes(searchImportado.toLowerCase());
-    return marcaMatch && modeloMatch && anioMatch && kilometrajeMatch && combustibleMatch && importadoMatch;
-  });
-
   // pruebo useEffect de abajo
   /* useEffect( ()=> {
      showData()
    }, []) */
   useEffect(() => {
     // mostrar datos locales
-    setUsers(localData);
+    // setVehiculos(localData);
     // mostrar datos desde API
-    // showData()
+    showData();
   }, []);
+
+  const results = vehiculos.filter((vehiculo) => {
+    const anioMatch = vehiculo.year.toString().includes(searchAnio);
+    const marcaMatch = vehiculo.brand.toLowerCase().includes(searchMarca.toLowerCase());
+    const modeloMatch = vehiculo.model.toLowerCase().includes(searchModelo.toLowerCase());
+    const kilometrajeMatch = vehiculo.kilometers.toString().includes(searchKilometraje);
+    const combustibleMatch = vehiculo.fuelType.toLowerCase().includes(searchCombustible.toLowerCase());
+    const importadoMatch = vehiculo.status.toLowerCase().includes(searchImportado.toLowerCase());
+    return marcaMatch && modeloMatch && anioMatch && kilometrajeMatch && combustibleMatch && importadoMatch;
+  });
 
   // renderizamos la vista
   return (
@@ -238,7 +239,7 @@ const Cotizar = () => {
                 <th>Kilometraje</th>
                 <th>Combustible</th>
                 <th>Importado</th>
-                <th>Vehículo reservado</th>
+                <th>Precio Base</th>
                 <th>Cotizar</th>
               </tr>
             </thead>
@@ -316,21 +317,21 @@ const Cotizar = () => {
 
             <tbody>
               {results.map((user) => (
-                <tr key={user.id}>
-                  <td>{user.patente}</td>
-                  <td>{user.sucursal}</td>
-                  <td>{user.anio}</td>
-                  <td>{user.marca}</td>
-                  <td>{user.modelo}</td>
-                  <td>{user.kilometraje}</td>
-                  <td>{user.combustible}</td>
-                  <td>{user.importado}</td>
-                  <td>{user.reserva}</td>
+                <tr key={user.plate}>
+                  <td>{user.plate}</td>
+                  <td>{user.branch}</td>
+                  <td>{user.year}</td>
+                  <td>{user.brand}</td>
+                  <td>{user.model}</td>
+                  <td>{user.kilometers}</td>
+                  <td>{user.fuelType}</td>
+                  <td>{user.origin === 'IMPORTADO' ? 'Si' : 'No'}</td>
+                  <td>{user.sellPrice}</td>
 
                   <td>
                     {/* ---------- Agrego consegui patente  -------*/}
                     {/* ---------- interpolacion de varieables  -------*/}
-                    <Link to={`/cotizar/${user.id}`}>
+                    <Link to={`/cotizar/${user.plate}`}>
                       <Button variant="primary">Cotizar </Button>
                     </Link>
                   </td>

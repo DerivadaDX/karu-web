@@ -1,8 +1,10 @@
+/* eslint-disable no-console */
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable react/jsx-filename-extension */
 /* eslint-disable max-len */
 /* eslint-disable no-unused-vars */
 import React, { useContext, useState } from 'react';
+import axios from 'axios';
 import {
   Container, Row, Col, Table, Card, ListGroup,
 } from 'react-bootstrap';
@@ -35,9 +37,24 @@ const Boleta = () => {
   //  sessionStorage.getItem('cotizacion');
   const rawValue = sessionStorage.getItem('cotizacion');
   const cotizacion = JSON.parse(rawValue);
+  console.log(`prueba${cotizacion}`);
 
   /* declara una variable de estado para almacenar la fecha actual */
   const [fecha, setFechaActual] = useState(new Date());
+  // agrego mail
+  const enviarCorreo = () => {
+    const cotizacionData = {
+      emailReceptor: cotizacion.email,
+      idCotizacionVenta: cotizacion.id,
+    };
+    axios.post('http://34.74.194.25:8080/api-gc/email/enviar-pdf', cotizacionData)
+      .then((response) => {
+        console.log('Correo enviado');
+      })
+      .catch((error) => {
+        console.error('Error al enviar el correo', error);
+      });
+  };
 
   return (
     <Container className="my-0">
@@ -117,7 +134,9 @@ const Boleta = () => {
           <Col xs={6}><p><strong>Total:</strong></p></Col>
           <Col xs={6}><p><strong>{cotizacion.total}</strong></p></Col>
         </Row>
-        <Button type="text">Mandar por mail</Button>
+        {/* <Button type="text">Mandar por mail</Button> */}
+
+        <Button type="text" onClick={enviarCorreo}>Mandar por mail</Button>
       </div>
     </Container>
 

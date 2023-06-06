@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseUrl = 'http://localhost:8080';
+const baseUrl = 'http://34.74.194.25:8080/api-gc';
 const urlCompleta = baseUrl;
 
 const HttpService = {
