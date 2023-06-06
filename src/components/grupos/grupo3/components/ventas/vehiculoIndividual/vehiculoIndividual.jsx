@@ -5,6 +5,7 @@
 import { Box, Paper, Typography } from '@mui/material';
 import styled from '@emotion/styled';
 import React from 'react';
+import { useEffect } from 'react';
 import { useState } from 'react';
 // import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -13,6 +14,7 @@ import imagenAuto from '../../../constants/autoUsado.jpg';
 import ConsultaDialog from '../../common/consultaDialog';
 import autosEnVenta from '../../../constants/autosEnVenta';
 import VentaService from '../../../services/VentaService';
+import AcordeonObservaciones from '../../common/acordeonObservaciones';
 
 const VehiculoIndividual = () => {
   const Img = styled('img')({
@@ -28,7 +30,7 @@ const VehiculoIndividual = () => {
   const obtenerVehiculo = () => {
     VentaService.obtenerVehiculoId(productId)
       .then((response) => {
-        setVehiculo(response.data);
+        setVehiculo(response.data.result);
       });
   };
   useEffect(obtenerVehiculo, []);
@@ -54,7 +56,7 @@ const VehiculoIndividual = () => {
         </Typography>
         <Typography variant="body1">
           Combustible:
-          {vehiculoData.fuel}
+          {vehiculoData.fuelType}
         </Typography>
         <Typography variant="body1">
           Kilometraje:

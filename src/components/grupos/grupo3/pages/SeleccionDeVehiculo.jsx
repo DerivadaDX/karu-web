@@ -30,7 +30,7 @@ const FiltroDeVehiculos = () => {
   // const [list, setList] = useState(autosEnVenta);
   const [resultsFound, setResultsFound] = useState(true);
   const [searchInput, setSearchInput] = useState('');
-
+  /*
   const listaVehiculos = () => {
     VentaService.obtenerVehiculosDisponibles()
       .then((response) => {
@@ -38,6 +38,19 @@ const FiltroDeVehiculos = () => {
       });
   };
   useEffect(listaVehiculos, []);
+*/
+  const listaVehiculos = async () => {
+    try {
+      const response = await VentaService.obtenerVehiculosDisponibles();
+      setVehiculos(response.data.result);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    listaVehiculos();
+  }, []);
 
   const handleCategoriaSeleccionada = (event, value) => (
     !value ? null : setCategoriaSeleccionada(value));
@@ -50,7 +63,7 @@ const FiltroDeVehiculos = () => {
 
     // filtra por combustible
     if (categoriaSeleccionada) {
-      updatedList = updatedList.filter((item) => item.fuel === categoriaSeleccionada[0]);
+      updatedList = updatedList.filter((item) => item.fuelType === categoriaSeleccionada[0]);
     }
 
     // filtro de barra de busqueda
