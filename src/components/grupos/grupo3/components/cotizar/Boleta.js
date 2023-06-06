@@ -41,7 +41,7 @@ const Boleta = () => {
 
   /* declara una variable de estado para almacenar la fecha actual */
   const [fecha, setFechaActual] = useState(new Date());
-
+  // agrego mail
   const enviarCorreo = () => {
     const cotizacionData = {
       emailReceptor: cotizacion.email,
