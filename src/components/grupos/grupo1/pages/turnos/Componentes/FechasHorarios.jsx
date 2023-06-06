@@ -69,7 +69,7 @@ const Disponibilidad = ({
       >
         <DateCalendar
           margin="normal"
-          fullwidth
+          fullwidth="true"
           required
           label="Fecha"
           format="DD/MM/YYYY"
@@ -122,7 +122,7 @@ const Hora = ({ diasYhorarios, fecha, setHoraSeleccionada }) => {
     ?.find((item) => item.dia === fecha)?.horarios_disponibles;
 
   return (
-    <FormControl fullwidth>
+    <FormControl fullwidth="true">
       <InputLabel>Horarios Disponibles</InputLabel>
       <Select
         required
@@ -131,7 +131,6 @@ const Hora = ({ diasYhorarios, fecha, setHoraSeleccionada }) => {
         width="50px"
         label="Horarios Disponibles"
       >
-        <MenuItem value="">Elija una hora, por favor</MenuItem>
         {horariosDisponibles
           && horariosDisponibles.map((horaItem) => (
             <MenuItem key={horaItem} value={horaItem}>

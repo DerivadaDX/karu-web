@@ -42,7 +42,7 @@ const inputs = [
     label: 'Motor',
     errorMessage:
       '¡El motor del auto no debe tener mas de 60 caracteres',
-    pattern: '/^.{0,60}$/',
+    pattern: '^.{1,60}$',
     required: true,
   },
 ];

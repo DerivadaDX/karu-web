@@ -1,10 +1,10 @@
+/* eslint-disable max-len */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import axios from 'axios';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-// import { FormControl, FormLabel } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 import { Box, Paper } from '@mui/material';
 import Radio from '@mui/material/Radio';
@@ -15,15 +15,32 @@ import FormLabel from '@mui/material/FormLabel';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Disponibilidad from '../Componentes/FechasHorarios';
-import Talleres from '../Componentes/Talleres';
 import ValidarPatente from '../Helpers/validar-patente';
 import Alerts from '../../../components/common/Alerts';
 import Popup from '../../../components/common/DialogPopup';
 import LittleHeader from '../../../components/common/LittleHeader';
 
 const Formulario = (props) => {
-  const { idTaller, openAgregarTurno, setOpenAgregarTurno } = props;
-  const [taller, setTaller] = useState();
+  const {
+    taller, openAgregarTurno, setOpenAgregarTurno, setActualizarTabla,
+  } = props;
+
+  function obtenerPrimerNumero(str) {
+    // Expresión regular para encontrar el primer número que comienza con un dígito distinto de cero
+    const regex = /[1-9][0-9]*/;
+
+    // Buscar el primer número en el string
+    const match = str.match(regex);
+
+    // Devolver el número encontrado o null si no se encontró ninguna coincidencia
+    if (match !== null) {
+      // eslint-disable-next-line radix
+      return parseInt(match[0]);
+    }
+    return null;
+  }
+  const tallerNro = obtenerPrimerNumero(taller);
+
   const [patenteReparacion, setPatente] = useState();
   const [fecha, setFecha] = useState();
   const [hora, setHora] = useState();
@@ -33,15 +50,21 @@ const Formulario = (props) => {
   // Para validar la patente
   const [isValid, setIsValid] = useState(true);
 
-  const msjTurnoCreado = `Se ha creado el turno para la patente ${patenteReparacion} el día ${fecha} a las ${hora} en el taller ${taller}.`;
+  const msjTurnoCreado = `Se ha creado el turno para la patente ${patenteReparacion} el día ${fecha} a las ${hora} en el taller ${tallerNro}.`;
 
   const [msjError, setMsjError] = useState();
 
   const [origenReparacion, setOrigenReparacion] = React.useState('');
 
-  const endPointDisponibilidad = `https://autotech2.onrender.com/turnos/dias-horarios-disponibles-reparaciones/${taller}/${patenteReparacion}/${origenReparacion}/`;
+  const endPointDisponibilidad = `https://autotech2.onrender.com/turnos/dias-horarios-disponibles-reparaciones/${tallerNro}/${patenteReparacion}/${origenReparacion}/`;
   // Para setear el límite del calendario
   const limite = 45;
+
+  // Para el manejo de errores de la API para crear el turno
+  const [openError, setOpenError] = useState(false);
+  const [alertError, setAlertError] = useState('');
+  const [alertMensaje, setAlertMensaje] = useState([]);
+  const [alertTitulo, setAlertTitulo] = useState('');
 
   const guardarOrigen = (event) => {
     setOrigenReparacion(event.target.value);
@@ -68,16 +91,52 @@ const Formulario = (props) => {
             patente: patenteReparacion,
             fecha_inicio: fecha,
             hora_inicio: hora,
-            taller_id: taller,
+            taller_id: tallerNro,
             origen: origenReparacion,
           },
         });
         setOpenPopupSeleccion(true);
+        setActualizarTabla(true);
       } else {
         setOpenPopupNoSeleccion(true);
       }
     } catch (error) {
-      setOpenPopupNoSeleccion(true);
+      /*
+        const responseData = error.response.data;
+        if (responseData.includes('la patente ingresada ya tiene un turno de ese tipo registrado en el sistema')) {
+          setOpenError(true);
+          setAlertError('error');
+          setAlertTitulo('Ha ocurrido un problema');
+          setAlertMensaje('Ya existe un turno para esa patente y tipo de turno.');
+        } else if (responseData.includes('la patente no pertenece a la de un auto que ya haya sido evaluado en el taller')) {
+          setOpenError(true);
+          setAlertError('error');
+          setAlertTitulo('Error de patente');
+          setAlertMensaje('La patente ingresada no pertenece a la de un auto evaluado en el taller.');
+        } else if (responseData.includes('pertenece a un vehiculo que ha sido evaluado y no necesita reparaciones')) {
+          setOpenError(true);
+          setAlertError('error');
+          setAlertTitulo('No aplica reparación para este vehículo');
+          setAlertMensaje('La patente ingresada pertenece a un vehiculo que ha sido evaluado y resultó no necesitar reparaciones');
+        } else {
+          setOpenError(true);
+          setAlertError('error');
+          setAlertTitulo('Ha ocurrido un error');
+          setAlertMensaje('Si el problema persiste, comuniquese con insomnia.front@gmail.com');
+        }
+      } else {
+        setOpenError(true);
+        setAlertError('error');
+        setAlertTitulo('Ha ocurrido un error');
+        setAlertMensaje('Si el problema persiste, comuniquese con insomnia.front@gmail.com');
+      }
+        */
+      if (error.response && error.response.data) {
+        setOpenError(true);
+        setAlertError('error');
+        setAlertTitulo('Ha ocurrido un error');
+        setAlertMensaje(error.response.data);
+      }
     }
   };
 
@@ -125,9 +184,8 @@ const Formulario = (props) => {
               onChange={guardarPatente}
             />
             {!isValid && <Alerts alertType="warning" description="Ejemplos de patentes válidas: AA111AA o ABC123" title="Patente inválida" />}
-            <Talleres setTallerSeleccionado={setTaller} />
             {/* eslint-disable-next-line max-len */}
-            {patenteReparacion && taller && origenReparacion && <Disponibilidad endPoint={endPointDisponibilidad} setFecha={setFecha} setHora={setHora} msjError={setMsjError} limite={limite} />}
+            {patenteReparacion && origenReparacion && <Disponibilidad endPoint={endPointDisponibilidad} setFecha={setFecha} setHora={setHora} msjError={setMsjError} limite={limite} />}
             {msjError && <Alerts alertType="error" description={msjError} title="No se encontró evaluación asociada de venta ni extraordinario." />}
             <Box sx={{
               display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 3, gap: '16px',
@@ -138,7 +196,7 @@ const Formulario = (props) => {
                 // fullWidth
                 variant="contained"
                 color="secondary"
-                // sx={{ mt: 3, mb: 2 }}
+              // sx={{ mt: 3, mb: 2 }}
               >
                 Crear Turno
               </Button>
@@ -153,16 +211,18 @@ const Formulario = (props) => {
             </Box>
           </Box>
           <Popup
-            title="Error en datos requeridos."
+            title={<LittleHeader titulo="Error en datos requeridos" />}
             description="Por favor complete todos los campos y verifique que la patente sea correcta."
             openDialog={openPopupNoSeleccion}
             setOpenDialog={setOpenPopupNoSeleccion}
+            disableBackdropClick
           >
             <Box
               sx={{ margin: '15px', display: 'flex', justifyContent: 'center' }}
             >
               <Button
                 color="error"
+                variant="outlined"
                 onClick={() => setOpenPopupNoSeleccion(false)}
               >
                 Cerrar
@@ -170,20 +230,32 @@ const Formulario = (props) => {
             </Box>
           </Popup>
           <Popup
-            title="Turno creado con éxito."
+            title={<LittleHeader titulo="Turno creado con éxito" />}
             description={msjTurnoCreado}
             openDialog={openPopupSeleccion}
             setOpenDialog={setOpenPopupSeleccion}
+            disableBackdropClick
           >
             <Box
               sx={{ margin: '15px', display: 'flex', justifyContent: 'center' }}
             >
               <Button
-                color="success"
-                onClick={() => setOpenPopupSeleccion(false)}
+                color="secondary"
+                variant="outlined"
+                onClick={() => setOpenAgregarTurno(false)}
               >
                 Cerrar
               </Button>
+            </Box>
+          </Popup>
+          {/* Popup para mostrar mensaje de error, cuando sea enviado el turno */}
+          <Popup
+            openDialog={openError}
+            setOpenDialog={setOpenError}
+            title={<LittleHeader titulo="Ha ocurrido un problema" />}
+          >
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              <Alerts alertType={alertError} description={alertMensaje} title={alertTitulo} />
             </Box>
           </Popup>
         </Box>

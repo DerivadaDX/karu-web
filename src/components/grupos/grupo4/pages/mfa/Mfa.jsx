@@ -22,6 +22,7 @@ const Mfa = () => {
     cookie,
     login,
     navigate,
+    userType,
   } = useContext(UserContext);
   const [isValidToken, setIsValidToken] = useState(false);
 
@@ -34,7 +35,7 @@ const Mfa = () => {
 
   useEffect(() => {
     if (isValidToken) {
-      const Loggeduser = JSON.stringify({ username, password });
+      const Loggeduser = JSON.stringify({ username, password, type: userType });
       cookie.set('user', Loggeduser, { maxAge: 300 });
       login();
       navigate('/');

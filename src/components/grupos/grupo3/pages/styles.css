@@ -1,18 +1,3 @@
-
-
-/* *,
-*::after,
-*::before{
-margin: 0
-}
-
-
-::-webkit-scrollbar{
-    display: none;
-} */
-
-
-
 .filtroDeVehiculos{
     display: flex;
     flex-direction: column;

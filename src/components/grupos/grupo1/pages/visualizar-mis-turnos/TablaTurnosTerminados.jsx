@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react/react-in-jsx-scope */
@@ -7,6 +8,7 @@ import {
 } from 'react';
 
 import MaterialReactTable from 'material-react-table';
+import { MRT_Localization_ES } from 'material-react-table/locales/es';
 import { Button, Box } from '@mui/material';
 import Alerts from '../../components/common/Alerts';
 import { getTurnosTerminados } from '../../services/services-tecnicos';
@@ -140,7 +142,8 @@ const TablaTurnosTerminados = (props) => {
         enableRowActions
         renderRowActions={renderRowActions}
         renderEmptyRowsFallback={noData}
-        defaultColumn={{ minSize: 10, maxSize: 100, size: 30 }}
+        defaultColumn={{ size: 5 }}
+        localization={MRT_Localization_ES}
         initialState={{ density: 'compact' }}
         muiTopToolbarProps={{
           sx: {
@@ -163,6 +166,7 @@ const TablaTurnosTerminados = (props) => {
         title={<LittleHeader titulo="Detalle de turno" />}
         openDialog={openVerMas}
         setOpenDialog={setOpenVerMas}
+        disableBackdropClick
       >
         <DetalleTurno openDialog={openVerMas} setOpenDialog={setOpenVerMas} row={rowDetalle} />
       </Popup>
@@ -170,6 +174,7 @@ const TablaTurnosTerminados = (props) => {
         title="Checklist"
         openDialog={openChecklist}
         setOpenDialog={setOpenChecklist}
+        disableBackdropClick
       >
         Checklist
       </Popup>

@@ -7,16 +7,22 @@ import DialogTitle from '@mui/material/DialogTitle';
 
 export default function PopupAgregarTurno(props) {
   const {
-    title, description, children, openDialog, setOpenDialog,
+    title, description, children, openDialog, setOpenDialog, disableBackdropClick,
   } = props;
+
+  const handleClose = () => {
+    if (!disableBackdropClick) {
+      setOpenDialog(false);
+    }
+  };
 
   return (
     <Dialog
       open={openDialog}
-      onClose={() => setOpenDialog(false)}
+      onClose={handleClose}
       PaperProps={{
         sx: {
-          width: '50%', height: '100%',
+          width: 'auto', height: 'auto',
         },
       }}
     >

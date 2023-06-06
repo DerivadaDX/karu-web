@@ -12,6 +12,9 @@ import {
   tokenValidator,
   modifyPassword,
   PostNewVehicleModel,
+  PostNewSellPrice,
+  PostNewPriceByModel,
+  PostNewPricesByInflation,
 } from '../api/API-methods';
 import Cookies from 'universal-cookie';
 import { useNavigate } from 'react-router-dom';
@@ -22,6 +25,7 @@ export const UserContextProvider = ({ children }) => {
   const cookie = new Cookies();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [userType, setUserType] = useState('')
   const [twoFactorCode, settwoFactorCode] = useState('');
   const [userValueError, setUserValueError] = useState('');
   const [paperWorkMessageError, setPaperWorkMessageError] = useState('');
@@ -34,6 +38,9 @@ export const UserContextProvider = ({ children }) => {
   const [tokenToChangePass, setTokenToChangePass] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [saveModelMessageError, setsaveModelMessageError] = useState('');
+  const [updateSellPriceMessageError, setUpdateSellPriceMessageError] = useState('');
+  const [updatePriceOfAModelMessageError, setUpdatePriceOfAModelMessageError] = useState('');
+  const [updatePricesByInflationMessageError, setUpdatePricesByInflationMessageError] = useState('');
   const [updateUserMessageError, setupdateUserMessageError] = useState('');
   const [changePasswordMessageError, setChangePasswordMessageError] =
     useState('');
@@ -48,6 +55,9 @@ export const UserContextProvider = ({ children }) => {
   const [showSpanConfirmEmailError, setSpanConfirmEmailError] = useState(false);
   const [showSpanConfirmTokenError, setSpanConfirmTokenError] = useState(false);
   const [showSpansaveModelError, setSpansaveModelError] = useState(false);
+  const [showSpanUpdateSellPriceError, setSpanUpdateSellPriceError] = useState(false);
+  const [showSpanUpdatePriceOfAModelError, setSpanUpdatePriceOfAModelError] = useState(false);
+  const [showSpanUpdatePricesByInflationError, setSpanUpdatePricesByInflationError] = useState(false);
   const [showSpanUpdateUserError, setSpanUpdateUserError] = useState(false);
   const [showSpanLoginTokenError, setShowSpanLoginTokenError] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -58,7 +68,6 @@ export const UserContextProvider = ({ children }) => {
     const user = cookie.get('user');
     if (user) {
       setIsAuthenticated(true);
-      navigate('/');
     }
   };
 
@@ -81,7 +90,9 @@ export const UserContextProvider = ({ children }) => {
 
   const authUser = async (user) => {
     const isValidLogin = await authLogin(user);
-    if (isValidLogin) {
+    const {userFound, type} = isValidLogin
+    if (userFound) {
+      setUserType(type)
       return true;
     }
     setShowSpanPasswordOrUser(true);
@@ -135,7 +146,6 @@ export const UserContextProvider = ({ children }) => {
   };
 
   async function saveUser(userData) {
-    console.log("LO QUE LE ENVIO AL BACK: ", userData)
     const postUser = await PostNewUser(userData);
     const { value, registeredUser } = postUser;
     if (registeredUser) {
@@ -163,7 +173,6 @@ export const UserContextProvider = ({ children }) => {
   }
 
   async function saveVehicleModel(modelData) {
-    console.log("LO QUE ENVIO AL BACK: ", modelData)
     const postUser = await PostNewVehicleModel(modelData);
     const { value, registeredVehicleModel } = postUser;
     if (registeredVehicleModel) {
@@ -177,12 +186,54 @@ export const UserContextProvider = ({ children }) => {
     }
   }
 
+  async function updateSellPrice(newPriceOfACar) {
+    console.log("LO QUE ENVIO AL BACK: ", newPriceOfACar)
+    const postNewPrice = await PostNewSellPrice(newPriceOfACar);
+    const { value, updatedSellPrice } = postNewPrice;
+    if (updatedSellPrice) {
+      window.alert('Precio actualizado');
+    } else {
+      if (value) {
+        setUpdateSellPriceMessageError(value);
+      }
+      setSpanUpdateSellPriceError(true); //TODO: RENOMBRAR
+    }
+  }
+
+  async function updatePriceByModel(newPriceOfAModel) {
+    console.log("LO QUE ENVIO AL BACK: ", newPriceOfAModel)
+    const postNewPriceOfAModel = await PostNewPriceByModel(newPriceOfAModel);
+    const { value, updatedPriceOfAModel } = postNewPriceOfAModel;
+    if (updatedPriceOfAModel) {
+      window.alert('Precio por modelo actualizado');
+    } else {
+      if (value) {
+        setUpdatePriceOfAModelMessageError(value);
+      }
+      setSpanUpdatePriceOfAModelError(true); //TODO: RENOMBRAR
+    }
+  }
+
+  async function updatePricesByInflation(newPriceByInflation) {
+    console.log("LO QUE ENVIO AL BACK: ", newPriceByInflation)
+    const postNewPricesByInflation = await PostNewPricesByInflation(newPriceByInflation);
+    const { value, updatedPricesByInflation } = postNewPricesByInflation;
+    if (updatedPricesByInflation) {
+      window.alert('Precios por inflacion actualizados');
+    } else {
+      if (value) {
+        setUpdatePricesByInflationMessageError(value);
+      }
+      setSpanUpdatePricesByInflationError(true); //TODO: RENOMBRAR
+    }
+  }
+
   async function updateUser(userData) {
     const putUser = await ModifyUser(userData);
     const { value, updatedUser } = putUser;
     if (updatedUser) {
       window.alert('Email modificado!');
-      navigate('/home');
+      navigate('/');
     } else {
       if (value) {
         setupdateUserMessageError(value); //Cambiar logica
@@ -284,10 +335,17 @@ export const UserContextProvider = ({ children }) => {
     saveConfirmTokenMessageError,
     showSpanConfirmTokenError,
     saveModelMessageError,
+    updateSellPriceMessageError,
+    updatePriceOfAModelMessageError,
+    updatePricesByInflationMessageError,
     showSpansaveModelError,
+    showSpanUpdateSellPriceError,
+    showSpanUpdatePriceOfAModelError,
+    showSpanUpdatePricesByInflationError,
     showSpanLoginTokenError,
     changePasswordMessageError,
     showSpanChangePasswordError,
+    userType,
   };
   
   return (

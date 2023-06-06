@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable radix */
 /* eslint-disable max-len */
 /* eslint-disable no-console */
@@ -9,7 +10,7 @@
 /* eslint-disable no-unused-vars */
 import DialogActions from '@mui/material/DialogActions';
 import {
-  Box, TextField, Button, InputLabel, Select, MenuItem, Container, Grid,
+  Box, TextField, Button, InputLabel, Select, MenuItem, Container, Grid, CircularProgress,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
@@ -48,9 +49,10 @@ const AltaTaller = (props) => {
   const [openError, setOpenError] = useState(false);
   const [openMensajeExitoso, setOpenMensajeExitoso] = useState(false);
   const [mensajeExitoso, setMensajeExistoso] = useState();
-
+  const [loadingConfirmacion, setLoadingConfirmacion] = useState(false);
   // Error al enviar
   const [openErrorCrear, setOpenErrorCrear] = useState(false);
+  const [msjErrorCrear, setMsjErrorCrear] = useState([]);
 
   // Alertas de la API
   const [alertType, setAlertType] = useState('');
@@ -188,6 +190,11 @@ const AltaTaller = (props) => {
         limpiarFormulario();
       })
       .catch((error) => {
+        if (error.response && error.response.data && error.response.data.error) {
+          setMsjErrorCrear(error.response.data.error);
+        } else {
+          setMsjErrorCrear('Ocurrió un problema. Si persiste, comuníquese con el área técnica de KarU.');
+        }
         setOpenErrorCrear(open);
       });
   };
@@ -413,15 +420,16 @@ const AltaTaller = (props) => {
       >
         <DialogActions>
           <Button
-            color="secondary"
             variant="outlined"
-            sx={{ marginTop: 5 }}
             onClick={() => {
               validarForm();
             }}
+            color="secondary"
+            sx={{ marginTop: 5 }}
           >
             Crear taller
           </Button>
+
           <Button
             color="primary"
             variant="outlined"
@@ -439,21 +447,39 @@ const AltaTaller = (props) => {
         openDialog={openConfirmar}
         setOpenDialog={setOpenConfirmar}
         description="¿Está seguro que todos los datos completados son correctos? La creación puede tardar unos segundos."
+        disableBackdropClick
       >
         <Box sx={{
           display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 2,
         }}
         >
           <DialogActions>
-            <Button
-              color="primary"
-              variant="outlined"
-              onClick={() => {
-                handleSubmit();
-              }}
-            >
-              Aceptar
-            </Button>
+            <Box sx={{ m: 1, position: 'relative' }}>
+              <Button
+                variant="outlined"
+                disabled={loadingConfirmacion}
+                onClick={() => {
+                  handleSubmit();
+                  setLoadingConfirmacion(true);
+                }}
+                color="primary"
+              >
+                Aceptar
+              </Button>
+              {loadingConfirmacion && (
+              <CircularProgress
+                size={24}
+                sx={{
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  marginTop: '-12px',
+                  marginLeft: '-12px',
+                }}
+              />
+              )}
+            </Box>
+
             <Button
               color="error"
               variant="outlined"
@@ -471,7 +497,8 @@ const AltaTaller = (props) => {
         title={<LittleHeader titulo="Error al crear el taller" />}
         openDialog={openErrorCrear}
         setOpenDialog={setOpenErrorCrear}
-        description="Se produjo un error. Si persiste, comuniquese con el área técnica de KarU."
+        description={msjErrorCrear}
+        disableBackdropClick
       >
         <Box sx={{
           display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 2,
@@ -484,6 +511,7 @@ const AltaTaller = (props) => {
               onClick={() => {
                 setOpenErrorCrear(false);
                 setOpenConfirmar(false);
+                setLoadingConfirmacion(false);
               }}
             >
               Cerrar
@@ -496,6 +524,7 @@ const AltaTaller = (props) => {
         openDialog={openMensajeExitoso}
         setOpenDialog={setOpenMensajeExitoso}
         description={mensajeExitoso}
+        disableBackdropClick
       >
         <Box sx={{
           display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 2,
@@ -519,6 +548,7 @@ const AltaTaller = (props) => {
         openDialog={openError}
         setOpenDialog={setOpenError}
         description="Por favor, verifique que haya completado todos los campos con los datos correspondientes."
+        disableBackdropClick
       >
         <Box sx={{
           display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 2,

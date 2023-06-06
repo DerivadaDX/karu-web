@@ -9,11 +9,11 @@ export const authLogin = async (user) => {
   try {
     const response = await client.post('/login/startLogin', user);
     if (response.data?.result.sessionStatus === 'USUARIO_ENCONTRADO') {
-      return true;
+      return {userFound: true, type: response.data.result.type};
     }
-    return false;
+    return {userFound: false};
   } catch (error) {
-    return false;
+    return {userFound: false};
   }
 };
 
@@ -93,7 +93,6 @@ export const sendPaperWork = async (vehicleDocumentation) => {
 export const PostNewUser = async (user) => {
   try {
     const response = await client.post('/signup/internal', user);
-    console.log("RESPONSE DEL USER: ", response)
     if (response.data.result.message) {
       return { value: response.data.result.message, registeredUser: false };
     }
@@ -140,7 +139,6 @@ export const ModifyPasswordUser = async (user) => {
 export const PostNewVehicle = async (vehicle) => {
   try {
     const response = await client.post('/vehicle/saveVehicle', vehicle);
-    console.log("RESPONSE DEL VEHICULO: ", response)
     if (response.data.result.message) {
       return { value: response.data.result.message, registeredVehicle: false };
     }
@@ -194,3 +192,50 @@ export const GetAllWorkshops = async () => {
     return [];
   }
 };
+
+export const PostNewSellPrice = async (newPriceOfACar) => {
+  try {
+    const response = await client.post('/vehicle/updateSellPrice', newPriceOfACar);
+    if (response.data.result.message) {
+      return {
+        value: response.data.result.message,
+        updatedSellPrice: false,
+      };
+    }
+    return { updatedSellPrice: true };
+  } catch (error) {
+    return { updatedSellPrice: false };
+  }
+};
+
+export const PostNewPriceByModel = async (newPriceOfAModel) => {
+  try {
+    const response = await client.post('/vehicle/updatePriceByModel', newPriceOfAModel);
+    if (response.data.result.message) {
+      return {
+        value: response.data.result.message,
+        updatedPriceOfAModel: false,
+      };
+    }
+    return { updatedPriceOfAModel: true };
+  } catch (error) {
+    return { updatedPriceOfAModel: false };
+  }
+};
+
+export const PostNewPricesByInflation = async (inflation) => {
+  try {
+    const response = await client.post(`/vehicle/updatePricesByInflation?inflation=${inflation}`);
+    console.log("LO QUE RECIBO DEL BACK:", response)
+    if (response.data.result.message) {
+      return {
+        value: response.data.result.message,
+        updatedPricesByInflation: false,
+      };
+    }
+    return { updatedPricesByInflation: true };
+  } catch (error) {
+    return { updatedPricesByInflation: false };
+  }
+};
+

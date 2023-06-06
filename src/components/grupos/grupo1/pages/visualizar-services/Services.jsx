@@ -3,6 +3,7 @@ import { Box, Container, Divider } from '@mui/material';
 import Header from '../../components/common/Header';
 import { TabServices } from './TabServices';
 
+const idSupervisor = 43;
 const Services = () => (
 
   <>
@@ -13,7 +14,7 @@ const Services = () => (
     </Box>
     <Divider sx={{ color: 'silver' }} />
     <Container maxWidth="xxl" sx={{ mb: 2 }}>
-      <TabServices />
+      <TabServices idSupervisor={idSupervisor} />
     </Container>
   </>
 

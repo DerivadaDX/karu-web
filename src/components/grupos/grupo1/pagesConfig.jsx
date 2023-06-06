@@ -7,18 +7,16 @@ import DesignServicesIcon from '@mui/icons-material/DesignServices';
 import GarageIcon from '@mui/icons-material/Garage';
 import RateReviewIcon from '@mui/icons-material/RateReview';
 import ReviewsIcon from '@mui/icons-material/Reviews';
-import HomeRepairServiceIcon from '@mui/icons-material/HomeRepairService';
 import TooltipCus from './components/common/Tooltip';
 import VisualizacionBusquedaTecnicos from './pages/visualizacion-tecnicos/VisualizacionFiltroBusqueda';
 import Dashboard from './pages/dashboard/Dashboard';
 import MisTurnos from './pages/visualizar-mis-turnos/MisTurnos';
 import AgendaTaller from './pages/visualizar-agenda/AgendaTaller';
 import Talleres from './pages/talleres/Talleres';
-import FormularioCliente from './pages/turnos/turno-service-cliente/TurnoCliente';
+import FormularioCliente from './pages/turnos/turno-service-cliente/TurnoServiceCliente';
 import Services from './pages/visualizar-services/Services';
 import FormularioEvaluacionAdmin from './pages/turnos/turno-evaluacion-admin/TurnoEvaluacionParaAdmin';
 import FormularioEvaluacionCliente from './pages/turnos/turno-evaluacion-cliente/TurnoEvaluacionCliente';
-import AltaServiceForm from './pages/alta-services/AltaServices';
 
 const GROUP_1_PAGES_CONFIG = [
   {
@@ -83,13 +81,6 @@ const GROUP_1_PAGES_CONFIG = [
     href: '/turno-evaluación-cliente',
     icon: <TooltipCus icon={<ReviewsIcon />} title="Evaluación cliente" />,
     page: <FormularioEvaluacionCliente />,
-  },
-  {
-    id: 'g1-AltaServices',
-    name: 'Alta de Services',
-    href: '/alta-service',
-    icon: <TooltipCus icon={<HomeRepairServiceIcon />} title="Alta de Services" />,
-    page: <AltaServiceForm />,
   },
 ];
 

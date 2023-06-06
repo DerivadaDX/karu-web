@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
+import { Box } from '@mui/material';
+import { Link } from 'react-router-dom';
+import logo from '../../assets/pictures/karu.png';
 
 const styles = {
   toolbar: {
@@ -48,15 +50,11 @@ const NavBar = ({ open, drawerWidth, toggleDrawer }) => {
         >
           <MenuIcon />
         </IconButton>
-        <Typography
-          component="h1"
-          variant="h6"
-          color="inherit"
-          noWrap
-          sx={styles.typography}
-        >
-          KarU
-        </Typography>
+        <Box>
+          <Link to="/">
+            <img src={logo} alt="Logo KarU" style={{ height: '2.5rem' }} />
+          </Link>
+        </Box>
       </Toolbar>
     </AppBar>
   );
