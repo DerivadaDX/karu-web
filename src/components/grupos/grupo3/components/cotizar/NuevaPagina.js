@@ -11,6 +11,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { products } from './products';
 import { AppContext } from './AppContext';
+import Alerts from '../../../grupo1/components/common/Alerts';
 
 /*
 cuanto presion el boton cotizar pongo un input donde tiene que rellenar esto datos
@@ -37,6 +38,11 @@ const NuevaPagina = () => {
   const [garantiaCheck, setGarantiaExtendida] = useState(false);
 
   const navigate = useNavigate();
+
+  // alertas de la API
+  const [alertType, setAlertType] = useState('');
+  const [alertMessage, setAlertMessage] = useState('');
+  const [alertTitle, setAlertTitle] = useState('');
 
   /* lo llamo de la misma manera que en app.js osea productId y lo desectructuramos */
   /* consumo desde los parametro las variantes del objeto y lo desestructuro el objeto */
@@ -120,8 +126,13 @@ const NuevaPagina = () => {
         navigate('/boleta-cotizacion');
       } catch (error) {
         console.error(error);
+        setAlertType('Error');
+        setAlertTitle('Error de servidor');
+        setAlertMessage(
+          'Error en el servidor. Por favor, vuelva a intentarlo nuevamente.',
+        );
+        // sessionStorage.setItem('cotizacion', JSON.stringify(infoCotizacion))
       }
-      // sessionStorage.setItem('cotizacion', JSON.stringify(infoCotizacion))
     }
   };
 
@@ -234,8 +245,13 @@ const NuevaPagina = () => {
                 <Link to="/boleta-cotizacion">
                 <Button type="submit" >Finalizar</Button>
                 </Link> */}
-
+        <Alerts
+          alertType={alertType}
+          description={alertMessage}
+          title={alertTitle}
+        />
       </Form>
+
     </div>
   );
 };
