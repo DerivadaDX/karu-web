@@ -10,43 +10,57 @@ import List from '../components/ventas/Lista';
 import autosEnVenta from '../constants/autosEnVenta';
 import './styles.css';
 import VistaVacia from '../components/common/vistaVacia/vistaVacia';
+import VentaService from '../services/VentaService';
+import VentaHttpService from '../services/VentaHttpService';
 
 const FiltroDeVehiculos = () => {
   // hooks para guardar los estados
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(null);
-  const [selectedPrice, setSelectedPrice] = useState([1000000, 30000000]);
-  const [selectedKM, setSelectedKM] = useState([2000, 8000]);
+  // const [selectedPrice, setSelectedPrice] = useState([1000000, 30000000]);
+  // const [selectedKM, setSelectedKM] = useState([2000, 8000]);
+
   // hook para la importacion de los autos 05_06
-  const [data, setData] = useState(null);
+  // const [data, setData] = useState([]);
+
+  const [vehiculosData, setVehiculos] = useState([]);
+  console.log(vehiculosData);
+
   // aca deberia inicializar el hook con el data importado de la api.
-  // const [list, setList] = useState(data);
-  const [list, setList] = useState(autosEnVenta);
+  const [list, setList] = useState(vehiculosData);
+  // const [list, setList] = useState(autosEnVenta);
   const [resultsFound, setResultsFound] = useState(true);
   const [searchInput, setSearchInput] = useState('');
 
+  const listaVehiculos = () => {
+    VentaService.obtenerVehiculosDisponibles()
+      .then((response) => {
+        setVehiculos(response.data.result);
+      });
+  };
+  useEffect(listaVehiculos, []);
+
   const handleCategoriaSeleccionada = (event, value) => (
     !value ? null : setCategoriaSeleccionada(value));
-  const handleChangePrice = (event, value) => setSelectedPrice(value);
-  const handleChangeKM = (event, value) => setSelectedKM(value);
+  // const handleChangePrice = (event, value) => setSelectedPrice(value);
+  // const handleChangeKM = (event, value) => setSelectedKM(value);
 
   // funcion principal encargada de gestionar los filtros
   const aplicarFiltros = () => {
-    let updatedList = autosEnVenta;
+    let updatedList = vehiculosData;
+
     // filtra por combustible
     if (categoriaSeleccionada) {
-      updatedList = updatedList.filter((item) => item.combustible === categoriaSeleccionada);
+      updatedList = updatedList.filter((item) => item.fuel === categoriaSeleccionada[0]);
     }
 
     // filtro de barra de busqueda
     if (searchInput) {
-      console.log('se muestra search imput');
-      console.log(searchInput);
       updatedList = updatedList.filter(
-        (item) => item.marca.toLowerCase().search(searchInput.toLowerCase().trim())
+        (item) => item.brand.toLowerCase().search(searchInput.toLowerCase().trim())
           !== -1,
       );
     }
-
+    /*
     // filtra con el slider por el precio
     const minPrice = selectedPrice[0];
     console.log('se muestra min price');
@@ -58,18 +72,15 @@ const FiltroDeVehiculos = () => {
     updatedList = updatedList.filter(
       (item) => item.precio >= minPrice && item.precio <= maxPrice,
     );
-
+    */
     setList(updatedList);
-    console.log('se muestra minimo precio');
-    console.log(minPrice);
-    console.log('se muestra combustible seleccionado');
-    console.log(categoriaSeleccionada);
     !updatedList.length ? setResultsFound(false) : setResultsFound(true);
   };
 
   useEffect(() => {
     aplicarFiltros();
-  }, [categoriaSeleccionada, selectedPrice, searchInput]);
+  }, [categoriaSeleccionada, searchInput]);
+
   /*
   // llamada a la api de autos 05_06
   useEffect(() => {
@@ -85,7 +96,7 @@ const FiltroDeVehiculos = () => {
 
     fetchData();
   }, []);
-*/
+  */
   return (
     <div className="filtroDeVehiculos">
       {/* Barra de busqueda - busca x marca o modelo del auto .. me habia olvidado de este input */}
@@ -100,10 +111,10 @@ const FiltroDeVehiculos = () => {
           <PanelDeFiltros
             categoriaSeleccionada={categoriaSeleccionada}
             toggleSeleccionado={handleCategoriaSeleccionada}
-            selectedPrice={selectedPrice}
-            changedPrice={handleChangePrice}
-            selectedKM={selectedKM}
-            changedKM={handleChangeKM}
+            // selectedPrice={selectedPrice}
+            // changedPrice={handleChangePrice}
+            // selectedKM={selectedKM}
+            // changedKM={handleChangeKM}
           />
         </div>
         <div className="filtroDeVehiculos_list-wrap">

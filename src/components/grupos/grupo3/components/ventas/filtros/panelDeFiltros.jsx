@@ -18,7 +18,7 @@ const PanelDeFiltros = ({
 
   <div>
     {/* combustibles */}
-    <paper className="input-group">
+    <div className="input-group">
       <p className="label">⛽ Combustible</p>
       <FiltroVehiculosToggle
         options={listaCategorias}
@@ -26,7 +26,7 @@ const PanelDeFiltros = ({
         selectToggle={toggleSeleccionado}
       />
 
-    </paper>
+    </div>
     {/* precio */}
     <div className="input-group">
       <p className="label-range">Rango de precio</p>
