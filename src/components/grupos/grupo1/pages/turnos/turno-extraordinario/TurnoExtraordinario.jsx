@@ -99,12 +99,6 @@ const FormularioExtraordinario = (props) => {
         setAlertError('error');
         setAlertTitulo('Ha ocurrido un problema');
         setAlertMensaje(responseData);
-        // eslint-disable-next-line max-len
-        // if (error.response.data.includes('la patente ingresada ya tiene un turno de ese tipo registrado en el sistema')) {
-        //   setOpenError(true);
-        //   setAlertError('error');
-        //   setAlertTitulo('Ha ocurrido un problema');
-        //   setAlertMensaje('Ya existe un turno para esa patente y tipo de turno.');
       } else {
         setOpenError(true);
         setAlertError('error');
