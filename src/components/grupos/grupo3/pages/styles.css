@@ -1,27 +1,3 @@
-
-<<<<<<< HEAD
-/*
-=======
->>>>>>> dev
-*,
-*::after,
-*::before{
-margin: 0
-}
-
-<<<<<<< HEAD
-*/
-=======
-/* este es para ocultar la barra de scroll en chrome safari y opera*/
-/* BORRARLO O PONERLO EN UNA CLASE, ASI LO LLAMAN DONDE NECESITEN
-YA QUE NOS AFECTA A TODOS
-::-webkit-scrollbar{
-    display: none;
-}
-*/
-
->>>>>>> dev
-
 .filtroDeVehiculos{
     display: flex;
     flex-direction: column;
