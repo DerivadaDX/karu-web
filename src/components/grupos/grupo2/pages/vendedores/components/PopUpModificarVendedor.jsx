@@ -17,27 +17,28 @@ import {
   Switch,
   TextField,
 } from '@mui/material';
+
 import { DatePicker } from '@mui/x-date-pickers';
 import PropTypes from 'prop-types';
-
+import dayjs from 'dayjs';
 import CuitComponent from './CuitComponent';
 import VendedorService from '../services/vendedor-service';
 
-const PopUpCrearVendedor = ({ onSuccess, onClose, sucursales }) => {
+const PopUpModificarVendedor = ({
+  sucursales, onEdit, vendedor, onClose,
+}) => {
   const [mostrarPopUpCreacionExitosa, setMostrarPopUpCreacionExitosa] = useState(false);
-  const {
-    handleSubmit, control, setError, formState: { errors, isValid },
-  } = useForm({
+  const { handleSubmit, control, formState: { errors, isValid, isDirty } } = useForm({
     mode: 'onBlur',
     defaultValues: {
-      nombre: '',
-      apellido: '',
-      email: '',
-      cuit: '',
-      fecha_nacimiento: null,
-      fecha_ingreso: null,
-      sucursal_id: '',
-      activo: false,
+      nombre: vendedor.nombre,
+      apellido: vendedor.apellido,
+      email: vendedor.email,
+      cuit: vendedor.cuit,
+      fecha_nacimiento: dayjs(vendedor.fecha_nacimiento),
+      fecha_ingreso: dayjs(vendedor.fecha_ingreso),
+      sucursal_id: vendedor.sucursal_id,
+      activo: vendedor.activo,
     },
   });
 
@@ -48,20 +49,17 @@ const PopUpCrearVendedor = ({ onSuccess, onClose, sucursales }) => {
       fecha_nacimiento: data.fecha_nacimiento.toISOString().slice(0, 10),
     };
 
-    VendedorService.crearVendedor(nuevaData)
+    VendedorService.modificarVendedor(vendedor.id, nuevaData)
       .then(() => {
+        const vendedorModificado = {
+          id: vendedor.id,
+          ...nuevaData,
+        };
+
         setMostrarPopUpCreacionExitosa(true);
-        onSuccess();
+        onEdit(vendedorModificado);
       })
-      .catch((e) => {
-        if (e.response.data.email) {
-          setError('email', { type: 'custom', message: 'El email ingresado ya se encuentra registrado' });
-        }
-        if (e.response.data.cuit) {
-          setError('cuit', { type: 'custom', message: 'El cuit ingresado ya se encuentra registrado' });
-        }
-        setMostrarPopUpCreacionExitosa(false);
-      });
+      .catch(() => setMostrarPopUpCreacionExitosa(false));
   };
 
   const cambiarVisibilidadPopUpCreacionExitosa = () => {
@@ -71,10 +69,14 @@ const PopUpCrearVendedor = ({ onSuccess, onClose, sucursales }) => {
 
   return (
     <Box>
-      <Dialog open onClose={onClose}>
+
+      <Dialog
+        open
+        onClose={onClose}
+      >
         <Dialog open={mostrarPopUpCreacionExitosa} onClose={cambiarVisibilidadPopUpCreacionExitosa}>
           <DialogTitle id="alert-dialog-title">
-            Creación Exitosa!
+            Edición Exitosa!
           </DialogTitle>
           <DialogActions>
             <Button onClick={cambiarVisibilidadPopUpCreacionExitosa}>
@@ -108,7 +110,7 @@ const PopUpCrearVendedor = ({ onSuccess, onClose, sucursales }) => {
                 required: 'El nombre es requerido',
                 maxLength: {
                   value: 50,
-                  message: 'Debe tener un maximo de 50 letras',
+                  message: 'Debe tener un máximo de 50 letras',
                 },
               }}
             />
@@ -131,7 +133,7 @@ const PopUpCrearVendedor = ({ onSuccess, onClose, sucursales }) => {
                 required: 'El apellido es requerido',
                 maxLength: {
                   value: 50,
-                  message: 'Debe tener un maximo de 50 letras',
+                  message: 'Debe tener un máximo de 50 letras',
                 },
               }}
             />
@@ -154,7 +156,7 @@ const PopUpCrearVendedor = ({ onSuccess, onClose, sucursales }) => {
                 required: 'El email es requerido',
                 maxLength: {
                   value: 50,
-                  message: 'Debe tener un maximo de 50 letras',
+                  message: 'Debe tener un máximo de 50 letras',
                 },
                 validate: {
                   matchPattern: (v) => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'Escriba el email correctamente',
@@ -164,7 +166,7 @@ const PopUpCrearVendedor = ({ onSuccess, onClose, sucursales }) => {
             <Controller
               name="cuit"
               control={control}
-              render={({ field: { onChange, onBlur } }) => (
+              render={({ field: { onChange, onBlur, value } }) => (
                 <TextField
                   onBlur={onBlur}
                   onChange={onChange}
@@ -176,6 +178,7 @@ const PopUpCrearVendedor = ({ onSuccess, onClose, sucursales }) => {
                   InputProps={{
                     inputComponent: CuitComponent,
                     name: 'cuit',
+                    defaultValue: value,
                   }}
                 />
               )}
@@ -285,14 +288,24 @@ const PopUpCrearVendedor = ({ onSuccess, onClose, sucursales }) => {
                 />
               )}
             />
-            <Button
-              disabled={!isValid}
-              type="submit"
-              variant="contained"
-              sx={{ marginTop: '2ch' }}
-            >
-              Crear
-            </Button>
+            <DialogActions>
+              <Button
+                fullWidth
+                sx={{ marginTop: '2ch' }}
+                onClick={onClose}
+              >
+                Cerrar
+              </Button>
+              <Button
+                fullWidth
+                disabled={!isValid || !isDirty}
+                type="submit"
+                variant="contained"
+                sx={{ marginTop: '2ch' }}
+              >
+                Modificar
+              </Button>
+            </DialogActions>
           </Stack>
         </Paper>
       </Dialog>
@@ -300,9 +313,7 @@ const PopUpCrearVendedor = ({ onSuccess, onClose, sucursales }) => {
   );
 };
 
-PopUpCrearVendedor.propTypes = {
-  onSuccess: PropTypes.func.isRequired,
-  onClose: PropTypes.func.isRequired,
+PopUpModificarVendedor.propTypes = {
   sucursales: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number,
@@ -316,6 +327,19 @@ PopUpCrearVendedor.propTypes = {
       activa: PropTypes.bool,
     }),
   ).isRequired,
+  onEdit: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
+  vendedor: PropTypes.shape({
+    id: PropTypes.number,
+    nombre: PropTypes.string,
+    apellido: PropTypes.string,
+    email: PropTypes.string,
+    cuit: PropTypes.string,
+    fecha_nacimiento: PropTypes.string,
+    fecha_ingreso: PropTypes.string,
+    sucursal_id: PropTypes.number,
+    activo: PropTypes.bool,
+  }).isRequired,
 };
 
-export default PopUpCrearVendedor;
+export default PopUpModificarVendedor;

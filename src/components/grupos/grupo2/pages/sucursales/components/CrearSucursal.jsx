@@ -28,7 +28,18 @@ const CrearSucursal = ({ onCreate }) => {
   const [provincia, setProvincia] = useState('');
   const [poseeTaller, setPoseeTaller] = useState(false);
 
+  const limpiarFormulario = () => {
+    setNombre('');
+    setCalle('');
+    setNumero('');
+    setCodigoPostal('');
+    setLocalidad('');
+    setProvincia('');
+    setPoseeTaller(false);
+  };
+
   const cambiarVisibilidadPopUpCrearSucursal = () => {
+    limpiarFormulario();
     setMostrarPopUpCrearSucursal(!mostrarPopUpCrearSucursal);
   };
 
@@ -73,6 +84,10 @@ const CrearSucursal = ({ onCreate }) => {
             </Button>
           </DialogActions>
         </Dialog>
+
+        <DialogTitle sx={{ textAlign: 'center', fontSize: '2rem' }}>
+          Crear Sucursal
+        </DialogTitle>
 
         <Paper>
           <Stack

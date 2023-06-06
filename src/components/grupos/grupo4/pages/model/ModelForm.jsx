@@ -28,6 +28,8 @@ const ModelForm = () => {
     basePrice: 0.0,
   });
 
+  const [errors, setErrors] = useState({});
+
   const { saveVehicleModel, showSpansaveModelError, saveModelMessageError } =
     useContext(UserContext);
 
@@ -37,6 +39,18 @@ const ModelForm = () => {
   };
 
   const onChange = (e) => {
+    if (e.target.name !== "fuelType") {
+      const { name } = e.target;
+      const inputElement = e.target;
+      const isValid = inputElement.checkValidity();
+      const errorMessage = inputs.map((input) =>
+        input.name === name? input.errorMessage : ""
+      )
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [name]: isValid ? '' : errorMessage,
+      }));
+    }
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
@@ -65,6 +79,10 @@ const ModelForm = () => {
             label={input.label}
             onChange={onChange}
             defaultValue={''}
+            inputProps={{ pattern: input.pattern }}
+            error={Boolean(errors[input.name])} // Show error message if exists
+            helperText={errors[input.name]} // Show error message
+            required
           ></TextField>
         ))}
         <Box sx={{ minWidth: 120 }}>

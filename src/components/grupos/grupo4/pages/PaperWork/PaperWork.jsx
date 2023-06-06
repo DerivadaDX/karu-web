@@ -32,7 +32,22 @@ const PaperWork = () => {
   const { sendPaperWorkData, showSpanPaperWorkError, paperWorkMessageError } =
     useContext(UserContext);
 
+  const [errors, setErrors] = useState({});
+
   const handleInputChange = (event) => {
+    if (event.target.name === "plate") {
+      const { name } = event.target;
+      const inputElement = event.target;
+      const isValid = inputElement.checkValidity();
+      const errorMessage = inputs.map((input) =>
+        input.name === name? input.errorMessage : ""
+      )
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [name]: isValid ? '' : errorMessage,
+      }));
+    }
+
     const { name, value } = event.target;
     const inputValue = value === 'SI' ? true : value === 'NO' ? false : value;
     setState((prevState) => ({
@@ -85,6 +100,9 @@ const PaperWork = () => {
                 onChange={handleInputChange}
                 label={input.placeholder}
                 variant="filled"
+                inputProps={{ pattern: input.pattern }}
+                error={Boolean(errors[input.name])} // Show error message if exists
+                helperText={errors[input.name]} // Show error message
               />
             )
           )}
