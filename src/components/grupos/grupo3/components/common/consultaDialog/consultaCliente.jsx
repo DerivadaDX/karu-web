@@ -6,7 +6,10 @@ import { useState } from 'react';
 
 const ConsultaCliente = () => {
   const [mail, setEmail] = useState('');
-  const [consulta, setConsulta] = useState('');
+  const [nombre_, setNombre] = useState(' ');
+  const [apellido_, setApellido] = useState(' ');
+  const [telefono_, setTelefono] = useState(' ');
+  const [consulta, setConsulta] = useState(' ');
   const [error, setError] = useState({
     error: false,
     message: '',
@@ -35,9 +38,9 @@ const ConsultaCliente = () => {
     try {
       const url = 'http://34.139.89.18:8181/api-gc/consultas/save';
       const consultaObject = {
-        nombre: 'asd',
-        apellido: 'apellidoFulanito ',
-        numTelefono: '1134418984',
+        nombre: nombre_,
+        apellido: apellido_,
+        numTelefono: telefono_,
         email: mail,
         mensaje: consulta,
       };
@@ -52,8 +55,7 @@ const ConsultaCliente = () => {
 
   return (
     <>
-      <h1>Formulario de Consulta</h1>
-      <h3>Mandanos tu consulta! uno de nuestros vendedores te responderá a la brevedad.</h3>
+      <h6>Uno de nuestros vendedores te responderá a la brevedad.</h6>
       <Box
         component="form"
         onSubmit={onSubmit}
@@ -74,6 +76,39 @@ const ConsultaCliente = () => {
             helperText={error.message}
             onChange={(e) => setEmail(e.target.value)}
             value={mail}
+          />
+        </div>
+        <div>
+          <TextField
+            id="outlined-basic"
+            label="nombre_"
+            variant="outlined"
+            fullWidth
+            required
+            onChange={(e) => setNombre(e.target.value)}
+            value={nombre_}
+          />
+        </div>
+        <div>
+          <TextField
+            id="outlined-basic"
+            label="apellido_"
+            variant="outlined"
+            fullWidth
+            required
+            onChange={(e) => setApellido(e.target.value)}
+            value={apellido_}
+          />
+        </div>
+        <div>
+          <TextField
+            id="outlined-basic"
+            label="telefono_"
+            variant="outlined"
+            fullWidth
+            required
+            onChange={(e) => setTelefono(e.target.value)}
+            value={telefono_}
           />
         </div>
         <div>

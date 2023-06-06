@@ -3,9 +3,9 @@
 import React from 'react';
 import FiltroVehiculosToggle from '../../common/filtrarVehiculosToggle';
 import listaCategorias from '../../../constants';
-import './styles.css';
 import SliderProton from '../../common/sliderProton';
 import SliderKilometros from '../../common/SliderKilometros';
+import './styles.css';
 
 const PanelDeFiltros = ({
   categoriaSeleccionada,
@@ -18,7 +18,7 @@ const PanelDeFiltros = ({
 
   <div>
     {/* combustibles */}
-    <div className="input-group">
+    <paper className="input-group">
       <p className="label">⛽ Combustible</p>
       <FiltroVehiculosToggle
         options={listaCategorias}
@@ -26,7 +26,7 @@ const PanelDeFiltros = ({
         selectToggle={toggleSeleccionado}
       />
 
-    </div>
+    </paper>
     {/* precio */}
     <div className="input-group">
       <p className="label-range">Rango de precio</p>

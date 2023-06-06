@@ -21,11 +21,10 @@ const marks = [
   },
 ];
 
-/*
 function valuetext(value) {
   return `${value}`;
 }
-*/
+
 const SliderKilometros = () => {
   const [value, setValue] = React.useState([3000, 6000]);
 
@@ -39,8 +38,8 @@ const SliderKilometros = () => {
         getAriaLabel={() => 'Temperature range'}
         value={value}
         onChange={handleChange}
-        // valueLabelDisplay="auto"
-        // getAriaValueText={valuetext}
+        valueLabelDisplay="auto"
+        getAriaValueText={valuetext}
         min={1000}
         max={12000}
         marks={marks}

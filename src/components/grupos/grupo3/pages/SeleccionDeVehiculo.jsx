@@ -64,22 +64,19 @@ const FiltroDeVehiculos = () => {
     console.log(minPrice);
     console.log('se muestra combustible seleccionado');
     console.log(categoriaSeleccionada);
-    console.log(updatedList.toString);
     !updatedList.length ? setResultsFound(false) : setResultsFound(true);
   };
-
-  // es otro hook que se ejecuta despues de que renderiza en el dom
+  /*
   useEffect(() => {
     aplicarFiltros();
   }, [categoriaSeleccionada, selectedPrice, searchInput]);
 
-  /*
   // llamada a la api de autos 05_06
   useEffect(() => {
     const fetchData = async () => {
       try {
         // llamar a la api de los chicos.
-        const response = await axios.get('https://api.example.com/data');
+        const response = await axios.get('https://gadmin-backend-production.up.railway.app/api/v1/vehicle/getByStatus/DISPONIBLE');
         setData(response.data);
       } catch (error) {
         console.log(error);
@@ -88,8 +85,7 @@ const FiltroDeVehiculos = () => {
 
     fetchData();
   }, []);
-  */
-
+*/
   return (
     <div className="filtroDeVehiculos">
       {/* Barra de busqueda - busca x marca o modelo del auto .. me habia olvidado de este input */}
@@ -102,12 +98,12 @@ const FiltroDeVehiculos = () => {
         <div className="filtroDeVehiculos_panel-wrap">
           {/* Panel de filtros - aca se visualizan los posibles filtros */}
           <PanelDeFiltros
-            toggleSeleccionado={handleCategoriaSeleccionada}
             categoriaSeleccionada={categoriaSeleccionada}
+            toggleSeleccionado={handleCategoriaSeleccionada}
             selectedPrice={selectedPrice}
             changedPrice={handleChangePrice}
             selectedKM={selectedKM}
-            // changedKM={handleChangeKM}
+            changedKM={handleChangeKM}
           />
         </div>
         <div className="filtroDeVehiculos_list-wrap">
