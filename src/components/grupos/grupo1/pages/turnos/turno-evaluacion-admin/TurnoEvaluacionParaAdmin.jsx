@@ -72,22 +72,10 @@ const FormularioEvaluacionAdmin = () => {
     } catch (error) {
       if (error.response && error.response.data) {
         const responseData = error.response.data;
-        if (responseData.includes('la patente ingresada ya tiene un turno de ese tipo registrado en el sistema')) {
-          setOpenError(true);
-          setAlertError('error');
-          setAlertTitulo('Ha ocurrido un problema');
-          setAlertMensaje('Ya existe un turno para esa patente y tipo de turno.');
-        } else if (responseData.includes('la patente no está esperando revisión tecnica')) {
-          setOpenError(true);
-          setAlertError('error');
-          setAlertTitulo('Error de patente');
-          setAlertMensaje('La patente ingresada no pertenece a ningún cliente.');
-        } else {
-          setOpenError(true);
-          setAlertError('error');
-          setAlertTitulo('Ha ocurrido un error');
-          setAlertMensaje('Si el problema persiste, comuniquese con insomnia.front@gmail.com');
-        }
+        setOpenError(true);
+        setAlertError('error');
+        setAlertTitulo('Ha ocurrido un problema');
+        setAlertMensaje(responseData);
       } else {
         setOpenError(true);
         setAlertError('error');
