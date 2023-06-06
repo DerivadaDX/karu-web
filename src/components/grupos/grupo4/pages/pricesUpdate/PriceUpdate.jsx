@@ -20,7 +20,6 @@ import { newMassivePriceInput, newPriceModelInput, sellingPriceOfACarInputs } fr
 import { GetAllModels } from '../../api/API-methods';
 
 const PriceUpdate = () => {
-    // Posibles 3 values, que contiene los inputs de los precios masivos e individuales
     const [sellingPriceOfACarValues, setSellingPriceOfACarValues] = useState({
         plate: "",
         newSellPrice: 0,
@@ -36,29 +35,28 @@ const PriceUpdate = () => {
 
     const [inflationPriceValue, setInflationPriceValue] = useState(0);
 
-    //Precio nuevo para el modelo
+ 
     const [newPrice, setNewPrice] = useState('');
 
-    //Para cargar los modelos al dropdown
+ 
     const [models, setModels] = useState([
         { brand: '', model: '', year: '', basePrice: 0.0, engine: '', fuelType: '' },
     ]);
 
-    //Errores en los inputs
+  
     const [errors, setErrors] = useState({});
-    //Tipo de cambio en los precios
+ 
     const [purchasePriceType, setPurchasePriceType] = useState('');
-    //Flag para cargar los modelos
+ 
     const [isDropdownInitialized, setIsDropdownInitialized] = useState(false);
-    //Para dejar el modelo fijo
-    const [selectedModel, setSelectedModel] = useState('');
 
-    //Mostramos los diferentes tipos de cambio de precios
+    const [selectedModel, setSelectedModel] = useState('');
+    
     const [showBasePriceOfAModel, setShowBasePriceOfAModel] = useState(false);
     const [showSellingPriceOfACar, setShowSellingPriceOfACar] = useState(false);
     const [showInflationPrice, setShowInflationPrice] = useState(false);
 
-    //Funcion para mostrar los errores de formato en los inputs
+
     function showError(e, array) {
         const { name } = e.target;
         const inputElement = e.target;
@@ -72,7 +70,6 @@ const PriceUpdate = () => {
         }));
     }
 
-    //useEffect para cargar los modelos, y mostrar lo que elige el usuario
     useEffect(() => {
         const updateDropdown = async () => {
             const value = await GetAllModels();
@@ -92,7 +89,6 @@ const PriceUpdate = () => {
             updateDropdown();
         }
 
-        // Es para mostrar los inputs segun que elija el usuario
         if (purchasePriceType === 'selling_price_of_a_car') {
             setShowSellingPriceOfACar(true);
         } else {
@@ -112,8 +108,7 @@ const PriceUpdate = () => {
         }
     }, [purchasePriceType]);
 
-    // Los metodos del useContext (cambiar por los de la llamada a la API)
-    const { updateSellPriceMessageError, showSpanUpdateSellPriceError, showSpanUpdatePriceOfAModelError, showSpanUpdatePricesByInflationError, updatePriceOfAModelMessageError, updatePricesByInflationMessageError, updateSellPrice, updatePriceByModel, updatePricesByInflation } = useContext(UserContext)
+    const { setSpanUpdateSellPriceError, setSpanUpdatePriceOfAModelError, setSpanUpdatePricesByInflationError, updateSellPriceMessageError, showSpanUpdateSellPriceError, showSpanUpdatePriceOfAModelError, showSpanUpdatePricesByInflationError, updatePriceOfAModelMessageError, updatePricesByInflationMessageError, updateSellPrice, updatePriceByModel, updatePricesByInflation } = useContext(UserContext)
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -126,7 +121,6 @@ const PriceUpdate = () => {
         }
     };
 
-    //El onchange de los 2 dropdown
     const onChangeDropdown = (e, model) => {
         if (e.target.name === "priceType") {
             setPurchasePriceType(e.target.value);
@@ -144,8 +138,6 @@ const PriceUpdate = () => {
         }
     };
 
-    //OnChange que setea los inputs del cambio de precio por patente y tambien setea el nuevo precio de un modelo
-    //Ademas muestra los errores en los inputs
     const onChange = (e) => {
         if (purchasePriceType === 'selling_price_of_a_car') {
             if (e.target.name === "newSellPrice") {
@@ -176,7 +168,9 @@ const PriceUpdate = () => {
                
             }));
         }
-
+        setSpanUpdatePriceOfAModelError(false)
+        setSpanUpdatePricesByInflationError(false)
+        setSpanUpdateSellPriceError(false)
     };
 
     return (
@@ -283,7 +277,7 @@ const PriceUpdate = () => {
                     )}
                     {showSpanUpdatePricesByInflationError && purchasePriceType === 'inflation_price' && (
                         <Alert severity="error" style={{ display: 'block' }}>
-                            {updatePricesByInflation}
+                            {updatePricesByInflationMessageError}
                         </Alert>
                     )}
                 </Paper>
