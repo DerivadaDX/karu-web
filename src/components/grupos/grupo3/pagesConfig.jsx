@@ -2,7 +2,7 @@ import DriveEtaIcon from '@mui/icons-material/DriveEta';
 import { Search } from '@mui/icons-material';
 import React from 'react';
 import RequestPageIcon from '@mui/icons-material/RequestPage';
-import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
+import PermPhoneMsgIcon from '@mui/icons-material/PermPhoneMsg';
 import Cotizar from './components/cotizar/Cotizar';
 import NuevaPagina from './components/cotizar/NuevaPagina';
 import Boleta from './components/cotizar/Boleta';
@@ -61,7 +61,7 @@ const GROUP_3_PAGES_CONFIG = [
     id: 'g3-Consulta',
     name: 'Consultas de usuarios',
     href: '/consulta',
-    icon: <QuestionAnswerIcon />,
+    icon: <PermPhoneMsgIcon />,
     page: <ListadoConsultas />,
   },
 ];
