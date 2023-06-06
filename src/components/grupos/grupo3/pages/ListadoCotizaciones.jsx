@@ -15,6 +15,7 @@ import MaterialReactTable from 'material-react-table';
 // import ModificarSucursal from './ModificarSucursal';
 // import CrearSucursal from './CrearSucursal';
 import CotizacionService from '../services/CotizacionService';
+import PopUpAnular from '../components/cotizaciones/PopUpAnular';
 
 const styles = {
   paper: {
@@ -69,17 +70,13 @@ const ListadoCotizaciones = () => {
     );
   };
 
-  /* const renderAccionesFila = ({ row }) => {
-    const sucursal = row.original;
-
-    return (
-      <ModificarSucursal
-        sucursal={sucursal}
-        onEdit={actualizarDatosDeSucursal}
-      />
-    );
-  }; */
-
+  const renderAccionesFila = ({ row }) => {
+    const { estadoCotizacion } = row.original;
+    if (estadoCotizacion === 'PENDIENTE') {
+      return <PopUpAnular id={row.original.id} />;
+    }
+    return ' ';
+  };
   const columnas = useMemo(
     () => [
       {
@@ -113,12 +110,10 @@ const ListadoCotizaciones = () => {
       {
         accessorKey: 'email',
         header: 'Email',
-        // Cell: renderCheckTieneTaller,
       },
       {
         accessorKey: 'patente',
         header: 'Patente',
-        // Cell: renderEstadoSucursal,
       },
       {
         accessorKey: 'garantiaExtendida',
@@ -141,6 +136,11 @@ const ListadoCotizaciones = () => {
         accessorKey: 'total',
         header: 'Total',
       },
+      {
+        accessorKey: 'estadoCotizacion',
+        header: 'Estado',
+        Cell: renderAccionesFila,
+      },
     ],
     [],
   );
@@ -154,9 +154,6 @@ const ListadoCotizaciones = () => {
         data={cotizaciones}
         state={{ isLoading: cargando }}
         defaultColumn={{ minSize: 10, maxSize: 100 }}
-          /* enableRowActions
-          positionActionsColumn="last"
-          renderRowActions={renderAccionesFila} */
         displayColumnDefOptions={{
           'mrt-row-actions': {
             header: 'Acciones',
