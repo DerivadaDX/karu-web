@@ -66,11 +66,11 @@ const FiltroDeVehiculos = () => {
     console.log(categoriaSeleccionada);
     !updatedList.length ? setResultsFound(false) : setResultsFound(true);
   };
-  /*
+
   useEffect(() => {
     aplicarFiltros();
   }, [categoriaSeleccionada, selectedPrice, searchInput]);
-
+  /*
   // llamada a la api de autos 05_06
   useEffect(() => {
     const fetchData = async () => {
