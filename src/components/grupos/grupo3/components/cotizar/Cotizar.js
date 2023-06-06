@@ -239,7 +239,7 @@ const Cotizar = () => {
                 <th>Kilometraje</th>
                 <th>Combustible</th>
                 <th>Importado</th>
-                <th>Vehículo reservado</th>
+                <th>Precio Base</th>
                 <th>Cotizar</th>
               </tr>
             </thead>
@@ -326,7 +326,7 @@ const Cotizar = () => {
                   <td>{user.kilometers}</td>
                   <td>{user.fuelType}</td>
                   <td>{user.origin === 'IMPORTADO' ? 'Si' : 'No'}</td>
-                  <td>{user.status}</td>
+                  <td>{user.sellPrice}</td>
 
                   <td>
                     {/* ---------- Agrego consegui patente  -------*/}
