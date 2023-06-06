@@ -124,7 +124,7 @@ const AltaServiceForm = (props) => {
             setOpenError(true);
             setAlertError('error');
             setAlertTitulo('Ha ocurrido un error');
-            setAlertMensaje(error.response.data.error);
+            setAlertMensaje('Si el problema persiste, comuniquese con insomnia.front@gmail.com');
           }
         });
     } else {
