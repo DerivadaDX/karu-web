@@ -1,7 +1,6 @@
 import DriveEtaIcon from '@mui/icons-material/DriveEta';
 import { Search } from '@mui/icons-material';
 import EuroIcon from '@mui/icons-material/Euro';
-
 import React from 'react';
 import RequestPageIcon from '@mui/icons-material/RequestPage';
 import Cotizar from './components/cotizar/Cotizar';
@@ -26,13 +25,7 @@ const GROUP_3_PAGES_CONFIG = [
     href: '/reserva',
     icon: <EuroIcon />,
     page: <Reserva />,
-  },
-  {
-    id: 'g3-Reserva',
-    name: 'Reserva',
-    href: '/reserva',
-    icon: <EuroIcon />,
-    page: <Reserva />,
+    soloUrl: true,
   },
   {
     id: 'g3-cotizacion',
