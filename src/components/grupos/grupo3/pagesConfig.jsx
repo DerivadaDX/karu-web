@@ -7,11 +7,7 @@ import NuevaPagina from './components/cotizar/NuevaPagina';
 import Boleta from './components/cotizar/Boleta';
 import FiltroDeVehiculos from './pages/SeleccionDeVehiculo';
 import PageVehiculoIndividual from './pages/PageVehiculoIndividual';
-
-import ConsultaCliente from './pages/consultaCliente';
 import ListadoCotizaciones from './pages/ListadoCotizaciones';
-
-
 
 const GROUP_3_PAGES_CONFIG = [
   {
@@ -51,14 +47,6 @@ const GROUP_3_PAGES_CONFIG = [
     soloUrl: true,
   },
 
-  {
-    id: 'g3-BORRADOR consulta',
-    name: 'BORRADOR consulta',
-    href: '/consulta',
-    icon: <Search />,
-    page: <ConsultaCliente />,
-    soloUrl: true,
-  },
   {
     id: 'g3-Cotizaciones',
     name: 'cotizaciones',
