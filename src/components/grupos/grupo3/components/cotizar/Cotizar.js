@@ -317,7 +317,7 @@ const Cotizar = () => {
 
             <tbody>
               {results.map((user) => (
-                <tr key={user.id}>
+                <tr key={user.plate}>
                   <td>{user.plate}</td>
                   <td>{user.branch}</td>
                   <td>{user.year}</td>
