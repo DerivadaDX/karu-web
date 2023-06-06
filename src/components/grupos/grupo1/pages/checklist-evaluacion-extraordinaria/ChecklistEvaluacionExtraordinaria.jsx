@@ -256,6 +256,7 @@ const ChecklistEvaluacionExtraordinaria = (props) => {
         openDialog={openNoSeleccion}
         setOpenDialog={setOpenNoSeleccion}
         description="No ha seleccionado ninguna tarea. Si está seguro de esto, presione 'Aceptar'; de lo contrario, vuelva a verificar."
+        disableBackdropClick
       >
         <Box sx={{
           display: 'flex', justifyContent: 'center', alignItems: 'center',
@@ -290,6 +291,7 @@ const ChecklistEvaluacionExtraordinaria = (props) => {
         openDialog={openConfirmarEvaluacion}
         setOpenDialog={setOpenConfirmarEvaluacion}
         description="¿Está seguro que desea enviar la evaluación? No se podrá modificar una vez realizada."
+        disableBackdropClick
       >
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <Alerts alertType={alertError} description={alertMensaje} title={alertTitulo} />
@@ -327,6 +329,7 @@ const ChecklistEvaluacionExtraordinaria = (props) => {
         openDialog={openEvaluacionEnviada}
         setOpenDialog={setOpenEvaluacionEnviada}
         description="La evaluación realizada se ha enviado existosamente."
+        disableBackdropClick
       >
         <Box sx={{
           display: 'flex', justifyContent: 'center', alignItems: 'center',

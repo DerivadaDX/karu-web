@@ -266,6 +266,7 @@ const TablaTalleres = () => {
         title={<LittleHeader titulo="Detalle de taller" />}
         openDialog={openDetalleTaller}
         setOpenDialog={setOpenDetalleTaller}
+        disableBackdropClick
       >
         <DetalleTaller
           openDialog={openDetalleTaller}
@@ -277,6 +278,7 @@ const TablaTalleres = () => {
         title={<LittleHeader titulo="Detalle de sucursal" />}
         openDialog={openDetalleSucursal}
         setOpenDialog={setOpenDetalleSucursal}
+        disableBackdropClick
       >
         <DetalleSucursal
           open={openDetalleSucursal}
@@ -285,9 +287,10 @@ const TablaTalleres = () => {
         />
       </Popup>
       <Popup
-        title={<LittleHeader titulo="Alta de taller" />}
+        title={<LittleHeader titulo="Alta de taller" subtitulo="Formulario" />}
         openDialog={openAltaTaller}
         setOpenDialog={setOpenAltaTaller}
+        disableBackdropClick
       >
         <AltaTaller
           open={openAltaTaller}
@@ -297,9 +300,10 @@ const TablaTalleres = () => {
         />
       </Popup>
       <Popup
-        title={<LittleHeader titulo="Modificar Taller" />}
+        title={<LittleHeader titulo="Modificar taller" subtitulo="Formulario" />}
         openDialog={openModificarTaller}
         setOpenDialog={setOpenModificarTaller}
+        disableBackdropClick
       >
         <ModificarTaller
           open={openModificarTaller}

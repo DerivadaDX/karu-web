@@ -1,11 +1,14 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable camelcase */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable no-unused-vars */
 import { useState, useEffect, useMemo } from 'react';
-import { Box, Button } from '@mui/material';
+import { Box, Button, Tooltip } from '@mui/material';
 import MaterialReactTable from 'material-react-table';
 import { MRT_Localization_ES } from 'material-react-table/locales/es';
+import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
+import { CsvBuilder } from 'filefy';
 import { getTurnosTerminados } from '../../services/services-Turnos';
 import Alerts from '../../components/common/Alerts';
 import Popup from '../../components/common/DialogPopup';
@@ -19,6 +22,8 @@ const TablaTurnosTerminados = (props) => {
 
   const [rowDetalle, setRowDetalle] = useState({});
   const [openVerMas, setVerMas] = useState(false);
+
+  const [selectedRows, setSelectedRows] = useState([]);
 
   // alertas de la API
   const [alertType, setAlertType] = useState('');
@@ -125,6 +130,45 @@ const TablaTurnosTerminados = (props) => {
     </Box>
   );
 
+  const exportTableData = () => {
+    const allData = turnosTerminados.map((rowData) => [
+      rowData.id_turno,
+      rowData.patente,
+      rowData.tipo,
+      rowData.fecha_inicio,
+      rowData.hora_inicio,
+      rowData.fecha_fin,
+      rowData.hora_fin,
+      rowData.tecnico_id,
+    ]);
+
+    new CsvBuilder('turnos-terminados.csv')
+      .setColumns(columnas.map((col) => col.header))
+      .addRows(allData)
+      .exportFile();
+  };
+
+  const exportarDatos = () => (
+    <Tooltip title="Exportar datos" placement="right">
+      <Button
+        variant="contained"
+        startIcon={<FileDownloadOutlinedIcon />}
+        sx={{
+          fontSize: {
+            sm: '0.7rem',
+            maxWidth: '300px',
+            maxHeight: '40px',
+          },
+        }}
+        onClick={() => {
+          exportTableData();
+        }}
+      >
+        Exportar datos
+      </Button>
+    </Tooltip>
+  );
+
   return (
     <>
       <Box
@@ -140,6 +184,8 @@ const TablaTurnosTerminados = (props) => {
         columns={columnas}
         data={turnosTerminados}
         state={{ isLoading: loading }}
+        renderTopToolbarCustomActions={exportarDatos}
+        options={{ exportAllData: true }}
         positionActionsColumn="last"
         enableRowActions
         renderRowActions={renderRowActions}
@@ -168,6 +214,7 @@ const TablaTurnosTerminados = (props) => {
         title={<LittleHeader titulo="Detalle de turno" />}
         openDialog={openVerMas}
         setOpenDialog={setVerMas}
+        disableBackdropClick
       >
         <DetalleTurno openDialog={openVerMas} setOpenDialog={setVerMas} row={rowDetalle} />
       </Popup>

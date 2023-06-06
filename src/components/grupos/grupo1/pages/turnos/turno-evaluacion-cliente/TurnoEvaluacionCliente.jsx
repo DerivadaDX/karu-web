@@ -11,6 +11,7 @@ import Talleres from '../Componentes/Talleres';
 import ValidarPatente from '../Helpers/validar-patente';
 import Alerts from '../../../components/common/Alerts';
 import Popup from '../../../components/common/DialogPopup';
+import LittleHeader from '../../../components/common/LittleHeader';
 
 const FormularioEvaluacionCliente = () => {
   const [taller, setTaller] = useState();
@@ -149,16 +150,18 @@ const FormularioEvaluacionCliente = () => {
             </Button>
           </Box>
           <Popup
-            title="Error en datos requeridos."
+            title={<LittleHeader titulo="Error en datos requeridos" />}
             description="Por favor complete todos los campos y verifique la correctitud de la patente."
             openDialog={openPopupNoSeleccion}
             setOpenDialog={setOpenPopupNoSeleccion}
+            disableBackdropClick
           >
             <Box
               sx={{ margin: '15px', display: 'flex', justifyContent: 'center' }}
             >
               <Button
                 color="error"
+                variant="outlined"
                 onClick={() => setOpenPopupNoSeleccion(false)}
               >
                 Cerrar
@@ -166,16 +169,18 @@ const FormularioEvaluacionCliente = () => {
             </Box>
           </Popup>
           <Popup
-            title="Turno reservado con éxito."
+            title={<LittleHeader titulo="Turno reservado con éxito" />}
             description={msjTurnoCreado}
             openDialog={openPopupSeleccion}
             setOpenDialog={setOpenPopupSeleccion}
+            disableBackdropClick
           >
             <Box
               sx={{ margin: '15px', display: 'flex', justifyContent: 'center' }}
             >
               <Button
-                color="success"
+                color="secondary"
+                variant="outlined"
                 onClick={() => {
                   window.location.href = '/';
                 }}
@@ -188,7 +193,7 @@ const FormularioEvaluacionCliente = () => {
           <Popup
             openDialog={openError}
             setOpenDialog={setOpenError}
-            title="Ha ocurrido un problema"
+            title={<LittleHeader titulo="Ha ocurrido un problema" />}
           >
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <Alerts alertType={alertError} description={alertMensaje} title={alertTitulo} />

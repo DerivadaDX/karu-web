@@ -320,6 +320,7 @@ const TablaServices = (props) => {
         openDialog={openDialog}
         setOpenDialog={setOpenDialog}
         description="¿Está seguro que desea cambiar el estado de este service?"
+        disableBackdropClick
       >
         <Box sx={{
           display: 'flex', justifyContent: 'center', alignItems: 'center',
@@ -359,6 +360,7 @@ const TablaServices = (props) => {
         title={<LittleHeader titulo="Detalle de service" />}
         openDialog={openVerMas}
         setOpenDialog={setVerMas}
+        disableBackdropClick
       >
         <DetalleService openDialog={openVerMas} setOpenDialog={setVerMas} row={rowDetalle} />
       </Popup>
@@ -366,6 +368,7 @@ const TablaServices = (props) => {
         title={<LittleHeader titulo="Checklist de service" />}
         openDialog={openChecklist}
         setOpenDialog={setOpenChecklist}
+        disableBackdropClick
       >
         <DetalleChecklist
           open={openChecklist}
@@ -382,6 +385,7 @@ const TablaServices = (props) => {
 )}
         openDialog={openAltaService}
         setOpenDialog={setOpenAltaService}
+        disableBackdropClick
       >
         <AltaServiceForm
           setOpenAltaService={setOpenAltaService}

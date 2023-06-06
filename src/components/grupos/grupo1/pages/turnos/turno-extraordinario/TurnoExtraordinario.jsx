@@ -108,8 +108,11 @@ const FormularioExtraordinario = (props) => {
   };
 
   return (
-    <Container component="main" maxWidth="sm">
-      <Paper variant="outlined" sx={{ my: { xs: 1, md: 3 }, p: { xs: 2, md: 3 } }}>
+    <Container component="main" maxWidth="md">
+      <Box sx={{
+        my: { xs: 1, md: 2 }, p: { xs: 1, md: 2 }, borderWidth: '2px', borderColor: 'silver', borderStyle: 'solid', borderRadius: '5px',
+      }}
+      >
         <CssBaseline />
         <Box
           sx={{
@@ -130,7 +133,7 @@ const FormularioExtraordinario = (props) => {
               margin="normal"
               required
               fullWidth
-              sx={{ minWidth: '16.5em' }}
+              sx={{ width: '90%' }}
               id="patente"
               label="Patente"
               name="patente"
@@ -140,28 +143,35 @@ const FormularioExtraordinario = (props) => {
             />
             {!isValid && <Alerts alertType="warning" description="Ejemplos de patentes válidas: AA111AA o ABC123" title="Patente inválida" />}
             {/* eslint-disable-next-line max-len */}
-            {patenteReparacion && <Disponibilidad endPoint={endPointDisponibilidad} setFecha={setFecha} setHora={setHora} msjError={setMsjError} limite={limite} />}
+            <Box sx={{ width: '90%' }}>
+              {patenteReparacion
+              && (
+              <Disponibilidad
+                endPoint={endPointDisponibilidad}
+                setFecha={setFecha}
+                setHora={setHora}
+                msjError={setMsjError}
+                limite={limite}
+              />
+              )}
+            </Box>
             {msjError && <Alerts alertType="error" description={msjError} title="Surgió un error." />}
             <Box sx={{
-              display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 3, gap: '16px',
+              display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 5, gap: '16px',
             }}
             >
               <Button
                 type="submit"
-                // fullWidth
                 variant="contained"
                 color="secondary"
                 size="medium"
-              // sx={{ mt: 1, mb: 2, mr: 1 }}
               >
                 Crear Turno
               </Button>
               <Button
-                // fullWidth
                 variant="contained"
                 color="primary"
                 size="medium"
-                // sx={{ mt: 1, mb: 2, ml: 1 }}
                 onClick={() => {
                   setOpenAgregarTurno(false);
                   setActualizarTabla(true);
@@ -172,10 +182,11 @@ const FormularioExtraordinario = (props) => {
             </Box>
           </Box>
           <Popup
-            title="Error en datos requeridos."
+            title={<LittleHeader titulo="Error en datos requeridos." />}
             description="Por favor complete todos los campos y verifique que la patente sea correcta."
             openDialog={openPopupNoSeleccion}
             setOpenDialog={setOpenPopupNoSeleccion}
+            disableBackdropClick
           >
             <Box
               sx={{ margin: '15px', display: 'flex', justifyContent: 'center' }}
@@ -189,16 +200,18 @@ const FormularioExtraordinario = (props) => {
             </Box>
           </Popup>
           <Popup
-            title="Turno creado con éxito."
+            title={<LittleHeader titulo="Turno creado con éxito" />}
             description={msjTurnoCreado}
             openDialog={openPopupSeleccion}
             setOpenDialog={setOpenPopupSeleccion}
+            disableBackdropClick
           >
             <Box
               sx={{ margin: '15px', display: 'flex', justifyContent: 'center' }}
             >
               <Button
                 color="success"
+                variant="outlined"
                 onClick={() => {
                   setOpenPopupSeleccion(false);
                   setActualizarTabla(true);
@@ -213,6 +226,7 @@ const FormularioExtraordinario = (props) => {
             openDialog={openError}
             setOpenDialog={setOpenError}
             title={<LittleHeader titulo="Ha ocurrido un problema" />}
+            disableBackdropClick
           >
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <Alerts alertType={alertError} description={alertMensaje} title={alertTitulo} />
@@ -228,7 +242,7 @@ const FormularioExtraordinario = (props) => {
             </Box>
           </Popup>
         </Box>
-      </Paper>
+      </Box>
     </Container>
   );
 };

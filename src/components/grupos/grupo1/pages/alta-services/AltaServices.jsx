@@ -64,8 +64,8 @@ const AltaServiceForm = (props) => {
     }
   };
 
-  const isLetras = (text) => {
-    const pattern = /^[A-Za-z]+$/;
+  const isLetrasYNros = (text) => {
+    const pattern = /^[A-Za-z0-9]+$/;
     return pattern.test(text);
   };
 
@@ -73,7 +73,7 @@ const AltaServiceForm = (props) => {
     const val = e.target.value;
 
     if (e.target.validity.valid) {
-      if (isLetras(val)) {
+      if (isLetrasYNros(val)) {
         setMarca(val);
       }
     } else if (val === '') {
@@ -85,7 +85,7 @@ const AltaServiceForm = (props) => {
     const val = e.target.value;
 
     if (e.target.validity.valid) {
-      if (isLetras(val)) {
+      if (isLetrasYNros(val)) {
         setModelo(val);
       }
     } else if (val === '') {
@@ -257,6 +257,11 @@ const AltaServiceForm = (props) => {
               pattern="^[A-Za-z]+$"
               onChange={guardarModelo}
             />
+            <Typography variant="p" sx={{ fontSize: 13 }} className="mb-3">
+              *El kilometraje debe ser múltiplo de 5000, por lo que automáticamente se redeondeará
+              al mútiplo de 5000 más proximo cualquier valor ingresado. Por ejemplo 1235 será tomado
+              como 5000, 5001 como 10000, 8750 como 10000, 13000 como 15000, etc.
+            </Typography>
             <TextField
               margin="dense"
               required
@@ -306,9 +311,10 @@ const AltaServiceForm = (props) => {
         />
         <Popup
           title={<LittleHeader titulo="Error en la creación" />}
-          description="Complete todos los campos, por favor. Y asegúrese de elegir al menos un elemento de la checklist para crear el service."
+          description="Verifique haber puesto marca y modelo y un kilometraje dentro de las coberturas válidas (que van desde 5000 a 200000). También asegúrese de elegir al menos un elemento de la checklist para crear el service."
           openDialog={openPopupNoSeleccion}
           setOpenDialog={setOpenPopupNoSeleccion}
+          disableBackdropClick
         >
           <Box
             sx={{ margin: '15px', display: 'flex', justifyContent: 'center' }}
@@ -326,6 +332,7 @@ const AltaServiceForm = (props) => {
           description={msjServiceCreado}
           openDialog={openPopupSeleccion}
           setOpenDialog={setOpenPopupSeleccion}
+          disableBackdropClick
         >
           <Box
             sx={{ margin: '15px', display: 'flex', justifyContent: 'center' }}
@@ -351,7 +358,7 @@ const AltaServiceForm = (props) => {
           >
             <Button
               type="submit"
-            // fullWidth
+              // fullWidth
               variant="contained"
               color="secondary"
               onSubmit={handleSubmit}
@@ -359,11 +366,11 @@ const AltaServiceForm = (props) => {
               Crear Service
             </Button>
             <Button
-                // fullWidth
+              // fullWidth
               variant="contained"
               color="primary"
               size="medium"
-                // sx={{ mt: 1, mb: 2, ml: 1 }}
+              // sx={{ mt: 1, mb: 2, ml: 1 }}
               onClick={() => {
                 setOpenAltaService(false);
               }}
