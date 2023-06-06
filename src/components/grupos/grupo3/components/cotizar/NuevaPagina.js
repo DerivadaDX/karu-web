@@ -107,7 +107,7 @@ const NuevaPagina = () => {
         // updateGarantiaExtendida(garantiaExtendida);
 
         // paso datos al back
-        const url = 'http://34.139.89.18:8181/api-gc/cotizaciones/save';
+        const url = 'http://34.74.194.25:8080/api-gc/cotizaciones/save';
         const cotizacionData = {
           sucursal: 'S-01',
           nombreCliente: nombreC,
