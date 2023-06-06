@@ -93,11 +93,18 @@ const FormularioExtraordinario = (props) => {
         setOpenPopupNoSeleccion(true);
       }
     } catch (error) {
-      if (error.response.data.includes('la patente ingresada ya tiene un turno de ese tipo registrado en el sistema')) {
+      if (error.response && error.response.data) {
+        const responseData = error.response.data;
         setOpenError(true);
         setAlertError('error');
         setAlertTitulo('Ha ocurrido un problema');
-        setAlertMensaje('Ya existe un turno para esa patente y tipo de turno.');
+        setAlertMensaje(responseData);
+        // eslint-disable-next-line max-len
+        // if (error.response.data.includes('la patente ingresada ya tiene un turno de ese tipo registrado en el sistema')) {
+        //   setOpenError(true);
+        //   setAlertError('error');
+        //   setAlertTitulo('Ha ocurrido un problema');
+        //   setAlertMensaje('Ya existe un turno para esa patente y tipo de turno.');
       } else {
         setOpenError(true);
         setAlertError('error');
@@ -145,15 +152,15 @@ const FormularioExtraordinario = (props) => {
             {/* eslint-disable-next-line max-len */}
             <Box sx={{ width: '90%' }}>
               {patenteReparacion
-              && (
-              <Disponibilidad
-                endPoint={endPointDisponibilidad}
-                setFecha={setFecha}
-                setHora={setHora}
-                msjError={setMsjError}
-                limite={limite}
-              />
-              )}
+                && (
+                  <Disponibilidad
+                    endPoint={endPointDisponibilidad}
+                    setFecha={setFecha}
+                    setHora={setHora}
+                    msjError={setMsjError}
+                    limite={limite}
+                  />
+                )}
             </Box>
             {msjError && <Alerts alertType="error" description={msjError} title="Surgió un error." />}
             <Box sx={{
