@@ -114,10 +114,18 @@ const AltaServiceForm = (props) => {
           setOpenPopupSeleccion(true);
         })
         .catch((error) => {
-          setOpenError(true);
-          setAlertError('error');
-          setAlertTitulo('Ha ocurrido un error');
-          setAlertMensaje(error.response.data.error);
+          if (error.response && error.response.data) {
+            const responseData = error.response.data;
+            setOpenError(true);
+            setAlertError('error');
+            setAlertTitulo('Ha ocurrido un problema');
+            setAlertMensaje(responseData);
+          } else {
+            setOpenError(true);
+            setAlertError('error');
+            setAlertTitulo('Ha ocurrido un error');
+            setAlertMensaje(error.response.data.error);
+          }
         });
     } else {
       setOpenPopupNoSeleccion(true);
