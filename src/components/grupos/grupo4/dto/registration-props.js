@@ -20,7 +20,7 @@ export const inputs = [
     placeholder: 'Nombre completo',
     errorMessage:
       'El nombre completo debe tener entre 3 y 50 caracteres y no debe incluir ningún carácter especial.',
-    pattern: '^[A-Za-z\\s]{3,50}$',
+    pattern: '^[A-Za-zÁÉÍÓÚáéíóúÜüÑñ\\s]{3,50}$',
     required: true,
   },
   {
@@ -47,9 +47,9 @@ export const inputs = [
   {
     id: 5,
     name: 'phoneCode',
-    label: 'Codigo de area telefono',
+    label: 'Código de área teléfono',
     type: 'text',
-    placeholder: 'Codigo de area telefono',
+    placeholder: 'Código de área teléfono',
     errorMessage:
       '¡El código de area del teléfono debe tener entre 3 y 10 caracteres y no debe incluir ningún carácter especial!',
     required: true,
@@ -58,9 +58,9 @@ export const inputs = [
   {
     id: 6,
     name: 'phoneNumber',
-    label: 'Numero de telefono',
+    label: 'Número de teléfono',
     type: 'text',
-    placeholder: 'Numero de telefono',
+    placeholder: 'Número de teléfono',
     errorMessage:
       '¡El número de teléfono debe tener entre 7 y 8 caracteres y no debe incluir ningún carácter especial!',
     pattern: '^[0-9]{7,8}$',
@@ -69,20 +69,20 @@ export const inputs = [
   {
     id: 7,
     name: 'street',
-    label: 'Direccion de domicilio',
+    label: 'Dirección de domicilio',
     type: 'text',
-    placeholder: 'Direccion del domicilio',
+    placeholder: 'Dirección del domicilio',
     errorMessage:
       '¡La calle debe tener entre 3 y 20 caracteres y no debe incluir ningún carácter especial!',
-    pattern: '^[A-Za-z0-9\\s]{3,20}$',
+    pattern: '^[A-Za-z0-9ÁÉÍÓÚáéíóúÜüÑñ\\s]{3,20}$',
     required: true,
   },
   {
     id: 8,
     name: 'streetNumber',
-    label: 'Numero del domicilio',
+    label: 'Número del domicilio',
     type: 'text',
-    placeholder: 'Numero del domicilio',
+    placeholder: 'Número del domicilio',
     errorMessage:
       '¡El numero debe tener entre 3 y 20 caracteres y no debe incluir ningún carácter especial!',
     pattern: '^[0-9]{3,20}$',
@@ -96,26 +96,26 @@ export const inputs = [
     placeholder: 'Ciudad',
     errorMessage:
       '¡La ciudad debe tener entre 3 y 20 caracteres y no debe incluir ningún carácter especial!',
-    pattern: '^[A-Za-z\\s]{3,20}$',
+    pattern: '^[A-Za-zÁÉÍÓÚáéíóúÜüÑñ\\s]{3,20}$',
     required: true,
   },
   {
     id: 10,
     name: 'state',
-    label: 'Estado',
+    label: 'Provincia',
     type: 'text',
-    placeholder: 'Estado',
+    placeholder: 'Provincia',
     errorMessage:
       'El estado debe tener entre 3 y 20 caracteres y no debe incluir ningún carácter especial!',
-    pattern: '^[A-Za-z\\s]{3,20}$',
+    pattern: '^[A-Za-zÁÉÍÓÚáéíóúÜüÑñ\\s]{3,20}$',
     required: true,
   },
   {
     id: 11,
     name: 'zipCode',
-    label: 'Codigo postal',
+    label: 'Código postal',
     type: 'text',
-    placeholder: 'Codigo postal',
+    placeholder: 'Código postal',
     errorMessage:
       '¡El código postal debe tener 4 caracteres y no debe incluir ningún carácter especial!',
     pattern: '^[A-Za-z0-9]{4}$',
@@ -124,12 +124,12 @@ export const inputs = [
   {
     id: 12,
     name: 'country',
-    label: 'Pais',
+    label: 'País',
     type: 'text',
-    placeholder: 'Pais',
+    placeholder: 'País',
     errorMessage:
       '¡El país debe tener entre 3 y 15 caracteres y no debe incluir ningún carácter especial!',
-    pattern: '^[A-Za-z0-9\\s]{3,15}$',
+    pattern: '^[A-Za-z0-9ÁÉÍÓÚáéíóúÜüÑñ\\s]{3,15}$',
     required: true,
   },
   {

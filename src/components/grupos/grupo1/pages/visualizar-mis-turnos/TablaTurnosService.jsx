@@ -1,3 +1,5 @@
+/* eslint-disable no-lone-blocks */
+/* eslint-disable camelcase */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable no-unused-vars */
@@ -6,6 +8,7 @@ import {
 } from 'react';
 
 import MaterialReactTable from 'material-react-table';
+import { MRT_Localization_ES } from 'material-react-table/locales/es';
 import { Button, Box } from '@mui/material';
 import Alerts from '../../components/common/Alerts';
 import { getTurnosService } from '../../services/services-tecnicos';
@@ -31,6 +34,9 @@ const TablaTurnosService = (props) => {
   const [alertType, setAlertType] = useState('');
   const [alertMessage, setAlertMessage] = useState('');
   const [alertTitle, setAlertTitle] = useState('');
+
+  // Para controlar la hora
+  const [noEsDateActual, setNoEsDateActual] = useState(false);
 
   const columnas = useMemo(
     () => [
@@ -83,6 +89,42 @@ const TablaTurnosService = (props) => {
     setAlertType('');
   }, [traerTurnos, actualizarTabla]);
 
+  const controlarTiempo = ({ row }) => {
+    const today = new Date();
+    const anio = today.getFullYear();
+    const mes = String(today.getMonth() + 1).padStart(2, '0');
+    const dia = String(today.getDate()).padStart(2, '0');
+    // const dateActual = `${anio}-${mes}-${dia}`;
+
+    let horas = today.getHours();
+    let minutos = today.getMinutes();
+    let segundos = today.getSeconds();
+
+    horas = (`0${horas}`).slice(-2);
+    minutos = (`0${minutos}`).slice(-2);
+    segundos = (`0${segundos}`).slice(-2);
+    // const timeActual = `${horas}:${minutos}:${segundos}`;
+
+    const dateActual = '2023-06-04';
+    const timeActual = '09:00:00';
+
+    setIdTurno(row.original.id_turno);
+    setOpenChecklist(true);
+    /*
+    if (dateActual < row.original.fecha_inicio) {
+      setNoEsDateActual(true);
+    } else if (dateActual === row.original.fecha_inicio) {
+      if (timeActual >= row.original.hora_inicio) {
+        console.log('Aca tenes que abrir la checklist');
+        setIdTurnoEvaluacion(row.original.id_turno);
+        setOpenChecklist(true);
+      } else {
+        setNoEsDateActual(true);
+      }
+    }
+    */
+  };
+
   const renderRowActions = ({ row }) => (
     <Box
       style={{ display: 'flex', flexWrap: 'nowrap', gap: '0.5rem' }}
@@ -107,8 +149,9 @@ const TablaTurnosService = (props) => {
         size="small"
         sx={{ fontSize: '0.7em' }}
         onClick={() => {
-          setIdTurno(row.original.id_turno);
-          setOpenChecklist(true);
+          controlarTiempo({ row });
+          // setIdTurno(row.original.id_turno);
+          // setOpenChecklist(true);
         }}
       >
         Realizar
@@ -150,7 +193,8 @@ const TablaTurnosService = (props) => {
         renderRowActions={renderRowActions}
         initialState={{ density: 'compact' }}
         renderEmptyRowsFallback={noData}
-        defaultColumn={{ minSize: 10, maxSize: 100, size: 30 }}
+        defaultColumn={{ size: 5 }}
+        localization={MRT_Localization_ES}
         muiTopToolbarProps={{
           sx: {
             display: 'flex',
@@ -169,9 +213,30 @@ const TablaTurnosService = (props) => {
         }}
       />
       <Popup
+        title={<LittleHeader titulo="Atención" />}
+        openDialog={noEsDateActual}
+        setOpenDialog={setNoEsDateActual}
+        description="Todavía no puede realizar el turno. Debe esperar la fecha y la hora del mismo para poder dar inicio."
+        disableBackdropClick
+      >
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Button
+            color="primary"
+            variant="outlined"
+            sx={{ marginTop: '10px' }}
+            onClick={() => {
+              setNoEsDateActual(false);
+            }}
+          >
+            Cerrar
+          </Button>
+        </Box>
+      </Popup>
+      <Popup
         title={<LittleHeader titulo="Detalle de turno " />}
         openDialog={openVerMas}
         setOpenDialog={setOpenVerMas}
+        disableBackdropClick
       >
         <DetalleTurno openDialog={openVerMas} setOpenDialog={setOpenVerMas} row={rowDetalle} />
       </Popup>
@@ -179,6 +244,7 @@ const TablaTurnosService = (props) => {
         title="Checklist"
         openDialog={openChecklist}
         setOpenDialog={setOpenChecklist}
+        disableBackdropClick
       >
         Checklist
       </Popup>

@@ -1,21 +1,22 @@
+/* eslint-disable camelcase */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
 import {
-  Alert,
   Box,
   Button,
   Container,
   DialogActions,
   Divider,
-  Snackbar,
   TextField,
+  CircularProgress,
 } from '@mui/material';
 import {
   useState, useEffect, useMemo, React, useRef,
 } from 'react';
 import axios from 'axios';
 import MaterialReactTable from 'material-react-table';
+import { MRT_Localization_ES } from 'material-react-table/locales/es';
 import Slider from '@mui/material/Slider';
 import Header from '../../components/common/Header';
 import Alerts from '../../components/common/Alerts';
@@ -30,12 +31,14 @@ const ChecklistEvaluacion = (props) => {
   } = props;
   const [evaluaciones, setEvaluaciones] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [resError, setResError] = useState([]);
-  // Para los popups de confirmacion y manejo de errores
+  const [loadingButton, setLoadingButton] = useState(false);
 
+  // Para los popups de confirmacion y manejo de errores
   const [openNoSeleccion, setOpenNoSeleccion] = useState(false);
   const [openConfirmarEvaluacion, setOpenConfirmarEvaluacion] = useState(false);
   const [openEvaluacionEnviada, setOpenEvaluacionEnviada] = useState(false);
+  const [openError, setOpenError] = useState(false);
+
   // Para que se mantengan seteados los valores de los sliders al cambiar de página
   const [valoresSlider, setValoresSlider] = useState({});
   evaluacion.id_turno = idTurnoPadre;
@@ -53,7 +56,7 @@ const ChecklistEvaluacion = (props) => {
   const [alertTitle, setAlertTitle] = useState('');
   // Alerta de la api post
   const [alertError, setAlertError] = useState('');
-  const [alertMensaje, setAlertmensaje] = useState('');
+  const [alertMensaje, setAlertMensaje] = useState('');
   const [alertTitulo, setAlertTitulo] = useState('');
 
   const getChecklistEvaluacion = () => {
@@ -71,6 +74,30 @@ const ChecklistEvaluacion = (props) => {
         setAlertTitle('Error de servidor');
       });
   };
+
+  const url = 'https://autotech2.onrender.com/evaluaciones/registros/crear/';
+  const postEnviarEvaluacion = () => {
+    axios.post(url, evaluacion)
+      .then(() => {
+        setOpenEvaluacionEnviada(true);
+        setActualizar(true);
+        setAlertType('');
+        setAlertError('');
+        setLoadingButton(false);
+      })
+      .catch((error) => {
+        const mensajeError = error.response.data.error;
+        setAlertMensaje(`${mensajeError}`);
+        setAlertError('error');
+        setAlertTitulo('Ha ocurrido algo inesperado');
+        setLoadingButton(false);
+        setOpenError(true);
+      });
+  };
+
+  async function handleSubmit(event) {
+    postEnviarEvaluacion();
+  }
 
   const columnas = useMemo(
     () => [
@@ -90,7 +117,6 @@ const ChecklistEvaluacion = (props) => {
   const handleCheckAllRows = () => {
     const isAllRowsSelected = tableInstanceRef.current?.getIsAllRowsSelected();
     if (isAllRowsSelected) {
-      console.log('Todas las filas estan seleccionadas');
       setOpenConfirmarEvaluacion(true);
     } else {
       setOpenNoSeleccion(true);
@@ -143,24 +169,6 @@ const ChecklistEvaluacion = (props) => {
     );
   };
 
-  const url = 'https://autotech2.onrender.com/evaluaciones/registros/crear/';
-  const postEnviarEvaluacion = () => {
-    axios.post(url, evaluacion)
-      .then(() => {
-        setOpenEvaluacionEnviada(true);
-        setActualizar(true);
-      })
-      .catch(() => {
-        setAlertmensaje('Ha ocurrido un error.');
-        setAlertError('error');
-        setAlertTitulo('Error de servidor');
-      });
-  };
-
-  async function handleSubmit(event) {
-    postEnviarEvaluacion();
-  }
-
   useEffect(() => {
     getChecklistEvaluacion();
   }, []);
@@ -183,6 +191,9 @@ const ChecklistEvaluacion = (props) => {
           positionActionsColumn="last"
           enableRowActions
           renderRowActions={renderRowActions}
+          localization={MRT_Localization_ES}
+          muiTableBodyCellProps={{ align: 'center' }}
+          muiTableHeadCellProps={{ align: 'center' }}
           displayColumnDefOptions={{
             'mrt-row-actions': {
               header: 'Puntaje',
@@ -260,6 +271,7 @@ const ChecklistEvaluacion = (props) => {
         openDialog={openNoSeleccion}
         setOpenDialog={setOpenNoSeleccion}
         description="No ha seleccionado todas las checkboxes correspondientes. Por favor, verifique que haya revisado todas las tareas para registrar la evaluación."
+        disableBackdropClick
       >
         <Box sx={{
           display: 'flex', justifyContent: 'center', alignItems: 'center',
@@ -285,34 +297,62 @@ const ChecklistEvaluacion = (props) => {
         openDialog={openConfirmarEvaluacion}
         setOpenDialog={setOpenConfirmarEvaluacion}
         description="¿Está seguro que desea enviar la evaluación? No se podrá modificar una vez realizada."
+        disableBackdropClick
       >
-        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <Alerts alertType={alertError} description={alertMensaje} title={alertTitulo} />
-        </Box>
         <Box sx={{
           display: 'flex', justifyContent: 'center', alignItems: 'center',
         }}
         >
           <DialogActions>
-            <Button
-              color="secondary"
-              variant="outlined"
-              onClick={() => {
-                handleSubmit();
-              }}
-            >
-              Enviar
-            </Button>
+            <Box sx={{ m: 1, position: 'relative' }}>
+              <Button
+                color="secondary"
+                variant="outlined"
+                disabled={loadingButton}
+                onClick={() => {
+                  handleSubmit();
+                  setLoadingButton(true);
+                  setAlertError('');
+                }}
+              >
+                Enviar
+              </Button>
+              {loadingButton && (
+              <CircularProgress
+                size={24}
+                sx={{
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  marginTop: '-12px',
+                  marginLeft: '-12px',
+                }}
+              />
+              )}
+            </Box>
             <Button
               color="error"
+              disabled={loadingButton}
               variant="outlined"
               onClick={() => {
                 setOpenConfirmarEvaluacion(false);
+                setAlertError('');
               }}
             >
               Cerrar
             </Button>
           </DialogActions>
+        </Box>
+      </Popup>
+
+      {/* Popup para mostrar mensaje de error, cuando sea enviado el turno */}
+      <Popup
+        openDialog={openError}
+        setOpenDialog={setOpenError}
+        title={<LittleHeader titulo="Ha ocurrido un problema" />}
+      >
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Alerts alertType={alertError} description={alertMensaje} title={alertTitulo} />
         </Box>
       </Popup>
 
@@ -322,6 +362,7 @@ const ChecklistEvaluacion = (props) => {
         openDialog={openEvaluacionEnviada}
         setOpenDialog={setOpenEvaluacionEnviada}
         description="La evaluación realizada se ha enviado existosamente."
+        disableBackdropClick
       >
         <Box sx={{
           display: 'flex', justifyContent: 'center', alignItems: 'center',

@@ -11,6 +11,7 @@ import ConfirmToken from './pages/restorePassword/confirmToken/ConfirmToken';
 import ChangePassword from './pages/restorePassword/changePassword/ChangePassword';
 import UpdateProfile from './pages/update/UpdateProfile';
 import VehicleForm from './pages/vehicle/VehicleForm';
+import PriceUpdate from './pages/pricesUpdate/PriceUpdate';
 
 const GROUP_4_PAGES_CONFIG = [
   {
@@ -74,19 +75,26 @@ const GROUP_4_PAGES_CONFIG = [
     page: <ChangePassword />,
     soloUrl: true,
   },
-  // {
-  //   id: 'g4-updateuser',
-  //   name: 'Actualizar usuario',
-  //   href: '/update-user',
-  //   icon: <StoreIcon />,
-  //   page: <UpdateProfile />,
-  // },
+  {
+    id: 'g4-updateuser',
+    name: 'Actualizar usuario',
+    href: '/update-user',
+    icon: <StoreIcon />,
+    page: <UpdateProfile />,
+  },
   {
     id: 'g4-vehicleForm',
     name: 'Cargar datos del Vehículo',
     href: '/save-vehicle',
     icon: <StoreIcon />,
     page: <VehicleForm />,
+  },
+  {
+    id: 'g4-priceUpdate',
+    name: 'Cambiar precios de vehiculos',
+    href: '/price-update',
+    icon: <StoreIcon />,
+    page: <PriceUpdate />,
   },
 ];
 

@@ -11,6 +11,7 @@ import Talleres from '../Componentes/Talleres';
 import ValidarPatente from '../Helpers/validar-patente';
 import Alerts from '../../../components/common/Alerts';
 import Popup from '../../../components/common/DialogPopup';
+import LittleHeader from '../../../components/common/LittleHeader';
 
 const FormularioEvaluacionAdmin = () => {
   const [taller, setTaller] = useState();
@@ -69,13 +70,24 @@ const FormularioEvaluacionAdmin = () => {
         setOpenPopupNoSeleccion(true);
       }
     } catch (error) {
-      // error: la patente ingresada ya tiene un turno del mismo tipo para ese mismo dia
-      // error: la patente ingresada ya tiene un turno de ese tipo registrado en el sistema.
-      if (error.response.data.includes('la patente ingresada ya tiene un turno de ese tipo registrado en el sistema')) {
-        setOpenError(true);
-        setAlertError('error');
-        setAlertTitulo('Ha ocurrido un problema');
-        setAlertMensaje('Ya existe un turno para esa patente y tipo de turno.');
+      if (error.response && error.response.data) {
+        const responseData = error.response.data;
+        if (responseData.includes('la patente ingresada ya tiene un turno de ese tipo registrado en el sistema')) {
+          setOpenError(true);
+          setAlertError('error');
+          setAlertTitulo('Ha ocurrido un problema');
+          setAlertMensaje('Ya existe un turno para esa patente y tipo de turno.');
+        } else if (responseData.includes('la patente no está esperando revisión tecnica')) {
+          setOpenError(true);
+          setAlertError('error');
+          setAlertTitulo('Error de patente');
+          setAlertMensaje('La patente ingresada no pertenece a ningún cliente.');
+        } else {
+          setOpenError(true);
+          setAlertError('error');
+          setAlertTitulo('Ha ocurrido un error');
+          setAlertMensaje('Si el problema persiste, comuniquese con insomnia.front@gmail.com');
+        }
       } else {
         setOpenError(true);
         setAlertError('error');
@@ -138,16 +150,18 @@ const FormularioEvaluacionAdmin = () => {
             </Button>
           </Box>
           <Popup
-            title="Error en datos requeridos."
+            title={<LittleHeader titulo="Error en datos requeridos." />}
             description="Por favor complete todos los campos y verifique la correctitud de la patente."
             openDialog={openPopupNoSeleccion}
             setOpenDialog={setOpenPopupNoSeleccion}
+            disableBackdropClick
           >
             <Box
               sx={{ margin: '15px', display: 'flex', justifyContent: 'center' }}
             >
               <Button
                 color="error"
+                variant="outlined"
                 onClick={() => setOpenPopupNoSeleccion(false)}
               >
                 Cerrar
@@ -155,17 +169,22 @@ const FormularioEvaluacionAdmin = () => {
             </Box>
           </Popup>
           <Popup
-            title="Turno reservado con éxito."
+            title={<LittleHeader titulo="Turno reservado con éxito" />}
             description={msjTurnoCreado}
             openDialog={openPopupSeleccion}
             setOpenDialog={setOpenPopupSeleccion}
+            disableBackdropClick
           >
             <Box
               sx={{ margin: '15px', display: 'flex', justifyContent: 'center' }}
             >
               <Button
-                color="success"
-                onClick={() => setOpenPopupSeleccion(false)}
+                color="secondary"
+                variant="outlined"
+                // onClick={() => setOpenPopupSeleccion(false)}
+                onClick={() => {
+                  window.location.href = '/';
+                }}
               >
                 Cerrar
               </Button>
@@ -175,7 +194,7 @@ const FormularioEvaluacionAdmin = () => {
           <Popup
             openDialog={openError}
             setOpenDialog={setOpenError}
-            title="Ha ocurrido un problema"
+            title={<LittleHeader titulo="Ha ocurrido un problema" />}
           >
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <Alerts alertType={alertError} description={alertMensaje} title={alertTitulo} />

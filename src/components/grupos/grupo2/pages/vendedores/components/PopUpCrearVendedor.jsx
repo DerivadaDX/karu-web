@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 import {
@@ -17,19 +17,17 @@ import {
   Switch,
   TextField,
 } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
 import { DatePicker } from '@mui/x-date-pickers';
 import PropTypes from 'prop-types';
 
 import CuitComponent from './CuitComponent';
 import VendedorService from '../services/vendedor-service';
-import SucursalService from '../services/sucursal-service';
 
-const PopUpCrearVendedor = ({ onSuccess }) => {
-  const [mostrarPopUpCrearVendedor, setMostrarPopUpCrearVendedor] = useState(false);
+const PopUpCrearVendedor = ({ onSuccess, onClose, sucursales }) => {
   const [mostrarPopUpCreacionExitosa, setMostrarPopUpCreacionExitosa] = useState(false);
-  const [sucursales, setSucursales] = useState({});
-  const { handleSubmit, control, formState: { errors, isValid } } = useForm({
+  const {
+    handleSubmit, control, setError, formState: { errors, isValid },
+  } = useForm({
     mode: 'onBlur',
     defaultValues: {
       nombre: '',
@@ -55,32 +53,25 @@ const PopUpCrearVendedor = ({ onSuccess }) => {
         setMostrarPopUpCreacionExitosa(true);
         onSuccess();
       })
-      .catch(() => setMostrarPopUpCreacionExitosa(false));
-  };
-
-  const cambiarVisibilidadPopUpCrearVendedor = () => {
-    setMostrarPopUpCrearVendedor(!mostrarPopUpCrearVendedor);
+      .catch((e) => {
+        if (e.response.data.email) {
+          setError('email', { type: 'custom', message: 'El email ingresado ya se encuentra registrado' });
+        }
+        if (e.response.data.cuit) {
+          setError('cuit', { type: 'custom', message: 'El cuit ingresado ya se encuentra registrado' });
+        }
+        setMostrarPopUpCreacionExitosa(false);
+      });
   };
 
   const cambiarVisibilidadPopUpCreacionExitosa = () => {
     setMostrarPopUpCreacionExitosa(false);
-    setMostrarPopUpCrearVendedor(false);
+    onClose();
   };
-
-  const obtenerSucursales = () => {
-    SucursalService.obtenerSucursalesActivas().then(setSucursales);
-  };
-
-  useEffect(obtenerSucursales, []);
 
   return (
     <Box>
-      <Button variant="contained" color="primary" onClick={cambiarVisibilidadPopUpCrearVendedor}>
-        <AddIcon />
-        Crear Vendedor
-      </Button>
-
-      <Dialog open={mostrarPopUpCrearVendedor} onClose={cambiarVisibilidadPopUpCrearVendedor}>
+      <Dialog open onClose={onClose}>
         <Dialog open={mostrarPopUpCreacionExitosa} onClose={cambiarVisibilidadPopUpCreacionExitosa}>
           <DialogTitle id="alert-dialog-title">
             Creación Exitosa!
@@ -115,6 +106,10 @@ const PopUpCrearVendedor = ({ onSuccess }) => {
               )}
               rules={{
                 required: 'El nombre es requerido',
+                maxLength: {
+                  value: 50,
+                  message: 'Debe tener un maximo de 50 letras',
+                },
               }}
             />
             <Controller
@@ -134,6 +129,10 @@ const PopUpCrearVendedor = ({ onSuccess }) => {
               )}
               rules={{
                 required: 'El apellido es requerido',
+                maxLength: {
+                  value: 50,
+                  message: 'Debe tener un maximo de 50 letras',
+                },
               }}
             />
             <Controller
@@ -153,6 +152,10 @@ const PopUpCrearVendedor = ({ onSuccess }) => {
               )}
               rules={{
                 required: 'El email es requerido',
+                maxLength: {
+                  value: 50,
+                  message: 'Debe tener un maximo de 50 letras',
+                },
                 validate: {
                   matchPattern: (v) => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'Escriba el email correctamente',
                 },
@@ -245,7 +248,7 @@ const PopUpCrearVendedor = ({ onSuccess }) => {
                     value={value}
                     onChange={onChange}
                   >
-                    {sucursales.map((sucursal) => (
+                    {sucursales.filter((s) => s.activa === true).map((sucursal) => (
                       <MenuItem
                         key={sucursal.id}
                         value={sucursal.id}
@@ -267,7 +270,7 @@ const PopUpCrearVendedor = ({ onSuccess }) => {
                 <FormControlLabel
                   id="activo"
                   name="activo"
-                  value={value}
+                  checked={value}
                   onBlur={onBlur}
                   label="¿Está habilitado/a?"
                   labelPlacement="start"
@@ -299,6 +302,20 @@ const PopUpCrearVendedor = ({ onSuccess }) => {
 
 PopUpCrearVendedor.propTypes = {
   onSuccess: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
+  sucursales: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number,
+      nombre: PropTypes.string,
+      calle: PropTypes.string,
+      localidad: PropTypes.string,
+      provincia: PropTypes.string,
+      numero: PropTypes.number,
+      codigo_postal: PropTypes.string,
+      posee_taller: PropTypes.bool,
+      activa: PropTypes.bool,
+    }),
+  ).isRequired,
 };
 
 export default PopUpCrearVendedor;

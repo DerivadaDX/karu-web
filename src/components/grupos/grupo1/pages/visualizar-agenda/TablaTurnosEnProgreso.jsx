@@ -1,3 +1,5 @@
+/* eslint-disable import/no-duplicates */
+/* eslint-disable camelcase */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/react-in-jsx-scope */
@@ -9,6 +11,7 @@ import { Box, Button } from '@mui/material';
 import MaterialReactTable from 'material-react-table';
 import DialogActions from '@mui/material/DialogActions';
 import Snackbar from '@mui/material/Snackbar';
+import { MRT_Localization_ES } from 'material-react-table/locales/es';
 import {
   getTurnosEnProceso,
   patchFinalizarTurno,
@@ -36,7 +39,8 @@ const TablaTurnosEnProgreso = (props) => {
   const [resCancelar, setResCancelar] = useState([]);
   const [openCancelar, setOpenCancelar] = useState(false);
 
-  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [openSnackbarCancelar, setOpenSnackbarCancelar] = useState(false);
+  const [openSnackbarFinalizar, setOpenSnackbarFinalizar] = useState(false);
   const [actualizarTabla, setActualizarTabla] = useState(false);
 
   // alertas de la API
@@ -83,15 +87,26 @@ const TablaTurnosEnProgreso = (props) => {
         setActualizarTabla(true); // Para actualizar la tabla despues de cancelar turno
       })
       .catch((error) => {
-        setResCancelar(error.message);
+        if (error.response && error.response.data && error.response.data.error) {
+          setResCancelar(error.response.data.error);
+        } else {
+          setResCancelar(error.message);
+        }
       });
   };
 
-  const handleCloseSnackbar = (event, reason) => {
+  const handleCloseSnackbarCancelar = (event, reason) => {
     if (reason === 'clickaway') {
       return;
     }
-    setOpenSnackbar(false);
+    setOpenSnackbarCancelar(false);
+  };
+
+  const handleCloseSnackbarFinalizar = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenSnackbarFinalizar(false);
   };
 
   const columnas = useMemo(
@@ -103,6 +118,7 @@ const TablaTurnosEnProgreso = (props) => {
       {
         accessorKey: 'patente',
         header: 'Patente',
+
       },
       {
         accessorKey: 'tipo',
@@ -123,6 +139,10 @@ const TablaTurnosEnProgreso = (props) => {
     ],
     [],
   );
+
+  const tablaStyle = {
+    overflow: 'scroll',
+  };
 
   const renderRowActions = ({ row }) => (
     <Box
@@ -161,8 +181,8 @@ const TablaTurnosEnProgreso = (props) => {
         sx={{ fontSize: '0.7em' }}
         onClick={() => {
           // console.log('Finalizar', row.original);
-          setIdTurnoFinalizar(row.original.id_turno);
           setOpenFinalizar(true);
+          setIdTurnoFinalizar(row.original.id_turno);
         }}
       >
         Finalizar
@@ -201,7 +221,8 @@ const TablaTurnosEnProgreso = (props) => {
         enableRowActions
         renderRowActions={renderRowActions}
         renderEmptyRowsFallback={noData}
-        defaultColumn={{ minSize: 10, maxSize: 100, size: 30 }}
+        localization={MRT_Localization_ES}
+        defaultColumn={{ size: 5 }}
         initialState={{ density: 'compact' }}
         muiTopToolbarProps={{
           sx: {
@@ -225,8 +246,9 @@ const TablaTurnosEnProgreso = (props) => {
         openDialog={openFinalizar}
         setOpenDialog={setOpenFinalizar}
         description="¿Está seguro que desea finalizar el turno? No se podrá modificar la acción una vez realizada."
+        disableBackdropClick
       >
-        <Box>
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <DialogActions>
             <Button
               color="primary"
@@ -234,7 +256,7 @@ const TablaTurnosEnProgreso = (props) => {
               onClick={() => {
                 finalizarTurno(idTurnoFinalizar);
                 setOpenFinalizar(false);
-                setOpenSnackbar(true);
+                setOpenSnackbarFinalizar(true);
               }}
             >
               Aceptar
@@ -254,16 +276,17 @@ const TablaTurnosEnProgreso = (props) => {
       <Snackbar
         message={resFinalizar}
         autoHideDuration={4000}
-        open={openSnackbar}
-        onClose={handleCloseSnackbar}
+        open={openSnackbarFinalizar}
+        onClose={handleCloseSnackbarFinalizar}
       />
       <Popup
         title={<LittleHeader titulo="Cancelar turno" />}
         openDialog={openCancelar}
         setOpenDialog={setOpenCancelar}
         description="¿Está seguro que desea cancelar el turno? No se podrá modificar la acción una vez realizada."
+        disableBackdropClick
       >
-        <Box>
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <DialogActions>
             <Button
               color="primary"
@@ -271,7 +294,7 @@ const TablaTurnosEnProgreso = (props) => {
               onClick={() => {
                 cancelarTurno(idTurnoCancelar);
                 setOpenCancelar(false);
-                setOpenSnackbar(true);
+                setOpenSnackbarCancelar(true);
               }}
             >
               Aceptar
@@ -291,13 +314,14 @@ const TablaTurnosEnProgreso = (props) => {
       <Snackbar
         message={resCancelar}
         autoHideDuration={4000}
-        open={openSnackbar}
-        onClose={handleCloseSnackbar}
+        open={openSnackbarCancelar}
+        onClose={handleCloseSnackbarCancelar}
       />
       <Popup
         title={<LittleHeader titulo="Detalle de turno" />}
         openDialog={openVerMas}
         setOpenDialog={setVerMas}
+        disableBackdropClick
       >
         <DetalleTurno openDialog={openVerMas} setOpenDialog={setVerMas} row={rowDetalle} />
       </Popup>

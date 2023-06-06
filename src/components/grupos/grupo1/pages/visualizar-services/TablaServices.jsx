@@ -26,8 +26,10 @@ import {
   putCambiarEstado,
 } from '../../services/services-services';
 import DetalleChecklist from './DetalleChecklist';
+import AltaServiceForm from '../alta-services/AltaServices';
 
-const TablaServices = () => {
+const TablaServices = (props) => {
+  const { idSupervisor } = props;
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -46,6 +48,9 @@ const TablaServices = () => {
   // Para abrir el formulario de asignacion
   const [serviceId, setServiceId] = useState({});
   const [openChecklist, setOpenChecklist] = useState(false);
+
+  // Para abrir alta de service
+  const [openAltaService, setOpenAltaService] = useState(false);
 
   // alertas de la API
   const [alertType, setAlertType] = useState('');
@@ -255,7 +260,7 @@ const TablaServices = () => {
           },
         }}
         onClick={() => {
-          // console.log('Agregar service');
+          setOpenAltaService(true);
         }}
       >
         Nuevo Service
@@ -315,6 +320,7 @@ const TablaServices = () => {
         openDialog={openDialog}
         setOpenDialog={setOpenDialog}
         description="¿Está seguro que desea cambiar el estado de este service?"
+        disableBackdropClick
       >
         <Box sx={{
           display: 'flex', justifyContent: 'center', alignItems: 'center',
@@ -354,6 +360,7 @@ const TablaServices = () => {
         title={<LittleHeader titulo="Detalle de service" />}
         openDialog={openVerMas}
         setOpenDialog={setVerMas}
+        disableBackdropClick
       >
         <DetalleService openDialog={openVerMas} setOpenDialog={setVerMas} row={rowDetalle} />
       </Popup>
@@ -361,11 +368,29 @@ const TablaServices = () => {
         title={<LittleHeader titulo="Checklist de service" />}
         openDialog={openChecklist}
         setOpenDialog={setOpenChecklist}
+        disableBackdropClick
       >
         <DetalleChecklist
           open={openChecklist}
           setOpen={setOpenChecklist}
           serviceId={serviceId}
+        />
+      </Popup>
+      <Popup
+        title={(
+          <LittleHeader
+            titulo="Alta de service"
+            subtitulo="Formulario"
+          />
+)}
+        openDialog={openAltaService}
+        setOpenDialog={setOpenAltaService}
+        disableBackdropClick
+      >
+        <AltaServiceForm
+          setOpenAltaService={setOpenAltaService}
+          setActualizarTabla={setActualizarTabla}
+          idSupervisor={idSupervisor}
         />
       </Popup>
     </>

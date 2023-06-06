@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-shadow */
 /* eslint-disable react/react-in-jsx-scope */
@@ -7,6 +8,7 @@ import {
 } from 'react';
 import { Box, Button } from '@mui/material';
 import MaterialReactTable from 'material-react-table';
+import { MRT_Localization_ES } from 'material-react-table/locales/es';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import Tooltip from '@mui/material/Tooltip';
 import Snackbar from '@mui/material/Snackbar';
@@ -235,7 +237,8 @@ const TablaTurnosPendientes = (props) => {
         initialState={{ density: 'compact' }}
         renderRowActions={renderRowActions}
         renderEmptyRowsFallback={noData}
-        defaultColumn={{ minSize: 10, maxSize: 100, size: 30 }}
+        defaultColumn={{ size: 5 }}
+        localization={MRT_Localization_ES}
         muiTableHeadCellProps={{ align: 'center', padding: 'none' }}
         muiTableBodyCellProps={{ align: 'center', padding: 'none' }}
         displayColumnDefOptions={{
@@ -250,6 +253,7 @@ const TablaTurnosPendientes = (props) => {
         openDialog={openDialog}
         setOpenDialog={setOpenDialog}
         description="¿Está seguro que desea cancelar el turno? No se podrá modificar la acción una vez realizada."
+        disableBackdropClick
       >
         <Box sx={{
           display: 'flex', justifyContent: 'center', alignItems: 'center',
@@ -289,13 +293,15 @@ const TablaTurnosPendientes = (props) => {
         title={<LittleHeader titulo="Detalle de turno" />}
         openDialog={openVerMas}
         setOpenDialog={setVerMas}
+        disableBackdropClick
       >
         <DetalleTurno openDialog={openVerMas} setOpenDialog={setVerMas} row={rowDetalle} />
       </Popup>
       <Popup
-        title={<LittleHeader titulo="Asignar turno a un técnico" />}
+        title={<LittleHeader titulo="Asignar turno" subtitulo="Selección" />}
         openDialog={openAsignacion}
         setOpenDialog={setOpenAsignacion}
+        disableBackdropClick
       >
         <PanelDeAsignacion
           idTurnoPadre={idTurnoAsignar}
@@ -303,18 +309,21 @@ const TablaTurnosPendientes = (props) => {
           setOpen={setOpenAsignacion}
           actualizar={actualizarTabla}
           setActualizar={setActualizarTabla}
+          idTaller={idTaller}
         />
       </Popup>
       <PopupAgregarTurno
-        title={<LittleHeader titulo="Agregar turno" />}
+        title={<LittleHeader titulo="Agregar turno" subtitulo="Formulario" />}
         openDialog={openAgregarTurno}
         setOpenDialog={setOpenAgregarTurno}
         description="Complete únicamente el formulario del tipo de turno que desea dar de alta."
+        disableBackdropClick
       >
         <AgregarTurno
           idTaller={idTaller}
           setOpenAgregarTurno={setOpenAgregarTurno}
           openAgregarTurno={openAgregarTurno}
+          setActualizarTabla={setActualizarTabla}
         />
       </PopupAgregarTurno>
     </>
