@@ -11,6 +11,7 @@ import {
 import CheckBoxOutlinedIcon from '@mui/icons-material/CheckBoxOutlined';
 import CheckBoxOutlineBlankOutlinedIcon from '@mui/icons-material/CheckBoxOutlineBlankOutlined';
 import MaterialReactTable from 'material-react-table';
+import Alerts from '../../grupo1/components/common/Alerts';
 
 // import ModificarSucursal from './ModificarSucursal';
 // import CrearSucursal from './CrearSucursal';
@@ -32,12 +33,22 @@ styles.paperInferior = {
 const ListadoConsulta = () => {
   const [consulta, setConsulta] = useState([]);
   const [cargando, setCargando] = useState(true);
+  // alertas de la API
+  const [alertType, setAlertType] = useState('');
+  const [alertMessage, setAlertMessage] = useState('');
+  const [alertTitle, setAlertTitle] = useState('');
 
   const obtenerConsultas = () => {
     ConsultaService.obtenerConsultas()
       .then((response) => {
         setConsulta(response.data);
         setCargando(false);
+      }).catch((error) => {
+        setAlertType('Error');
+        setAlertTitle('Error de servidor');
+        setAlertMessage(
+          'Error en el servidor. Por favor, vuelva a intentarlo nuevamente.',
+        );
       });
   };
 
@@ -73,7 +84,7 @@ const ListadoConsulta = () => {
 
   const renderAccionesFila = ({ row }) => {
     const { estadoConsulta } = row.original;
-    return <PopUpAnular id={row.original.id} />; // crear y cambiar a uno de consultas
+    return <PopUpAnular id={row.original.id} />; // crear y cambiar popup de consultas
     /* if (estadoConsulta === 'PENDIENTE') {
       return <PopUpAnular id={row.original.id} />;
     }
@@ -123,10 +134,25 @@ const ListadoConsulta = () => {
     [],
   );
 
-  useEffect(obtenerConsultas, []);
+  useEffect(() => {
+    try {
+      obtenerConsultas();
+    } catch (error) {
+      setAlertType('error');
+      setAlertTitle('Error de servidor');
+      setAlertMessage(
+        'Error de servidor. Por favor, recargue la página y vuelva a intentarlo nuevamente.',
+      );
+    }
+  }, []);
 
   return (
     <Box style={{ overflowX: 'auto' }}>
+      <Alerts
+        alertType={alertType}
+        description={alertMessage}
+        title={alertTitle}
+      />
       <MaterialReactTable
         columns={columnas}
         data={consulta}
