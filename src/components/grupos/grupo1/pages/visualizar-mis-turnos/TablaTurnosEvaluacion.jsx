@@ -1,3 +1,5 @@
+/* eslint-disable no-lone-blocks */
+/* eslint-disable camelcase */
 /* eslint-disable react/prop-types */
 /* eslint-disable max-len */
 /* eslint-disable no-console */
@@ -8,11 +10,12 @@ import {
 } from 'react';
 
 import MaterialReactTable from 'material-react-table';
+import { MRT_Localization_ES } from 'material-react-table/locales/es';
 import { Button, Box, DialogActions } from '@mui/material';
 import Alerts from '../../components/common/Alerts';
 import { getTurnosEvaluacion } from '../../services/services-tecnicos';
 import Popup from '../../components/common/DialogPopup';
-import ChecklistEvaluacion from '../checklist-evaluacion/Checklist';
+import ChecklistEvaluacion from '../checklist-evaluacion/ChecklistEvaluacion';
 import LittleHeader from '../../components/common/LittleHeader';
 import DetalleTurno from '../../components/common/DetalleTurno';
 
@@ -102,7 +105,7 @@ const TablaTurnosEvaluacion = (props) => {
     const anio = today.getFullYear();
     const mes = String(today.getMonth() + 1).padStart(2, '0');
     const dia = String(today.getDate()).padStart(2, '0');
-    const dateActual = `${anio}-${mes}-${dia}`;
+    // const dateActual = `${anio}-${mes}-${dia}`;
 
     let horas = today.getHours();
     let minutos = today.getMinutes();
@@ -111,11 +114,14 @@ const TablaTurnosEvaluacion = (props) => {
     horas = (`0${horas}`).slice(-2);
     minutos = (`0${minutos}`).slice(-2);
     segundos = (`0${segundos}`).slice(-2);
-    const timeActual = `${horas}:${minutos}:${segundos}`;
+    // const timeActual = `${horas}:${minutos}:${segundos}`;
 
-    // const dateActual = '2023-05-23';
-    // const timeActual = '11:00:00';
+    const dateActual = '2023-06-04';
+    const timeActual = '09:00:00';
 
+    setIdTurnoEvaluacion(row.original.id_turno);
+    setOpenChecklist(true);
+    /*
     if (dateActual < row.original.fecha_inicio) {
       setNoEsDateActual(true);
     } else if (dateActual === row.original.fecha_inicio) {
@@ -127,6 +133,7 @@ const TablaTurnosEvaluacion = (props) => {
         setNoEsDateActual(true);
       }
     }
+    */
   };
 
   const renderRowActions = ({ row }) => (
@@ -184,7 +191,8 @@ const TablaTurnosEvaluacion = (props) => {
         enableRowActions
         renderRowActions={renderRowActions}
         renderEmptyRowsFallback={noData}
-        defaultColumn={{ minSize: 10, maxSize: 100, size: 30 }}
+        defaultColumn={{ size: 5 }}
+        localization={MRT_Localization_ES}
         muiTopToolbarProps={{
           sx: {
             display: 'flex',
@@ -208,8 +216,9 @@ const TablaTurnosEvaluacion = (props) => {
         openDialog={noEsDateActual}
         setOpenDialog={setNoEsDateActual}
         description="Todavía no puede realizar el turno. Debe esperar la fecha y la hora del mismo para poder dar inicio."
+        disableBackdropClick
       >
-        <Box>
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <DialogActions>
             <Button
               color="primary"
@@ -228,6 +237,7 @@ const TablaTurnosEvaluacion = (props) => {
         title={<LittleHeader titulo="Detalle de turno" />}
         openDialog={openVerMas}
         setOpenDialog={setOpenVerMas}
+        disableBackdropClick
       >
         <DetalleTurno openDialog={openVerMas} setOpenDialog={setOpenVerMas} row={rowDetalle} />
       </Popup>
@@ -248,10 +258,10 @@ const TablaTurnosEvaluacion = (props) => {
               cuanto más alto, mayor es la gravedad.
               Ej.: si el puntaje es 0, entonces la parte evaluada
               está en perfectas condiciones. De 5 en adelante es porque la parte tiene fallas.
-
             </p>
           </>
 )}
+        disableBackdropClick
       >
         <ChecklistEvaluacion
           idTurnoPadre={idTurnoEvaluacion}

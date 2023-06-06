@@ -1,10 +1,15 @@
+/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable camelcase */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-shadow */
 /* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable no-unused-vars */
 import { useState, useEffect, useMemo } from 'react';
-import { Box, Button } from '@mui/material';
+import { Box, Button, Tooltip } from '@mui/material';
 import MaterialReactTable from 'material-react-table';
+import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
+import { CsvBuilder } from 'filefy';
+import { MRT_Localization_ES } from 'material-react-table/locales/es';
 import { getTurnosNoValidos } from '../../services/services-Turnos';
 import Alerts from '../../components/common/Alerts';
 import Popup from '../../components/common/DialogPopup';
@@ -82,6 +87,43 @@ const TablaTurnosNoValidos = (props) => {
     [],
   );
 
+  const exportTableData = () => {
+    const allData = turnosNoValidos.map((rowData) => [
+      rowData.id_turno,
+      rowData.patente,
+      rowData.tipo,
+      rowData.estado,
+      rowData.fecha_inicio,
+      rowData.hora_inicio,
+    ]);
+
+    new CsvBuilder('turnos-no-validos.csv')
+      .setColumns(columnas.map((col) => col.header))
+      .addRows(allData)
+      .exportFile();
+  };
+
+  const exportarDatos = () => (
+    <Tooltip title="Exportar datos" placement="right">
+      <Button
+        variant="contained"
+        startIcon={<FileDownloadOutlinedIcon />}
+        sx={{
+          fontSize: {
+            sm: '0.7rem',
+            maxWidth: '300px',
+            maxHeight: '40px',
+          },
+        }}
+        onClick={() => {
+          exportTableData();
+        }}
+      >
+        Exportar datos
+      </Button>
+    </Tooltip>
+  );
+
   const renderRowActions = ({ row }) => (
     <Box
       style={{ display: 'flex', flexWrap: 'nowrap', gap: '0.5rem' }}
@@ -131,17 +173,18 @@ const TablaTurnosNoValidos = (props) => {
         data={turnosNoValidos}
         state={{ isLoading: loading }}
         positionActionsColumn="last"
+        renderTopToolbarCustomActions={exportarDatos}
         enableRowActions
         renderRowActions={renderRowActions}
         renderEmptyRowsFallback={noData}
-        defaultColumn={{ minSize: 10, maxSize: 100, size: 30 }}
+        defaultColumn={{ size: 5 }}
+        localization={MRT_Localization_ES}
         initialState={{ density: 'compact' }}
         muiTopToolbarProps={{
           sx: {
             display: 'flex',
             flexWrap: 'inherit',
             justifyContent: 'flex-end',
-            overflow: 'auto',
             maxHeight: '200px',
           },
         }}
@@ -157,6 +200,7 @@ const TablaTurnosNoValidos = (props) => {
         title={<LittleHeader titulo="Detalle de turno" />}
         openDialog={openVerMas}
         setOpenDialog={setVerMas}
+        disableBackdropClick
       >
         <DetalleTurno openDialog={openVerMas} setOpenDialog={setVerMas} row={rowDetalle} />
       </Popup>

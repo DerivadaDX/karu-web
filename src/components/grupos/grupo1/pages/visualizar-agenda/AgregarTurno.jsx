@@ -46,7 +46,9 @@ function allyProps(index) {
 
 export const AgregarTurno = (props) => {
   const [value, setValue] = useState(0);
-  const { idTaller, setOpenAgregarTurno, openAgregarTurno } = props;
+  const {
+    idTaller, setOpenAgregarTurno, openAgregarTurno, setActualizarTabla,
+  } = props;
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -72,6 +74,7 @@ export const AgregarTurno = (props) => {
           taller={idTaller}
           setOpenAgregarTurno={setOpenAgregarTurno}
           openAgregarTurno={openAgregarTurno}
+          setActualizarTabla={setActualizarTabla}
         />
       </TabPanel>
       <TabPanel value={value} index={1}>
@@ -79,6 +82,7 @@ export const AgregarTurno = (props) => {
           taller={idTaller}
           setOpenAgregarTurno={setOpenAgregarTurno}
           openAgregarTurno={openAgregarTurno}
+          setActualizarTabla={setActualizarTabla}
         />
       </TabPanel>
     </Box>

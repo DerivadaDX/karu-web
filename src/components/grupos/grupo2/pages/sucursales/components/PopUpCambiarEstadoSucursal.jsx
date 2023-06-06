@@ -89,8 +89,17 @@ const PopUpCambiarEstadoSucursal = ({ sucursal, onSuccess }) => {
 };
 
 PopUpCambiarEstadoSucursal.propTypes = {
-  // eslint-disable-next-line react/forbid-prop-types
-  sucursal: PropTypes.object.isRequired,
+  sucursal: PropTypes.shape({
+    id: PropTypes.number,
+    nombre: PropTypes.string,
+    calle: PropTypes.string,
+    localidad: PropTypes.string,
+    provincia: PropTypes.string,
+    numero: PropTypes.number,
+    codigo_postal: PropTypes.string,
+    posee_taller: PropTypes.bool,
+    activa: PropTypes.bool,
+  }).isRequired,
   onSuccess: PropTypes.func.isRequired,
 };
 
