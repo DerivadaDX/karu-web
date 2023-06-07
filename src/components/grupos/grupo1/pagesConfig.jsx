@@ -7,6 +7,7 @@ import DesignServicesIcon from '@mui/icons-material/DesignServices';
 import GarageIcon from '@mui/icons-material/Garage';
 import RateReviewIcon from '@mui/icons-material/RateReview';
 import ReviewsIcon from '@mui/icons-material/Reviews';
+import AssessmentIcon from '@mui/icons-material/Assessment';
 import TooltipCus from './components/common/Tooltip';
 import VisualizacionBusquedaTecnicos from './pages/visualizacion-tecnicos/VisualizacionFiltroBusqueda';
 import Dashboard from './pages/dashboard/Dashboard';
@@ -17,6 +18,7 @@ import FormularioCliente from './pages/turnos/turno-service-cliente/TurnoService
 import Services from './pages/visualizar-services/Services';
 import FormularioEvaluacionAdmin from './pages/turnos/turno-evaluacion-admin/TurnoEvaluacionParaAdmin';
 import FormularioEvaluacionCliente from './pages/turnos/turno-evaluacion-cliente/TurnoEvaluacionCliente';
+import Reportes from './pages/reportes/Reportes';
 
 const GROUP_1_PAGES_CONFIG = [
   {
@@ -81,6 +83,13 @@ const GROUP_1_PAGES_CONFIG = [
     href: '/turno-evaluación-cliente',
     icon: <TooltipCus icon={<ReviewsIcon />} title="Evaluación cliente" />,
     page: <FormularioEvaluacionCliente />,
+  },
+  {
+    id: 'g1-ReportesSupervisor',
+    name: 'Reportes',
+    href: '/reportes',
+    icon: <TooltipCus icon={<AssessmentIcon />} title="Reportes" />,
+    page: <Reportes />,
   },
 ];
 
