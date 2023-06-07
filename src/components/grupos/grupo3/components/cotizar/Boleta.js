@@ -4,12 +4,13 @@
 /* eslint-disable max-len */
 /* eslint-disable no-unused-vars */
 import React, { useContext, useState } from 'react';
-import axios from 'axios';
 import {
   Container, Row, Col, Table, Card, ListGroup,
 } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import { AppContext } from './AppContext';
+import CotizacionService from '../../services/CotizacionService';
+
 /* y despues le devuelve esta boleta por asi decirlos con todos estos datos
       Long id;
       String sucursal;
@@ -43,11 +44,7 @@ const Boleta = () => {
   const [fecha, setFechaActual] = useState(new Date());
   // agrego mail
   const enviarCorreo = () => {
-    const cotizacionData = {
-      emailReceptor: cotizacion.email,
-      idCotizacionVenta: cotizacion.id,
-    };
-    axios.post('https://api-gc.epicgamer.org/api-gc/email/enviar-pdf', cotizacionData)
+    CotizacionService.enviarPDFCotizacion(cotizacion.email, cotizacion.id)
       .then((response) => {
         console.log('Correo enviado');
       })

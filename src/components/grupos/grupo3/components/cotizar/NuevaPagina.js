@@ -12,6 +12,7 @@ import axios from 'axios';
 import { products } from './products';
 import { AppContext } from './AppContext';
 import Alerts from '../../../grupo1/components/common/Alerts';
+import CotizacionService from '../../services/CotizacionService';
 
 /*
 cuanto presion el boton cotizar pongo un input donde tiene que rellenar esto datos
@@ -107,7 +108,6 @@ const NuevaPagina = () => {
         // updateGarantiaExtendida(garantiaExtendida);
 
         // paso datos al back
-        const url = 'http://34.74.194.25:8080/api-gc/cotizaciones/save';
         const cotizacionData = {
           sucursal: 'S-01',
           nombreCliente: nombreC,
@@ -117,7 +117,7 @@ const NuevaPagina = () => {
           precioBase: 1000000,
           garantiaExtendida: garantiaCheck,
         };
-        const response = await axios.post(url, cotizacionData);
+        const response = await CotizacionService.guardarCotizacion(cotizacionData);
         console.log(response.data);
 
         const infoCotizacion = response.data;
