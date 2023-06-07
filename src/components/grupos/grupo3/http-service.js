@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseUrl = 'http://34.74.194.25:8080/api-gc';
+const baseUrl = 'https://api-gc.epicgamer.org/api-gc';
 const urlCompleta = baseUrl;
 
 const HttpService = {

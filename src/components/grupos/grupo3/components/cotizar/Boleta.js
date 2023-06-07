@@ -47,7 +47,7 @@ const Boleta = () => {
       emailReceptor: cotizacion.email,
       idCotizacionVenta: cotizacion.id,
     };
-    axios.post('http://34.74.194.25:8080/api-gc/email/enviar-pdf', cotizacionData)
+    axios.post('https://api-gc.epicgamer.org/api-gc/email/enviar-pdf', cotizacionData)
       .then((response) => {
         console.log('Correo enviado');
       })
