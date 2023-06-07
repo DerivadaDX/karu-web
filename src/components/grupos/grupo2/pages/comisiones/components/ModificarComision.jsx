@@ -25,7 +25,7 @@ const ModificarComision = ({ comision, onEdit }) => {
   const [valoresDelFormulario, setValoresDelFormulario] = useState({
     nombre: '',
     valor: '',
-    categoria_id: '',
+    categoria_id: 0,
     activa: false,
   });
 
@@ -58,7 +58,7 @@ const ModificarComision = ({ comision, onEdit }) => {
       valorNuevo = checked;
     }
 
-    const cambioUnCampoNumerico = name === 'numero';
+    const cambioUnCampoNumerico = name === 'categoria_id';
     if (cambioUnCampoNumerico) {
       valorNuevo = parseInt(value, 10);
     }
@@ -129,7 +129,7 @@ const ModificarComision = ({ comision, onEdit }) => {
               variant="standard"
               margin="dense"
               required
-              inputProps={{ maxLength: 10 }}
+              inputProps={{ maxLength: 5 }}
             />
             <TextField
               id="categoria_id"
@@ -137,6 +137,7 @@ const ModificarComision = ({ comision, onEdit }) => {
               value={valoresDelFormulario.categoria_id}
               label="Categoria"
               onChange={actualizarValorDeFormulario}
+              type="number"
               variant="standard"
               margin="dense"
               required
@@ -193,7 +194,7 @@ ModificarComision.propTypes = {
     id: PropTypes.number,
     nombre: PropTypes.string,
     valor: PropTypes.string,
-    categoria_id: PropTypes.string,
+    categoria_id: PropTypes.number,
     activa: PropTypes.bool,
   }).isRequired,
   onEdit: PropTypes.func.isRequired,
