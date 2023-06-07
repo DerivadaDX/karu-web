@@ -63,6 +63,15 @@ const ModificarComision = ({ comision, onEdit }) => {
       valorNuevo = parseInt(value, 10);
     }
 
+    if (name === 'valor') {
+      // Validar el formato del valor utilizando una expresión regular
+      const regex = /^\d*?(.\d{0,2})?$/;
+      if (!regex.test(value)) {
+        // Si el formato no es válido, no se actualiza el estado
+        return;
+      }
+    }
+
     setValoresDelFormulario((valoresActuales) => ({
       ...valoresActuales,
       [name]: valorNuevo,
