@@ -23,7 +23,7 @@ const Home = () => {
 
   return (
     <>
-      <Box m="5px">
+      <Box m="2px">
         <Box display="flex">
           <Header titulo="Dashboard" subtitulo="Inicio" />
         </Box>
@@ -34,7 +34,6 @@ const Home = () => {
       >
         <iframe
           src={url}
-          frameBorder="0"
           width="1900rem"
           height="900rem"
           style={iframeStyles}
