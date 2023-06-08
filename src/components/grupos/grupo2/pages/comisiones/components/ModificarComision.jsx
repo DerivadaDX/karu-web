@@ -8,7 +8,9 @@ import {
   DialogTitle,
   FormControlLabel,
   IconButton,
+  MenuItem,
   Paper,
+  Select,
   Stack,
   Switch,
   TextField,
@@ -56,11 +58,6 @@ const ModificarComision = ({ comision, onEdit }) => {
     const cambioUnCheckbox = name === 'activa';
     if (cambioUnCheckbox) {
       valorNuevo = checked;
-    }
-
-    const cambioUnCampoNumerico = name === 'categoria_id';
-    if (cambioUnCampoNumerico) {
-      valorNuevo = parseInt(value, 10);
     }
 
     if (name === 'valor') {
@@ -141,17 +138,20 @@ const ModificarComision = ({ comision, onEdit }) => {
               required
               inputProps={{ maxLength: 5 }}
             />
-            <TextField
+            <Select
               id="categoria_id"
               name="categoria_id"
               value={valoresDelFormulario.categoria_id}
               label="Categoria"
               onChange={actualizarValorDeFormulario}
-              type="number"
               variant="standard"
               margin="dense"
-              required
-            />
+            >
+              <MenuItem value={1}>Categoria 1</MenuItem>
+              <MenuItem value={2}>Categoria 2</MenuItem>
+              <MenuItem value={3}>Categoria 3</MenuItem>
+              <MenuItem value={4}>Categoria 4</MenuItem>
+            </Select>
             <FormControlLabel
               id="activa"
               name="activa"
