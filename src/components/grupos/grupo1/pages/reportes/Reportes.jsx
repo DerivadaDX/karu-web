@@ -12,8 +12,6 @@ import LittleTitle from '../../components/common/LittleTitle';
 const idTaller = 'T002';
 
 const Reportes = () => {
-  // El endpoint toma número naturales y le estamos pasando un string 'T002', debería
-  // tomar el 2
   function obtenerPrimerNumero(str) {
     // Expresión regular para encontrar el primer número que comienza con un dígito distinto de cero
     const regex = /[1-9][0-9]*/;
@@ -28,6 +26,25 @@ const Reportes = () => {
     }
     return null;
   }
+
+  const fecha = new Date();
+
+  const anio = fecha.getFullYear();
+  let mes = fecha.getMonth() + 1;
+  let dia = fecha.getDate() + 1;
+
+  if (mes < 10) {
+    mes = `0${mes}`;
+  }
+
+  if (dia < 10) {
+    dia = `0${dia}`;
+  }
+
+  // por defecto se muestra desde el 1 de enero hasta el día siguiente al actual
+  const fechaHasta = `${anio}-${mes}-${dia}`;
+  const fechaDesde = `${anio}-01-01`;
+
   const tallerNro = obtenerPrimerNumero(idTaller);
 
   const urlTurnosPendientes = `http://metabase-insomnia.sytes.net:8080/public/question/6c42987a-9c30-41a3-98b8-f78601aa9007?id_taller=${tallerNro}#hide_parameters=id_taller`;
@@ -38,7 +55,7 @@ const Reportes = () => {
 
   const urlCantPendientes = `http://metabase-insomnia.sytes.net:8080/public/question/2c339de3-0e69-4a52-b294-324f1171da19?id_taller=${tallerNro}#hide_parameters=id_taller`;
 
-  const urlUsoDelTaller = `http://metabase-insomnia.sytes.net:8080/public/question/d7c37022-664f-4199-8876-3fcea079a92f?desde=2023-06-07&hasta=2023-06-17&id_taller=${tallerNro}#hide_parameters=id_taller`;
+  const urlUsoDelTaller = `http://metabase-insomnia.sytes.net:8080/public/question/d7c37022-664f-4199-8876-3fcea079a92f?desde=${fechaDesde}&hasta=${fechaHasta}&id_taller=${tallerNro}#hide_parameters=id_taller`;
 
   const iframeStyles = {
     border: '1px solid #acacac',

@@ -10,6 +10,22 @@ import {
 import Header from '../../components/common/Header';
 
 const idTecnico = '46';
+const fecha = new Date();
+
+const anio = fecha.getFullYear();
+let mes = fecha.getMonth() + 1;
+let dia = fecha.getDate() + 1;
+
+if (mes < 10) {
+  mes = `0${mes}`;
+}
+
+if (dia < 10) {
+  dia = `0${dia}`;
+}
+
+const fechaHasta = `${anio}-${mes}-${dia}`;
+const fechaDesde = `${anio}-01-01`;
 
 const Home = () => {
   const url = `http://metabase-insomnia.sytes.net:8080/public/dashboard/20101951-c26b-4a67-b631-d7e21154bad0?id_tecnico=${idTecnico}#hide_parameters=id_tecnico`;
@@ -20,7 +36,7 @@ const Home = () => {
 
   const turnosParaHoy = `http://metabase-insomnia.sytes.net:8080/public/question/d893955e-933c-42a4-a36e-d5255aae8451?filtro_tecnico=${idTecnico}#hide_parameters=filtro_tecnico`;
 
-  const urlTurnosPorFecha = `http://metabase-insomnia.sytes.net:8080/public/question/30d81a07-05d5-40c0-a48f-cda00779a4b1?Desde=2023-06-01&Hasta=2023-06-23&id_tecnico=${idTecnico}#hide_parameters=id_tecnico`;
+  const urlTurnosPorFecha = `http://metabase-insomnia.sytes.net:8080/public/question/30d81a07-05d5-40c0-a48f-cda00779a4b1?Desde=${fechaDesde}&Hasta=${fechaHasta}&id_tecnico=${idTecnico}#hide_parameters=id_tecnico`;
 
   const iframeStyles = {
     border: '1px solid #acacac',
