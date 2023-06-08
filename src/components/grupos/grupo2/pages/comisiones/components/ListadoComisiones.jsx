@@ -7,6 +7,7 @@ import {
 import MaterialReactTable from 'material-react-table';
 
 import ComisionService from '../services/comision-service';
+import CrearComision from './PopUpCrearComision';
 
 const ListadoComisiones = () => {
   const [comisiones, setComisiones] = useState([]);
@@ -34,6 +35,12 @@ const ListadoComisiones = () => {
       </Typography>
     );
   };
+
+  const renderCrearSucursal = () => (
+    <CrearComision
+      onCreate={obtenerComisiones}
+    />
+  );
 
   const renderFormatoPorcentaje = ({ row }) => {
     const valorDeComision = row.original.valor;
@@ -78,6 +85,7 @@ const ListadoComisiones = () => {
         columns={columnas}
         data={comisiones}
         state={{ isLoading: cargando }}
+        renderTopToolbarCustomActions={renderCrearSucursal}
         enableRowActions
         positionActionsColumn="last"
         defaultColumn={{ minSize: 10, maxSize: 130 }}
