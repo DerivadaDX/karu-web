@@ -17,6 +17,7 @@ import FormularioCliente from './pages/turnos/turno-service-cliente/TurnoService
 import Services from './pages/visualizar-services/Services';
 import FormularioEvaluacionAdmin from './pages/turnos/turno-evaluacion-admin/TurnoEvaluacionParaAdmin';
 import FormularioEvaluacionCliente from './pages/turnos/turno-evaluacion-cliente/TurnoEvaluacionCliente';
+import ChecklistService from './pages/checklist-service/ChecklistService';
 
 const GROUP_1_PAGES_CONFIG = [
   {
@@ -81,6 +82,13 @@ const GROUP_1_PAGES_CONFIG = [
     href: '/turno-evaluación-cliente',
     icon: <TooltipCus icon={<ReviewsIcon />} title="Evaluación cliente" />,
     page: <FormularioEvaluacionCliente />,
+  },
+  {
+    id: 'g1-servicescheck',
+    name: 'CHECK SERVICE',
+    href: '/CHECK_SERVICE',
+    icon: <TooltipCus icon={<ReviewsIcon />} title="Evaluación cliente" />,
+    page: <ChecklistService />,
   },
 ];
 
