@@ -4,7 +4,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/iframe-has-title */
 import * as React from 'react';
-import { useEffect, useRef, useState } from 'react';
 import {
   Box, Divider, Paper, Grid,
 } from '@mui/material';
@@ -20,6 +19,8 @@ const Home = () => {
   const turnosTrabajadosPorTipo = `http://metabase-insomnia.sytes.net:8080/public/question/7d09dcde-6963-43be-b4c9-11764c4190d1?filtro_tecnico=${idTecnico}#hide_parameters=filtro_tecnico`;
 
   const turnosParaHoy = `http://metabase-insomnia.sytes.net:8080/public/question/d893955e-933c-42a4-a36e-d5255aae8451?filtro_tecnico=${idTecnico}#hide_parameters=filtro_tecnico`;
+
+  const urlTurnosPorFecha = `http://metabase-insomnia.sytes.net:8080/public/question/30d81a07-05d5-40c0-a48f-cda00779a4b1?Desde=2023-06-01&Hasta=2023-06-23&id_tecnico=${idTecnico}#hide_parameters=id_tecnico`;
 
   const iframeStyles = {
     border: '1px solid #acacac',
@@ -62,7 +63,7 @@ const Home = () => {
         </Grid>
         <Grid item xs={12}>
           <iframe
-            src={turnosAsignados}
+            src={urlTurnosPorFecha}
             width="100%"
             height="400rem"
             style={iframeStyles}
