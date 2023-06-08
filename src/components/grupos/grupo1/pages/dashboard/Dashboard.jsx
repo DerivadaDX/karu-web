@@ -1,13 +1,26 @@
+/* eslint-disable no-template-curly-in-string */
+/* eslint-disable react/jsx-no-undef */
+/* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/iframe-has-title */
 import * as React from 'react';
-import { Box, Divider } from '@mui/material';
+import {
+  Box, Divider, Paper, Grid,
+} from '@mui/material';
 import Header from '../../components/common/Header';
 
 const idTecnico = '46';
 
 const Home = () => {
-  const url = `http://metabase-insomnia.sytes.net:8080/public/dashboard/20101951-c26b-4a67-b631-d7e21154bad0?id_tecnico=${idTecnico}`;
+  const url = `http://metabase-insomnia.sytes.net:8080/public/dashboard/20101951-c26b-4a67-b631-d7e21154bad0?id_tecnico=${idTecnico}#hide_parameters=id_tecnico`;
+
+  const turnosAsignados = `http://metabase-insomnia.sytes.net:8080/public/question/ac4bdbd5-bad0-4f58-ba52-b81df3ce14e5?filtro_tecnico=${idTecnico}#hide_parameters=filtro_tecnico`;
+
+  const turnosTrabajadosPorTipo = `http://metabase-insomnia.sytes.net:8080/public/question/7d09dcde-6963-43be-b4c9-11764c4190d1?filtro_tecnico=${idTecnico}#hide_parameters=filtro_tecnico`;
+
+  const turnosParaHoy = `http://metabase-insomnia.sytes.net:8080/public/question/d893955e-933c-42a4-a36e-d5255aae8451?filtro_tecnico=${idTecnico}#hide_parameters=filtro_tecnico`;
+
+  const urlTurnosPorFecha = `http://metabase-insomnia.sytes.net:8080/public/question/30d81a07-05d5-40c0-a48f-cda00779a4b1?Desde=2023-06-01&Hasta=2023-06-23&id_tecnico=${idTecnico}#hide_parameters=id_tecnico`;
 
   const iframeStyles = {
     border: '1px solid #acacac',
@@ -23,17 +36,40 @@ const Home = () => {
         </Box>
         <Divider sx={{ bgcolor: 'rgba(0, 0, 0, 0.7)' }} />
       </Box>
-      <Box sx={{
-        display: 'flex', justifyContent: 'center', alignItems: 'center', margin: 2,
-      }}
-      >
-        <iframe
-          src={url}
-          width="1900rem"
-          height="900rem"
-          style={iframeStyles}
-        />
-      </Box>
+      <Grid container spacing={2} sx={{ padding: 2 }}>
+        <Grid item xs={12} sm={12} md={6}>
+          <iframe
+            src={turnosParaHoy}
+            width="100%"
+            height="450rem"
+            style={iframeStyles}
+          />
+        </Grid>
+        <Grid item xs={12} sm={12} md={6}>
+          <iframe
+            src={turnosTrabajadosPorTipo}
+            width="100%"
+            height="450rem"
+            style={iframeStyles}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <iframe
+            src={turnosAsignados}
+            width="100%"
+            height="400rem"
+            style={iframeStyles}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <iframe
+            src={urlTurnosPorFecha}
+            width="100%"
+            height="400rem"
+            style={iframeStyles}
+          />
+        </Grid>
+      </Grid>
     </>
   );
 };
