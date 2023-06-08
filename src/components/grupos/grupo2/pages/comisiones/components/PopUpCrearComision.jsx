@@ -24,7 +24,7 @@ const PopUpCrearComision = ({ onCreate }) => {
   const [valoresDelFormulario, setValoresDelFormulario] = useState({
     nombre: '',
     valor: '',
-    categoria_id: 0,
+    categoria_id: '',
     activa: false,
   });
 
@@ -34,8 +34,8 @@ const PopUpCrearComision = ({ onCreate }) => {
       id: '',
       nombre: '',
       valor: '',
-      categoria_id: 1,
-      activa: '',
+      categoria_id: '',
+      activa: false,
     });
   };
 
@@ -80,14 +80,10 @@ const PopUpCrearComision = ({ onCreate }) => {
       .then(cambiarVisibilidadDePopUpCreacionExitosa);
   };
 
-  const finalizarModificacion = () => {
-    const comisionModificada = {
-      ...valoresDelFormulario,
-    };
-
+  const finalizarCreacion = () => {
     cambiarVisibilidadDePopUpCreacionExitosa();
     cambiarVisibilidadDePopUpCrearComision();
-    onCreate(comisionModificada);
+    onCreate();
   };
 
   return (
@@ -141,7 +137,10 @@ const PopUpCrearComision = ({ onCreate }) => {
               onChange={actualizarValorDeFormulario}
               variant="standard"
               margin="dense"
+              required
+              style={{ marginTop: '24px' }}
             >
+              <MenuItem disabled value="">Seleccionar categoría</MenuItem>
               <MenuItem value={1}>Categoria 1</MenuItem>
               <MenuItem value={2}>Categoria 2</MenuItem>
               <MenuItem value={3}>Categoria 3</MenuItem>
@@ -179,13 +178,13 @@ const PopUpCrearComision = ({ onCreate }) => {
 
       <Dialog
         open={mostrarPopUpCreacionExitosa}
-        onClose={finalizarModificacion}
+        onClose={finalizarCreacion}
       >
         <DialogTitle id="alert-dialog-title">
           ¡Modificación exitosa!
         </DialogTitle>
         <DialogActions>
-          <Button onClick={finalizarModificacion}>
+          <Button onClick={finalizarCreacion}>
             Cerrar
           </Button>
         </DialogActions>
@@ -195,13 +194,6 @@ const PopUpCrearComision = ({ onCreate }) => {
 };
 
 PopUpCrearComision.propTypes = {
-  comision: PropTypes.shape({
-    id: PropTypes.number,
-    nombre: PropTypes.string,
-    valor: PropTypes.string,
-    categoria_id: PropTypes.number,
-    activa: PropTypes.bool,
-  }).isRequired,
   onCreate: PropTypes.func.isRequired,
 };
 

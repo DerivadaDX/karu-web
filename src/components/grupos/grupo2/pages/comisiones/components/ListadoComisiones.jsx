@@ -36,7 +36,7 @@ const ListadoComisiones = () => {
     );
   };
 
-  const renderCrearSucursal = () => (
+  const renderCrearComision = () => (
     <CrearComision
       onCreate={obtenerComisiones}
     />
@@ -85,7 +85,7 @@ const ListadoComisiones = () => {
         columns={columnas}
         data={comisiones}
         state={{ isLoading: cargando }}
-        renderTopToolbarCustomActions={renderCrearSucursal}
+        renderTopToolbarCustomActions={renderCrearComision}
         enableRowActions
         positionActionsColumn="last"
         defaultColumn={{ minSize: 10, maxSize: 130 }}
