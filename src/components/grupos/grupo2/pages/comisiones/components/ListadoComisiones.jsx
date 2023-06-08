@@ -7,7 +7,7 @@ import {
 import MaterialReactTable from 'material-react-table';
 
 import ComisionService from '../services/comision-service';
-import ModificarComision from './ModificarComision';
+import PopUpModificarComision from './PopUpModificarComision';
 
 const ListadoComisiones = () => {
   const [comisiones, setComisiones] = useState([]);
@@ -58,7 +58,7 @@ const ListadoComisiones = () => {
     const comision = row.original;
 
     return (
-      <ModificarComision
+      <PopUpModificarComision
         comision={comision}
         onEdit={actualizarDatosDeComision}
       />

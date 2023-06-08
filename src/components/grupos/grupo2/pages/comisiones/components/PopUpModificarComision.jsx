@@ -21,7 +21,7 @@ import PropTypes from 'prop-types';
 
 import ComisionService from '../services/comision-service';
 
-const ModificarComision = ({ comision, onEdit }) => {
+const PopUpModificarComision = ({ comision, onEdit }) => {
   const [mostrarPopUpModificarComision, setMostrarPopUpModificarComision] = useState(false);
   const [mostrarPopUpModificacionExitosa, setMostrarPopUpModificacionExitosa] = useState(false);
   const [valoresDelFormulario, setValoresDelFormulario] = useState({
@@ -199,7 +199,7 @@ const ModificarComision = ({ comision, onEdit }) => {
   );
 };
 
-ModificarComision.propTypes = {
+PopUpModificarComision.propTypes = {
   comision: PropTypes.shape({
     id: PropTypes.number,
     nombre: PropTypes.string,
@@ -210,4 +210,4 @@ ModificarComision.propTypes = {
   onEdit: PropTypes.func.isRequired,
 };
 
-export default ModificarComision;
+export default PopUpModificarComision;
