@@ -31,7 +31,7 @@ const ChecklistService = (props) => {
   const {
     idTurnoPadre, setOpen, open, actualizar, setActualizar,
   } = props;
-  const idTurno = 252;
+  const idTurno = 4;
 
   const [services, setServices] = useState({
     tareas: [],
@@ -107,11 +107,12 @@ const ChecklistService = (props) => {
   };
 
   const getPrecio = () => {
-    getPrecioService(idTurno, { id_tasks_remplazadas: JSON.stringify(services.tareas) })
+    postPrecioService(idTurno, { id_tasks_remplazadas: JSON.stringify(services.tareas) })
       .then((response) => {
         setPrecioTotal(response.data);
         setLoading(false);
         setAlertType('');
+        return response.data;
       })
       .catch((error) => {
         setAlertMessage(error.response.data.error);

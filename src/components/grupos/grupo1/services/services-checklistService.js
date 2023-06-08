@@ -4,20 +4,22 @@ import axios from 'axios';
 
 const url = 'https://autotech2.onrender.com/service';
 
-const getChecklistService = async (idTurno) => axios.get(`${url}/listar/checklist-turno/${idTurno}`);
+const getChecklistService = async (idTurno) => axios.get(`${url}/listar/checklist-turno/${idTurno}/`);
+
+const getPrecioService2 = async (idTurno, tareas) => axios.get(`${url}/precio/${idTurno}/${tareas}/`);
 
 const getPrecioService = async (idTurno, params) => {
   try {
-    const response = await axios.get(`${url}/service/precio/${idTurno}/`, { params });
+    const response = await axios.get(`${url}/precio/${idTurno}/`, { params });
     return response.data;
   } catch (error) {
     throw error;
   }
 };
 
-const postPrecioService = async (params) => axios({
+const postPrecioService = async (idTurno, params) => axios({
   method: 'post',
-  url: `${url}/precio/`,
+  url: `${url}/precio/${idTurno}/`,
   data: {
     id_turno: params.id_turno,
     id_tasks_remplazadas: params.id_tasks_remplazadas,
