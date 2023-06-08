@@ -13,6 +13,7 @@ import { products } from './products';
 import { AppContext } from './AppContext';
 import Alerts from '../../../grupo1/components/common/Alerts';
 import CotizacionService from '../../services/CotizacionService';
+import VehiculoService from '../../services/VehiculoService';
 
 /*
 cuanto presion el boton cotizar pongo un input donde tiene que rellenar esto datos
@@ -63,7 +64,7 @@ const NuevaPagina = () => {
   // Dentro de tu componente o función
   const getProductData = async (product) => {
     try {
-      const response = await axios.get(`${apiUrl}${product}`);
+      const response = await VehiculoService.obtenerVehiculo(product);
       if (response) {
         // const data = await response.json();
         // Manejar los datos de respuesta aquí

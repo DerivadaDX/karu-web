@@ -9,7 +9,6 @@ import React, { useState, useEffect, useContext } from 'react';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 import VehiculoService from '../../services/VehiculoService';
 
 const Cotizar = () => {
