@@ -19,10 +19,7 @@ const FormularioCliente = () => {
   const [patenteTurno, setPatente] = useState();
   const [fecha, setFecha] = useState();
   const [hora, setHora] = useState();
-  // Para mostrar en la pantalla lo que pone el cliente
   const [kilometros, setKilometros] = useState('');
-  // Para crear el turno, redondeado
-  const [frecuenciaKm, setFrecuenciaKM] = useState('');
   // Para los mensajes de confirmar o avisar que complete todos los campos
   const [openPopupNoSeleccion, setOpenPopupNoSeleccion] = useState(false);
   const [openPopupSeleccion, setOpenPopupSeleccion] = useState(false);
@@ -35,11 +32,9 @@ const FormularioCliente = () => {
 
   const [msjError, setMsjError] = useState('');
 
-  const marca = 'generico';
-  const modelo = 'generico';
-  const endPointDisponibilidad = `https://autotech2.onrender.com/turnos/dias-horarios-disponibles-service/${taller}/${marca}/${modelo}/${frecuenciaKm}/`;
+  const endPointDisponibilidad = `https://autotech2.onrender.com/turnos/dias-horarios-disponibles-service/${taller}/${patenteTurno}/${kilometros}/`;
   // Para setear el límite del calendario
-  const limite = 31;
+  const limite = 31; // El back devuelve 31 días, me adapté a eso
 
   // Para el manejo de errores de la API para crear el turno
   const [openError, setOpenError] = useState(false);
@@ -61,15 +56,14 @@ const FormularioCliente = () => {
     const val = e.target.value;
 
     if (e.target.validity.valid) {
-      if (ValidarKm.isKilometroValid(val)) {
+      // if (ValidarKm.isKilometroValid(val)) {
+      if (val >= 5000) {
         setIsKmValido(true);
       } else {
         setIsKmValido(false);
       }
       if (ValidarKm.isKmNros(val)) {
         setKilometros(val);
-        const km = ValidarKm.redondearKm(val);
-        setFrecuenciaKM(km);
       }
     } else if (val === '') {
       setKilometros(val);
@@ -81,7 +75,7 @@ const FormularioCliente = () => {
     if (msjError !== '') {
       setOpenPopupNoSeleccion(true);
     } else if (
-      taller && patenteTurno && isPatenteValida && fecha && hora && frecuenciaKm && isKmValido) {
+      taller && patenteTurno && isPatenteValida && fecha && hora && kilometros && isKmValido) {
       try {
         await axios({
           method: 'post',
@@ -90,7 +84,7 @@ const FormularioCliente = () => {
             patente: patenteTurno,
             fecha_inicio: fecha,
             hora_inicio: hora,
-            frecuencia_km: frecuenciaKm,
+            frecuencia_km: kilometros,
             taller_id: taller,
           },
         });
@@ -140,6 +134,7 @@ const FormularioCliente = () => {
               name="patente"
               inputProps={{ minLength: 6, maxLength: 7 }}
               onChange={guardarPatente}
+              onSelect={guardarPatente}
             />
             {!isPatenteValida && <Alerts alertType="warning" description="Ejemplos de patentes válidas: AA111AA o ABC123" title="Patente inválida" />}
             <TextField
@@ -158,7 +153,7 @@ const FormularioCliente = () => {
             {!isKmValido && <Alerts alertType="warning" description="Coberturas válidas: de 5000 a 200000 km." title="Kilometraje inválido" />}
             <Talleres setTallerSeleccionado={setTaller} />
             {patenteTurno
-              && frecuenciaKm && taller
+              && kilometros && taller
               && (
                 <Disponibilidad
                   endPoint={endPointDisponibilidad}
