@@ -146,6 +146,7 @@ const PopUpModificarComision = ({ comision, onEdit }) => {
               onChange={actualizarValorDeFormulario}
               variant="standard"
               margin="dense"
+              style={{ marginTop: '24px' }}
             >
               <MenuItem value={1}>Categoria 1</MenuItem>
               <MenuItem value={2}>Categoria 2</MenuItem>
