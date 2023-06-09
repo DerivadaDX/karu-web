@@ -6,7 +6,7 @@ const url = 'https://autotech2.onrender.com/service';
 
 const getChecklistService = async (idTurno) => axios.get(`${url}/listar/checklist-turno/${idTurno}/`);
 
-const getPrecioService2 = async (idTurno, tareas) => axios.get(`${url}/precio/${idTurno}/${tareas}/`);
+const getPrecioService2 = async (idTurno, tareas) => axios.get(`${url}/precio2/${idTurno}/${tareas}/`);
 
 const getPrecioService = async (idTurno, params) => {
   try {
@@ -39,6 +39,7 @@ export {
   // eslint-disable-next-line import/prefer-default-export
   getChecklistService,
   getPrecioService,
+  getPrecioService2,
   postCrearRegistroServices,
   postPrecioService,
 };

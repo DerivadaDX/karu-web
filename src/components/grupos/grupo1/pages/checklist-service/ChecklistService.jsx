@@ -21,7 +21,9 @@ import MaterialReactTable from 'material-react-table';
 import { MRT_Localization_ES } from 'material-react-table/locales/es';
 import Alerts from '../../components/common/Alerts';
 import {
-  getChecklistService, getPrecioService, postCrearRegistroServices, postPrecioService,
+  getChecklistService, getPrecioService,
+  postCrearRegistroServices, postPrecioService,
+  getPrecioService2,
 } from '../../services/services-checklistService';
 // import reparacion from './reparacion.json';
 import Popup from '../../components/common/DialogPopup';
@@ -107,12 +109,11 @@ const ChecklistService = (props) => {
   };
 
   const getPrecio = () => {
-    postPrecioService(idTurno, { id_tasks_remplazadas: JSON.stringify(services.tareas) })
+    getPrecioService2(idTurno, JSON.stringify(services.tareas))
       .then((response) => {
-        setPrecioTotal(response.data);
+        setPrecioTotal(response.data.precio);
         setLoading(false);
         setAlertType('');
-        return response.data;
       })
       .catch((error) => {
         setAlertMessage(error.response.data.error);
@@ -147,16 +148,15 @@ const ChecklistService = (props) => {
 
     if (checked) {
       services.tareas.push(idTask);
-      const nuevoPrecioTotal = getPrecio();
-      setPrecioTotal(nuevoPrecioTotal);
     } else {
       const index = services.tareas.indexOf(idTask);
       if (index >= 0) {
         services.tareas.splice(index, 1);
-        const nuevoPrecioTotal = getPrecio();
-        setPrecioTotal(nuevoPrecioTotal);
       }
     }
+    getPrecio();
+
+    console.log(precioTotal);
   };
 
   const renderRowActions = ({ row }) => (
@@ -200,8 +200,8 @@ const ChecklistService = (props) => {
 
   useEffect(() => {
     getChecklist();
-    getPrecio();
-  }, []);
+    console.log(precioTotal);
+  }, [getPrecio()]);
 
   return (
     <>
