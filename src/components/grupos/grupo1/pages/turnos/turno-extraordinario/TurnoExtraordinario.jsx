@@ -42,6 +42,10 @@ const FormularioExtraordinario = (props) => {
   const [patenteReparacion, setPatente] = useState();
   const [fecha, setFecha] = useState();
   const [hora, setHora] = useState();
+
+  const [loading, setLoading] = useState(false);
+  const [openPopupCargando, setOpenPopupCargando] = useState(false);
+
   // Para los mensajes de confirmar o avisar que complete todos los campos
   const [openPopupNoSeleccion, setOpenPopupNoSeleccion] = useState(false);
   const [openPopupSeleccion, setOpenPopupSeleccion] = useState(false);
@@ -77,6 +81,8 @@ const FormularioExtraordinario = (props) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
+      setOpenPopupCargando(true);
+      setLoading(true);
       if (patenteReparacion && isValid && fecha && hora) {
         await axios({
           method: 'post',
@@ -105,6 +111,9 @@ const FormularioExtraordinario = (props) => {
         setAlertTitulo('Ha ocurrido un error');
         setAlertMensaje(error.response.data);
       }
+    } finally {
+      setLoading(false);
+      setOpenPopupCargando(false);
     }
   };
 
@@ -166,6 +175,7 @@ const FormularioExtraordinario = (props) => {
                 variant="contained"
                 color="secondary"
                 size="medium"
+                disabled={loading}
               >
                 Crear Turno
               </Button>
@@ -182,6 +192,16 @@ const FormularioExtraordinario = (props) => {
               </Button>
             </Box>
           </Box>
+
+          {loading && (
+          <Popup
+            title={<LittleHeader titulo="Enviando datos" />}
+            description="Estamos procesando los datos para confirmar su turno. Por favor, espere un momento..."
+            openDialog={openPopupCargando}
+            setOpenDialog={setOpenPopupCargando}
+          />
+          )}
+
           <Popup
             title={<LittleHeader titulo="Error en datos requeridos." />}
             description="Por favor complete todos los campos y verifique que la patente sea correcta."

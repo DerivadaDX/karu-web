@@ -20,6 +20,10 @@ const FormularioCliente = () => {
   const [fecha, setFecha] = useState();
   const [hora, setHora] = useState();
   const [kilometros, setKilometros] = useState('');
+
+  const [loading, setLoading] = useState(false);
+  const [openPopupCargando, setOpenPopupCargando] = useState(false);
+
   // Para los mensajes de confirmar o avisar que complete todos los campos
   const [openPopupNoSeleccion, setOpenPopupNoSeleccion] = useState(false);
   const [openPopupSeleccion, setOpenPopupSeleccion] = useState(false);
@@ -79,6 +83,8 @@ const FormularioCliente = () => {
     } else if (
       taller && patenteTurno && isPatenteValida && fecha && hora && kilometros && isKmValido) {
       try {
+        setOpenPopupCargando(true);
+        setLoading(true);
         await axios({
           method: 'post',
           url: 'https://autotech2.onrender.com/turnos/crear-turno-service/',
@@ -104,6 +110,9 @@ const FormularioCliente = () => {
           setAlertTitulo('Ha ocurrido un error');
           setAlertMensaje('Si el problema persiste, comuníquese con insomnia.front@gmail.com');
         }
+      } finally {
+        setLoading(false);
+        setOpenPopupCargando(false);
       }
     } else {
       setOpenPopupNoSeleccion(true);
@@ -209,11 +218,20 @@ const FormularioCliente = () => {
               fullWidth
               variant="contained"
               color="secondary"
+              disabled={loading}
               sx={{ mt: 3, mb: 2 }}
             >
               Reservar Turno
             </Button>
           </Box>
+          {loading && (
+          <Popup
+            title={<LittleHeader titulo="Enviando datos" />}
+            description="Estamos procesando los datos para confirmar su turno. Por favor, espere un momento..."
+            openDialog={openPopupCargando}
+            setOpenDialog={setOpenPopupCargando}
+          />
+          )}
           <Popup
             title={<LittleHeader titulo="Error en datos requeridos" />}
             description="Por favor complete todos los campos y verifique la correctitud de la patente y el kilometraje."

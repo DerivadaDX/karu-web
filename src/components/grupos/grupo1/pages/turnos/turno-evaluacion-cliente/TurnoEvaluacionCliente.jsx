@@ -18,6 +18,10 @@ const FormularioEvaluacionCliente = () => {
   const [patenteTurno, setPatente] = useState();
   const [fecha, setFecha] = useState();
   const [hora, setHora] = useState();
+
+  const [loading, setLoading] = useState(false);
+  const [openPopupCargando, setOpenPopupCargando] = useState(false);
+
   // Para los mensajes de confirmar o avisar que complete todos los campos
   const [openPopupNoSeleccion, setOpenPopupNoSeleccion] = useState(false);
   const [openPopupSeleccion, setOpenPopupSeleccion] = useState(false);
@@ -55,6 +59,8 @@ const FormularioEvaluacionCliente = () => {
     } else if (
       taller && patenteTurno && isPatenteValida && fecha && hora) {
       try {
+        setOpenPopupCargando(true);
+        setLoading(true);
         await axios({
           method: 'post',
           url: 'https://autotech2.onrender.com/turnos/crear-turno-evaluacion-web/',
@@ -73,12 +79,19 @@ const FormularioEvaluacionCliente = () => {
           setAlertError('error');
           setAlertTitulo('Ha ocurrido un problema');
           setAlertMensaje(responseData);
+          setOpenPopupCargando(false);
+          setLoading(false);
         } else {
           setOpenError(true);
           setAlertError('error');
           setAlertTitulo('Ha ocurrido un error');
           setAlertMensaje('Si el problema persiste, comuniquese con insomnia.front@gmail.com');
+          setOpenPopupCargando(false);
+          setLoading(false);
         }
+      } finally {
+        setLoading(false);
+        setOpenPopupCargando(false);
       }
     } else {
       setOpenPopupNoSeleccion(true);
@@ -133,10 +146,20 @@ const FormularioEvaluacionCliente = () => {
               variant="contained"
               color="secondary"
               sx={{ mt: 3, mb: 2 }}
+              disabled={loading}
             >
               Reservar Turno
             </Button>
           </Box>
+          {loading && (
+          <Popup
+            title={<LittleHeader titulo="Enviando datos" />}
+            description="Estamos procesando los datos para confirmar su turno. Por favor, espere un momento..."
+            openDialog={openPopupCargando}
+            setOpenDialog={setOpenPopupCargando}
+          />
+          )}
+
           <Popup
             title={<LittleHeader titulo="Error en datos requeridos" />}
             description="Por favor complete todos los campos y verifique la correctitud de la patente."
