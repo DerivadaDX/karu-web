@@ -10,7 +10,9 @@ import {
 
 import MaterialReactTable from 'material-react-table';
 import { MRT_Localization_ES } from 'material-react-table/locales/es';
-import { Button, Box } from '@mui/material';
+import { Button, Box, Tooltip } from '@mui/material';
+import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
+import { CsvBuilder } from 'filefy';
 import Alerts from '../../components/common/Alerts';
 import { getTurnosTerminados } from '../../services/services-tecnicos';
 import Popup from '../../components/common/DialogPopup';
@@ -100,6 +102,44 @@ const TablaTurnosTerminados = (props) => {
     setIdRegistro(rowRegistro.id_turno);
     setOpenVerRegistro(true);
   };
+  const exportTableData = () => {
+    const allData = turnosTerminados.map((rowData) => [
+      rowData.id_turno,
+      rowData.patente,
+      rowData.tipo,
+      rowData.fecha_inicio,
+      rowData.hora_inicio,
+      rowData.fecha_fin,
+      rowData.hora_fin,
+      rowData.tecnico_id,
+    ]);
+
+    new CsvBuilder('turnos-terminados.csv')
+      .setColumns(columnas.map((col) => col.header))
+      .addRows(allData)
+      .exportFile();
+  };
+
+  const exportarDatos = () => (
+    <Tooltip title="Exportar datos" placement="right">
+      <Button
+        variant="contained"
+        startIcon={<FileDownloadOutlinedIcon />}
+        sx={{
+          fontSize: {
+            sm: '0.7rem',
+            maxWidth: '300px',
+            maxHeight: '40px',
+          },
+        }}
+        onClick={() => {
+          exportTableData();
+        }}
+      >
+        Exportar datos
+      </Button>
+    </Tooltip>
+  );
 
   const renderRowActions = ({ row }) => (
     <Box
@@ -163,6 +203,7 @@ const TablaTurnosTerminados = (props) => {
         data={turnosTerminados}
         state={{ isLoading: loading }}
         positionActionsColumn="last"
+        renderTopToolbarCustomActions={exportarDatos}
         enableRowActions
         renderRowActions={renderRowActions}
         renderEmptyRowsFallback={noData}
