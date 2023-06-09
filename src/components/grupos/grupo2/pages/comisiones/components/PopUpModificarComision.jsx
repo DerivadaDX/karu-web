@@ -136,7 +136,11 @@ const PopUpModificarComision = ({ comision, onEdit }) => {
               variant="standard"
               margin="dense"
               required
-              inputProps={{ maxLength: 5 }}
+              type="number"
+              inputProps={{
+                inputMode: 'decimal',
+                step: '0.01',
+              }}
             />
             <Select
               id="categoria_id"
