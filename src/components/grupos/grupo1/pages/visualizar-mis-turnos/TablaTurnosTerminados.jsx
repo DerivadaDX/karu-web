@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable camelcase */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/no-unescaped-entities */
@@ -15,6 +16,7 @@ import { getTurnosTerminados } from '../../services/services-tecnicos';
 import Popup from '../../components/common/DialogPopup';
 import LittleHeader from '../../components/common/LittleHeader';
 import DetalleTurno from '../../components/common/DetalleTurno';
+import { VisualizacionRegistroChecklist } from '../visualizar-registros-checklists/VisualizacionRegistrosChecklist';
 
 const TablaTurnosTerminados = (props) => {
   const { idTecnico } = props;
@@ -26,9 +28,11 @@ const TablaTurnosTerminados = (props) => {
   const [openVerMas, setOpenVerMas] = useState(false);
   const [rowDetalle, setRowDetalle] = useState({});
 
-  // Para abrir el popup con la checklist
-  const [idTurno, setIdTurno] = useState(0);
-  const [openChecklist, setOpenChecklist] = useState(false);
+  // Para ver registro
+  const [registroTipo, setRegistroTipo] = useState('');
+  const [idRegistro, setIdRegistro] = useState(0);
+  const [rowTurno, setRowTurno] = useState({});
+  const [openVerRegistro, setOpenVerRegistro] = useState(false);
 
   // alertas de la API
   const [alertType, setAlertType] = useState('');
@@ -61,10 +65,6 @@ const TablaTurnosTerminados = (props) => {
         accessorKey: 'fecha_fin',
         header: 'Fecha de fin',
       },
-      {
-        accessorKey: 'hora_fin',
-        header: 'Hora de fin',
-      },
     ],
     [],
   );
@@ -90,6 +90,17 @@ const TablaTurnosTerminados = (props) => {
     setAlertType('');
   }, [traerTurnos, actualizarTabla]);
 
+  useEffect(() => {
+    console.log(idRegistro);
+    console.log(registroTipo);
+  }, [idRegistro, registroTipo]);
+
+  const seleccionarChecklist = (rowRegistro) => {
+    setRegistroTipo(rowRegistro.tipo);
+    setIdRegistro(rowRegistro.id_turno);
+    setOpenVerRegistro(true);
+  };
+
   const renderRowActions = ({ row }) => (
     <Box
       style={{ display: 'flex', flexWrap: 'nowrap', gap: '0.5rem' }}
@@ -107,6 +118,19 @@ const TablaTurnosTerminados = (props) => {
         Ver
         <br />
         más
+      </Button>
+      <Button
+        variant="contained"
+        size="small"
+        color="secondary"
+        sx={{ fontSize: '0.7em' }}
+        onClick={() => {
+          seleccionarChecklist(row.original);
+        }}
+      >
+        Ver
+        <br />
+        registro
       </Button>
     </Box>
   );
@@ -170,14 +194,12 @@ const TablaTurnosTerminados = (props) => {
       >
         <DetalleTurno openDialog={openVerMas} setOpenDialog={setOpenVerMas} row={rowDetalle} />
       </Popup>
-      <Popup
-        title="Checklist"
-        openDialog={openChecklist}
-        setOpenDialog={setOpenChecklist}
+      <VisualizacionRegistroChecklist
+        openPopup={openVerRegistro}
+        value={registroTipo}
+        setOpenPopup={setOpenVerRegistro}
         disableBackdropClick
-      >
-        Checklist
-      </Popup>
+      />
     </>
   );
 };
