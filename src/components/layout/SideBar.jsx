@@ -42,32 +42,6 @@ const styles = {
   },
 };
 
-const filtrarElementosSoloUrl = (menuItemConfig) => {
-  const esSoloUrl = menuItemConfig.soloUrl === true;
-
-  return !esSoloUrl;
-};
-
-const buildCollapsableMenu = (menuItemConfig) => {
-  const iconIsTooltip = menuItemConfig.icon.name === TooltipCus.name;
-  const icon = !iconIsTooltip
-    ? (
-      <Tooltip title={menuItemConfig.name} placement="right">
-        <Box>{menuItemConfig.icon}</Box>
-      </Tooltip>
-    )
-    : menuItemConfig.icon;
-
-  return (
-    <ListItemButton key={menuItemConfig.id} sx={styles.listItemButton} href={menuItemConfig.href}>
-      <ListItemIcon>
-        {icon}
-      </ListItemIcon>
-      <ListItemText primary={menuItemConfig.name} />
-    </ListItemButton>
-  );
-};
-
 const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
   const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(({ theme }) => ({
     '& .MuiDrawer-paper': {
@@ -100,6 +74,34 @@ const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
   const toggleAdministrationMenu = () => setOpenAdminMenu(!openAdminMenu);
   const toggleCommercialAreaMenu = () => setOpenCommercialMenu(!openCommercialMenu);
   const toggleTechnicalAreaMenu = () => setOpenTechnicalMenu(!openTechnicalMenu);
+
+  const filtrarElementosPorRolDeUsuario = (menuItemConfig) => {
+    if (menuItemConfig.roles === undefined) return false;
+
+    const usuarioPuedeAcceder = menuItemConfig.roles.includes(rolDeUsuario);
+
+    return usuarioPuedeAcceder;
+  };
+
+  const buildCollapsableMenu = (menuItemConfig) => {
+    const iconIsTooltip = menuItemConfig.icon.name === TooltipCus.name;
+    const icon = !iconIsTooltip
+      ? (
+        <Tooltip title={menuItemConfig.name} placement="right">
+          <Box>{menuItemConfig.icon}</Box>
+        </Tooltip>
+      )
+      : menuItemConfig.icon;
+
+    return (
+      <ListItemButton key={menuItemConfig.id} sx={styles.listItemButton} href={menuItemConfig.href}>
+        <ListItemIcon>
+          {icon}
+        </ListItemIcon>
+        <ListItemText primary={menuItemConfig.name} />
+      </ListItemButton>
+    );
+  };
 
   return (
     <Drawer variant="permanent" open={open}>
