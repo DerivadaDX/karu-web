@@ -1,13 +1,13 @@
 const Roles = Object.freeze({
   CLIENTE: 'cliente',
-  ADMINISTRACION: 'administración',
-  COMERCIAL: 'comercial',
+  ADMINISTRADOR: 'administración',
   TECNICO: 'técnico',
   VENDEDOR: 'vendedor',
-  SUPERVISOR_DE_TALLER: 'supervisor de taller',
-  SUPERVISOR_DE_VENTAS: 'supervisar de ventas',
-  GERENTE: 'gerente',
-  ADMIN: 'admin',
+  SUPERVISOR_TECNICO: 'supervisor de taller',
+  SUPERVISOR_VENTAS: 'supervisar de ventas',
+  GERENTE_SUCURSAL: 'gerente',
+  GERENTE_GENERAL: 'gerente',
+  IT: 'admin',
 });
 
 export default Roles;
