@@ -123,8 +123,16 @@ const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
         </ListItemButton>
         <Collapse in={openAdminMenu} timeout="auto" unmountOnExit>
           <List disablePadding>
-            {GROUP_2_PAGES_CONFIG.filter(filtrarElementosSoloUrl).map(buildCollapsableMenu)}
-            {GROUP_4_PAGES_CONFIG.filter(filtrarElementosSoloUrl).map(buildCollapsableMenu)}
+            {
+              GROUP_2_PAGES_CONFIG
+                .filter(filtrarElementosSoloUrl)
+                .map(buildCollapsableMenu)
+            }
+            {
+              GROUP_4_PAGES_CONFIG
+                .filter(filtrarElementosSoloUrl)
+                .map(buildCollapsableMenu)
+            }
           </List>
         </Collapse>
         <ListItemButton onClick={toggleTechnicalAreaMenu}>
@@ -138,7 +146,11 @@ const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
         </ListItemButton>
         <Collapse in={openTechnicalMenu} timeout="auto" unmountOnExit>
           <List disablePadding>
-            {GROUP_1_PAGES_CONFIG.filter(filtrarElementosSoloUrl).map(buildCollapsableMenu)}
+            {
+              GROUP_1_PAGES_CONFIG
+                .filter(filtrarElementosSoloUrl)
+                .map(buildCollapsableMenu)
+            }
           </List>
         </Collapse>
         <ListItemButton onClick={toggleCommercialAreaMenu}>
@@ -152,7 +164,11 @@ const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
         </ListItemButton>
         <Collapse in={openCommercialMenu} timeout="auto" unmountOnExit>
           <List disablePadding>
-            {GROUP_3_PAGES_CONFIG.filter(filtrarElementosSoloUrl).map(buildCollapsableMenu)}
+            {
+              GROUP_3_PAGES_CONFIG
+                .filter(filtrarElementosSoloUrl)
+                .map(buildCollapsableMenu)
+            }
           </List>
         </Collapse>
       </List>
