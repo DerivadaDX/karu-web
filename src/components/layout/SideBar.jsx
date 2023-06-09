@@ -24,6 +24,7 @@ import {
 } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 
+import { UserContext } from '../grupos/grupo4/context/UsersContext';
 import TooltipCus from '../grupos/grupo1/components/common/Tooltip';
 import GROUP_1_PAGES_CONFIG from '../grupos/grupo1/pagesConfig';
 import GROUP_2_PAGES_CONFIG from '../grupos/grupo2/pagesConfig';
@@ -66,6 +67,7 @@ const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
     },
   }));
 
+  const rolDeUsuario = useContext(UserContext).userType || 'cliente';
 
   const [openAdminMenu, setOpenAdminMenu] = useState(false);
   const [openCommercialMenu, setOpenCommercialMenu] = useState(false);
@@ -74,6 +76,12 @@ const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
   const toggleAdministrationMenu = () => setOpenAdminMenu(!openAdminMenu);
   const toggleCommercialAreaMenu = () => setOpenCommercialMenu(!openCommercialMenu);
   const toggleTechnicalAreaMenu = () => setOpenTechnicalMenu(!openTechnicalMenu);
+
+  const filtrarElementosSoloUrl = (menuItemConfig) => {
+    const esSoloUrl = menuItemConfig.soloUrl === true;
+
+    return !esSoloUrl;
+  };
 
   const filtrarElementosPorRolDeUsuario = (menuItemConfig) => {
     if (menuItemConfig.roles === undefined) return false;
@@ -126,11 +134,13 @@ const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
             {
               GROUP_2_PAGES_CONFIG
                 .filter(filtrarElementosSoloUrl)
+                .filter(filtrarElementosPorRolDeUsuario)
                 .map(buildCollapsableMenu)
             }
             {
               GROUP_4_PAGES_CONFIG
                 .filter(filtrarElementosSoloUrl)
+                .filter(filtrarElementosPorRolDeUsuario)
                 .map(buildCollapsableMenu)
             }
           </List>
@@ -149,6 +159,7 @@ const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
             {
               GROUP_1_PAGES_CONFIG
                 .filter(filtrarElementosSoloUrl)
+                .filter(filtrarElementosPorRolDeUsuario)
                 .map(buildCollapsableMenu)
             }
           </List>
@@ -167,6 +178,7 @@ const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
             {
               GROUP_3_PAGES_CONFIG
                 .filter(filtrarElementosSoloUrl)
+                .filter(filtrarElementosPorRolDeUsuario)
                 .map(buildCollapsableMenu)
             }
           </List>
