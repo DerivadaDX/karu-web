@@ -7,6 +7,7 @@ import {
 import MaterialReactTable from 'material-react-table';
 
 import ComisionService from '../services/comision-service';
+import PopUpModificarComision from './PopUpModificarComision';
 
 const ListadoComisiones = () => {
   const [comisiones, setComisiones] = useState([]);
@@ -18,6 +19,17 @@ const ListadoComisiones = () => {
         setComisiones(response.data);
         setCargando(false);
       });
+  };
+
+  const actualizarDatosDeComision = (comisionModificada) => {
+    const actualizarComisionModificada = (comisionActual) => {
+      const esLaComisionModificada = comisionActual.id === comisionModificada.id;
+      const comision = esLaComisionModificada ? comisionModificada : comisionActual;
+
+      return comision;
+    };
+
+    setComisiones((comisionesActuales) => comisionesActuales.map(actualizarComisionModificada));
   };
 
   const renderEstadoComision = ({ row }) => {
@@ -40,6 +52,17 @@ const ListadoComisiones = () => {
     const porcentaje = `${valorDeComision} %`;
 
     return porcentaje;
+  };
+
+  const renderAccionesFila = ({ row }) => {
+    const comision = row.original;
+
+    return (
+      <PopUpModificarComision
+        comision={comision}
+        onEdit={actualizarDatosDeComision}
+      />
+    );
   };
 
   const columnas = useMemo(
@@ -80,6 +103,7 @@ const ListadoComisiones = () => {
         state={{ isLoading: cargando }}
         enableRowActions
         positionActionsColumn="last"
+        renderRowActions={renderAccionesFila}
         defaultColumn={{ minSize: 10, maxSize: 130 }}
         displayColumnDefOptions={{
           'mrt-row-actions': {
