@@ -204,6 +204,7 @@ const TablaTurnosTerminados = (props) => {
         state={{ isLoading: loading }}
         positionActionsColumn="last"
         renderTopToolbarCustomActions={exportarDatos}
+        options={{ exportAllData: true }}
         enableRowActions
         renderRowActions={renderRowActions}
         renderEmptyRowsFallback={noData}
