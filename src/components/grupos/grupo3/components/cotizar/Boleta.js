@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable react/jsx-filename-extension */
 /* eslint-disable max-len */
@@ -8,6 +9,8 @@ import {
 } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import { AppContext } from './AppContext';
+import CotizacionService from '../../services/CotizacionService';
+
 /* y despues le devuelve esta boleta por asi decirlos con todos estos datos
       Long id;
       String sucursal;
@@ -35,9 +38,20 @@ const Boleta = () => {
   //  sessionStorage.getItem('cotizacion');
   const rawValue = sessionStorage.getItem('cotizacion');
   const cotizacion = JSON.parse(rawValue);
+  console.log(`prueba${cotizacion}`);
 
   /* declara una variable de estado para almacenar la fecha actual */
   const [fecha, setFechaActual] = useState(new Date());
+  // agrego mail
+  const enviarCorreo = () => {
+    CotizacionService.enviarPDFCotizacion(cotizacion.email, cotizacion.id)
+      .then((response) => {
+        console.log('Correo enviado');
+      })
+      .catch((error) => {
+        console.error('Error al enviar el correo', error);
+      });
+  };
 
   return (
     <Container className="my-0">
@@ -117,7 +131,9 @@ const Boleta = () => {
           <Col xs={6}><p><strong>Total:</strong></p></Col>
           <Col xs={6}><p><strong>{cotizacion.total}</strong></p></Col>
         </Row>
-        <Button type="text">Mandar por mail</Button>
+        {/* <Button type="text">Mandar por mail</Button> */}
+
+        <Button type="text" onClick={enviarCorreo}>Mandar por mail</Button>
       </div>
     </Container>
 

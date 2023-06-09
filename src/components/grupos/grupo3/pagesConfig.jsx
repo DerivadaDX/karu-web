@@ -2,12 +2,14 @@ import DriveEtaIcon from '@mui/icons-material/DriveEta';
 import { Search } from '@mui/icons-material';
 import React from 'react';
 import RequestPageIcon from '@mui/icons-material/RequestPage';
+import PermPhoneMsgIcon from '@mui/icons-material/PermPhoneMsg';
 import Cotizar from './components/cotizar/Cotizar';
 import NuevaPagina from './components/cotizar/NuevaPagina';
 import Boleta from './components/cotizar/Boleta';
 import FiltroDeVehiculos from './pages/SeleccionDeVehiculo';
 import PageVehiculoIndividual from './pages/PageVehiculoIndividual';
 import ListadoCotizaciones from './pages/ListadoCotizaciones';
+import ListadoConsultas from './pages/ListadoConsultas';
 
 const GROUP_3_PAGES_CONFIG = [
   {
@@ -54,6 +56,13 @@ const GROUP_3_PAGES_CONFIG = [
     icon: <RequestPageIcon />,
     page: <ListadoCotizaciones />,
     // soloUrl: true,
+  },
+  {
+    id: 'g3-Consulta',
+    name: 'Consultas de usuarios',
+    href: '/consulta',
+    icon: <PermPhoneMsgIcon />,
+    page: <ListadoConsultas />,
   },
 ];
 

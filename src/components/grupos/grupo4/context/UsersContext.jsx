@@ -346,6 +346,12 @@ export const UserContextProvider = ({ children }) => {
     changePasswordMessageError,
     showSpanChangePasswordError,
     userType,
+    updateSellPrice,
+    updatePriceByModel,
+    updatePricesByInflation,
+    setSpanUpdatePriceOfAModelError,
+    setSpanUpdatePricesByInflationError,
+    setSpanUpdateSellPriceError,
   };
   
   return (

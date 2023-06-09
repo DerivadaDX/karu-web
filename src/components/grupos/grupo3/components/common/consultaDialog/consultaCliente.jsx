@@ -36,7 +36,7 @@ const ConsultaCliente = () => {
     });
 
     try {
-      const url = 'http://34.139.89.18:8181/api-gc/consultas/save';
+      const url = 'http://34.74.194.25:8080/api-gc/consultas/save';
       const consultaObject = {
         nombre: nombre_,
         apellido: apellido_,
