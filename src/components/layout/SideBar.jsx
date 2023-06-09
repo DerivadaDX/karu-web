@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import MuiDrawer from '@mui/material/Drawer';
 import { styled } from '@mui/material/styles';
@@ -30,6 +30,7 @@ import GROUP_1_PAGES_CONFIG from '../grupos/grupo1/pagesConfig';
 import GROUP_2_PAGES_CONFIG from '../grupos/grupo2/pagesConfig';
 import GROUP_3_PAGES_CONFIG from '../grupos/grupo3/pagesConfig';
 import GROUP_4_PAGES_CONFIG from '../grupos/grupo4/pagesConfig';
+import Roles from '../roles';
 
 const styles = {
   toolbar: {
@@ -67,11 +68,12 @@ const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
     },
   }));
 
-  const rolDeUsuario = useContext(UserContext).userType || 'cliente';
+  const { cookie } = useContext(UserContext);
 
   const [openAdminMenu, setOpenAdminMenu] = useState(false);
   const [openCommercialMenu, setOpenCommercialMenu] = useState(false);
   const [openTechnicalMenu, setOpenTechnicalMenu] = useState(false);
+  const [rolDeUsuario, setRolDeUsuario] = useState(Roles.CLIENTE);
 
   const toggleAdministrationMenu = () => setOpenAdminMenu(!openAdminMenu);
   const toggleCommercialAreaMenu = () => setOpenCommercialMenu(!openCommercialMenu);
@@ -110,6 +112,14 @@ const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
       </ListItemButton>
     );
   };
+
+  useEffect(() => {
+    const user = cookie.get('user');
+
+    if (user) {
+      setRolDeUsuario(user.type);
+    }
+  }, []);
 
   return (
     <Drawer variant="permanent" open={open}>
