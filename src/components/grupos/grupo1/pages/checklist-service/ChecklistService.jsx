@@ -21,9 +21,8 @@ import MaterialReactTable from 'material-react-table';
 import { MRT_Localization_ES } from 'material-react-table/locales/es';
 import Alerts from '../../components/common/Alerts';
 import {
-  getChecklistService, getPrecioService,
-  postCrearRegistroServices, postPrecioService,
-  getPrecioService2,
+  getChecklistService,
+  postCrearRegistroServices,
 } from '../../services/services-checklistService';
 // import reparacion from './reparacion.json';
 import Popup from '../../components/common/DialogPopup';
@@ -33,7 +32,6 @@ const ChecklistService = (props) => {
   const {
     idTurnoPadre, setOpen, open, actualizar, setActualizar,
   } = props;
-  const idTurno = 4;
 
   const [services, setServices] = useState({
     tareas: [],
@@ -82,7 +80,7 @@ const ChecklistService = (props) => {
   );
 
   const getChecklist = () => {
-    getChecklistService(idTurno)
+    getChecklistService(idTurnoPadre)
       .then((response) => {
         setChecklistService(response.data);
         setLoading(false);
@@ -97,7 +95,7 @@ const ChecklistService = (props) => {
 
   const postCrearRegistro = () => {
     postCrearRegistroServices({
-      id_turno: idTurno,
+      id_turno: idTurnoPadre,
       id_tasks_remplazadas: JSON.stringify(services.tareas),
     })
       .then((response) => {
