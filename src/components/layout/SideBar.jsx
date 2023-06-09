@@ -48,6 +48,7 @@ const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
   const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(({ theme }) => ({
     '& .MuiDrawer-paper': {
       position: 'relative',
+      whiteSpace: open ? 'normal' : 'nowrap',
       width: drawerWidth,
       transition: theme.transitions.create('width', {
         easing: theme.transitions.easing.sharp,
