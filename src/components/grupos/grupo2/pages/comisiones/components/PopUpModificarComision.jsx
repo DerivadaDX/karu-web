@@ -148,10 +148,9 @@ const PopUpModificarComision = ({ comision, onEdit }) => {
               margin="dense"
               style={{ marginTop: '24px' }}
             >
-              <MenuItem value={1}>Categoria 1</MenuItem>
-              <MenuItem value={2}>Categoria 2</MenuItem>
-              <MenuItem value={3}>Categoria 3</MenuItem>
-              <MenuItem value={4}>Categoria 4</MenuItem>
+              <MenuItem value={1}>Gama baja</MenuItem>
+              <MenuItem value={2}>Gama media</MenuItem>
+              <MenuItem value={3}>Gama alta</MenuItem>
             </Select>
             <FormControlLabel
               id="activa"
