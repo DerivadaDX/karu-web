@@ -13,8 +13,20 @@ export default function Alerts({ alertType, description, title }) {
     case 'success':
       return (
         <Collapse in={!open}>
-          <Alert severity="success" className="mb-3" variant="outlined">
-            <AlertTitle className="text-center">{title}</AlertTitle>
+          <Alert
+            severity="success"
+            className="mb-3"
+            variant="outlined"
+            sx={{
+              display: 'flex', justifyContent: 'center', alignItems: 'center',
+            }}
+          >
+            <AlertTitle sx={{
+              display: 'flex', justifyContent: 'center', alignItems: 'center',
+            }}
+            >
+              {title}
+            </AlertTitle>
             {description}
           </Alert>
         </Collapse>
@@ -23,7 +35,12 @@ export default function Alerts({ alertType, description, title }) {
       return (
         <Collapse in={!open}>
           <Alert severity="error" className="mb-3" variant="outlined">
-            <AlertTitle className="text-center">{title}</AlertTitle>
+            <AlertTitle sx={{
+              display: 'flex', justifyContent: 'center', alignItems: 'center',
+            }}
+            >
+              {title}
+            </AlertTitle>
             {description}
           </Alert>
         </Collapse>
@@ -36,8 +53,16 @@ export default function Alerts({ alertType, description, title }) {
             className="mb-3"
             color="warning"
             variant="outlined"
+            sx={{
+              display: 'flex', justifyContent: 'center', alignItems: 'center',
+            }}
           >
-            <AlertTitle className="text-center">{title}</AlertTitle>
+            <AlertTitle sx={{
+              display: 'flex', justifyContent: 'center', alignItems: 'center',
+            }}
+            >
+              {title}
+            </AlertTitle>
             {description}
           </Alert>
         </Collapse>
@@ -45,8 +70,21 @@ export default function Alerts({ alertType, description, title }) {
     case 'info':
       return (
         <Collapse in={!open}>
-          <Alert severity="info" className="mb-3" variant="outlined">
-            <AlertTitle className="text-center">{title}</AlertTitle>
+          <Alert
+            severity="info"
+            className="mb-3"
+            variant="outlined"
+            sx={{
+              display: 'flex', justifyContent: 'center', alignItems: 'center',
+            }}
+          >
+            <AlertTitle sx={{
+              display: 'flex', justifyContent: 'center', alignItems: 'center',
+            }}
+            >
+              {title}
+
+            </AlertTitle>
             {description}
           </Alert>
         </Collapse>

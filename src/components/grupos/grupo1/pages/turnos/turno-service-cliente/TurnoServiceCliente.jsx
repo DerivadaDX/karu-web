@@ -118,17 +118,29 @@ const FormularioCliente = () => {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
+            gap: '1rem',
+            padding: '1rem',
           }}
         >
           <Typography component="h1" variant="h5" sx={{ marginBottom: 5 }}>
             Turno para Service
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            noValidate
+            sx={{
+              mt: 1,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '1rem', // Espacio entre los elementos
+              width: '100%',
+            }}
+          >
             <TextField
               margin="normal"
               required
               fullWidth
-              autoFocus
               id="patente"
               label="Patente"
               name="patente"
@@ -136,7 +148,13 @@ const FormularioCliente = () => {
               onChange={guardarPatente}
               onSelect={guardarPatente}
             />
-            {!isPatenteValida && <Alerts alertType="warning" description="Ejemplos de patentes válidas: AA111AA o ABC123" title="Patente inválida" />}
+            {!isPatenteValida
+            && (
+
+              <Alerts alertType="warning" description="Ejemplos de patentes válidas: AA111AA o ABC123" title="Patente inválida" />
+
+            )}
+
             <TextField
               margin="normal"
               required
@@ -150,7 +168,11 @@ const FormularioCliente = () => {
               inputProps={{ maxLength: 6 }}
               onChange={guardarKilometraje}
             />
-            {!isKmValido && <Alerts alertType="warning" description="Coberturas válidas: de 5000 a 200000 km." title="Kilometraje inválido" />}
+            {!isKmValido
+            && (
+
+              <Alerts alertType="warning" description="Coberturas válidas: de 5000 a 200000 km." title="Kilometraje inválido" />
+            )}
             <Talleres setTallerSeleccionado={setTaller} />
             {patenteTurno
               && kilometros && taller
@@ -163,7 +185,9 @@ const FormularioCliente = () => {
                   limite={limite}
                 />
               )}
-            {msjError && <Alerts alertType="error" description={msjError} title="No se encontró service." />}
+            {msjError && (
+              <Alerts alertType="error" description={msjError} title="No se encontró service." />
+            )}
             <Button
               type="submit"
               fullWidth
