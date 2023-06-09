@@ -28,6 +28,8 @@ const FormularioCliente = () => {
   // Para validar el km
   const [isKmValido, setIsKmValido] = useState(true);
 
+  const [msjGarantia, setMsjGarantia] = useState('');
+
   const msjTurnoCreado = `Se ha creado el turno de service para la patente ${patenteTurno} con ${kilometros} kilómetros para el día ${fecha} a las ${hora} en el taller ${taller}. Recibirá un mail con los datos mencionados. Por favor, recuerde asistir con cédula verde. Gracias.`;
 
   const [msjError, setMsjError] = useState('');
@@ -108,6 +110,16 @@ const FormularioCliente = () => {
     }
   };
 
+  // eslint-disable-next-line consistent-return
+  const obtenerMsjGarantia = async () => {
+    try {
+      const response = await axios.get(`https://autotech2.onrender.com/garantias/garantia-vigente/${patenteTurno}/${fecha}/${kilometros}/`);
+      setMsjGarantia(response.data);
+    } catch (error) {
+      setMsjError(error.response.data);
+    }
+  };
+
   return (
     <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
       <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
@@ -149,11 +161,11 @@ const FormularioCliente = () => {
               onSelect={guardarPatente}
             />
             {!isPatenteValida
-            && (
+              && (
 
-              <Alerts alertType="warning" description="Ejemplos de patentes válidas: AA111AA o ABC123" title="Patente inválida" />
+                <Alerts alertType="warning" description="Ejemplos de patentes válidas: AA111AA o ABC123" title="Patente inválida" />
 
-            )}
+              )}
 
             <TextField
               margin="normal"
@@ -169,10 +181,10 @@ const FormularioCliente = () => {
               onChange={guardarKilometraje}
             />
             {!isKmValido
-            && (
+              && (
 
-              <Alerts alertType="warning" description="Coberturas válidas: de 5000 a 200000 km." title="Kilometraje inválido" />
-            )}
+                <Alerts alertType="warning" description="Coberturas válidas: de 5000 a 200000 km." title="Kilometraje inválido" />
+              )}
             <Talleres setTallerSeleccionado={setTaller} />
             {patenteTurno
               && kilometros && taller
@@ -188,6 +200,10 @@ const FormularioCliente = () => {
             {msjError && (
               <Alerts alertType="error" description={msjError} title="No se encontró service." />
             )}
+
+            {taller && patenteTurno && isPatenteValida && fecha && hora && kilometros && isKmValido
+              && obtenerMsjGarantia() && msjError === '' && <Alerts alertType="info" description={msjGarantia} title="Garantía" />}
+
             <Button
               type="submit"
               fullWidth
