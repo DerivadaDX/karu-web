@@ -39,7 +39,6 @@ const ChecklistService = (props) => {
     tareas: [],
   });
   const [checklistService, setChecklistService] = useState([]);
-  const [precioTotal, setPrecioTotal] = useState(0);
   const [checkboxSeleccionada, setCheckboxSeleccionada] = useState({});
 
   const [loading, setLoading] = useState(true);
@@ -73,18 +72,6 @@ const ChecklistService = (props) => {
       {
         accessorKey: 'costo_reemplazo',
         header: 'Costo de reemplazo (ARS$)',
-        Footer: () => (
-          <Stack>
-            Precio total:
-            <Box color="warning.main">
-              <p>
-                $
-                {' '}
-                {precioTotal.toString()}
-              </p>
-            </Box>
-          </Stack>
-        ),
       },
       {
         accessorKey: 'duracion_reemplazo',
@@ -108,33 +95,24 @@ const ChecklistService = (props) => {
       });
   };
 
-  const getPrecio = () => {
-    getPrecioService2(idTurno, JSON.stringify(services.tareas))
-      .then((response) => {
-        setPrecioTotal(response.data.precio);
-        setLoading(false);
-        setAlertType('');
-      })
-      .catch((error) => {
-        setAlertMessage(error.response.data.error);
-        setAlertType('error');
-        setAlertTitle('Ha ocurrido un problema');
-      });
-  };
-
   const postCrearRegistro = () => {
     postCrearRegistroServices({
       id_turno: idTurno,
       id_tasks_remplazadas: JSON.stringify(services.tareas),
     })
       .then((response) => {
-        setOpenConfirmarService(true);
+        setOpenServiceEnviado(true);
         setActualizar(true);
+        setLoadingButton(false);
+        setOpenError(false);
       })
       .catch((error) => {
         setAlertTitulo('Ha ocurrido un problema');
         setAlertMensaje(error.response.data.error);
         setAlertError('error');
+        setOpenConfirmarService(false);
+        setLoadingButton(false);
+        setOpenError(true);
       });
   };
 
@@ -154,9 +132,6 @@ const ChecklistService = (props) => {
         services.tareas.splice(index, 1);
       }
     }
-    getPrecio();
-
-    console.log(precioTotal);
   };
 
   const renderRowActions = ({ row }) => (
@@ -200,8 +175,7 @@ const ChecklistService = (props) => {
 
   useEffect(() => {
     getChecklist();
-    console.log(precioTotal);
-  }, [getPrecio()]);
+  }, []);
 
   return (
     <>
