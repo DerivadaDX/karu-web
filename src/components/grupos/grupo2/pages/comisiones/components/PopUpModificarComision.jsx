@@ -107,7 +107,7 @@ const PopUpModificarComision = ({ comision, onEdit }) => {
         onClose={cambiarVisibilidadDePopUpModificarComision}
       >
         <DialogTitle sx={{ textAlign: 'center', fontSize: '2rem' }}>
-          Modificar Comision
+          Modificar comisión
         </DialogTitle>
 
         <Paper>
