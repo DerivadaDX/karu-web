@@ -9,7 +9,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import VehiculoService from '../../services/VehiculoService';
 
 const Cotizar = () => {
   // setear los hooks useState
@@ -162,7 +162,7 @@ const Cotizar = () => {
 
   // datos que traemos
   const showData = async () => {
-    const response = await axios.get(URL);
+    const response = await VehiculoService.obtenerVehiculos();
     // const data = await response.json();
     console.log(response.data.result);
     setVehiculos(response.data.result);

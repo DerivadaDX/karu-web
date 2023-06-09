@@ -1,27 +1,36 @@
-import React from 'react';
-import { styled } from '@mui/material/styles';
+import React, { useContext, useEffect, useState } from 'react';
+
 import MuiDrawer from '@mui/material/Drawer';
-import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
-import EngineeringIcon from '@mui/icons-material/Engineering';
-import LocalAtmIcon from '@mui/icons-material/LocalAtm';
-import ExpandLess from '@mui/icons-material/ExpandLess';
-import ExpandMore from '@mui/icons-material/ExpandMore';
-import Collapse from '@mui/material/Collapse';
-import { Box, Tooltip } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import {
+  Box,
+  Collapse,
+  Divider,
+  IconButton,
+  List,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Tooltip,
+  Toolbar,
+} from '@mui/material';
+import {
+  AdminPanelSettings,
+  ChevronLeft,
+  Engineering,
+  ExpandLess,
+  ExpandMore,
+  LocalAtm,
+} from '@mui/icons-material';
 import PropTypes from 'prop-types';
+
+import { UserContext } from '../grupos/grupo4/context/UsersContext';
 import TooltipCus from '../grupos/grupo1/components/common/Tooltip';
 import GROUP_1_PAGES_CONFIG from '../grupos/grupo1/pagesConfig';
 import GROUP_2_PAGES_CONFIG from '../grupos/grupo2/pagesConfig';
 import GROUP_3_PAGES_CONFIG from '../grupos/grupo3/pagesConfig';
 import GROUP_4_PAGES_CONFIG from '../grupos/grupo4/pagesConfig';
+import Roles from '../roles';
 
 const styles = {
   toolbar: {
@@ -33,32 +42,6 @@ const styles = {
   listItemButton: {
     pl: 3,
   },
-};
-
-const filtrarElementosSoloUrl = (menuItemConfig) => {
-  const esSoloUrl = menuItemConfig.soloUrl === true;
-
-  return !esSoloUrl;
-};
-
-const buildCollapsableMenu = (menuItemConfig) => {
-  const iconIsTooltip = menuItemConfig.icon.name === TooltipCus.name;
-  const icon = !iconIsTooltip
-    ? (
-      <Tooltip title={menuItemConfig.name} placement="right">
-        <Box>{menuItemConfig.icon}</Box>
-      </Tooltip>
-    )
-    : menuItemConfig.icon;
-
-  return (
-    <ListItemButton key={menuItemConfig.id} sx={styles.listItemButton} href={menuItemConfig.href}>
-      <ListItemIcon>
-        {icon}
-      </ListItemIcon>
-      <ListItemText primary={menuItemConfig.name} />
-    </ListItemButton>
-  );
 };
 
 const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
@@ -85,19 +68,64 @@ const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
     },
   }));
 
-  const [openAdminMenu, setOpenAdminMenu] = React.useState(false);
-  const [openCommercialMenu, setOpenCommercialMenu] = React.useState(false);
-  const [openTechnicalMenu, setOpenTechnicalMenu] = React.useState(false);
+  const { cookie } = useContext(UserContext);
+
+  const [openAdminMenu, setOpenAdminMenu] = useState(false);
+  const [openCommercialMenu, setOpenCommercialMenu] = useState(false);
+  const [openTechnicalMenu, setOpenTechnicalMenu] = useState(false);
+  const [rolDeUsuario, setRolDeUsuario] = useState(Roles.CLIENTE);
 
   const toggleAdministrationMenu = () => setOpenAdminMenu(!openAdminMenu);
   const toggleCommercialAreaMenu = () => setOpenCommercialMenu(!openCommercialMenu);
   const toggleTechnicalAreaMenu = () => setOpenTechnicalMenu(!openTechnicalMenu);
 
+  const filtrarElementosSoloUrl = (menuItemConfig) => {
+    const esSoloUrl = menuItemConfig.soloUrl === true;
+
+    return !esSoloUrl;
+  };
+
+  const filtrarElementosPorRolDeUsuario = (menuItemConfig) => {
+    if (menuItemConfig.roles === undefined) return false;
+
+    const usuarioPuedeAcceder = menuItemConfig.roles.includes(rolDeUsuario);
+
+    return usuarioPuedeAcceder;
+  };
+
+  const buildCollapsableMenu = (menuItemConfig) => {
+    const iconIsTooltip = menuItemConfig.icon.name === TooltipCus.name;
+    const icon = !iconIsTooltip
+      ? (
+        <Tooltip title={menuItemConfig.name} placement="right">
+          <Box>{menuItemConfig.icon}</Box>
+        </Tooltip>
+      )
+      : menuItemConfig.icon;
+
+    return (
+      <ListItemButton key={menuItemConfig.id} sx={styles.listItemButton} href={menuItemConfig.href}>
+        <ListItemIcon>
+          {icon}
+        </ListItemIcon>
+        <ListItemText primary={menuItemConfig.name} />
+      </ListItemButton>
+    );
+  };
+
+  useEffect(() => {
+    const user = cookie.get('user');
+
+    if (user) {
+      setRolDeUsuario(user.type);
+    }
+  }, []);
+
   return (
     <Drawer variant="permanent" open={open}>
       <Toolbar sx={styles.toolbar}>
         <IconButton onClick={toggleDrawer}>
-          <ChevronLeftIcon />
+          <ChevronLeft />
         </IconButton>
       </Toolbar>
       <Divider />
@@ -105,7 +133,7 @@ const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
         <ListItemButton onClick={toggleAdministrationMenu}>
           <ListItemIcon>
             <Tooltip title="Administración" placement="right">
-              <Box><AdminPanelSettingsIcon /></Box>
+              <Box><AdminPanelSettings /></Box>
             </Tooltip>
           </ListItemIcon>
           <ListItemText primary="Administración" />
@@ -113,14 +141,24 @@ const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
         </ListItemButton>
         <Collapse in={openAdminMenu} timeout="auto" unmountOnExit>
           <List disablePadding>
-            {GROUP_2_PAGES_CONFIG.filter(filtrarElementosSoloUrl).map(buildCollapsableMenu)}
-            {GROUP_4_PAGES_CONFIG.filter(filtrarElementosSoloUrl).map(buildCollapsableMenu)}
+            {
+              GROUP_2_PAGES_CONFIG
+                .filter(filtrarElementosSoloUrl)
+                .filter(filtrarElementosPorRolDeUsuario)
+                .map(buildCollapsableMenu)
+            }
+            {
+              GROUP_4_PAGES_CONFIG
+                .filter(filtrarElementosSoloUrl)
+                .filter(filtrarElementosPorRolDeUsuario)
+                .map(buildCollapsableMenu)
+            }
           </List>
         </Collapse>
         <ListItemButton onClick={toggleTechnicalAreaMenu}>
           <ListItemIcon>
             <Tooltip title="Área técnica" placement="right">
-              <Box><EngineeringIcon /></Box>
+              <Box><Engineering /></Box>
             </Tooltip>
           </ListItemIcon>
           <ListItemText primary="Área técnica" />
@@ -128,13 +166,18 @@ const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
         </ListItemButton>
         <Collapse in={openTechnicalMenu} timeout="auto" unmountOnExit>
           <List disablePadding>
-            {GROUP_1_PAGES_CONFIG.filter(filtrarElementosSoloUrl).map(buildCollapsableMenu)}
+            {
+              GROUP_1_PAGES_CONFIG
+                .filter(filtrarElementosSoloUrl)
+                .filter(filtrarElementosPorRolDeUsuario)
+                .map(buildCollapsableMenu)
+            }
           </List>
         </Collapse>
         <ListItemButton onClick={toggleCommercialAreaMenu}>
           <ListItemIcon>
             <Tooltip title="Área comercial" placement="right">
-              <Box><LocalAtmIcon /></Box>
+              <Box><LocalAtm /></Box>
             </Tooltip>
           </ListItemIcon>
           <ListItemText primary="Área comercial" />
@@ -142,7 +185,12 @@ const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
         </ListItemButton>
         <Collapse in={openCommercialMenu} timeout="auto" unmountOnExit>
           <List disablePadding>
-            {GROUP_3_PAGES_CONFIG.filter(filtrarElementosSoloUrl).map(buildCollapsableMenu)}
+            {
+              GROUP_3_PAGES_CONFIG
+                .filter(filtrarElementosSoloUrl)
+                .filter(filtrarElementosPorRolDeUsuario)
+                .map(buildCollapsableMenu)
+            }
           </List>
         </Collapse>
       </List>
