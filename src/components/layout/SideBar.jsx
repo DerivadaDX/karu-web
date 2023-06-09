@@ -1,22 +1,29 @@
 import React from 'react';
-import { styled } from '@mui/material/styles';
+
 import MuiDrawer from '@mui/material/Drawer';
-import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
-import EngineeringIcon from '@mui/icons-material/Engineering';
-import LocalAtmIcon from '@mui/icons-material/LocalAtm';
-import ExpandLess from '@mui/icons-material/ExpandLess';
-import ExpandMore from '@mui/icons-material/ExpandMore';
-import Collapse from '@mui/material/Collapse';
-import { Box, Tooltip } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import {
+  Box,
+  Collapse,
+  Divider,
+  IconButton,
+  List,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Tooltip,
+  Toolbar,
+} from '@mui/material';
+import {
+  AdminPanelSettings,
+  ChevronLeft,
+  Engineering,
+  ExpandLess,
+  ExpandMore,
+  LocalAtm,
+} from '@mui/icons-material';
 import PropTypes from 'prop-types';
+
 import TooltipCus from '../grupos/grupo1/components/common/Tooltip';
 import GROUP_1_PAGES_CONFIG from '../grupos/grupo1/pagesConfig';
 import GROUP_2_PAGES_CONFIG from '../grupos/grupo2/pagesConfig';
@@ -97,7 +104,7 @@ const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
     <Drawer variant="permanent" open={open}>
       <Toolbar sx={styles.toolbar}>
         <IconButton onClick={toggleDrawer}>
-          <ChevronLeftIcon />
+          <ChevronLeft />
         </IconButton>
       </Toolbar>
       <Divider />
@@ -105,7 +112,7 @@ const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
         <ListItemButton onClick={toggleAdministrationMenu}>
           <ListItemIcon>
             <Tooltip title="Administración" placement="right">
-              <Box><AdminPanelSettingsIcon /></Box>
+              <Box><AdminPanelSettings /></Box>
             </Tooltip>
           </ListItemIcon>
           <ListItemText primary="Administración" />
@@ -120,7 +127,7 @@ const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
         <ListItemButton onClick={toggleTechnicalAreaMenu}>
           <ListItemIcon>
             <Tooltip title="Área técnica" placement="right">
-              <Box><EngineeringIcon /></Box>
+              <Box><Engineering /></Box>
             </Tooltip>
           </ListItemIcon>
           <ListItemText primary="Área técnica" />
@@ -134,7 +141,7 @@ const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
         <ListItemButton onClick={toggleCommercialAreaMenu}>
           <ListItemIcon>
             <Tooltip title="Área comercial" placement="right">
-              <Box><LocalAtmIcon /></Box>
+              <Box><LocalAtm /></Box>
             </Tooltip>
           </ListItemIcon>
           <ListItemText primary="Área comercial" />
