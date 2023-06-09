@@ -26,7 +26,7 @@ const FiltroDeVehiculos = () => {
   console.log(vehiculosData);
 
   // aca deberia inicializar el hook con el data importado de la api.
-  const [list, setList] = useState(vehiculosData);
+  const [list, setList] = useState([]);
   // const [list, setList] = useState(autosEnVenta);
   const [resultsFound, setResultsFound] = useState(true);
   const [searchInput, setSearchInput] = useState('');
@@ -43,6 +43,8 @@ const FiltroDeVehiculos = () => {
     try {
       const response = await VentaService.obtenerVehiculosDisponibles();
       setVehiculos(response.data.result);
+      setList(response.data.result);
+      setResultsFound(true);
     } catch (error) {
       console.error(error);
     }
@@ -56,7 +58,7 @@ const FiltroDeVehiculos = () => {
     !value ? null : setCategoriaSeleccionada(value));
   // const handleChangePrice = (event, value) => setSelectedPrice(value);
   // const handleChangeKM = (event, value) => setSelectedKM(value);
-
+  const espacio = ' ';
   // funcion principal encargada de gestionar los filtros
   const aplicarFiltros = () => {
     let updatedList = vehiculosData;
@@ -69,8 +71,10 @@ const FiltroDeVehiculos = () => {
     // filtro de barra de busqueda
     if (searchInput) {
       updatedList = updatedList.filter(
-        (item) => item.brand.toLowerCase().search(searchInput.toLowerCase().trim())
-          !== -1,
+        (item) => ((item.brand + espacio + item.model).toLowerCase().search(
+          searchInput.toLowerCase().trim(),
+        )
+          !== -1),
       );
     }
     /*
