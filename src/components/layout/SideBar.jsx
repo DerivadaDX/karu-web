@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 
 import MuiDrawer from '@mui/material/Drawer';
 import { styled } from '@mui/material/styles';
@@ -92,9 +92,10 @@ const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
     },
   }));
 
-  const [openAdminMenu, setOpenAdminMenu] = React.useState(false);
-  const [openCommercialMenu, setOpenCommercialMenu] = React.useState(false);
-  const [openTechnicalMenu, setOpenTechnicalMenu] = React.useState(false);
+
+  const [openAdminMenu, setOpenAdminMenu] = useState(false);
+  const [openCommercialMenu, setOpenCommercialMenu] = useState(false);
+  const [openTechnicalMenu, setOpenTechnicalMenu] = useState(false);
 
   const toggleAdministrationMenu = () => setOpenAdminMenu(!openAdminMenu);
   const toggleCommercialAreaMenu = () => setOpenCommercialMenu(!openCommercialMenu);
