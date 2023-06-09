@@ -15,7 +15,7 @@ import VentaHttpService from '../services/VentaHttpService';
 
 const FiltroDeVehiculos = () => {
   // hooks para guardar los estados
-  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(null);
+  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState('TODOS');
   // const [selectedPrice, setSelectedPrice] = useState([1000000, 30000000]);
   // const [selectedKM, setSelectedKM] = useState([2000, 8000]);
 
@@ -65,7 +65,9 @@ const FiltroDeVehiculos = () => {
 
     // filtra por combustible
     if (categoriaSeleccionada) {
-      updatedList = updatedList.filter((item) => item.fuelType === categoriaSeleccionada[0]);
+      updatedList = updatedList.filter((item) => ((categoriaSeleccionada === 'TODOS')
+       || ((categoriaSeleccionada !== 'TODOS')
+      && (item.fuelType === categoriaSeleccionada))));
     }
 
     // filtro de barra de busqueda

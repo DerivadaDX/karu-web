@@ -6,11 +6,12 @@ import React from 'react';
 const FiltroVehiculosToggle = ({ options, value, selectToggle }) => (
   <ToggleButtonGroup
     value={value}
+    exclusive
     onChange={selectToggle}
-    className="classes.root"
+    size="small"
   >
     {options.map(({ label, id, value }) => (
-      <ToggleButton className="classes.toggle" key={id} value={value}>
+      <ToggleButton key={id} value={value}>
         {label}
       </ToggleButton>
     ))}
