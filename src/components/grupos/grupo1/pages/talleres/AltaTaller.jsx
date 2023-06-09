@@ -84,7 +84,7 @@ const AltaTaller = (props) => {
       );
     }
   }, []);
-
+  /*
   useEffect(() => {
     try {
       // traerSucursales();
@@ -96,7 +96,7 @@ const AltaTaller = (props) => {
         'Error al traer las sucursales. Por favor, recargue la página y vuelva a intentarlo nuevamente.',
       );
     }
-  }, [nombre, sucursalId, direccion, cantTecnicos, capacidad, mail, telefono]);
+  }, [nombre, sucursalId, direccion, cantTecnicos, capacidad, mail, telefono]); */
 
   const guardarSucursal = (event) => {
     const { value } = event.target;
