@@ -21,6 +21,8 @@ const Cotizar = () => {
   const [searchKilometraje, setKilometraje] = useState('');
   const [searchCombustible, setSearchCombustible] = useState('');
   const [searchImportado, setImportado] = useState('');
+  const [searchMin, setMin] = useState('');
+  const [searchMax, setMax] = useState('');
 
   // función para traer los datos de la API
   const URL = 'https://gadmin-backend-production.up.railway.app/api/v1/vehicle/getByStatus/DISPONIBLE';// sacar datos de un json
@@ -182,6 +184,10 @@ const Cotizar = () => {
       setSearchCombustible(value);
     } else if (name === 'searchImportado') {
       setImportado(value);
+    } else if (name === 'searchMin') {
+      setMin(value);
+    } else if (name === 'searchMax') {
+      setMax(value);
     }
   };
   // metodo de filtrado 1
@@ -217,7 +223,11 @@ const Cotizar = () => {
     const kilometrajeMatch = vehiculo.kilometers.toString().includes(searchKilometraje);
     const combustibleMatch = vehiculo.fuelType.toLowerCase().includes(searchCombustible.toLowerCase());
     const importadoMatch = vehiculo.status.toLowerCase().includes(searchImportado.toLowerCase());
-    return marcaMatch && modeloMatch && anioMatch && kilometrajeMatch && combustibleMatch && importadoMatch;
+    const minMatch = vehiculo.sellPrice.toString().includes(searchMin);
+    // const maxMatch = vehiculo.sellPrice.toString().includes(searchMax);//arreglar min y max
+    const precioMatch = (vehiculo.sellPrice.toString().includes(searchMin));// && (maxMatch < vehiculo.sellPrice);
+    console.log(precioMatch);
+    return marcaMatch && modeloMatch && anioMatch && kilometrajeMatch && combustibleMatch && importadoMatch && precioMatch;
   });
 
   // renderizamos la vista
@@ -309,7 +319,16 @@ const Cotizar = () => {
                     className="form-control"
                   />
                 </th>
-                <th />
+                <th>
+                  <input
+                    name="searchMin"
+                    value={searchMin}
+                    onChange={searcher}
+                    type="text"
+                    placeholder="Buscar por Min"
+                    className="form-control"
+                  />
+                </th>
                 <th />
               </tr>
             </thead>
