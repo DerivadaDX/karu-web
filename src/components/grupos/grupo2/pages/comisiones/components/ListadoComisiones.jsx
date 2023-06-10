@@ -33,6 +33,28 @@ const ListadoComisiones = () => {
     setComisiones((comisionesActuales) => comisionesActuales.map(actualizarComisionModificada));
   };
 
+  const renderFormatoPorcentaje = ({ row }) => {
+    const valorDeComision = row.original.valor;
+    const porcentaje = `${valorDeComision} %`;
+
+    return porcentaje;
+  };
+
+  const renderCategoria = ({ row }) => {
+    const idCategoria = row.original.categoria_id;
+
+    switch (idCategoria) {
+      case 1:
+        return 'Gama baja';
+      case 2:
+        return 'Gama media';
+      case 3:
+        return 'Gama alta';
+      default:
+        return '-';
+    }
+  };
+
   const renderEstadoComision = ({ row }) => {
     const comisionActiva = row.original.activa;
 
@@ -90,6 +112,7 @@ const ListadoComisiones = () => {
       {
         accessorKey: 'categoria_id',
         header: 'Categoría',
+        Cell: renderCategoria,
       },
       {
         accessorKey: 'activa',
