@@ -40,7 +40,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint:check": "eslint --ext .js --ext .jsx .",
+    "lint:check": "eslint --ext .js --ext .jsx --max-warnings=0 .",
     "lint:fix": "npm run lint:check -- --fix"
   },
   "eslintConfig": {
@@ -66,6 +66,7 @@
     "eslint-config-airbnb": "^19.0.4",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-jsx-a11y": "^6.7.1",
+    "eslint-plugin-only-warn": "^1.1.0",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0"
   }
