@@ -10,8 +10,6 @@ import List from '../components/ventas/Lista';
 import autosEnVenta from '../constants/autosEnVenta';
 import './styles.css';
 import VistaVacia from '../components/common/vistaVacia/vistaVacia';
-import VentaService from '../services/VentaService';
-import VentaHttpService from '../services/VentaHttpService';
 import VehiculoService from '../services/VehiculoService';
 
 const FiltroDeVehiculos = () => {
