@@ -196,7 +196,7 @@ const VisualizacionBusquedaTecnicos = () => {
               </Typography>
 
               <Input
-                type="search"
+                type="text"
                 name="nombre"
                 value={valoresBusqueda.nombre}
                 onChange={handleChange}
