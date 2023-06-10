@@ -16,7 +16,6 @@ import {
 import PropTypes from 'prop-types';
 
 import Roles from '../../../roles';
-import TooltipCus from '../../../grupos/grupo1/components/common/Tooltip';
 
 const MenuDesplegable = ({
   nombre, icono, configuracionSubmenu, rolDeUsuario,
@@ -39,25 +38,16 @@ const MenuDesplegable = ({
     return usuarioPuedeAcceder;
   };
 
-  const buildCollapsableMenu = (menuItemConfig) => {
-    const iconIsTooltip = menuItemConfig.icon.name === TooltipCus.name;
-    const icon = !iconIsTooltip
-      ? (
+  const buildCollapsableMenu = (menuItemConfig) => (
+    <ListItemButton key={menuItemConfig.id} sx={{ pl: 3 }} href={menuItemConfig.href}>
+      <ListItemIcon>
         <Tooltip title={menuItemConfig.name} placement="right">
           <Box>{menuItemConfig.icon}</Box>
         </Tooltip>
-      )
-      : menuItemConfig.icon;
-
-    return (
-      <ListItemButton key={menuItemConfig.id} sx={{ pl: 3 }} href={menuItemConfig.href}>
-        <ListItemIcon>
-          {icon}
-        </ListItemIcon>
-        <ListItemText primary={menuItemConfig.name} />
-      </ListItemButton>
-    );
-  };
+      </ListItemIcon>
+      <ListItemText primary={menuItemConfig.name} />
+    </ListItemButton>
+  );
 
   return (
     <>
