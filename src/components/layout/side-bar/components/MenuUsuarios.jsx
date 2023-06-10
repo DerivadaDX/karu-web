@@ -15,7 +15,7 @@ import GROUP_3_PAGES_CONFIG from '../../../grupos/grupo3/pagesConfig';
 import GROUP_4_PAGES_CONFIG from '../../../grupos/grupo4/pagesConfig';
 import MenuDesplegable from './MenuDesplegable';
 
-const ElementosSideBarUsuarioAutenticado = ({ rolDeUsuario }) => (
+const MenuUsuarios = ({ rolDeUsuario }) => (
   <List component="nav">
     <MenuDesplegable
       nombre="Administración"
@@ -38,8 +38,8 @@ const ElementosSideBarUsuarioAutenticado = ({ rolDeUsuario }) => (
   </List>
 );
 
-ElementosSideBarUsuarioAutenticado.propTypes = {
+MenuUsuarios.propTypes = {
   rolDeUsuario: PropTypes.oneOf(Object.values(Roles)).isRequired,
 };
 
-export default ElementosSideBarUsuarioAutenticado;
+export default MenuUsuarios;

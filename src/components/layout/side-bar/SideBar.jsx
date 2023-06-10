@@ -11,7 +11,7 @@ import ChevronLeft from '@mui/icons-material/ChevronLeft';
 import PropTypes from 'prop-types';
 
 import { UserContext } from '../../grupos/grupo4/context/UsersContext';
-import ElementosSideBarUsuarioAutenticado from './components/ElementosSideBarUsuarioAutenticado';
+import MenuUsuarios from './components/MenuUsuarios';
 
 const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
   const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(({ theme }) => ({
@@ -63,7 +63,7 @@ const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
         </IconButton>
       </Toolbar>
       <Divider />
-      <ElementosSideBarUsuarioAutenticado rolDeUsuario={rolDeUsuario} />
+      <MenuUsuarios rolDeUsuario={rolDeUsuario} />
     </Drawer>
   );
 };
