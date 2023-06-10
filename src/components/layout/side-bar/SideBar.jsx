@@ -7,13 +7,10 @@ import {
   IconButton,
   Toolbar,
 } from '@mui/material';
-import {
-  ChevronLeft,
-} from '@mui/icons-material';
+import ChevronLeft from '@mui/icons-material/ChevronLeft';
 import PropTypes from 'prop-types';
 
 import { UserContext } from '../../grupos/grupo4/context/UsersContext';
-import Roles from '../../roles';
 import ElementosSideBarUsuarioAutenticado from './components/ElementosSideBarUsuarioAutenticado';
 
 const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
@@ -41,9 +38,8 @@ const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
     },
   }));
 
+  const [rolDeUsuario, setRolDeUsuario] = useState('');
   const { cookie } = useContext(UserContext);
-
-  const [rolDeUsuario, setRolDeUsuario] = useState(Roles.CLIENTE);
 
   useEffect(() => {
     const user = cookie.get('user');
@@ -60,7 +56,8 @@ const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
         alignItems: 'center',
         justifyContent: 'flex-end',
         px: [1],
-      }}>
+      }}
+      >
         <IconButton onClick={toggleDrawer}>
           <ChevronLeft />
         </IconButton>
