@@ -27,7 +27,9 @@ const GROUP_1_PAGES_CONFIG = [
     href: '/dashboard',
     icon: <DashboardIcon />,
     page: <Dashboard />,
-    roles: [Roles.TECNICO],
+    roles: [
+      Roles.TECNICO,
+      Roles.IT],
   },
   {
     id: 'g1-AgendaTurnos',
@@ -35,7 +37,9 @@ const GROUP_1_PAGES_CONFIG = [
     href: '/agenda-turnos',
     icon: <ListAltIcon />,
     page: <AgendaTaller />,
-    roles: [Roles.SUPERVISOR_TECNICO],
+    roles: [
+      Roles.SUPERVISOR_TECNICO,
+      Roles.IT],
   },
   {
     id: 'g1-Tecnicos',
@@ -43,7 +47,9 @@ const GROUP_1_PAGES_CONFIG = [
     href: '/informacion-tecnicos',
     icon: <PersonSearchIcon />,
     page: <VisualizacionBusquedaTecnicos />,
-    roles: [Roles.SUPERVISOR_TECNICO],
+    roles: [
+      Roles.SUPERVISOR_TECNICO,
+      Roles.IT],
   },
   {
     id: 'g1-MisTurnos',
@@ -51,7 +57,9 @@ const GROUP_1_PAGES_CONFIG = [
     href: '/mis-turnos',
     icon: <ListAltIcon />,
     page: <MisTurnos />,
-    roles: [Roles.TECNICO],
+    roles: [
+      Roles.TECNICO,
+      Roles.IT],
   },
   {
     id: 'g1-TurnosServiceCliente',
@@ -59,7 +67,9 @@ const GROUP_1_PAGES_CONFIG = [
     href: '/turnos-service',
     icon: <EditCalendarIcon />,
     page: <FormularioCliente />,
-    roles: [Roles.CLIENTE],
+    roles: [
+      Roles.CLIENTE,
+      Roles.IT],
   },
   {
     id: 'g1-Services',
@@ -67,7 +77,10 @@ const GROUP_1_PAGES_CONFIG = [
     href: '/services',
     icon: <DesignServicesIcon />,
     page: <Services />,
-    roles: [Roles.SUPERVISOR_TECNICO],
+    roles: [
+      Roles.SUPERVISOR_TECNICO,
+      Roles.IT,
+    ],
   },
   {
     id: 'g1-Talleres',
@@ -75,7 +88,10 @@ const GROUP_1_PAGES_CONFIG = [
     href: '/talleres',
     icon: <GarageIcon />,
     page: <Talleres />,
-    roles: [Roles.SUPERVISOR_TECNICO],
+    roles: [
+      Roles.SUPERVISOR_TECNICO,
+      Roles.IT,
+    ],
   },
   {
     id: 'g1-TurnoEvaluacionAdmin',
@@ -83,7 +99,10 @@ const GROUP_1_PAGES_CONFIG = [
     href: '/turno-evaluación-administrativo',
     icon: <RateReviewIcon />,
     page: <FormularioEvaluacionAdmin />,
-    roles: [Roles.ADMINISTRADOR],
+    roles: [
+      Roles.ADMINISTRADOR,
+      Roles.IT,
+    ],
   },
   {
     id: 'g1-TurnoEvaluacionCliente',
@@ -91,7 +110,10 @@ const GROUP_1_PAGES_CONFIG = [
     href: '/turno-evaluación-cliente',
     icon: <RateReviewIcon />,
     page: <FormularioEvaluacionCliente />,
-    roles: [Roles.CLIENTE],
+    roles: [
+      Roles.CLIENTE,
+      Roles.IT,
+    ],
   },
   {
     id: 'g1-ReportesSupervisor',
@@ -99,7 +121,10 @@ const GROUP_1_PAGES_CONFIG = [
     href: '/reportes',
     icon: <AssessmentIcon />,
     page: <Reportes />,
-    roles: [Roles.SUPERVISOR_TECNICO],
+    roles: [
+      Roles.SUPERVISOR_TECNICO,
+      Roles.IT,
+    ],
   },
 ];
 
