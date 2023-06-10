@@ -8,11 +8,11 @@ import {
 } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 
-import Roles from '../../../roles';
 import GROUP_1_PAGES_CONFIG from '../../../grupos/grupo1/pagesConfig';
 import GROUP_2_PAGES_CONFIG from '../../../grupos/grupo2/pagesConfig';
 import GROUP_3_PAGES_CONFIG from '../../../grupos/grupo3/pagesConfig';
 import GROUP_4_PAGES_CONFIG from '../../../grupos/grupo4/pagesConfig';
+import Roles from '../../../roles';
 import MenuDesplegable from './MenuDesplegable';
 
 const filtrarElementosSoloUrl = (configuracionElemento) => {
