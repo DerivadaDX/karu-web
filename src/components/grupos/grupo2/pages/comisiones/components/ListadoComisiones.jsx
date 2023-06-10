@@ -8,7 +8,7 @@ import MaterialReactTable from 'material-react-table';
 
 import ComisionService from '../services/comision-service';
 import PopUpModificarComision from './PopUpModificarComision';
-import CrearComision from './PopUpCrearComision';
+import PopUpCrearComision from './PopUpCrearComision';
 
 const ListadoComisiones = () => {
   const [comisiones, setComisiones] = useState([]);
@@ -49,7 +49,7 @@ const ListadoComisiones = () => {
   };
 
   const renderCrearComision = () => (
-    <CrearComision
+    <PopUpCrearComision
       onCreate={obtenerComisiones}
     />
   );
