@@ -59,6 +59,7 @@ import { Slider, Box } from '@mui/material';
 
 const SliderProton = ({ value, changePrice }) => (
   <Box sx={{ width: 1 }}>
+    <p>Rango de precio</p>
     <Slider
       value={value}
       onChange={changePrice}

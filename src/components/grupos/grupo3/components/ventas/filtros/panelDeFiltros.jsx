@@ -4,41 +4,31 @@ import React from 'react';
 import FiltroVehiculosToggle from '../../common/filtrarVehiculosToggle';
 import listaCategorias from '../../../constants';
 import SliderProton from '../../common/sliderProton';
-import SliderKilometros from '../../common/SliderKilometros';
+// import SliderKilometros from '../../common/SliderKilometros';
 import './styles.css';
 
 const PanelDeFiltros = ({
   categoriaSeleccionada,
   toggleSeleccionado,
-  changedPrice,
+  changePrice,
   selectedPrice,
-  changedKM,
-  selectedKM,
+  // changedKM,
+  // selectedKM,
 }) => (
 
   <div>
     {/* combustibles */}
     <div className="input-group">
-      <p className="label">⛽ Combustible</p>
+      <p className="label"> </p>
       <FiltroVehiculosToggle
         options={listaCategorias}
         value={categoriaSeleccionada}
         selectToggle={toggleSeleccionado}
       />
-
-    </div>
-    {/* precio */}
-    <div className="input-group">
-      <p className="label-range">Rango de precio</p>
-      <SliderProton value={selectedPrice} changedPrice={changedPrice} />
-
-    </div>
-
-    {/* kilometraje */}
-    <div className="input-group">
-      <p className="label-range">Rango de kilometraje</p>
-      <SliderKilometros value={selectedKM} changedKM={changedKM} />
-
+      <div className="input-group">
+        <p className="label-range"> </p>
+        <SliderProton value={selectedPrice} changePrice={changePrice} />
+      </div>
     </div>
     {/* año */}
     {/* reservado */}
