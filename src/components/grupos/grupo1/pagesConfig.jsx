@@ -7,8 +7,6 @@ import DesignServicesIcon from '@mui/icons-material/DesignServices';
 import GarageIcon from '@mui/icons-material/Garage';
 import RateReviewIcon from '@mui/icons-material/RateReview';
 import ReviewsIcon from '@mui/icons-material/Reviews';
-import AssessmentIcon from '@mui/icons-material/Assessment';
-import TooltipCus from './components/common/Tooltip';
 import VisualizacionBusquedaTecnicos from './pages/visualizacion-tecnicos/VisualizacionFiltroBusqueda';
 import Dashboard from './pages/dashboard/Dashboard';
 import MisTurnos from './pages/visualizar-mis-turnos/MisTurnos';
@@ -25,63 +23,63 @@ const GROUP_1_PAGES_CONFIG = [
     id: 'g1-Dashboard',
     name: 'Dashboard',
     href: '/dashboard',
-    icon: <TooltipCus icon={<DashboardIcon />} title="Dashboard" />,
+    icon: <DashboardIcon />,
     page: <Dashboard />,
   },
   {
     id: 'g1-AgendaTurnos',
     name: 'Turnos',
     href: '/agenda-turnos',
-    icon: <TooltipCus icon={<ListAltIcon />} title="Turnos" />,
+    icon: <ListAltIcon />,
     page: <AgendaTaller />,
   },
   {
     id: 'g1-Tecnicos',
     name: 'Técnicos',
     href: '/informacion-tecnicos',
-    icon: <TooltipCus icon={<PersonSearchIcon />} title="Técnicos" />,
+    icon: <PersonSearchIcon />,
     page: <VisualizacionBusquedaTecnicos />,
   },
   {
     id: 'g1-MisTurnos',
     name: 'Mis turnos',
     href: '/mis-turnos',
-    icon: <TooltipCus icon={<ListAltIcon />} title="Mis turnos" />,
+    icon: <ListAltIcon />,
     page: <MisTurnos />,
   },
   {
     id: 'g1-TurnosServiceCliente',
     name: 'Turnos de service',
     href: '/turnos-service',
-    icon: <TooltipCus icon={<ContactMailIcon />} title="Turnos de service" />,
+    icon: <ContactMailIcon />,
     page: <FormularioCliente />,
   },
   {
     id: 'g1-Services',
     name: 'Services',
     href: '/services',
-    icon: <TooltipCus icon={<DesignServicesIcon />} title="Services" />,
+    icon: <DesignServicesIcon />,
     page: <Services />,
   },
   {
     id: 'g1-Talleres',
     name: 'Talleres',
     href: '/talleres',
-    icon: <TooltipCus icon={<GarageIcon />} title="Talleres" />,
+    icon: <GarageIcon />,
     page: <Talleres />,
   },
   {
     id: 'g1-TurnoEvaluacionAdmin',
     name: 'Evaluación admin.',
     href: '/turno-evaluación-admin',
-    icon: <TooltipCus icon={<RateReviewIcon />} title="Evaluación admin." />,
+    icon: <RateReviewIcon />,
     page: <FormularioEvaluacionAdmin />,
   },
   {
     id: 'g1-TurnoEvaluacionCliente',
     name: 'Evaluación cliente',
     href: '/turno-evaluación-cliente',
-    icon: <TooltipCus icon={<ReviewsIcon />} title="Evaluación cliente" />,
+    icon: <ReviewsIcon />,
     page: <FormularioEvaluacionCliente />,
   },
   {

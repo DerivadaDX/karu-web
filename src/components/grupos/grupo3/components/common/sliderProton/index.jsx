@@ -1,21 +1,6 @@
+/* eslint-disable react/prop-types */
 /*
-import { Slider } from '@mui/material';
-import React from 'react';
 
-const SliderProton = ({ value, changedPrice }) => (
-  <div>
-    <Slider
-      value={value}
-      onChange={changedPrice}
-      valueLabelDisplay="on"
-      min={1000000}
-      max={30000000}
-    />
-  </div>
-);
-
-export default SliderProton;
-*/
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
@@ -65,5 +50,23 @@ const SliderProton = () => {
     </Box>
   );
 };
+
+export default SliderProton;
+*/
+
+import React from 'react';
+import { Slider, Box } from '@mui/material';
+
+const SliderProton = ({ value, changePrice }) => (
+  <Box sx={{ width: 1 }}>
+    <Slider
+      value={value}
+      onChange={changePrice}
+      valueLabelDisplay="on"
+      min={1000000}
+      max={30000000}
+    />
+  </Box>
+);
 
 export default SliderProton;
