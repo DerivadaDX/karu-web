@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
 /* eslint-disable no-nested-ternary */
@@ -29,6 +30,7 @@ const VisualizacionBusquedaTecnicos = () => {
   const [listaTecnicos, setTecnicos] = useState([]);
   const [detalleTrabajos, setDetalleTrabajos] = useState([]);
   const [mostrarInfo, setMostrarInfo] = useState(false);
+  const [realizarBusqueda, setRealizarBusqueda] = useState(false);
   const [seleccionarFila, setSeleccionarFila] = useState(null);
   const [cargando, setCargando] = useState(true);
   const [page, setPage] = useState(0);
@@ -52,32 +54,25 @@ const VisualizacionBusquedaTecnicos = () => {
   const endPoint = `https://autotech2.onrender.com/tecnicos/filtro/?branch=${taller}&`;
 
   const filtrarTecnicos = () => {
+    if (!realizarBusqueda) {
+      return;
+    }
     setCargando(true);
+    const { nombre, dni, categoria } = valoresBusqueda;
+
+    let url = `${endPoint}?branch=${taller}`;
+
+    if (nombre.length > 0) {
+      url += `&nombre_completo=${nombre}`;
+    }
+    if (dni.length >= 7 && dni.length <= 8) {
+      url += `&dni=${dni}`;
+    }
+    if (categoria.length > 0) {
+      url += `&categoria=${categoria}`;
+    }
     axios
-      .get(
-        `${endPoint}${
-          !(valoresBusqueda.nombre.length <= 0)
-        && !(valoresBusqueda.dni.length < 7 || valoresBusqueda.dni.length > 8)
-        && !(valoresBusqueda.categoria.length <= 0)
-            ? `nombre_completo=${valoresBusqueda.nombre}&dni=${valoresBusqueda.dni}&categoria=${valoresBusqueda.categoria}&`
-            : !(valoresBusqueda.nombre.length <= 0)
-        && !(valoresBusqueda.dni.length < 7 || valoresBusqueda.dni.length > 8)
-              ? `nombre_completo=${valoresBusqueda.nombre}&dni=${valoresBusqueda.dni}`
-              : !(valoresBusqueda.nombre.length <= 0)
-        && !(valoresBusqueda.categoria.length <= 0)
-                ? `nombre_completo=${valoresBusqueda.nombre}&categoria=${valoresBusqueda.categoria}&`
-                : !(valoresBusqueda.dni.length < 7 || valoresBusqueda.dni.length > 8)
-              && !(valoresBusqueda.categoria.length <= 0)
-                  ? `dni=${valoresBusqueda.dni}&categoria=${valoresBusqueda.categoria}`
-                  : !(valoresBusqueda.nombre.length <= 0)
-                    ? `nombre_completo=${valoresBusqueda.nombre}&`
-                    : !(valoresBusqueda.dni.length < 7 || valoresBusqueda.dni.length > 8)
-                      ? `dni=${valoresBusqueda.dni}`
-                      : !(valoresBusqueda.categoria.length <= 0)
-                        ? `categoria=${valoresBusqueda.categoria}&`
-                        : ''
-        }`,
-      )
+      .get(url)
       .then((response) => {
         setTecnicos(response.data);
         setAlertType('');
@@ -104,10 +99,14 @@ const VisualizacionBusquedaTecnicos = () => {
         setAlertTitle('Error');
         setCargando(false);
       });
+    setRealizarBusqueda(false);
   };
 
   /* Trae todos los tecnicos, cuando los campos estan vacios */
   const traerTecnicos = () => {
+    if (!realizarBusqueda) {
+      return;
+    }
     setCargando(true);
     axios
       .get(`${endPoint}${''}`)
@@ -124,6 +123,7 @@ const VisualizacionBusquedaTecnicos = () => {
         setAlertTitle('Error');
         setCargando(false);
       });
+    setRealizarBusqueda(false);
   };
 
   /* Toma los valores de los campos */
@@ -138,7 +138,7 @@ const VisualizacionBusquedaTecnicos = () => {
       traerTecnicos();
       setMostrarInfo(false);
     }
-    console.log(value);
+    setRealizarBusqueda(true);
   };
 
   /* Se muestra el detalle de trabajos realizados */
