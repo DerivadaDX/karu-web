@@ -36,6 +36,7 @@ const MenuClientes = () => {
       {
         elementos.map((elemento) => (
           <ItemMenu
+            key={elemento.id}
             nombre={elemento.name}
             icono={elemento.icon}
             href={elemento.href}
