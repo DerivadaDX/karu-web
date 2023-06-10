@@ -18,25 +18,21 @@ import PropTypes from 'prop-types';
 import AddIcon from '@mui/icons-material/Add';
 import ComisionService from '../services/comision-service';
 
+const valoresIniciales = {
+  nombre: '',
+  valor: '',
+  categoria_id: '',
+  activa: false,
+};
+
 const PopUpCrearComision = ({ onCreate }) => {
   const [mostrarPopUpCrearComision, setMostrarPopUpCrearComision] = useState(false);
   const [mostrarPopUpCreacionExitosa, setMostrarPopUpCreacionExitosa] = useState(false);
-  const [valoresDelFormulario, setValoresDelFormulario] = useState({
-    nombre: '',
-    valor: '',
-    categoria_id: '',
-    activa: false,
-  });
+  const [valoresDelFormulario, setValoresDelFormulario] = useState(valoresIniciales);
 
-  const mostrarYCargarFormulario = () => {
+  const SetearYMostrarFormulario = () => {
     setMostrarPopUpCrearComision(true);
-    setValoresDelFormulario({
-      id: '',
-      nombre: '',
-      valor: '',
-      categoria_id: '',
-      activa: false,
-    });
+    setValoresDelFormulario(valoresIniciales);
   };
 
   const cambiarVisibilidadDePopUpCrearComision = () => {
@@ -88,9 +84,9 @@ const PopUpCrearComision = ({ onCreate }) => {
 
   return (
     <Box>
-      <Button variant="contained" onClick={mostrarYCargarFormulario}>
+      <Button variant="contained" onClick={SetearYMostrarFormulario}>
         <AddIcon />
-        Crear sucursal
+        Crear comisión
       </Button>
 
       <Dialog
@@ -98,7 +94,7 @@ const PopUpCrearComision = ({ onCreate }) => {
         onClose={cambiarVisibilidadDePopUpCrearComision}
       >
         <DialogTitle sx={{ textAlign: 'center', fontSize: '2rem' }}>
-          Modificar Comision
+          Crear comisión
         </DialogTitle>
 
         <Paper>
@@ -127,7 +123,11 @@ const PopUpCrearComision = ({ onCreate }) => {
               variant="standard"
               margin="dense"
               required
-              inputProps={{ maxLength: 5 }}
+              type="number"
+              inputProps={{
+                inputMode: 'decimal',
+                step: '0.01',
+              }}
             />
             <Select
               id="categoria_id"
@@ -141,10 +141,9 @@ const PopUpCrearComision = ({ onCreate }) => {
               style={{ marginTop: '24px' }}
             >
               <MenuItem disabled value="">Seleccionar categoría</MenuItem>
-              <MenuItem value={1}>Categoria 1</MenuItem>
-              <MenuItem value={2}>Categoria 2</MenuItem>
-              <MenuItem value={3}>Categoria 3</MenuItem>
-              <MenuItem value={4}>Categoria 4</MenuItem>
+              <MenuItem value={1}>Gama baja</MenuItem>
+              <MenuItem value={2}>Gama media</MenuItem>
+              <MenuItem value={3}>Gama alta</MenuItem>
             </Select>
             <FormControlLabel
               id="activa"
