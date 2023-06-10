@@ -16,18 +16,6 @@ import { UserContext } from '../../grupos/grupo4/context/UsersContext';
 import Roles from '../../roles';
 import ElementosSideBarUsuarioAutenticado from './components/ElementosSideBarUsuarioAutenticado';
 
-const styles = {
-  toolbar: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    px: [1],
-  },
-  listItemButton: {
-    pl: 3,
-  },
-};
-
 const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
   const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(({ theme }) => ({
     '& .MuiDrawer-paper': {
@@ -67,7 +55,12 @@ const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
 
   return (
     <Drawer variant="permanent" open={open}>
-      <Toolbar sx={styles.toolbar}>
+      <Toolbar sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        px: [1],
+      }}>
         <IconButton onClick={toggleDrawer}>
           <ChevronLeft />
         </IconButton>
