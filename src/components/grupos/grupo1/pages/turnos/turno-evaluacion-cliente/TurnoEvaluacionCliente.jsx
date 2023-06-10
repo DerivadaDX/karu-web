@@ -6,6 +6,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { Box, Paper } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import InfoIcon from '@mui/icons-material/Info';
 import Disponibilidad from '../Componentes/FechasHorarios';
 import Talleres from '../Componentes/Talleres';
 import ValidarPatente from '../Helpers/validar-patente';
@@ -100,18 +101,30 @@ const FormularioEvaluacionCliente = () => {
 
   return (
     <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
+      <Paper variant="elevation">
+        <Typography
+          component="h2"
+          sx={{
+            display: 'flex', alignContent: 'center', fontSize: '1rem',
+          }}
+        >
+          <InfoIcon color="secondary" />
+          Puedes agendar una evaluación gratuita de tu vehículo en nuestros talleres
+          para determinar su estado y valor de venta.
+        </Typography>
+      </Paper>
       <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 7,
+            marginTop: 4,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
           }}
         >
-          <Typography component="h1" variant="h5" sx={{ marginBottom: 5 }}>
-            Turno para Evaluación
+          <Typography component="h1" variant="h5">
+            Turno para evaluación vehicular
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField

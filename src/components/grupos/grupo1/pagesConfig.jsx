@@ -7,6 +7,8 @@ import DesignServicesIcon from '@mui/icons-material/DesignServices';
 import GarageIcon from '@mui/icons-material/Garage';
 import RateReviewIcon from '@mui/icons-material/RateReview';
 import ReviewsIcon from '@mui/icons-material/Reviews';
+import AssessmentIcon from '@mui/icons-material/Assessment';
+import EditCalendarIcon from '@mui/icons-material/EditCalendar';
 import VisualizacionBusquedaTecnicos from './pages/visualizacion-tecnicos/VisualizacionFiltroBusqueda';
 import Dashboard from './pages/dashboard/Dashboard';
 import MisTurnos from './pages/visualizar-mis-turnos/MisTurnos';
@@ -18,6 +20,8 @@ import FormularioEvaluacionAdmin from './pages/turnos/turno-evaluacion-admin/Tur
 import FormularioEvaluacionCliente from './pages/turnos/turno-evaluacion-cliente/TurnoEvaluacionCliente';
 import Reportes from './pages/reportes/Reportes';
 
+import Roles from '../../roles';
+
 const GROUP_1_PAGES_CONFIG = [
   {
     id: 'g1-Dashboard',
@@ -25,6 +29,7 @@ const GROUP_1_PAGES_CONFIG = [
     href: '/dashboard',
     icon: <DashboardIcon />,
     page: <Dashboard />,
+    roles: [Roles.TECNICO],
   },
   {
     id: 'g1-AgendaTurnos',
@@ -32,13 +37,15 @@ const GROUP_1_PAGES_CONFIG = [
     href: '/agenda-turnos',
     icon: <ListAltIcon />,
     page: <AgendaTaller />,
+    roles: [Roles.SUPERVISOR_TECNICO],
   },
   {
     id: 'g1-Tecnicos',
-    name: 'Técnicos',
+    name: 'Datos de técnicos',
     href: '/informacion-tecnicos',
     icon: <PersonSearchIcon />,
     page: <VisualizacionBusquedaTecnicos />,
+    roles: [Roles.SUPERVISOR_TECNICO],
   },
   {
     id: 'g1-MisTurnos',
@@ -46,13 +53,15 @@ const GROUP_1_PAGES_CONFIG = [
     href: '/mis-turnos',
     icon: <ListAltIcon />,
     page: <MisTurnos />,
+    roles: [Roles.TECNICO],
   },
   {
     id: 'g1-TurnosServiceCliente',
-    name: 'Turnos de service',
+    name: 'Turno para service vehicular',
     href: '/turnos-service',
-    icon: <ContactMailIcon />,
+    icon: <EditCalendarIcon />,
     page: <FormularioCliente />,
+    roles: [Roles.CLIENTE],
   },
   {
     id: 'g1-Services',
@@ -60,6 +69,7 @@ const GROUP_1_PAGES_CONFIG = [
     href: '/services',
     icon: <DesignServicesIcon />,
     page: <Services />,
+    roles: [Roles.SUPERVISOR_TECNICO],
   },
   {
     id: 'g1-Talleres',
@@ -67,27 +77,31 @@ const GROUP_1_PAGES_CONFIG = [
     href: '/talleres',
     icon: <GarageIcon />,
     page: <Talleres />,
+    roles: [Roles.SUPERVISOR_TECNICO],
   },
   {
     id: 'g1-TurnoEvaluacionAdmin',
-    name: 'Evaluación admin.',
-    href: '/turno-evaluación-admin',
+    name: 'Turno para evaluación técnica',
+    href: '/turno-evaluación-administrativo',
     icon: <RateReviewIcon />,
     page: <FormularioEvaluacionAdmin />,
+    roles: [Roles.ADMINISTRADOR],
   },
   {
     id: 'g1-TurnoEvaluacionCliente',
-    name: 'Evaluación cliente',
+    name: 'Turno para evaluación técnica',
     href: '/turno-evaluación-cliente',
-    icon: <ReviewsIcon />,
+    icon: <RateReviewIcon />,
     page: <FormularioEvaluacionCliente />,
+    roles: [Roles.CLIENTE],
   },
   {
     id: 'g1-ReportesSupervisor',
     name: 'Reportes',
     href: '/reportes',
-    icon: <TooltipCus icon={<AssessmentIcon />} title="Reportes" />,
+    icon: <AssessmentIcon />,
     page: <Reportes />,
+    roles: [Roles.SUPERVISOR_TECNICO],
   },
 ];
 
