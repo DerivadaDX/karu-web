@@ -15,24 +15,35 @@ import GROUP_3_PAGES_CONFIG from '../../../grupos/grupo3/pagesConfig';
 import GROUP_4_PAGES_CONFIG from '../../../grupos/grupo4/pagesConfig';
 import MenuDesplegable from './MenuDesplegable';
 
+const filtrarElementosSoloUrl = (configuracionElemento) => {
+  const esSoloUrl = configuracionElemento.soloUrl === true;
+
+  return !esSoloUrl;
+};
+
+const elementosGrupo1 = GROUP_1_PAGES_CONFIG.filter(filtrarElementosSoloUrl);
+const elementosGrupo2 = GROUP_2_PAGES_CONFIG.filter(filtrarElementosSoloUrl);
+const elementosGrupo3 = GROUP_3_PAGES_CONFIG.filter(filtrarElementosSoloUrl);
+const elementosGrupo4 = GROUP_4_PAGES_CONFIG.filter(filtrarElementosSoloUrl);
+
 const MenuUsuarios = ({ rolDeUsuario }) => (
   <List component="nav">
     <MenuDesplegable
       nombre="Administración"
       icono={<AdminPanelSettings />}
-      configuracionSubmenu={GROUP_2_PAGES_CONFIG.concat(GROUP_4_PAGES_CONFIG)}
+      configuracionSubmenu={elementosGrupo2.concat(elementosGrupo4)}
       rolDeUsuario={rolDeUsuario}
     />
     <MenuDesplegable
       nombre="Área técnica"
       icono={<Engineering />}
-      configuracionSubmenu={GROUP_1_PAGES_CONFIG}
+      configuracionSubmenu={elementosGrupo1}
       rolDeUsuario={rolDeUsuario}
     />
     <MenuDesplegable
       nombre="Área comercial"
       icono={<LocalAtm />}
-      configuracionSubmenu={GROUP_3_PAGES_CONFIG}
+      configuracionSubmenu={elementosGrupo3}
       rolDeUsuario={rolDeUsuario}
     />
   </List>
