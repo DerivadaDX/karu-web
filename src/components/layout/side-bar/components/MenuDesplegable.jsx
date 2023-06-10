@@ -32,11 +32,11 @@ const MenuDesplegable = ({
   };
 
   const filtrarElementosPorRolDeUsuario = (menuItemConfig) => {
-    if (menuItemConfig.roles === undefined) return true;
+    if (menuItemConfig.roles === undefined) return false;
 
     const usuarioPuedeAcceder = menuItemConfig.roles.includes(rolDeUsuario);
 
-    return !usuarioPuedeAcceder;
+    return usuarioPuedeAcceder;
   };
 
   const buildCollapsableMenu = (menuItemConfig) => {
