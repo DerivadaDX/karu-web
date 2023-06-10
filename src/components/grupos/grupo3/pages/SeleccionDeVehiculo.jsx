@@ -12,6 +12,7 @@ import './styles.css';
 import VistaVacia from '../components/common/vistaVacia/vistaVacia';
 import VentaService from '../services/VentaService';
 import VentaHttpService from '../services/VentaHttpService';
+import VehiculoService from '../services/VehiculoService';
 
 const FiltroDeVehiculos = () => {
   // hooks para guardar los estados
@@ -41,7 +42,7 @@ const FiltroDeVehiculos = () => {
 */
   const listaVehiculos = async () => {
     try {
-      const response = await VentaService.obtenerVehiculosDisponibles();
+      const response = await VehiculoService.obtenerVehiculos();
       setVehiculos(response.data.result);
       setList(response.data.result);
       setResultsFound(true);

@@ -15,6 +15,7 @@ import ConsultaDialog from '../../common/consultaDialog';
 import autosEnVenta from '../../../constants/autosEnVenta';
 import VentaService from '../../../services/VentaService';
 import AcordeonObservaciones from '../../common/acordeonObservaciones';
+import VehiculoService from '../../../services/VehiculoService';
 
 const VehiculoIndividual = () => {
   const Img = styled('img')({
@@ -28,7 +29,7 @@ const VehiculoIndividual = () => {
 
   const { productId } = useParams();
   const obtenerVehiculo = () => {
-    VentaService.obtenerVehiculoId(productId)
+    VehiculoService.obtenerVehiculo(productId)
       .then((response) => {
         setVehiculo(response.data.result);
       });
