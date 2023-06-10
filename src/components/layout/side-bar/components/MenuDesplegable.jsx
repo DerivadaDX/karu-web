@@ -24,12 +24,6 @@ const MenuDesplegable = ({
 
   const cambiarEstadoExpansionMenu = () => setMenuExpandido(!menuExpandido);
 
-  const filtrarElementosSoloUrl = (menuItemConfig) => {
-    const esSoloUrl = menuItemConfig.soloUrl === true;
-
-    return !esSoloUrl;
-  };
-
   const filtrarElementosPorRolDeUsuario = (menuItemConfig) => {
     if (menuItemConfig.roles === undefined) return false;
 
@@ -66,7 +60,6 @@ const MenuDesplegable = ({
         <List disablePadding>
           {
             configuracionSubmenu
-              .filter(filtrarElementosSoloUrl)
               .filter(filtrarElementosPorRolDeUsuario)
               .map(buildCollapsableMenu)
           }
