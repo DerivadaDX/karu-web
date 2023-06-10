@@ -31,19 +31,19 @@ const MenuUsuarios = ({ rolDeUsuario }) => (
     <MenuDesplegable
       nombre="Administración"
       icono={<AdminPanelSettings />}
-      configuracionSubmenu={elementosGrupo2.concat(elementosGrupo4)}
+      elementosSubmenu={elementosGrupo2.concat(elementosGrupo4)}
       rolDeUsuario={rolDeUsuario}
     />
     <MenuDesplegable
       nombre="Área técnica"
       icono={<Engineering />}
-      configuracionSubmenu={elementosGrupo1}
+      elementosSubmenu={elementosGrupo1}
       rolDeUsuario={rolDeUsuario}
     />
     <MenuDesplegable
       nombre="Área comercial"
       icono={<LocalAtm />}
-      configuracionSubmenu={elementosGrupo3}
+      elementosSubmenu={elementosGrupo3}
       rolDeUsuario={rolDeUsuario}
     />
   </List>

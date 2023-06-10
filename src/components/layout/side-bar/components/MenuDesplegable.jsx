@@ -18,7 +18,7 @@ import PropTypes from 'prop-types';
 import Roles from '../../../roles';
 
 const MenuDesplegable = ({
-  nombre, icono, configuracionSubmenu, rolDeUsuario,
+  nombre, icono, elementosSubmenu, rolDeUsuario,
 }) => {
   const [menuExpandido, setMenuExpandido] = useState(false);
 
@@ -59,7 +59,7 @@ const MenuDesplegable = ({
       <Collapse in={menuExpandido} timeout="auto" unmountOnExit>
         <List disablePadding>
           {
-            configuracionSubmenu
+            elementosSubmenu
               .filter(filtrarElementosPorRolDeUsuario)
               .map(buildCollapsableMenu)
           }
@@ -72,7 +72,7 @@ const MenuDesplegable = ({
 MenuDesplegable.propTypes = {
   nombre: PropTypes.string.isRequired,
   icono: PropTypes.element.isRequired,
-  configuracionSubmenu: PropTypes.arrayOf(PropTypes.shape({
+  elementosSubmenu: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     href: PropTypes.string.isRequired,
