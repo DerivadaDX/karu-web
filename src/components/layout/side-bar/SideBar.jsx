@@ -12,6 +12,7 @@ import PropTypes from 'prop-types';
 
 import { UserContext } from '../../grupos/grupo4/context/UsersContext';
 import MenuUsuarios from './components/MenuUsuarios';
+import MenuClientes from './components/MenuClientes';
 import Roles from '../../roles';
 
 const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
@@ -64,7 +65,11 @@ const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
         </IconButton>
       </Toolbar>
       <Divider />
-      <MenuUsuarios rolDeUsuario={rolDeUsuario} />
+      {
+        rolDeUsuario !== Roles.CLIENTE
+          ? <MenuUsuarios rolDeUsuario={rolDeUsuario} />
+          : <MenuClientes />
+      }
     </Drawer>
   );
 };
