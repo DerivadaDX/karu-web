@@ -351,7 +351,6 @@ const Cotizar = () => {
               </tr>
             </thead>
             {/*------------------------*/}
-
             <tbody>
               {results.map((user) => (
                 <tr key={user.plate}>
