@@ -16,6 +16,7 @@ import {
 import PropTypes from 'prop-types';
 
 import Roles from '../../../roles';
+import ItemMenu from './ItemMenu';
 
 const MenuDesplegable = ({
   nombre, icono, elementosSubmenu, rolDeUsuario,
@@ -31,17 +32,6 @@ const MenuDesplegable = ({
 
     return usuarioPuedeAcceder;
   };
-
-  const buildCollapsableMenu = (elemento) => (
-    <ListItemButton key={elemento.id} sx={{ pl: 3 }} href={elemento.href}>
-      <ListItemIcon>
-        <Tooltip title={elemento.name} placement="right">
-          <Box>{elemento.icon}</Box>
-        </Tooltip>
-      </ListItemIcon>
-      <ListItemText primary={elemento.name} />
-    </ListItemButton>
-  );
 
   return (
     <>
@@ -61,7 +51,15 @@ const MenuDesplegable = ({
           {
             elementosSubmenu
               .filter(filtrarElementosPorRolDeUsuario)
-              .map(buildCollapsableMenu)
+              .map((elemento) => (
+                <ItemMenu
+                  key={elemento.id}
+                  nombre={elemento.name}
+                  icono={elemento.icon}
+                  href={elemento.href}
+                  esSubmenu
+                />
+              ))
           }
         </List>
       </Collapse>
