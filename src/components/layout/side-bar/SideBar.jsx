@@ -12,6 +12,7 @@ import PropTypes from 'prop-types';
 
 import { UserContext } from '../../grupos/grupo4/context/UsersContext';
 import MenuUsuarios from './components/MenuUsuarios';
+import Roles from '../../roles';
 
 const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
   const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(({ theme }) => ({
@@ -38,7 +39,7 @@ const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
     },
   }));
 
-  const [rolDeUsuario, setRolDeUsuario] = useState('');
+  const [rolDeUsuario, setRolDeUsuario] = useState(Roles.CLIENTE);
   const { cookie } = useContext(UserContext);
 
   useEffect(() => {
