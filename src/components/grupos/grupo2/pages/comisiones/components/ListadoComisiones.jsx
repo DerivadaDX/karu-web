@@ -76,13 +76,6 @@ const ListadoComisiones = () => {
     />
   );
 
-  const renderFormatoPorcentaje = ({ row }) => {
-    const valorDeComision = row.original.valor;
-    const porcentaje = `${valorDeComision} %`;
-
-    return porcentaje;
-  };
-
   const renderAccionesFila = ({ row }) => {
     const comision = row.original;
 
