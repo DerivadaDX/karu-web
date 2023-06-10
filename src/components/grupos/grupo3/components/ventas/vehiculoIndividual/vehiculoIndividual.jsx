@@ -13,7 +13,6 @@ import { useParams } from 'react-router-dom';
 import imagenAuto from '../../../constants/autoUsado.jpg';
 import ConsultaDialog from '../../common/consultaDialog';
 import autosEnVenta from '../../../constants/autosEnVenta';
-import VentaService from '../../../services/VentaService';
 import AcordeonObservaciones from '../../common/acordeonObservaciones';
 import VehiculoService from '../../../services/VehiculoService';
 
@@ -48,7 +47,7 @@ const VehiculoIndividual = () => {
         mt: 5,
       }}
     >
-      <Img src={imagenAuto} alt="autousado" />
+      <Img src={vehiculoData.picture1} alt="autousado" />
       <Box sx={{ flexgrow: 1, display: 'grid', gap: 4 }}>
         <Typography variant="h4">
           {vehiculoData.brand}
