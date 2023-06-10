@@ -1,8 +1,15 @@
 /*eslint-disable */
 import React from 'react';
 import StoreIcon from '@mui/icons-material/Store';
+import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
+import CarCrashIcon from '@mui/icons-material/CarCrash';
+import LoginIcon from '@mui/icons-material/Login';
 import LoginForm from './pages/login/LoginForm';
 import RegisterForm from './pages/register/RegisterForm';
+import NoteAltIcon from '@mui/icons-material/NoteAlt';
+import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
+import PriceChangeIcon from '@mui/icons-material/PriceChange';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import Mfa from './pages/mfa/Mfa';
 import ModelForm from './pages/model/ModelForm';
 import PaperWork from './pages/PaperWork/PaperWork';
@@ -18,7 +25,7 @@ const GROUP_4_PAGES_CONFIG = [
     id: 'g4-login',
     name: 'Login',
     href: '/login',
-    icon: <StoreIcon />,
+    icon: <LoginIcon />,
     page: <LoginForm />,
     soloUrl: true,
   },
@@ -26,7 +33,7 @@ const GROUP_4_PAGES_CONFIG = [
     id: 'g4-register',
     name: 'Registrarse',
     href: '/sign-up',
-    icon: <StoreIcon />,
+    icon: <AppRegistrationIcon />,
     page: <RegisterForm />,
   },
   {
@@ -41,14 +48,14 @@ const GROUP_4_PAGES_CONFIG = [
     id: 'g4-modelForm',
     name: 'Cargar Modelo',
     href: '/save-vehicle-model',
-    icon: <StoreIcon />,
+    icon: <CarCrashIcon />,
     page: <ModelForm />,
   },
   {
     id: 'g4-paperWork',
     name: 'Cargar Documentación',
     href: '/paperWork',
-    icon: <StoreIcon />,
+    icon: <DriveFolderUploadIcon />,
     page: <PaperWork />,
   },
   {
@@ -79,21 +86,21 @@ const GROUP_4_PAGES_CONFIG = [
     id: 'g4-updateuser',
     name: 'Actualizar usuario',
     href: '/update-user',
-    icon: <StoreIcon />,
+    icon: <ManageAccountsIcon />,
     page: <UpdateProfile />,
   },
   {
     id: 'g4-vehicleForm',
     name: 'Cargar datos del Vehículo',
     href: '/save-vehicle',
-    icon: <StoreIcon />,
+    icon: <NoteAltIcon />,
     page: <VehicleForm />,
   },
   {
     id: 'g4-priceUpdate',
     name: 'Cambiar precios de vehiculos',
     href: '/price-update',
-    icon: <StoreIcon />,
+    icon: <PriceChangeIcon />,
     page: <PriceUpdate />,
   },
 ];
