@@ -24,22 +24,22 @@ const MenuDesplegable = ({
 
   const cambiarEstadoExpansionMenu = () => setMenuExpandido(!menuExpandido);
 
-  const filtrarElementosPorRolDeUsuario = (menuItemConfig) => {
-    if (menuItemConfig.roles === undefined) return false;
+  const filtrarElementosPorRolDeUsuario = (elemento) => {
+    if (elemento.roles === undefined) return false;
 
-    const usuarioPuedeAcceder = menuItemConfig.roles.includes(rolDeUsuario);
+    const usuarioPuedeAcceder = elemento.roles.includes(rolDeUsuario);
 
     return usuarioPuedeAcceder;
   };
 
-  const buildCollapsableMenu = (menuItemConfig) => (
-    <ListItemButton key={menuItemConfig.id} sx={{ pl: 3 }} href={menuItemConfig.href}>
+  const buildCollapsableMenu = (elemento) => (
+    <ListItemButton key={elemento.id} sx={{ pl: 3 }} href={elemento.href}>
       <ListItemIcon>
-        <Tooltip title={menuItemConfig.name} placement="right">
-          <Box>{menuItemConfig.icon}</Box>
+        <Tooltip title={elemento.name} placement="right">
+          <Box>{elemento.icon}</Box>
         </Tooltip>
       </ListItemIcon>
-      <ListItemText primary={menuItemConfig.name} />
+      <ListItemText primary={elemento.name} />
     </ListItemButton>
   );
 
