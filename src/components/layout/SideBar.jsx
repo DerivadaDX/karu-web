@@ -145,13 +145,11 @@ const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
             {
               GROUP_2_PAGES_CONFIG
                 .filter(filtrarElementosSoloUrl)
-                .filter(filtrarElementosPorRolDeUsuario)
                 .map(buildCollapsableMenu)
             }
             {
               GROUP_4_PAGES_CONFIG
                 .filter(filtrarElementosSoloUrl)
-                .filter(filtrarElementosPorRolDeUsuario)
                 .map(buildCollapsableMenu)
             }
           </List>
