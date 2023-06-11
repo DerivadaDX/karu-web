@@ -44,6 +44,10 @@ const Formulario = (props) => {
   const [patenteReparacion, setPatente] = useState();
   const [fecha, setFecha] = useState();
   const [hora, setHora] = useState();
+
+  const [loading, setLoading] = useState(false);
+  const [openPopupCargando, setOpenPopupCargando] = useState(false);
+
   // Para los mensajes de confirmar o avisar que complete todos los campos
   const [openPopupNoSeleccion, setOpenPopupNoSeleccion] = useState(false);
   const [openPopupSeleccion, setOpenPopupSeleccion] = useState(false);
@@ -83,6 +87,8 @@ const Formulario = (props) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
+      setOpenPopupCargando(true);
+      setLoading(true);
       if (taller && patenteReparacion && isValid && fecha && hora && origenReparacion) {
         await axios({
           method: 'post',
@@ -101,42 +107,21 @@ const Formulario = (props) => {
         setOpenPopupNoSeleccion(true);
       }
     } catch (error) {
-      /*
+      if (error.response && error.response.data) {
         const responseData = error.response.data;
-        if (responseData.includes('la patente ingresada ya tiene un turno de ese tipo registrado en el sistema')) {
-          setOpenError(true);
-          setAlertError('error');
-          setAlertTitulo('Ha ocurrido un problema');
-          setAlertMensaje('Ya existe un turno para esa patente y tipo de turno.');
-        } else if (responseData.includes('la patente no pertenece a la de un auto que ya haya sido evaluado en el taller')) {
-          setOpenError(true);
-          setAlertError('error');
-          setAlertTitulo('Error de patente');
-          setAlertMensaje('La patente ingresada no pertenece a la de un auto evaluado en el taller.');
-        } else if (responseData.includes('pertenece a un vehiculo que ha sido evaluado y no necesita reparaciones')) {
-          setOpenError(true);
-          setAlertError('error');
-          setAlertTitulo('No aplica reparación para este vehículo');
-          setAlertMensaje('La patente ingresada pertenece a un vehiculo que ha sido evaluado y resultó no necesitar reparaciones');
-        } else {
-          setOpenError(true);
-          setAlertError('error');
-          setAlertTitulo('Ha ocurrido un error');
-          setAlertMensaje('Si el problema persiste, comuniquese con insomnia.front@gmail.com');
-        }
-      } else {
         setOpenError(true);
         setAlertError('error');
-        setAlertTitulo('Ha ocurrido un error');
-        setAlertMensaje('Si el problema persiste, comuniquese con insomnia.front@gmail.com');
-      }
-        */
-      if (error.response && error.response.data) {
+        setAlertTitulo('Ha ocurrido un problema');
+        setAlertMensaje(responseData);
+      } else {
         setOpenError(true);
         setAlertError('error');
         setAlertTitulo('Ha ocurrido un error');
         setAlertMensaje(error.response.data);
       }
+    } finally {
+      setLoading(false);
+      setOpenPopupCargando(false);
     }
   };
 
@@ -186,7 +171,7 @@ const Formulario = (props) => {
             {!isValid && <Alerts alertType="warning" description="Ejemplos de patentes válidas: AA111AA o ABC123" title="Patente inválida" />}
             {/* eslint-disable-next-line max-len */}
             {patenteReparacion && origenReparacion && <Disponibilidad endPoint={endPointDisponibilidad} setFecha={setFecha} setHora={setHora} msjError={setMsjError} limite={limite} />}
-            {msjError && <Alerts alertType="error" description={msjError} title="No se encontró evaluación asociada de venta ni extraordinario." />}
+            {msjError && <Alerts alertType="error" description={msjError} title="No se encontró evaluación asociada." />}
             <Box sx={{
               display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 3, gap: '16px',
             }}
@@ -196,7 +181,7 @@ const Formulario = (props) => {
                 // fullWidth
                 variant="contained"
                 color="secondary"
-              // sx={{ mt: 3, mb: 2 }}
+                disabled={loading}
               >
                 Crear Turno
               </Button>
@@ -210,6 +195,16 @@ const Formulario = (props) => {
               </Button>
             </Box>
           </Box>
+
+          {loading && (
+          <Popup
+            title={<LittleHeader titulo="Enviando datos" />}
+            description="Estamos procesando los datos para confirmar su turno. Por favor, espere un momento..."
+            openDialog={openPopupCargando}
+            setOpenDialog={setOpenPopupCargando}
+          />
+          )}
+
           <Popup
             title={<LittleHeader titulo="Error en datos requeridos" />}
             description="Por favor complete todos los campos y verifique que la patente sea correcta."

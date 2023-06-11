@@ -61,11 +61,14 @@ const GROUP_2_PAGES_CONFIG = [
     // Si es true no se va a crear un elemento en el menú lateral.
     // Si es false o no está definido, se va a agregar un elemento en el menú lateral.
     soloUrl: true,
+
+    // Listado de roles de usuario para los cuales será visible este elemento del menú.
+    // Si esta propiedad no está definida, no aparecerá en el menú lateral.
+    // En el ejemplo solo será visible para técnicos y supervisores de taller.
+    roles: [Roles.TECNICO, Roles.SUPERVISOR_TECNICO]
   },
 ];
 ```
-
-Esta configuración es únicamente para declarar las páginas a las cuales se pretende que el usuario acceda por medio del menú lateral.
 
 ## Estilo
 

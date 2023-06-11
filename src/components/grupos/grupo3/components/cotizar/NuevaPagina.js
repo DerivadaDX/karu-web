@@ -3,7 +3,7 @@
 /* eslint-disable react/jsx-filename-extension */
 /* eslint-disable max-len */
 /* eslint-disable no-unused-vars */
-import React, { useState, useContext } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import {
   Form, Button, Row, Col,
 } from 'react-bootstrap';
@@ -11,6 +11,9 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { products } from './products';
 import { AppContext } from './AppContext';
+import Alerts from '../../../grupo1/components/common/Alerts';
+import CotizacionService from '../../services/CotizacionService';
+import VehiculoService from '../../services/VehiculoService';
 
 /*
 cuanto presion el boton cotizar pongo un input donde tiene que rellenar esto datos
@@ -38,16 +41,52 @@ const NuevaPagina = () => {
 
   const navigate = useNavigate();
 
+  // alertas de la API
+  const [alertType, setAlertType] = useState('');
+  const [alertMessage, setAlertMessage] = useState('');
+  const [alertTitle, setAlertTitle] = useState('');
+
   /* lo llamo de la misma manera que en app.js osea productId y lo desectructuramos */
   /* consumo desde los parametro las variantes del objeto y lo desestructuro el objeto */
   const { productId } = useParams();
   /* dentro de mi erreglo de productos busco
     el producto que en su propiedad id sea igual al productId que viene de los params
     en este caso product.id tiraba error, entonces TIENE que ser string ya que productId es string */
-
-  const productSelected = products.find((product) => product.id === productId);
+  // 5-6
+  // const productSelected = products.find((product) => product.id === productId);
+  // setear los hooks useState
+  const [vehiculo, setVehiculo] = useState([]);
+  // función para traer los datos de la API
+  const apiUrl = 'https://gadmin-backend-production.up.railway.app/api/v1/vehicle/getByPlate/';// sacar datos de un json
 
   const [validated, setValidated] = useState(false);
+
+  // Dentro de tu componente o función
+  const getProductData = async (product) => {
+    try {
+      const response = await VehiculoService.obtenerVehiculo(product);
+      if (response) {
+        // const data = await response.json();
+        // Manejar los datos de respuesta aquí
+        console.log(response.data.result);
+        setVehiculo(response.data.result);
+      } else {
+        // Manejar el error en caso de que la respuesta no sea exitosa
+        // sale error
+      }
+    } catch (error) {
+      // Manejar el error de la solicitud
+      console.error(error);
+    }
+  };
+  // Llamar a la función para obtener los datos del producto por su ID
+  useEffect(() => {
+    // mostrar datos locales
+    // setVehiculos(localData);
+    // mostrar datos desde API
+    getProductData(productId);
+  }, []);
+  const productSelected = vehiculo;
 
   const handleSubmit = async (event) => {
     event.preventDefault();// para que no se actualice la pantalla al hacer clic
@@ -70,17 +109,16 @@ const NuevaPagina = () => {
         // updateGarantiaExtendida(garantiaExtendida);
 
         // paso datos al back
-        const url = 'http://34.139.89.18:8181/api-gc/cotizaciones/save';
         const cotizacionData = {
           sucursal: 'S-01',
           nombreCliente: nombreC,
-          patente: productSelected.patente, // infoCotizacion.patente,
+          patente: productSelected.plate, // infoCotizacion.patente,
           email: mail,
           idVendedor: 123,
           precioBase: 1000000,
           garantiaExtendida: garantiaCheck,
         };
-        const response = await axios.post(url, cotizacionData);
+        const response = await CotizacionService.guardarCotizacion(cotizacionData);
         console.log(response.data);
 
         const infoCotizacion = response.data;
@@ -89,8 +127,13 @@ const NuevaPagina = () => {
         navigate('/boleta-cotizacion');
       } catch (error) {
         console.error(error);
+        setAlertType('Error');
+        setAlertTitle('Error de servidor');
+        setAlertMessage(
+          'Error en el servidor. Por favor, vuelva a intentarlo nuevamente.',
+        );
+        // sessionStorage.setItem('cotizacion', JSON.stringify(infoCotizacion))
       }
-      // sessionStorage.setItem('cotizacion', JSON.stringify(infoCotizacion))
     }
   };
 
@@ -173,7 +216,7 @@ const NuevaPagina = () => {
             Patente:
           </Form.Label>
           <Col sm="10">
-            <Form.Control plaintext readOnly defaultValue={productSelected.patente} />
+            <Form.Control plaintext readOnly defaultValue={productSelected.plate} />
           </Col>
         </Form.Group>
 
@@ -203,8 +246,13 @@ const NuevaPagina = () => {
                 <Link to="/boleta-cotizacion">
                 <Button type="submit" >Finalizar</Button>
                 </Link> */}
-
+        <Alerts
+          alertType={alertType}
+          description={alertMessage}
+          title={alertTitle}
+        />
       </Form>
+
     </div>
   );
 };

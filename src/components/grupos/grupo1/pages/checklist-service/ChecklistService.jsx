@@ -1,48 +1,61 @@
+/* eslint-disable prefer-const */
+/* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable camelcase */
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-console */
-/* eslint-disable no-unused-vars */
 import {
-  Alert,
   Box,
   Button,
   Container,
   DialogActions,
   Divider,
-  TextField,
   Checkbox,
+  CircularProgress,
+  Stack,
 } from '@mui/material';
 import {
-  useState, useEffect, useMemo, React, useRef,
+  useState, useEffect, useMemo, React,
 } from 'react';
-import axios from 'axios';
 import MaterialReactTable from 'material-react-table';
 import { MRT_Localization_ES } from 'material-react-table/locales/es';
-import Slider from '@mui/material/Slider';
-import Header from '../../components/common/Header';
 import Alerts from '../../components/common/Alerts';
-import { getChecklistEvaluaciones } from '../../services/services-checklist';
+import {
+  getChecklistService,
+  postCrearRegistroServices,
+} from '../../services/services-checklistService';
+// import reparacion from './reparacion.json';
 import Popup from '../../components/common/DialogPopup';
 import LittleHeader from '../../components/common/LittleHeader';
 
-const ChecklistEvaluacionExtraordinaria = (props) => {
+const ChecklistService = (props) => {
   const {
-    idTurnoPadre, open, setOpen, actualizar, setActualizar,
+    idTurnoPadre, setOpen, open, actualizar, setActualizar,
   } = props;
-  const [evaluaciones, setEvaluaciones] = useState([]);
-  const [checkboxSeleccionada, setCheckboxSeleccionada] = useState({});
-  const [loading, setLoading] = useState(true);
-  const [resError, setResError] = useState([]);
 
-  // Para los popups de confirmacion y manejo de errores
-  const [openNoSeleccion, setOpenNoSeleccion] = useState(false);
-  const [openConfirmarEvaluacion, setOpenConfirmarEvaluacion] = useState(false);
-  const [openEvaluacionEnviada, setOpenEvaluacionEnviada] = useState(false);
-
-  const [valoresEvaluacion, setValoresEvaluacion] = useState({
+  const [services, setServices] = useState({
     tareas: [],
-    comentarios: '',
   });
+  const [checklistService, setChecklistService] = useState([]);
+  const [checkboxSeleccionada, setCheckboxSeleccionada] = useState({});
+
+  const [loading, setLoading] = useState(true);
+  const [loadingButton, setLoadingButton] = useState(false);
+  const [openError, setOpenError] = useState(false);
+
+  const [openNoSeleccion, setOpenNoSeleccion] = useState(false);
+  const [openConfirmarReparacion, setOpenConfirmarService] = useState(false);
+  const [openServiceEnviado, setOpenServiceEnviado] = useState(false);
+
+  // alertas de la API
+  const [alertType, setAlertType] = useState('');
+  const [alertMessage, setAlertMessage] = useState('');
+  const [alertTitle, setAlertTitle] = useState('');
+
+  // Alerta de la api post
+  const [alertError, setAlertError] = useState('');
+  const [alertMensaje, setAlertMensaje] = useState('');
+  const [alertTitulo, setAlertTitulo] = useState('');
 
   const columnas = useMemo(
     () => [
@@ -54,42 +67,51 @@ const ChecklistEvaluacionExtraordinaria = (props) => {
         accessorKey: 'tarea',
         header: 'Tarea',
       },
+      {
+        accessorKey: 'costo_reemplazo',
+        header: 'Costo de reemplazo (ARS$)',
+      },
+      {
+        accessorKey: 'duracion_reemplazo',
+        header: 'Duración en minutos',
+      },
     ],
     [],
   );
 
-  // alertas de la API
-  const [alertType, setAlertType] = useState('');
-  const [alertMessage, setAlertMessage] = useState('');
-  const [alertTitle, setAlertTitle] = useState('');
-  // Alerta de la api post
-  const [alertError, setAlertError] = useState('');
-  const [alertMensaje, setAlertmensaje] = useState('');
-  const [alertTitulo, setAlertTitulo] = useState('');
-
-  const getChecklistEvaluacion = () => {
-    getChecklistEvaluaciones()
+  const getChecklist = () => {
+    getChecklistService(idTurnoPadre)
       .then((response) => {
-        setEvaluaciones(response.data);
+        setChecklistService(response.data);
         setLoading(false);
         setAlertType('');
       })
       .catch((error) => {
-        setAlertMessage(
-          'Ha ocurrido un error, disculpe las molestias. Intente nuevamente más tarde. Si el error persiste comunicarse con soporte: soporte-tecnico@KarU.com',
-        );
+        setAlertMessage(error.response.data.error);
         setAlertType('error');
-        setAlertTitle('Error de servidor');
+        setAlertTitle('Ha ocurrido un problema');
       });
   };
 
-  const handleChangeComment = (event) => {
-    const { name, value } = event.target;
-    setValoresEvaluacion((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-    valoresEvaluacion.comentarios = value;
+  const postCrearRegistro = () => {
+    postCrearRegistroServices({
+      id_turno: idTurnoPadre,
+      id_tasks_remplazadas: JSON.stringify(services.tareas),
+    })
+      .then((response) => {
+        setOpenServiceEnviado(true);
+        setActualizar(true);
+        setLoadingButton(false);
+        setOpenError(false);
+      })
+      .catch((error) => {
+        setAlertTitulo('Ha ocurrido un problema');
+        setAlertMensaje(error.response.data.error);
+        setAlertError('error');
+        setOpenConfirmarService(false);
+        setLoadingButton(false);
+        setOpenError(true);
+      });
   };
 
   const handleChangeCheckbox = (event, idTask) => {
@@ -101,11 +123,11 @@ const ChecklistEvaluacionExtraordinaria = (props) => {
     }));
 
     if (checked) {
-      valoresEvaluacion.tareas.push(idTask);
+      services.tareas.push(idTask);
     } else {
-      const index = valoresEvaluacion.tareas.indexOf(idTask);
+      const index = services.tareas.indexOf(idTask);
       if (index >= 0) {
-        valoresEvaluacion.tareas.splice(index, 1);
+        services.tareas.splice(index, 1);
       }
     }
   };
@@ -127,8 +149,8 @@ const ChecklistEvaluacionExtraordinaria = (props) => {
 
   const seSeleccionoAlgunaCheckbox = () => {
     // eslint-disable-next-line no-restricted-syntax, guard-for-in
-    for (const key in valoresEvaluacion.tareas) {
-      if (valoresEvaluacion.tareas[key]) {
+    for (const key in services.tareas) {
+      if (services.tareas[key]) {
         return true;
       }
     }
@@ -139,36 +161,18 @@ const ChecklistEvaluacionExtraordinaria = (props) => {
     const algunaSeleccionada = seSeleccionoAlgunaCheckbox();
 
     if (algunaSeleccionada) {
-      setOpenConfirmarEvaluacion(true);
+      setOpenConfirmarService(true);
     } else {
       setOpenNoSeleccion(true);
     }
   };
 
-  const url = 'https://autotech2.onrender.com/evaluaciones/registro-extraordinario/crear/';
-  const postEnviarEvaluacion = () => {
-    axios.post(url, {
-      id_turno: idTurnoPadre,
-      id_tasks: `[${valoresEvaluacion.tareas.toString()}]`,
-      detalle: valoresEvaluacion.comentarios,
-    })
-      .then(() => {
-        setOpenEvaluacionEnviada(true);
-        setActualizar(true);
-      })
-      .catch(() => {
-        setAlertmensaje('Ha ocurrido un error.');
-        setAlertError('error');
-        setAlertTitulo('Error de servidor');
-      });
-  };
-
-  async function handleSubmit(event) {
-    postEnviarEvaluacion();
+  async function handleSubmit() {
+    postCrearRegistro();
   }
 
   useEffect(() => {
-    getChecklistEvaluacion();
+    getChecklist();
   }, []);
 
   return (
@@ -182,26 +186,25 @@ const ChecklistEvaluacionExtraordinaria = (props) => {
       <Container maxWidth="xxl" sx={{ mb: 1 }}>
         <MaterialReactTable
           columns={columnas}
-          data={evaluaciones}
+          data={checklistService}
           state={{ isLoading: loading }}
           enableToolbarInternalActions={false}
           positionActionsColumn="last"
           enableRowActions
           renderRowActions={renderRowActions}
-          muiTableBodyCellProps={{ align: 'center' }}
-          muiTableHeadCellProps={{ align: 'center' }}
           localization={MRT_Localization_ES}
-          displayColumnDefOptions={{
-            'mrt-row-actions': {
-              header: 'Necesita reparación',
-            },
-          }}
-          defaultColumn={{ minSize: 10, maxSize: 100 }}
           positionPagination="top"
           initialState={{
             pagination: {
               pageSize: 5,
               pageIndex: 0,
+            },
+          }}
+          muiTableBodyCellProps={{ align: 'center' }}
+          muiTableHeadCellProps={{ align: 'center' }}
+          displayColumnDefOptions={{
+            'mrt-row-actions': {
+              header: 'Reparado/reemplazado',
             },
           }}
           muiTablePaginationProps={{
@@ -213,21 +216,12 @@ const ChecklistEvaluacionExtraordinaria = (props) => {
             },
             labelRowsPerPage: 'Número de tareas visibles',
           }}
-
+          muiSelectCheckboxProps={{
+            color: 'secondary',
+          }}
         />
-        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <TextField
-            id="standard-multiline-static"
-            placeholder="Comentarios"
-            multiline
-            rows={5}
-            variant="outlined"
-            color="secondary"
-            sx={{ width: '80rem', mt: 1 }}
-            onChange={handleChangeComment}
-          />
-        </Box>
       </Container>
+
       {/* Botones que estan en la base del popup */}
       <Box sx={{
         display: 'flex', justifyContent: 'center', alignItems: 'center',
@@ -242,7 +236,7 @@ const ChecklistEvaluacionExtraordinaria = (props) => {
             handleCheckboxSelect();
           }}
         >
-          Terminar evaluación
+          Terminar service
         </Button>
         <Button
           variant="contained"
@@ -274,7 +268,7 @@ const ChecklistEvaluacionExtraordinaria = (props) => {
               color="secondary"
               variant="outlined"
               onClick={() => {
-                setOpenConfirmarEvaluacion(true);
+                setOpenConfirmarService(true);
                 setOpenNoSeleccion(false);
               }}
             >
@@ -293,35 +287,50 @@ const ChecklistEvaluacionExtraordinaria = (props) => {
         </Box>
       </Popup>
 
+      {/* Popup cuando estan todas las rows seleccionadas para confirmar service */}
       <Popup
-        title={<LittleHeader titulo="Evaluación terminada" />}
-        openDialog={openConfirmarEvaluacion}
-        setOpenDialog={setOpenConfirmarEvaluacion}
-        description="¿Está seguro que desea enviar la evaluación? No se podrá modificar una vez realizada."
+        title={<LittleHeader titulo="Terminar service" />}
+        openDialog={openConfirmarReparacion}
+        setOpenDialog={setOpenConfirmarService}
+        description="¿Está seguro que desea terminar el service? No se podrá modificar una vez terminado."
         disableBackdropClick
       >
-        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <Alerts alertType={alertError} description={alertMensaje} title={alertTitulo} />
-        </Box>
         <Box sx={{
           display: 'flex', justifyContent: 'center', alignItems: 'center',
         }}
         >
           <DialogActions>
-            <Button
-              color="secondary"
-              variant="outlined"
-              onClick={() => {
-                handleSubmit();
-              }}
-            >
-              Enviar
-            </Button>
+            <Box sx={{ m: 1, position: 'relative' }}>
+              <Button
+                color="secondary"
+                variant="outlined"
+                disabled={loadingButton}
+                onClick={() => {
+                  handleSubmit();
+                  setLoadingButton(true);
+                }}
+              >
+                Enviar
+              </Button>
+              {loadingButton && (
+              <CircularProgress
+                size={24}
+                sx={{
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  marginTop: '-12px',
+                  marginLeft: '-12px',
+                }}
+              />
+              )}
+            </Box>
             <Button
               color="error"
               variant="outlined"
+              disabled={loadingButton}
               onClick={() => {
-                setOpenConfirmarEvaluacion(false);
+                setOpenConfirmarService(false);
               }}
             >
               Cerrar
@@ -330,12 +339,23 @@ const ChecklistEvaluacionExtraordinaria = (props) => {
         </Box>
       </Popup>
 
-      {/* Popup confirmando que se envio de la evaluación */}
+      {/* Popup para mostrar mensaje de error, cuando se envie el formulario y falle */}
       <Popup
-        title={<LittleHeader titulo="Evaluación cargada exitosamente." />}
-        openDialog={openEvaluacionEnviada}
-        setOpenDialog={setOpenEvaluacionEnviada}
-        description="La evaluación realizada se ha enviado existosamente."
+        openDialog={openError}
+        setOpenDialog={setOpenError}
+        title={<LittleHeader titulo="Ha ocurrido un problema" />}
+      >
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Alerts alertType={alertError} description={alertMensaje} title={alertTitulo} />
+        </Box>
+      </Popup>
+
+      {/* Popup confirmando que se envio de la reparación */}
+      <Popup
+        title={<LittleHeader titulo="Service cargado exitosamente." />}
+        openDialog={openServiceEnviado}
+        setOpenDialog={setOpenServiceEnviado}
+        description="Se han guardado las tareas realizadas."
         disableBackdropClick
       >
         <Box sx={{
@@ -359,4 +379,4 @@ const ChecklistEvaluacionExtraordinaria = (props) => {
   );
 };
 
-export default ChecklistEvaluacionExtraordinaria;
+export default ChecklistService;

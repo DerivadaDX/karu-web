@@ -41,7 +41,7 @@ const ChecklistEvaluacion = (props) => {
 
   // Para que se mantengan seteados los valores de los sliders al cambiar de página
   const [valoresSlider, setValoresSlider] = useState({});
-  evaluacion.id_turno = idTurnoPadre;
+  evaluacion.id_turno = 1;
 
   const tableInstanceRef = useRef(null);
 
@@ -87,9 +87,10 @@ const ChecklistEvaluacion = (props) => {
       })
       .catch((error) => {
         const mensajeError = error.response.data.error;
+        setAlertTitulo('Ha ocurrido algo inesperado');
         setAlertMensaje(`${mensajeError}`);
         setAlertError('error');
-        setAlertTitulo('Ha ocurrido algo inesperado');
+        setOpenConfirmarEvaluacion(false);
         setLoadingButton(false);
         setOpenError(true);
       });

@@ -125,7 +125,7 @@ const ModificarTaller = (props) => {
         'Error al traer los talleres. Por favor, recargue la página y vuelva a intentarlo nuevamente.',
       );
     }
-  }, [traerSucursales, sucursalIdNuevo, nombreNuevo, direccionNueva, cantTecnicosNuevo, capacidadNueva, mailNuevo, telefonoNuevo]);
+  }, []);
 
   const guardarSucursal = (event) => {
     const { value } = event.target;
