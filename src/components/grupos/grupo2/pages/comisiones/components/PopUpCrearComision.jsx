@@ -180,7 +180,7 @@ const PopUpCrearComision = ({ onCreate }) => {
         onClose={finalizarCreacion}
       >
         <DialogTitle id="alert-dialog-title">
-          ¡Modificación exitosa!
+          ¡Creación exitosa!
         </DialogTitle>
         <DialogActions>
           <Button onClick={finalizarCreacion}>
