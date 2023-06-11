@@ -115,7 +115,7 @@ const AltaServiceForm = (props) => {
         })
         .catch((error) => {
           if (error.response && error.response.data) {
-            const responseData = error.response.data;
+            const responseData = error.response.data.error;
             setOpenError(true);
             setAlertError('error');
             setAlertTitulo('Ha ocurrido un problema');
