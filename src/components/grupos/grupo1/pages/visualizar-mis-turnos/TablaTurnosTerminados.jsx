@@ -159,6 +159,7 @@ const TablaTurnosTerminados = (props) => {
         <br />
         más
       </Button>
+      { /*}
       <Button
         variant="contained"
         size="small"
@@ -171,7 +172,7 @@ const TablaTurnosTerminados = (props) => {
         Ver
         <br />
         registro
-      </Button>
+      </Button> */ }
     </Box>
   );
 
