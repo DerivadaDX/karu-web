@@ -15,6 +15,7 @@ import { getTurnosService } from '../../services/services-tecnicos';
 import Popup from '../../components/common/DialogPopup';
 import LittleHeader from '../../components/common/LittleHeader';
 import DetalleTurno from '../../components/common/DetalleTurno';
+import ChecklistService from '../checklist-service/ChecklistService';
 
 const TablaTurnosService = (props) => {
   const { idTecnico } = props;
@@ -241,12 +242,32 @@ const TablaTurnosService = (props) => {
         <DetalleTurno openDialog={openVerMas} setOpenDialog={setOpenVerMas} row={rowDetalle} />
       </Popup>
       <Popup
-        title="Checklist"
+        title={(
+          <LittleHeader
+            titulo="Service del automóvil"
+            subtitulo="Checklist para service"
+          />
+)}
+        description={(
+          <>
+            <strong>Aclaración</strong>
+            <p>
+              Solo deberá indicar las partes que haya reemplazado o reparado.
+              No obstante, deberá llevar a cabo toda la evaluación correspondiente.
+            </p>
+          </>
+)}
         openDialog={openChecklist}
         setOpenDialog={setOpenChecklist}
         disableBackdropClick
       >
-        Checklist
+        <ChecklistService
+          idTurnoPadre={idTurno}
+          setOpen={setOpenChecklist}
+          open={openChecklist}
+          actualizar={actualizarTabla}
+          setActualizar={setActualizarTabla}
+        />
       </Popup>
     </>
   );

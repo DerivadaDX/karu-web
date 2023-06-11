@@ -254,10 +254,11 @@ const TablaTurnosEvaluacion = (props) => {
           <>
             <strong>Aclaración</strong>
             <p>
-              El puntaje indica la gravedad de las fallas,
-              cuanto más alto, mayor es la gravedad.
-              Ej.: si el puntaje es 0, entonces la parte evaluada
-              está en perfectas condiciones. De 5 en adelante es porque la parte tiene fallas.
+              El puntaje refleja la gravedad de las fallas detectadas,
+              siendo más alto indicativo de una mayor gravedad.
+              Por ejemplo, si el puntaje es 0, significa que la parte
+              evaluada se encuentra en perfectas condiciones.
+              A partir de 5 puntos en adelante, se considera que la parte presenta fallas.
             </p>
           </>
 )}

@@ -6,6 +6,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { Box, Paper } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import InfoIcon from '@mui/icons-material/Info';
 import Disponibilidad from '../Componentes/FechasHorarios';
 import Talleres from '../Componentes/Talleres';
 import ValidarPatente from '../Helpers/validar-patente';
@@ -19,10 +20,11 @@ const FormularioCliente = () => {
   const [patenteTurno, setPatente] = useState();
   const [fecha, setFecha] = useState();
   const [hora, setHora] = useState();
-  // Para mostrar en la pantalla lo que pone el cliente
   const [kilometros, setKilometros] = useState('');
-  // Para crear el turno, redondeado
-  const [frecuenciaKm, setFrecuenciaKM] = useState('');
+
+  const [loading, setLoading] = useState(false);
+  const [openPopupCargando, setOpenPopupCargando] = useState(false);
+
   // Para los mensajes de confirmar o avisar que complete todos los campos
   const [openPopupNoSeleccion, setOpenPopupNoSeleccion] = useState(false);
   const [openPopupSeleccion, setOpenPopupSeleccion] = useState(false);
@@ -31,15 +33,18 @@ const FormularioCliente = () => {
   // Para validar el km
   const [isKmValido, setIsKmValido] = useState(true);
 
+  const [msjGarantia, setMsjGarantia] = useState('');
+  // Para la botón de ver el estado de la garantía
+  const [cargandoGarantia, setCargandoGarantia] = useState(false);
+  const [cargando, setCargando] = useState(false);
+
   const msjTurnoCreado = `Se ha creado el turno de service para la patente ${patenteTurno} con ${kilometros} kilómetros para el día ${fecha} a las ${hora} en el taller ${taller}. Recibirá un mail con los datos mencionados. Por favor, recuerde asistir con cédula verde. Gracias.`;
 
   const [msjError, setMsjError] = useState('');
 
-  const marca = 'generico';
-  const modelo = 'generico';
-  const endPointDisponibilidad = `https://autotech2.onrender.com/turnos/dias-horarios-disponibles-service/${taller}/${marca}/${modelo}/${frecuenciaKm}/`;
+  const endPointDisponibilidad = `https://autotech2.onrender.com/turnos/dias-horarios-disponibles-service/${taller}/${patenteTurno}/${kilometros}/`;
   // Para setear el límite del calendario
-  const limite = 31;
+  const limite = 31; // El back devuelve 31 días, me adapté a eso
 
   // Para el manejo de errores de la API para crear el turno
   const [openError, setOpenError] = useState(false);
@@ -61,15 +66,14 @@ const FormularioCliente = () => {
     const val = e.target.value;
 
     if (e.target.validity.valid) {
-      if (ValidarKm.isKilometroValid(val)) {
+      // if (ValidarKm.isKilometroValid(val)) {
+      if (val >= 5000) {
         setIsKmValido(true);
       } else {
         setIsKmValido(false);
       }
       if (ValidarKm.isKmNros(val)) {
         setKilometros(val);
-        const km = ValidarKm.redondearKm(val);
-        setFrecuenciaKM(km);
       }
     } else if (val === '') {
       setKilometros(val);
@@ -81,8 +85,10 @@ const FormularioCliente = () => {
     if (msjError !== '') {
       setOpenPopupNoSeleccion(true);
     } else if (
-      taller && patenteTurno && isPatenteValida && fecha && hora && frecuenciaKm && isKmValido) {
+      taller && patenteTurno && isPatenteValida && fecha && hora && kilometros && isKmValido) {
       try {
+        setOpenPopupCargando(true);
+        setLoading(true);
         await axios({
           method: 'post',
           url: 'https://autotech2.onrender.com/turnos/crear-turno-service/',
@@ -90,7 +96,7 @@ const FormularioCliente = () => {
             patente: patenteTurno,
             fecha_inicio: fecha,
             hora_inicio: hora,
-            frecuencia_km: frecuenciaKm,
+            frecuencia_km: kilometros,
             taller_id: taller,
           },
         });
@@ -98,64 +104,101 @@ const FormularioCliente = () => {
       } catch (error) {
         if (error.response && error.response.data) {
           const responseData = error.response.data;
-          if (responseData.includes('la patente ingresada ya tiene un turno de ese tipo registrado en el sistema')) {
-            setOpenError(true);
-            setAlertError('error');
-            setAlertTitulo('No se puede asignar un turno');
-            setAlertMensaje('Ya existe un turno para esa patente y tipo de turno.');
-            // Hablar con Luci, porque pongo una patente que tiene turno y su error dice que
-            // no pertenece a un cliente y entra acá, y en realidad debería entrar en el de arriba
-          } else if (responseData.includes('la patente no está registrada como perteneciente a un cliente')) {
-            setOpenError(true);
-            setAlertError('error');
-            setAlertTitulo('Error de patente');
-            setAlertMensaje('La patente ingresada no pertenece a ningún cliente.');
-          } else {
-            setOpenError(true);
-            setAlertError('error');
-            setAlertTitulo('Ha ocurrido un error');
-            setAlertMensaje('Si el problema persiste, comuníquese con insomnia.front@gmail.com');
-          }
+          setOpenError(true);
+          setAlertError('error');
+          setAlertTitulo('Ha ocurrido un problema');
+          setAlertMensaje(responseData);
         } else {
           setOpenError(true);
           setAlertError('error');
           setAlertTitulo('Ha ocurrido un error');
           setAlertMensaje('Si el problema persiste, comuníquese con insomnia.front@gmail.com');
         }
+      } finally {
+        setLoading(false);
+        setOpenPopupCargando(false);
       }
     } else {
       setOpenPopupNoSeleccion(true);
     }
   };
 
+  // eslint-disable-next-line consistent-return
+  const obtenerMsjGarantia = async () => {
+    try {
+      setCargandoGarantia(true);
+      setCargando(true);
+      const response = await axios.get(`https://autotech2.onrender.com/garantias/garantia-vigente/${patenteTurno}/${fecha}/${kilometros}/`);
+      setMsjGarantia(response.data);
+    } catch (error) {
+      setMsjError(error.response.data);
+      setCargando(false);
+    } finally {
+      setCargando(false);
+      setCargandoGarantia(false);
+      setCargando(false);
+    }
+  };
+
   return (
     <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
+      <Paper variant="elevation">
+        <Typography
+          component="h2"
+          sx={{
+            display: 'flex', alignContent: 'center', fontSize: '1rem',
+          }}
+        >
+          <InfoIcon color="secondary" />
+          Si compraste uno de nuestros vehículos, podés agendar un turno
+          para realizar el service del vehículo en nuestros talleres.
+        </Typography>
+      </Paper>
       <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 7,
+            marginTop: 4,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
+            gap: '1rem',
+            padding: '1rem',
           }}
         >
-          <Typography component="h1" variant="h5" sx={{ marginBottom: 5 }}>
-            Turno para Service
+          <Typography component="h1" variant="h5" sx={{ marginBottom: 2 }}>
+            Turno para service vehicular
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            noValidate
+            sx={{
+              mt: 1,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '1rem',
+              width: '100%',
+            }}
+          >
             <TextField
               margin="normal"
               required
               fullWidth
-              autoFocus
               id="patente"
               label="Patente"
               name="patente"
               inputProps={{ minLength: 6, maxLength: 7 }}
               onChange={guardarPatente}
+              onSelect={guardarPatente}
             />
-            {!isPatenteValida && <Alerts alertType="warning" description="Ejemplos de patentes válidas: AA111AA o ABC123" title="Patente inválida" />}
+            {!isPatenteValida
+              && (
+
+                <Alerts alertType="warning" description="Ejemplos de patentes válidas: AA111AA o ABC123" title="Patente inválida" />
+
+              )}
+
             <TextField
               margin="normal"
               required
@@ -169,10 +212,14 @@ const FormularioCliente = () => {
               inputProps={{ maxLength: 6 }}
               onChange={guardarKilometraje}
             />
-            {!isKmValido && <Alerts alertType="warning" description="Coberturas válidas: de 5000 a 200000 km." title="Kilometraje inválido" />}
+            {!isKmValido
+              && (
+
+                <Alerts alertType="warning" description="Coberturas válidas: de 5000 a 200000 km." title="Kilometraje inválido" />
+              )}
             <Talleres setTallerSeleccionado={setTaller} />
             {patenteTurno
-              && frecuenciaKm && taller
+              && kilometros && taller
               && (
                 <Disponibilidad
                   endPoint={endPointDisponibilidad}
@@ -182,17 +229,53 @@ const FormularioCliente = () => {
                   limite={limite}
                 />
               )}
-            {msjError && <Alerts alertType="error" description={msjError} title="No se encontró service." />}
+            {msjError && (
+              <Alerts alertType="error" description={msjError} title="No se encontró service." />
+            )}
+            <Button
+              type="button"
+              fullWidth
+              variant="contained"
+              color="primary"
+              disabled={!taller || !patenteTurno || !isPatenteValida || !fecha || !hora
+                || !kilometros || !isKmValido || cargando}
+              sx={{ mt: 3, mb: 2 }}
+              onClick={obtenerMsjGarantia}
+            >
+              Consultar estado de la garantía
+            </Button>
+
+            {cargando && (
+              <Popup
+                title={<LittleHeader titulo="Procesando datos" />}
+                description="Estamos procesando los datos para saber el estado de la garantía. Por favor, espere un momento..."
+                openDialog={cargandoGarantia}
+                setOpenDialog={setCargandoGarantia}
+              />
+            )}
+
+            {taller && patenteTurno && isPatenteValida && fecha && hora && kilometros && isKmValido
+              && !cargando && msjGarantia && msjError === '' && <Alerts alertType="info" description={msjGarantia} title="Garantía" />}
+
             <Button
               type="submit"
               fullWidth
               variant="contained"
               color="secondary"
+              disabled={loading}
               sx={{ mt: 3, mb: 2 }}
             >
               Reservar Turno
             </Button>
           </Box>
+          {loading && (
+            <Popup
+              title={<LittleHeader titulo="Enviando datos" />}
+              description="Estamos procesando los datos para confirmar su turno. Por favor, espere un momento..."
+              openDialog={openPopupCargando}
+              setOpenDialog={setOpenPopupCargando}
+            />
+          )}
           <Popup
             title={<LittleHeader titulo="Error en datos requeridos" />}
             description="Por favor complete todos los campos y verifique la correctitud de la patente y el kilometraje."
@@ -225,7 +308,6 @@ const FormularioCliente = () => {
               <Button
                 color="secondary"
                 variant="outlined"
-                // onClick={() => setOpenPopupSeleccion(false)}
                 onClick={() => {
                   window.location.href = '/';
                 }}
