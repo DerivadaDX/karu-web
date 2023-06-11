@@ -148,7 +148,8 @@ const FormularioCliente = () => {
           }}
         >
           <InfoIcon color="secondary" />
-          Podés agendar un turno para realizar el service de tu vehículo en nuestros talleres.
+          Si compraste uno de nuestros vehículos, podés agendar un turno
+          para realizar el service del vehículo en nuestros talleres.
         </Typography>
       </Paper>
       <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
