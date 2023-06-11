@@ -110,6 +110,7 @@ const GROUP_1_PAGES_CONFIG = [
     href: '/turno-evaluación-cliente',
     icon: <RateReviewIcon />,
     page: <FormularioEvaluacionCliente />,
+    soloUrl: true,
     roles: [
       Roles.CLIENTE,
       Roles.IT,
