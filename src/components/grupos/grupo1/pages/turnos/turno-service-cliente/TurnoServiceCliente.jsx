@@ -132,9 +132,11 @@ const FormularioCliente = () => {
       setMsjGarantia(response.data);
     } catch (error) {
       setMsjError(error.response.data);
+      setCargando(false);
     } finally {
       setCargando(false);
       setCargandoGarantia(false);
+      setCargando(false);
     }
   };
 
@@ -236,7 +238,7 @@ const FormularioCliente = () => {
               variant="contained"
               color="primary"
               disabled={!taller || !patenteTurno || !isPatenteValida || !fecha || !hora
-                || !kilometros || !isKmValido || msjGarantia !== ''}
+                || !kilometros || !isKmValido || cargando}
               sx={{ mt: 3, mb: 2 }}
               onClick={obtenerMsjGarantia}
             >
