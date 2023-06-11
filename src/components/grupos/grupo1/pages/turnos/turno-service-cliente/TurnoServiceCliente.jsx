@@ -34,6 +34,9 @@ const FormularioCliente = () => {
   const [isKmValido, setIsKmValido] = useState(true);
 
   const [msjGarantia, setMsjGarantia] = useState('');
+  // Para la botón de ver el estado de la garantía
+  const [cargandoGarantia, setCargandoGarantia] = useState(false);
+  const [cargando, setCargando] = useState(false);
 
   const msjTurnoCreado = `Se ha creado el turno de service para la patente ${patenteTurno} con ${kilometros} kilómetros para el día ${fecha} a las ${hora} en el taller ${taller}. Recibirá un mail con los datos mencionados. Por favor, recuerde asistir con cédula verde. Gracias.`;
 
@@ -123,10 +126,15 @@ const FormularioCliente = () => {
   // eslint-disable-next-line consistent-return
   const obtenerMsjGarantia = async () => {
     try {
+      setCargandoGarantia(true);
+      setCargando(true);
       const response = await axios.get(`https://autotech2.onrender.com/garantias/garantia-vigente/${patenteTurno}/${fecha}/${kilometros}/`);
       setMsjGarantia(response.data);
     } catch (error) {
       setMsjError(error.response.data);
+    } finally {
+      setCargando(false);
+      setCargandoGarantia(false);
     }
   };
 
@@ -140,7 +148,7 @@ const FormularioCliente = () => {
           }}
         >
           <InfoIcon color="secondary" />
-          Puedes agendar un turno para realizar el service de tu vehículo en nuestros talleres.
+          Podés agendar un turno para realizar el service de tu vehículo en nuestros talleres.
         </Typography>
       </Paper>
       <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
@@ -155,7 +163,7 @@ const FormularioCliente = () => {
             padding: '1rem',
           }}
         >
-          <Typography component="h1" variant="h5" sx={{ marginBottom: 2}}>
+          <Typography component="h1" variant="h5" sx={{ marginBottom: 2 }}>
             Turno para service vehicular
           </Typography>
           <Box
@@ -221,9 +229,30 @@ const FormularioCliente = () => {
             {msjError && (
               <Alerts alertType="error" description={msjError} title="No se encontró service." />
             )}
+            <Button
+              type="button"
+              fullWidth
+              variant="contained"
+              color="primary"
+              disabled={!taller || !patenteTurno || !isPatenteValida || !fecha || !hora
+                || !kilometros || !isKmValido || msjGarantia !== ''}
+              sx={{ mt: 3, mb: 2 }}
+              onClick={obtenerMsjGarantia}
+            >
+              Consultar estado de la garantía
+            </Button>
+
+            {cargando && (
+              <Popup
+                title={<LittleHeader titulo="Procesando datos" />}
+                description="Estamos procesando los datos para saber el estado de la garantía. Por favor, espere un momento..."
+                openDialog={cargandoGarantia}
+                setOpenDialog={setCargandoGarantia}
+              />
+            )}
 
             {taller && patenteTurno && isPatenteValida && fecha && hora && kilometros && isKmValido
-              && obtenerMsjGarantia() && msjError === '' && <Alerts alertType="info" description={msjGarantia} title="Garantía" />}
+              && !cargando && msjGarantia && msjError === '' && <Alerts alertType="info" description={msjGarantia} title="Garantía" />}
 
             <Button
               type="submit"
@@ -237,12 +266,12 @@ const FormularioCliente = () => {
             </Button>
           </Box>
           {loading && (
-          <Popup
-            title={<LittleHeader titulo="Enviando datos" />}
-            description="Estamos procesando los datos para confirmar su turno. Por favor, espere un momento..."
-            openDialog={openPopupCargando}
-            setOpenDialog={setOpenPopupCargando}
-          />
+            <Popup
+              title={<LittleHeader titulo="Enviando datos" />}
+              description="Estamos procesando los datos para confirmar su turno. Por favor, espere un momento..."
+              openDialog={openPopupCargando}
+              setOpenDialog={setOpenPopupCargando}
+            />
           )}
           <Popup
             title={<LittleHeader titulo="Error en datos requeridos" />}
@@ -276,7 +305,6 @@ const FormularioCliente = () => {
               <Button
                 color="secondary"
                 variant="outlined"
-                // onClick={() => setOpenPopupSeleccion(false)}
                 onClick={() => {
                   window.location.href = '/';
                 }}

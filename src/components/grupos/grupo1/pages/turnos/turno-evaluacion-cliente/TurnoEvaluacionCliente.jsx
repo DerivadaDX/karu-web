@@ -109,7 +109,7 @@ const FormularioEvaluacionCliente = () => {
           }}
         >
           <InfoIcon color="secondary" />
-          Puedes agendar una evaluación gratuita de tu vehículo en nuestros talleres
+          Podés agendar una evaluación gratuita de tu vehículo en nuestros talleres
           para determinar su estado y valor de venta.
         </Typography>
       </Paper>
@@ -165,12 +165,12 @@ const FormularioEvaluacionCliente = () => {
             </Button>
           </Box>
           {loading && (
-          <Popup
-            title={<LittleHeader titulo="Enviando datos" />}
-            description="Estamos procesando los datos para confirmar su turno. Por favor, espere un momento..."
-            openDialog={openPopupCargando}
-            setOpenDialog={setOpenPopupCargando}
-          />
+            <Popup
+              title={<LittleHeader titulo="Enviando datos" />}
+              description="Estamos procesando los datos para confirmar su turno. Por favor, espere un momento..."
+              openDialog={openPopupCargando}
+              setOpenDialog={setOpenPopupCargando}
+            />
           )}
 
           <Popup
