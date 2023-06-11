@@ -148,7 +148,7 @@ const FormularioCliente = () => {
           }}
         >
           <InfoIcon color="secondary" />
-          Puedes agendar un turno para realizar el service de tu vehículo en nuestros talleres.
+          Podés agendar un turno para realizar el service de tu vehículo en nuestros talleres.
         </Typography>
       </Paper>
       <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
@@ -163,7 +163,7 @@ const FormularioCliente = () => {
             padding: '1rem',
           }}
         >
-          <Typography component="h1" variant="h5" sx={{ marginBottom: 2}}>
+          <Typography component="h1" variant="h5" sx={{ marginBottom: 2 }}>
             Turno para service vehicular
           </Typography>
           <Box
