@@ -22,6 +22,7 @@ import SucursalService from '../services/sucursal-service';
 const ModificarSucursal = ({ sucursal, onEdit }) => {
   const [mostrarPopUpModificarSucursal, setMostrarPopUpModificarSucursal] = useState(false);
   const [mostrarPopUpModificacionExitosa, setMostrarPopUpModificacionExitosa] = useState(false);
+  const [valorTaller, setValorTaller] = useState([]);
   const [valoresDelFormulario, setValoresDelFormulario] = useState({
     nombre: '',
     calle: '',
@@ -32,6 +33,23 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
     posee_taller: false,
     activa: false,
   });
+
+  const obtenerValorTaller = (idSucursal) => {
+    SucursalService.sucursalTieneTaller(idSucursal)
+      .then((response) => {
+        if (response.status === 200) {
+          setValorTaller(response.data);
+        }
+      })
+      .catch((error) => {
+        if (error.response && error.response.status === 404) {
+          const mensajeError = `No existe taller activo para la sucursal ${idSucursal}`;
+          setValorTaller({ mensaje: mensajeError, valor: false });
+        } else {
+          setValorTaller({ mensaje: 'Ha ocurrido un error inesperado', valor: false });
+        }
+      });
+  };
 
   const mostrarYCargarFormulario = () => {
     setMostrarPopUpModificarSucursal(true);
@@ -46,6 +64,7 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
       posee_taller: sucursal.posee_taller,
       activa: sucursal.activa,
     });
+    obtenerValorTaller(sucursal.id);
   };
 
   const cambiarVisibilidadDePopUpModificarSucursal = () => {
@@ -78,6 +97,7 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
   };
 
   const modificarSucursal = (event) => {
+    console.log(valorTaller);
     event.preventDefault();
 
     SucursalService.modificarSucursal(sucursal.id, valoresDelFormulario)
@@ -98,7 +118,10 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
   return (
     <Box>
       <Tooltip title="Editar">
-        <IconButton onClick={mostrarYCargarFormulario}>
+        <IconButton onClick={() => {
+          mostrarYCargarFormulario();
+        }}
+        >
           <EditIcon />
         </IconButton>
       </Tooltip>
@@ -210,6 +233,7 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
               labelPlacement="start"
               control={(
                 <Switch
+                  disabled={valorTaller.valor}
                   checked={valoresDelFormulario.activa}
                   onChange={actualizarValorDeFormulario}
                 />
