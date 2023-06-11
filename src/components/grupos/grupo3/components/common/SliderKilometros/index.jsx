@@ -4,20 +4,20 @@ import Slider from '@mui/material/Slider';
 
 const marks = [
   {
-    value: 1000,
-    label: '1KM',
+    value: 10,
+    label: '10KM',
   },
   {
-    value: 4000,
-    label: '4KM',
+    value: 20000,
+    label: '20KM',
   },
   {
-    value: 9000,
-    label: '9KM',
+    value: 90000,
+    label: '90KM',
   },
   {
-    value: 12000,
-    label: '12KM',
+    value: 150000,
+    label: '150KM',
   },
 ];
 
@@ -25,23 +25,19 @@ function valuetext(value) {
   return `${value}`;
 }
 
-const SliderKilometros = () => {
-  const [value, setValue] = React.useState([3000, 6000]);
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+const SliderKilometros = ({ value, changeKM }) => {
 
   return (
-    <Box sx={{ width: 200 }}>
+    <Box sx={{ width: 230 }}>
+      <p>Kilometraje</p>
       <Slider
-        getAriaLabel={() => 'Temperature range'}
+        getAriaLabel={() => 'Kilometers range'}
         value={value}
-        onChange={handleChange}
+        onChange={changeKM}
         valueLabelDisplay="auto"
         getAriaValueText={valuetext}
-        min={1000}
-        max={12000}
+        min={100}
+        max={300000}
         marks={marks}
       />
     </Box>

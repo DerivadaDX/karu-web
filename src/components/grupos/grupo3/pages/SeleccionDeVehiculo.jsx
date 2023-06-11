@@ -16,28 +16,16 @@ const FiltroDeVehiculos = () => {
   // hooks para guardar los estados
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState('TODOS');
   const [selectedPrice, setSelectedPrice] = useState([1000000, 5000000]);
-  // const [selectedKM, setSelectedKM] = useState([2000, 8000]);
-
-  // hook para la importacion de los autos 05_06
-  // const [data, setData] = useState([]);
+  const [selectedKM, setSelectedKM] = useState([2000, 8000]);
 
   const [vehiculosData, setVehiculos] = useState([]);
   console.log(vehiculosData);
 
   // aca deberia inicializar el hook con el data importado de la api.
   const [list, setList] = useState([]);
-  // const [list, setList] = useState(autosEnVenta);
   const [resultsFound, setResultsFound] = useState(true);
   const [searchInput, setSearchInput] = useState('');
-  /*
-  const listaVehiculos = () => {
-    VentaService.obtenerVehiculosDisponibles()
-      .then((response) => {
-        setVehiculos(response.data.result);
-      });
-  };
-  useEffect(listaVehiculos, []);
-*/
+
   const listaVehiculos = async () => {
     try {
       const response = await VehiculoService.obtenerVehiculos();
@@ -60,7 +48,8 @@ const FiltroDeVehiculos = () => {
     setSelectedPrice(value);
   };
 
-  // const handleChangeKM = (event, value) => setSelectedKM(value);
+  const handleChangeKM = (event, value) => setSelectedKM(value);
+
   const espacio = ' ';
   // funcion principal encargada de gestionar los filtros
   const aplicarFiltros = () => {
@@ -92,13 +81,22 @@ const FiltroDeVehiculos = () => {
       (item) => item.sellPrice >= minPrice && item.sellPrice <= maxPrice,
     );
 
+    // filtra con el slider por el kilometraje
+    // Kilometer Filter
+    const minKM = selectedKM[0];
+    const maxKM = selectedKM[1];
+
+    updatedList = updatedList.filter(
+      (item) => Number(item.kilometers) >= minKM && Number(item.kilometers) <= maxKM,
+    );
+
     setList(updatedList);
     !updatedList.length ? setResultsFound(false) : setResultsFound(true);
   };
 
   useEffect(() => {
     aplicarFiltros();
-  }, [categoriaSeleccionada, searchInput, selectedPrice]);
+  }, [categoriaSeleccionada, searchInput, selectedPrice, selectedKM]);
 
   return (
     <div className="filtroDeVehiculos">
@@ -116,8 +114,8 @@ const FiltroDeVehiculos = () => {
             toggleSeleccionado={handleCategoriaSeleccionada}
             selectedPrice={selectedPrice}
             changePrice={handleChangePrice}
-            // selectedKM={selectedKM}
-            // changedKM={handleChangeKM}
+            selectedKM={selectedKM}
+            changeKM={handleChangeKM}
           />
         </div>
         <div className="filtroDeVehiculos_list-wrap">

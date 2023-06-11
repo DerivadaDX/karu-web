@@ -4,7 +4,7 @@ import React from 'react';
 import FiltroVehiculosToggle from '../../common/filtrarVehiculosToggle';
 import listaCategorias from '../../../constants';
 import SliderProton from '../../common/sliderProton';
-// import SliderKilometros from '../../common/SliderKilometros';
+import SliderKilometros from '../../common/SliderKilometros';
 import './styles.css';
 
 const PanelDeFiltros = ({
@@ -12,8 +12,8 @@ const PanelDeFiltros = ({
   toggleSeleccionado,
   changePrice,
   selectedPrice,
-  // changedKM,
-  // selectedKM,
+  changeKM,
+  selectedKM,
 }) => (
 
   <div>
@@ -28,6 +28,10 @@ const PanelDeFiltros = ({
       <div className="input-group">
         <p className="label-range"> </p>
         <SliderProton value={selectedPrice} changePrice={changePrice} />
+      </div>
+      <div className="input-group">
+        <p className="label-range"> </p>
+        <SliderKilometros value={selectedKM} changeKM={changeKM} />
       </div>
     </div>
     {/* año */}
