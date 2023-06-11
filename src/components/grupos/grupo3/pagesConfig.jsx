@@ -4,6 +4,7 @@ import EuroIcon from '@mui/icons-material/Euro';
 import React from 'react';
 import RequestPageIcon from '@mui/icons-material/RequestPage';
 import PermPhoneMsgIcon from '@mui/icons-material/PermPhoneMsg';
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import Cotizar from './components/cotizar/Cotizar';
 import NuevaPagina from './components/cotizar/NuevaPagina';
 import Boleta from './components/cotizar/Boleta';
@@ -12,6 +13,8 @@ import PageVehiculoIndividual from './pages/PageVehiculoIndividual';
 import Reserva from './components/cotizar/Reserva';
 import ListadoCotizaciones from './pages/ListadoCotizaciones';
 import ListadoConsultas from './pages/ListadoConsultas';
+import Roles from '../../roles';
+import AltaCliente from './pages/AltaCliente';
 
 const GROUP_3_PAGES_CONFIG = [
   {
@@ -20,6 +23,7 @@ const GROUP_3_PAGES_CONFIG = [
     href: '/cotizar',
     icon: <DriveEtaIcon />,
     page: <Cotizar />,
+    roles: [Roles.CLIENTE],
   },
   {
     id: 'g3-Reserva',
@@ -49,6 +53,7 @@ const GROUP_3_PAGES_CONFIG = [
     href: '/filtrarVehiculos/',
     icon: <Search />,
     page: <FiltroDeVehiculos />,
+    roles: [Roles.CLIENTE],
   },
   {
     id: 'g3-BORRADOR vehiculo',
@@ -65,6 +70,7 @@ const GROUP_3_PAGES_CONFIG = [
     href: '/cotizaciones',
     icon: <RequestPageIcon />,
     page: <ListadoCotizaciones />,
+    roles: [Roles.CLIENTE],
     // soloUrl: true,
   },
   {
@@ -73,6 +79,15 @@ const GROUP_3_PAGES_CONFIG = [
     href: '/consulta',
     icon: <PermPhoneMsgIcon />,
     page: <ListadoConsultas />,
+    roles: [Roles.CLIENTE],
+  },
+  {
+    id: 'g3-AltaCliente',
+    name: 'Guardar cliente',
+    href: '/AltaCliente',
+    icon: <GroupAddIcon />,
+    page: <AltaCliente />,
+    roles: [Roles.CLIENTE],
   },
 ];
 
