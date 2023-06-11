@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { Container, Box, Button } from '@mui/material';
 import React from 'react';
 import VehiculoIndividual from '../components/ventas/vehiculoIndividual/vehiculoIndividual';
@@ -15,7 +16,9 @@ const PageVehiculoIndividual = () => (
     }}
     >
       <AcordeonObservaciones />
-      <Button variant="contained">Reservar</Button>
+      <Link to="/reserva">
+        <Button variant="contained">Reservar</Button>
+      </Link>
     </Box>
   </Container>
 
