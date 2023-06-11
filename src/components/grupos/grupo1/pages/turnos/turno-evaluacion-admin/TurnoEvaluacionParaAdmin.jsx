@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import InfoIcon from '@mui/icons-material/Info';
 import CssBaseline from '@mui/material/CssBaseline';
 import { Box, Paper } from '@mui/material';
 import Typography from '@mui/material/Typography';
@@ -96,6 +97,18 @@ const FormularioEvaluacionAdmin = () => {
 
   return (
     <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
+      <Paper variant="elevation">
+        <Typography
+          component="h2"
+          sx={{
+            display: 'flex', alignContent: 'center', fontSize: '1rem',
+          }}
+        >
+          <InfoIcon color="secondary" />
+          Para programar una evaluación para un cliente,
+          es necesario solicitarle el número de patente de su vehículo.
+        </Typography>
+      </Paper>
       <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
         <CssBaseline />
         <Box
@@ -107,7 +120,7 @@ const FormularioEvaluacionAdmin = () => {
           }}
         >
           <Typography component="h1" variant="h5" sx={{ marginBottom: 5 }}>
-            Turno para Evaluación (Administrativos)
+            Turno para evaluación
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
