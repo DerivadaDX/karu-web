@@ -89,7 +89,7 @@ const GROUP_1_PAGES_CONFIG = [
     icon: <GarageIcon />,
     page: <Talleres />,
     roles: [
-      Roles.SUPERVISOR_TECNICO,
+      Roles.ADMINISTRADOR,
       Roles.IT,
     ],
   },

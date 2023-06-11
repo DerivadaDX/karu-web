@@ -47,15 +47,15 @@ const Reportes = () => {
 
   const tallerNro = obtenerPrimerNumero(idTaller);
 
-  const urlTurnosPendientes = `http://metabase-insomnia.sytes.net:8080/public/question/6c42987a-9c30-41a3-98b8-f78601aa9007?id_taller=${tallerNro}#hide_parameters=id_taller`;
+  const urlTurnosPendientes = `http://metabase-insomnia.sytes.net/public/question/42520032-1c9a-4446-b4e8-fcbfd28af258?id_taller=${tallerNro}#hide_parameters=id_taller`;
 
-  const urlTurnosPorTipo = `http://metabase-insomnia.sytes.net:8080/public/question/d1c70595-7335-4619-ae09-24a1e20e7893?id_taller=${tallerNro}#hide_parameters=id_taller`;
+  const urlTurnosPorTipo = `http://metabase-insomnia.sytes.net/public/question/4afcdc6e-57f4-4c53-8183-57b46c1f20e9?id_taller=${tallerNro}#hide_parameters=id_taller`;
 
-  const urlTurnosPorEstado = `http://metabase-insomnia.sytes.net:8080/public/question/486a6332-75cb-44c4-9f74-e56de89a3dc1?id_taller=${tallerNro}#hide_parameters=id_taller`;
+  const urlTurnosPorEstado = `http://metabase-insomnia.sytes.net/public/question/330214cb-ec3c-4a42-804b-9da35e2e9d7b?id_taller=${tallerNro}#hide_parameters=id_taller`;
 
-  const urlCantPendientes = `http://metabase-insomnia.sytes.net:8080/public/question/2c339de3-0e69-4a52-b294-324f1171da19?id_taller=${tallerNro}#hide_parameters=id_taller`;
+  const urlCantPendientes = `http://metabase-insomnia.sytes.net/public/question/19c4c0d8-f5f8-42b4-bc08-f76a760ceb3b?id_taller=${tallerNro}#hide_parameters=id_taller`;
 
-  const urlUsoDelTaller = `http://metabase-insomnia.sytes.net:8080/public/question/d7c37022-664f-4199-8876-3fcea079a92f?desde=${fechaDesde}&hasta=${fechaHasta}&id_taller=${tallerNro}#hide_parameters=id_taller`;
+  const urlUsoDelTaller = `http://metabase-insomnia.sytes.net/public/question/a25e0ac3-dbea-4ca5-82e4-29444b7c6a78?id_taller=${tallerNro}&hasta=${fechaHasta}&desde=${fechaDesde}#hide_parameters=id_taller`;
 
   const iframeStyles = {
     border: '1px solid #acacac',
@@ -67,7 +67,7 @@ const Reportes = () => {
     <>
       <Box m="2px">
         <Box display="flex">
-          <Header titulo="Reportes" subtitulo="Inicio" />
+          <Header titulo="Reportes" subtitulo="Visualización del estado de turnos y el uso del taller" />
         </Box>
         <Divider sx={{ bgcolor: 'rgba(0, 0, 0, 0.7)' }} />
       </Box>

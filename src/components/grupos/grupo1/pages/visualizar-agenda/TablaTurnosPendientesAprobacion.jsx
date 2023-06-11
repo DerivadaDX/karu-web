@@ -136,7 +136,6 @@ const TablaTurnosPendientesDeAprobacion = (props) => {
         size="small"
         sx={{ fontSize: '0.7em' }}
         onClick={() => {
-          // console.log('Cancelar turno', row.original.id_turno);
           setIdTurnoCancelar(row.original.id_turno);
           setOpenCancel(true);
         }}

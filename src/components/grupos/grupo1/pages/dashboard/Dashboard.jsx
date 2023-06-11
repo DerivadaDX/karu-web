@@ -27,16 +27,14 @@ if (dia < 10) {
 const fechaHasta = `${anio}-${mes}-${dia}`;
 const fechaDesde = `${anio}-01-01`;
 
-const Home = () => {
-  const url = `http://metabase-insomnia.sytes.net:8080/public/dashboard/20101951-c26b-4a67-b631-d7e21154bad0?id_tecnico=${idTecnico}#hide_parameters=id_tecnico`;
+const Dashboard = () => {
+  const turnosAsignados = `http://metabase-insomnia.sytes.net/public/question/1ff3d9f0-afd0-409e-9981-05326b48edd9?id_tecnico=${idTecnico}#hide_parameters=id_tecnico`;
 
-  const turnosAsignados = `http://metabase-insomnia.sytes.net:8080/public/question/ac4bdbd5-bad0-4f58-ba52-b81df3ce14e5?filtro_tecnico=${idTecnico}#hide_parameters=filtro_tecnico`;
+  const turnosTrabajadosPorTipo = `http://metabase-insomnia.sytes.net/public/question/a0000903-ba2d-43ee-b6a6-6c1bb5b5391d?filtro_tecnico=${idTecnico}#hide_parameters=filtro_tecnico`;
 
-  const turnosTrabajadosPorTipo = `http://metabase-insomnia.sytes.net:8080/public/question/7d09dcde-6963-43be-b4c9-11764c4190d1?filtro_tecnico=${idTecnico}#hide_parameters=filtro_tecnico`;
+  const turnosParaHoy = `http://metabase-insomnia.sytes.net/public/question/72a191aa-958e-487c-85b4-8be38506917a?filtro_tecnico=${idTecnico}#hide_parameters=filtro_tecnico`;
 
-  const turnosParaHoy = `http://metabase-insomnia.sytes.net:8080/public/question/d893955e-933c-42a4-a36e-d5255aae8451?filtro_tecnico=${idTecnico}#hide_parameters=filtro_tecnico`;
-
-  const urlTurnosPorFecha = `http://metabase-insomnia.sytes.net:8080/public/question/30d81a07-05d5-40c0-a48f-cda00779a4b1?Desde=${fechaDesde}&Hasta=${fechaHasta}&id_tecnico=${idTecnico}#hide_parameters=id_tecnico`;
+  const urlTurnosPorFecha = `http://metabase-insomnia.sytes.net/public/question/4d6304f7-c642-4e83-8afc-54fe0f51d079?Desde=${fechaDesde}&Hasta=${fechaHasta}&id_tecnico=${idTecnico}#hide_parameters=id_tecnico`;
 
   const iframeStyles = {
     border: '1px solid #acacac',
@@ -48,7 +46,7 @@ const Home = () => {
     <>
       <Box m="2px">
         <Box display="flex">
-          <Header titulo="Dashboard" subtitulo="Inicio" />
+          <Header titulo="Dashboard" subtitulo="Visualización de la cantidad de trabajos realizados y turnos asignados." />
         </Box>
         <Divider sx={{ bgcolor: 'rgba(0, 0, 0, 0.7)' }} />
       </Box>
@@ -90,4 +88,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Dashboard;

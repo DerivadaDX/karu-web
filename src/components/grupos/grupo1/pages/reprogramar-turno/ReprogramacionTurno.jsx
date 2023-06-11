@@ -48,21 +48,12 @@ const ReprogramacionTurno = (props) => {
         setActualizar(true);
       })
       .catch((error) => {
-        if (error.response.data.includes('la patente ingresada ya tiene un turno')) {
-          setOpenConfirmarTurno(false);
-          setOpenError(true);
-          setAlertError('error');
-          setAlertTitulo('Ha ocurrido un problema');
-          setAlertMensaje('Ya existe un turno para esa patente y tipo de turno.');
-          setLoadingButton(false);
-        } else {
-          setOpenConfirmarTurno(false);
-          setOpenError(true);
-          setAlertError('error');
-          setAlertTitulo('Ha ocurrido un error');
-          setAlertMensaje(error.response.data);
-          setLoadingButton(false);
-        }
+        setOpenConfirmarTurno(false);
+        setOpenError(true);
+        setAlertError('error');
+        setAlertTitulo('Ha ocurrido un problema');
+        setAlertMensaje(error.response.data);
+        setLoadingButton(false);
       });
   };
 
