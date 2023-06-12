@@ -1,9 +1,10 @@
 import React, { useContext } from 'react';
 
 import Typography from '@mui/material/Typography';
+
 import { UserContext } from '../../../grupos/grupo4/context/UsersContext';
 
-const BotonLogout = () => {
+const BotonLogOut = () => {
   const { cookie, logOut } = useContext(UserContext);
   const informacionUsuario = cookie.get('user');
 
@@ -25,4 +26,4 @@ const BotonLogout = () => {
   );
 };
 
-export default BotonLogout;
+export default BotonLogOut;

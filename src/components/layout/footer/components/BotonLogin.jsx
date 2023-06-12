@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import Typography from '@mui/material/Typography';
 
-const BotonLogin = () => (
+const BotonLogIn = () => (
   <Typography variant="body2" color="text.secondary" align="center">
     <Link to="/login" style={{ color: 'inherit' }}>
       Acceso empleados
@@ -11,4 +11,4 @@ const BotonLogin = () => (
   </Typography>
 );
 
-export default BotonLogin;
+export default BotonLogIn;

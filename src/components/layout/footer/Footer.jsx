@@ -3,8 +3,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Box } from '@mui/material';
 
 import Copyright from './components/Copyright';
-import BotonLogin from './components/BotonLogin';
-import BotonLogout from './components/BotonLogout';
+import BotonLogIn from './components/BotonLogIn';
+import BotonLogOut from './components/BotonLogOut';
 import { UserContext } from '../../grupos/grupo4/context/UsersContext';
 
 const Footer = () => {
@@ -17,7 +17,7 @@ const Footer = () => {
 
   return (
     <Box>
-      {mostrarLogin ? <BotonLogin /> : <BotonLogout />}
+      {mostrarLogin ? <BotonLogIn /> : <BotonLogOut />}
       <Copyright />
     </Box>
   );
