@@ -143,6 +143,7 @@ export const UserContextProvider = ({ children }) => {
     settwoFactorCode('');
     setIsAuthenticated(false);
     cookie.remove('user');
+    navigate('/');
   };
 
   async function saveUser(userData) {
