@@ -8,6 +8,7 @@ import MaterialReactTable from 'material-react-table';
 
 import ComisionService from '../services/comision-service';
 import PopUpModificarComision from './PopUpModificarComision';
+import PopUpCrearComision from './PopUpCrearComision';
 
 const ListadoComisiones = () => {
   const [comisiones, setComisiones] = useState([]);
@@ -69,6 +70,12 @@ const ListadoComisiones = () => {
     );
   };
 
+  const renderCrearComision = () => (
+    <PopUpCrearComision
+      onCreate={obtenerComisiones}
+    />
+  );
+
   const renderAccionesFila = ({ row }) => {
     const comision = row.original;
 
@@ -117,6 +124,7 @@ const ListadoComisiones = () => {
         columns={columnas}
         data={comisiones}
         state={{ isLoading: cargando }}
+        renderTopToolbarCustomActions={renderCrearComision}
         enableRowActions
         positionActionsColumn="last"
         renderRowActions={renderAccionesFila}
