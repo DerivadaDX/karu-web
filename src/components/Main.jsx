@@ -4,7 +4,7 @@ import { Route, Routes } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Container from '@mui/material/Container';
 
-import Copyright from './layout/footer/components/Copyright';
+import Footer from './layout/footer/Footer';
 import Home from './layout/Home';
 import LoggedInLayout from './layout/LoggedInLayout';
 import GROUP_1_PAGES_CONFIG from './grupos/grupo1/pagesConfig';
@@ -102,7 +102,7 @@ const Main = () => {
             {GROUP_4_PAGES_CONFIG.map(buildRoute)}
           </Routes>
         </Container>
-        <Copyright />
+        <Footer />
       </LoggedInLayout>
     </ThemeProvider>
   );
