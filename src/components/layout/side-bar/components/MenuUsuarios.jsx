@@ -22,10 +22,29 @@ const MenuUsuarios = ({ rolDeUsuario }) => {
     return !esSoloUrl;
   };
 
-  const elementosGrupo1 = GROUP_1_PAGES_CONFIG.filter(filtrarElementosSoloUrl);
-  const elementosGrupo2 = GROUP_2_PAGES_CONFIG.filter(filtrarElementosSoloUrl);
-  const elementosGrupo3 = GROUP_3_PAGES_CONFIG.filter(filtrarElementosSoloUrl);
-  const elementosGrupo4 = GROUP_4_PAGES_CONFIG.filter(filtrarElementosSoloUrl);
+  const filtrarElementosPorRolDeUsuario = (elemento) => {
+    if (elemento.roles === undefined) return false;
+
+    const usuarioPuedeAcceder = elemento.roles.includes(rolDeUsuario);
+
+    return usuarioPuedeAcceder;
+  };
+
+  const elementosGrupo1 = GROUP_1_PAGES_CONFIG
+    .filter(filtrarElementosSoloUrl)
+    .filter(filtrarElementosPorRolDeUsuario);
+
+  const elementosGrupo2 = GROUP_2_PAGES_CONFIG
+    .filter(filtrarElementosSoloUrl)
+    .filter(filtrarElementosPorRolDeUsuario);
+
+  const elementosGrupo3 = GROUP_3_PAGES_CONFIG
+    .filter(filtrarElementosSoloUrl)
+    .filter(filtrarElementosPorRolDeUsuario);
+
+  const elementosGrupo4 = GROUP_4_PAGES_CONFIG
+    .filter(filtrarElementosSoloUrl)
+    .filter(filtrarElementosPorRolDeUsuario);
 
   const mostrarMenuAdministracion = elementosGrupo2.length > 0 || elementosGrupo4.length > 0;
   const mostrarMenuAreaTecnica = elementosGrupo1.length > 0;
