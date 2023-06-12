@@ -57,7 +57,6 @@ const MenuUsuarios = ({ rolDeUsuario }) => {
           nombre="Administración"
           icono={<AdminPanelSettings />}
           elementosSubmenu={elementosGrupo2.concat(elementosGrupo4)}
-          rolDeUsuario={rolDeUsuario}
         />
       )}
       {mostrarMenuAreaTecnica && (
@@ -65,7 +64,6 @@ const MenuUsuarios = ({ rolDeUsuario }) => {
           nombre="Área técnica"
           icono={<Engineering />}
           elementosSubmenu={elementosGrupo1}
-          rolDeUsuario={rolDeUsuario}
         />
       )}
       {mostrarMenuAreaComercial && (
@@ -73,7 +71,6 @@ const MenuUsuarios = ({ rolDeUsuario }) => {
           nombre="Área comercial"
           icono={<LocalAtm />}
           elementosSubmenu={elementosGrupo3}
-          rolDeUsuario={rolDeUsuario}
         />
       )}
     </List>
