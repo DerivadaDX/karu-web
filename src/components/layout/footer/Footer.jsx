@@ -3,8 +3,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Box } from '@mui/material';
 
 import Copyright from './components/Copyright';
-import BotonLogIn from './components/BotonLogIn2';
-import BotonLogOut from './components/BotonLogOut2';
+import BotonLogIn from './components/BotonLogIn';
+import BotonLogOut from './components/BotonLogOut';
 import { UserContext } from '../../grupos/grupo4/context/UsersContext';
 
 const Footer = () => {
