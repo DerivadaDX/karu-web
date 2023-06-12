@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
@@ -25,23 +26,20 @@ function valuetext(value) {
   return `${value}`;
 }
 
-const SliderKilometros = ({ value, changeKM }) => {
-
-  return (
-    <Box sx={{ width: 230 }}>
-      <p>Kilometraje</p>
-      <Slider
-        getAriaLabel={() => 'Kilometers range'}
-        value={value}
-        onChange={changeKM}
-        valueLabelDisplay="auto"
-        getAriaValueText={valuetext}
-        min={100}
-        max={300000}
-        marks={marks}
-      />
-    </Box>
-  );
-};
+const SliderKilometros = ({ value, changeKM }) => (
+  <Box sx={{ width: 230 }}>
+    <p>Kilometraje</p>
+    <Slider
+      getAriaLabel={() => 'Kilometers range'}
+      value={value}
+      onChange={changeKM}
+      valueLabelDisplay="auto"
+      getAriaValueText={valuetext}
+      min={100}
+      max={300000}
+      marks={marks}
+    />
+  </Box>
+);
 
 export default SliderKilometros;
