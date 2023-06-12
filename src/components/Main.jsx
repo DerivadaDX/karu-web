@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import { Route, Routes } from 'react-router-dom';
+
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Container from '@mui/material/Container';
-import { Route, Routes } from 'react-router-dom';
+
 import Copyright from './layout/footer/components/Copyright';
 import Home from './layout/Home';
 import LoggedInLayout from './layout/LoggedInLayout';
@@ -9,21 +11,6 @@ import GROUP_1_PAGES_CONFIG from './grupos/grupo1/pagesConfig';
 import GROUP_2_PAGES_CONFIG from './grupos/grupo2/pagesConfig';
 import GROUP_3_PAGES_CONFIG from './grupos/grupo3/pagesConfig';
 import GROUP_4_PAGES_CONFIG from './grupos/grupo4/pagesConfig';
-
-const styles = {
-  container: {
-    mt: 4,
-    mb: 4,
-  },
-};
-
-const buildRoute = (routeConfig) => (
-  <Route
-    key={routeConfig.id}
-    path={routeConfig.href}
-    element={routeConfig.page}
-  />
-);
 
 const Main = () => {
   const [open, setOpen] = useState(false);
@@ -88,6 +75,14 @@ const Main = () => {
     },
   });
 
+  const buildRoute = (routeConfig) => (
+    <Route
+      key={routeConfig.id}
+      path={routeConfig.href}
+      element={routeConfig.page}
+    />
+  );
+
   useEffect(() => {
     const sideBarIsOpenedRaw = sessionStorage.getItem('sideBarIsOpened');
     const sideBarIsOpened = sideBarIsOpenedRaw === 'true';
@@ -98,7 +93,7 @@ const Main = () => {
   return (
     <ThemeProvider theme={mdTheme}>
       <LoggedInLayout sideBarIsOpened={open} toggleDrawer={toggleDrawer}>
-        <Container maxWidth="xl" sx={styles.container}>
+        <Container maxWidth="xl" sx={{ marginY: 4 }}>
           <Routes>
             <Route path="/" element={<Home />} />
             {GROUP_1_PAGES_CONFIG.map(buildRoute)}
