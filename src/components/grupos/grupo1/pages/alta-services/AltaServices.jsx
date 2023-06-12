@@ -289,6 +289,12 @@ const AltaServiceForm = (props) => {
               inputProps={{ maxLength: 6 }}
               onChange={guardarKilometraje}
             />
+            <Typography variant="p" sx={{ fontSize: 13 }} className="mb-3">
+              *Para ingresar un número decimal, primero debe escribir todos los dígitos y por último
+              ubicar el punto . donde corresponda. Notar que el punto debe estar entre dos números y
+              que los dígitos a la derecha del punto han de tener al menos un dígito distinto de
+              cero.
+            </Typography>
             <TextField
               margin="dense"
               color="secondary"
