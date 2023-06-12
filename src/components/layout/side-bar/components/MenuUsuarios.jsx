@@ -26,26 +26,36 @@ const elementosGrupo2 = GROUP_2_PAGES_CONFIG.filter(filtrarElementosSoloUrl);
 const elementosGrupo3 = GROUP_3_PAGES_CONFIG.filter(filtrarElementosSoloUrl);
 const elementosGrupo4 = GROUP_4_PAGES_CONFIG.filter(filtrarElementosSoloUrl);
 
+const mostrarMenuAdministracion = elementosGrupo2.length > 0 || elementosGrupo4.length > 0;
+const mostrarMenuAreaTecnica = elementosGrupo1.length > 0;
+const mostrarMenuAreaComercial = elementosGrupo3.length > 0;
+
 const MenuUsuarios = ({ rolDeUsuario }) => (
   <List component="nav">
-    <MenuDesplegable
-      nombre="Administración"
-      icono={<AdminPanelSettings />}
-      elementosSubmenu={elementosGrupo2.concat(elementosGrupo4)}
-      rolDeUsuario={rolDeUsuario}
-    />
-    <MenuDesplegable
-      nombre="Área técnica"
-      icono={<Engineering />}
-      elementosSubmenu={elementosGrupo1}
-      rolDeUsuario={rolDeUsuario}
-    />
-    <MenuDesplegable
-      nombre="Área comercial"
-      icono={<LocalAtm />}
-      elementosSubmenu={elementosGrupo3}
-      rolDeUsuario={rolDeUsuario}
-    />
+    {mostrarMenuAdministracion && (
+      <MenuDesplegable
+        nombre="Administración"
+        icono={<AdminPanelSettings />}
+        elementosSubmenu={elementosGrupo2.concat(elementosGrupo4)}
+        rolDeUsuario={rolDeUsuario}
+      />
+    )}
+    {mostrarMenuAreaTecnica && (
+      <MenuDesplegable
+        nombre="Área técnica"
+        icono={<Engineering />}
+        elementosSubmenu={elementosGrupo1}
+        rolDeUsuario={rolDeUsuario}
+      />
+    )}
+    {mostrarMenuAreaComercial && (
+      <MenuDesplegable
+        nombre="Área comercial"
+        icono={<LocalAtm />}
+        elementosSubmenu={elementosGrupo3}
+        rolDeUsuario={rolDeUsuario}
+      />
+    )}
   </List>
 );
 
