@@ -17,6 +17,7 @@ import ListadoConsultas from './pages/ListadoConsultas';
 import Roles from '../../roles';
 import AltaCliente from './pages/AltaCliente';
 import ListadoClientes from './pages/ListadoClientes';
+import ReservaRealizada from './pages/ReservaRealizada';
 
 const GROUP_3_PAGES_CONFIG = [
   {
@@ -30,7 +31,7 @@ const GROUP_3_PAGES_CONFIG = [
   {
     id: 'g3-Reserva',
     name: 'Reserva',
-    href: '/reserva',
+    href: '/vehiculoIndividual/:productId/reserva',
     icon: <EuroIcon />,
     page: <Reserva />,
     soloUrl: true,
@@ -98,6 +99,14 @@ const GROUP_3_PAGES_CONFIG = [
     icon: <GroupIcon />,
     page: <ListadoClientes />,
     roles: [Roles.CLIENTE],
+  },
+  {
+    id: 'g3-ReservaRealizada',
+    name: 'Reserva realizada',
+    href: '/ReservaRealizada',
+    icon: <GroupIcon />,
+    page: <ReservaRealizada />,
+    soloURL: true,
   },
 ];
 

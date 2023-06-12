@@ -25,7 +25,6 @@ const VehiculoIndividual = () => {
   });
 
   const [vehiculoData, setVehiculo] = useState([]);
-
   const { productId } = useParams();
   const obtenerVehiculo = () => {
     VehiculoService.obtenerVehiculo(productId)
@@ -33,6 +32,7 @@ const VehiculoIndividual = () => {
         setVehiculo(response.data.result);
       });
   };
+
   useEffect(obtenerVehiculo, []);
   // const vehicleSelected = vehiculoData.find((product) => vehiculoData.plate === productId);
   const espacio = '  ';

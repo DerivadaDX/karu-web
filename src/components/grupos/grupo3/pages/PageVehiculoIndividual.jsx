@@ -5,6 +5,8 @@ import VehiculoIndividual from '../components/ventas/vehiculoIndividual/vehiculo
 import AcordeonObservaciones from '../components/common/acordeonObservaciones';
 // import ConsultaDialog from '../components/common/consultaDialog';
 
+const patente = sessionStorage.getItem('patente');
+
 const PageVehiculoIndividual = () => (
   <Container>
     <VehiculoIndividual />
@@ -16,7 +18,7 @@ const PageVehiculoIndividual = () => (
     }}
     >
       <AcordeonObservaciones />
-      <Link to="/reserva">
+      <Link to={`/vehiculoIndividual/${patente}/reserva`}>
         <Button variant="contained">Reservar</Button>
       </Link>
     </Box>

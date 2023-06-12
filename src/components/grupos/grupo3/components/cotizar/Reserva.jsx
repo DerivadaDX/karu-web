@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useParams, useNavigate } from 'react-router-dom';
 import {
   Form,
   Button,
@@ -16,8 +17,10 @@ import {
   Snackbar,
   SnackbarContent,
 } from '@mui/material';
+import VehiculoService from '../../services/VehiculoService';
+import ReservaService from '../../services/ReservaService';
 
-const Cotizacion = ({ formData }) => {
+const Cotizacion = ({ formData, precioAuto }) => {
   const {
     nombre = '',
     apellido = '',
@@ -60,15 +63,20 @@ const Cotizacion = ({ formData }) => {
         <Paper elevation={3} className="cotizacion-detalles">
           <Typography variant="h6">Cotizacion Detalles:</Typography>
           <Typography>
-            Item 1: $100
+            Precio del vehiculo: $
+            {espacio}
+            {precioAuto}
           </Typography>
           <Typography>
-            Item 2: $200
+            Descuento por reserva: $
+            {espacio}
+            {precioAuto * 0.004 - precioAuto}
           </Typography>
-          <Typography>
-            Item 3: $300
+          <Typography variant="h5">
+            Total de la reserva: $
+            {espacio}
+            {precioAuto * 0.004}
           </Typography>
-          <Typography variant="h5">Total: $600</Typography>
         </Paper>
       </Grid>
       <Grid item xs={12}>
@@ -100,6 +108,7 @@ Cotizacion.propTypes = {
     email: PropTypes.string,
     dni: PropTypes.string,
   }).isRequired,
+  precioAuto: PropTypes.number.isRequired,
 };
 
 const fieldData = [
@@ -118,6 +127,8 @@ const Reserva = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [showSuccessSnackbar, setShowSuccessSnackbar] = useState(false);
   const [showErrorSnackbar, setShowErrorSnackbar] = useState(false);
+  const navigate = useNavigate();
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevFormData) => ({
@@ -125,6 +136,24 @@ const Reserva = () => {
       [name]: value,
     }));
   };
+
+  const [vehiculoData, setVehiculo] = useState([]);
+  const { productId } = useParams();
+
+  const obtenerVehiculo = () => {
+    VehiculoService.obtenerVehiculo(productId)
+      .then((response) => {
+        setVehiculo(response.data.result);
+      })
+      .catch((error) => {
+        // eslint-disable-next-line no-console
+        console.error(error);
+        setErrorMessage('Error al obtener los datos del vehículo');
+        setShowErrorSnackbar(true);
+      });
+  };
+
+  useEffect(obtenerVehiculo, []);
 
   const validateForm = () => {
     const newErrors = {};
@@ -159,17 +188,17 @@ const Reserva = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (validateForm()) {
       try {
-        // Show success notification
-        // agregar api que se va a utilizar para reserva
-        // Hay que eseprar a que gise termine con sus cosas del auto individual
+        await ReservaService.guardarReserva(productId, formData);
+        // Se muestra la success notificion
         setShowSuccessSnackbar(true);
         // Reset the form data if needed
         setFormData({});
+        navigate('/ReservaRealizada');
       } catch (error) {
         setErrorMessage(error.message);
         setShowErrorSnackbar(true);
@@ -208,7 +237,9 @@ const Reserva = () => {
           </Form>
         </Col>
         <Col md={6}>
-          <Cotizacion formData={formData} />
+          {vehiculoData && vehiculoData.sellPrice && (
+            <Cotizacion formData={formData} precioAuto={vehiculoData.sellPrice} />
+          )}
         </Col>
       </Row>
       <Snackbar
