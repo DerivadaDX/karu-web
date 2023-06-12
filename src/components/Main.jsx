@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Container from '@mui/material/Container';
 import { Route, Routes } from 'react-router-dom';
-import Copyright from './layout/footer/Copyright';
+import Copyright from './layout/footer/components/Copyright';
 import Home from './layout/Home';
 import LoggedInLayout from './layout/LoggedInLayout';
 import GROUP_1_PAGES_CONFIG from './grupos/grupo1/pagesConfig';
