@@ -162,20 +162,20 @@ const Reserva = () => {
         newErrors[name] = `${name.charAt(0).toUpperCase() + name.slice(1)} es necesario`;
         setErrorMessage('Faltan campos por completar');
         setShowErrorSnackbar(true);
-      } else if (name === 'dni') {
-        if (name === 'dni' && formData[name].includes('.')) {
-          newErrors[name] = 'DNI debe ser escrito sin puntos.';
-          setErrorMessage('DNI debe ser escrito sin puntos.');
-          setShowErrorSnackbar(true);
-        } else if ((formData[name].length > 8 || formData[name].length < 7)) {
-          newErrors[name] = 'DNI debe tener entre 7 y 8 caracteres.';
-          setErrorMessage('DNI debe tener entre 7 y 8 caracteres.');
-          setShowErrorSnackbar(true);
+      } else {
+        if (name === 'dni') {
+          if (formData[name].includes('.')) {
+            newErrors[name] = 'DNI debe ser escrito sin puntos.';
+          } else if ((formData[name].length > 8 || formData[name].length < 7)) {
+            newErrors[name] = 'DNI debe tener entre 7 y 8 caracteres.';
+          }
+        } if ((name === 'nombre' || name === 'apellido' || name === 'numTelefono') && (formData[name].length < 3 || formData[name].length > 15)) {
+          newErrors[name] = `${name.charAt(0).toUpperCase() + name.slice(1)} debe tener entre 3 y 15 caracteres`;
+        } if (name === 'email' && formData[name].length > 70) {
+          newErrors[name] = 'Email debe tener como maximo 70 caracteres.';
+        } if (name === 'direccion' && formData[name].length > 20) {
+          newErrors[name] = 'direccion debe tener como maximo 20 caracteres.';
         }
-      } else if ((name === 'nombre' || name === 'apellido') && (formData[name].length < 3 || formData[name].length > 20)) {
-        newErrors[name] = `${name.charAt(0).toUpperCase() + name.slice(1)} debe tener entre 3 y 20 caracteres`;
-        setErrorMessage('Error en el nombre o apellido');
-        setShowErrorSnackbar(true);
       }
     });
 
@@ -224,6 +224,7 @@ const Reserva = () => {
                   name={name}
                   value={formData[name] || ''}
                   onChange={handleChange}
+                  maxLength="30"
                 />
                 {errors[name] && (
                   <Typography variant="caption" color="error" display="block">
@@ -258,7 +259,7 @@ const Reserva = () => {
           message={(
             <Alert onClose={handleSnackbarClose} severity="success">
               <AlertTitle>Realizado!</AlertTitle>
-              El usuario se guardo correctamente
+              La reserva se realizo correctamente
               <strong> correctamente!</strong>
             </Alert>
           )}
@@ -281,7 +282,6 @@ const Reserva = () => {
               <AlertTitle>Error</AlertTitle>
               Hubo un
               <strong> error al cargar el formulario. </strong>
-              Por favor intente mas tarde.
               <strong> Error: </strong>
               {errorMessage}
             </Alert>
