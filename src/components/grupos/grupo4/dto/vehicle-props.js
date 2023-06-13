@@ -7,8 +7,8 @@ export const inputs = [
     type: 'text',
     placeholder: 'Patente',
     errorMessage:
-      '¡La patente debe tener entre 6 y 10 caracteres, letras en mayuscula y no debe incluir ningún carácter especial!',
-    pattern: '^[A-Z0-9]{6,10}$',
+    '¡Las letras de la patente deben estar en mayuscula, se escribe sin espacios ni guiones, el tamaño es de 6 o 7 caracteres!',
+    pattern: '^[A-Z0-9]{6,7}$',
     required: true,
   },
   {
@@ -29,8 +29,8 @@ export const inputs = [
     type: 'text',
     placeholder: 'DNI',
     errorMessage:
-      '¡El DNI debe tener 15 caracteres y no debe incluir ningún carácter especial!',
-    pattern: '^[0-9]{1,15}$',
+    '¡El DNI debe tener entre 6 y 10 caracteres y no debe incluir ningún carácter especial!',
+    pattern: '^[0-9]{6,10}$',
     required: true,
   },
 

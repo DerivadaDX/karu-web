@@ -31,6 +31,7 @@ const PriceUpdate = () => {
         basePrice: 0.0,
         engine: '',
         fuelType: '',
+        category: '',
     });
 
     const [inflationPriceValue, setInflationPriceValue] = useState(0);
@@ -40,7 +41,7 @@ const PriceUpdate = () => {
 
  
     const [models, setModels] = useState([
-        { brand: '', model: '', year: '', basePrice: 0.0, engine: '', fuelType: '' },
+        { brand: '', model: '', year: '', basePrice: 0.0, engine: '', fuelType: '', category: '' },
     ]);
 
   
@@ -79,7 +80,8 @@ const PriceUpdate = () => {
                 year: model.year,
                 basePrice: model.basePrice,
                 engine: model.engine,
-                fuelType: model.fuelType
+                fuelType: model.fuelType,
+                category: model.category
             }));
             setModels(modelos);
             setIsDropdownInitialized(true);
@@ -132,7 +134,8 @@ const PriceUpdate = () => {
                 year: model.year,
                 basePrice: model.basePrice,
                 engine: model.engine,
-                fuelType: model.fuelType
+                fuelType: model.fuelType,
+                category: model.category
               });
             setSelectedModel(e.target.value);
         }
