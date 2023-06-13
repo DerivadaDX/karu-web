@@ -30,6 +30,7 @@ const ChecklistEvaluacionExtraordinaria = (props) => {
     idTurnoPadre, open, setOpen, actualizar, setActualizar,
   } = props;
   const [evaluaciones, setEvaluaciones] = useState([]);
+  const [checkboxSeleccionada, setCheckboxSeleccionada] = useState({});
   const [loading, setLoading] = useState(true);
   const [resError, setResError] = useState([]);
 
@@ -94,6 +95,11 @@ const ChecklistEvaluacionExtraordinaria = (props) => {
   const handleChangeCheckbox = (event, idTask) => {
     const { checked } = event.target;
 
+    setCheckboxSeleccionada((prevState) => ({
+      ...prevState,
+      [idTask]: checked,
+    }));
+
     if (checked) {
       valoresEvaluacion.tareas.push(idTask);
     } else {
@@ -113,6 +119,7 @@ const ChecklistEvaluacionExtraordinaria = (props) => {
     >
       <Checkbox
         color="secondary"
+        checked={checkboxSeleccionada[row.original.id_task] || false}
         onChange={(event) => handleChangeCheckbox(event, row.original.id_task)}
       />
     </Box>

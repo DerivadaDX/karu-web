@@ -114,10 +114,18 @@ const AltaServiceForm = (props) => {
           setOpenPopupSeleccion(true);
         })
         .catch((error) => {
-          setOpenError(true);
-          setAlertError('error');
-          setAlertTitulo('Ha ocurrido un error');
-          setAlertMensaje(error.response.data.error);
+          if (error.response && error.response.data) {
+            const responseData = error.response.data;
+            setOpenError(true);
+            setAlertError('error');
+            setAlertTitulo('Ha ocurrido un problema');
+            setAlertMensaje(responseData);
+          } else {
+            setOpenError(true);
+            setAlertError('error');
+            setAlertTitulo('Ha ocurrido un error');
+            setAlertMensaje('Si el problema persiste, comuniquese con insomnia.front@gmail.com');
+          }
         });
     } else {
       setOpenPopupNoSeleccion(true);
@@ -258,9 +266,11 @@ const AltaServiceForm = (props) => {
               onChange={guardarModelo}
             />
             <Typography variant="p" sx={{ fontSize: 13 }} className="mb-3">
-              *El kilometraje debe ser múltiplo de 5000, por lo que automáticamente se redeondeará
-              al mútiplo de 5000 más proximo cualquier valor ingresado. Por ejemplo 1235 será tomado
-              como 5000, 5001 como 10000, 8750 como 10000, 13000 como 15000, etc.
+              *El kilometraje ingresado se redondeará automáticamente al múltiplo
+              de 5000 más cercano. Por ejemplo, si se ingresa 1235, se tomará
+              como 5000; si se ingresa 5001, se tomará como 10000; si se ingresa
+              8750, se tomará como 10000; si se ingresa 13000, se tomará como 15000,
+              y así sucesivamente.
             </Typography>
             <TextField
               margin="dense"

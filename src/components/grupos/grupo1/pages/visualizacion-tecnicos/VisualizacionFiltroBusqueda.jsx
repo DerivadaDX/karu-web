@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
 /* eslint-disable no-nested-ternary */
@@ -24,6 +25,7 @@ import IconButton from '@mui/material/IconButton';
 import Collapse from '@mui/material/Collapse';
 import SearchIcon from '@mui/icons-material/Search';
 import Alerts from '../../components/common/Alerts';
+import Header from '../../components/common/Header';
 
 const VisualizacionBusquedaTecnicos = () => {
   const [listaTecnicos, setTecnicos] = useState([]);
@@ -53,31 +55,21 @@ const VisualizacionBusquedaTecnicos = () => {
 
   const filtrarTecnicos = () => {
     setCargando(true);
+    const { nombre, dni, categoria } = valoresBusqueda;
+
+    let url = `${endPoint}`;
+
+    if (nombre.length > 0) {
+      url += `&nombre_completo=${nombre}`;
+    }
+    if (dni.length >= 7 && dni.length <= 8) {
+      url += `&dni=${dni}`;
+    }
+    if (categoria.length > 0) {
+      url += `&categoria=${categoria}`;
+    }
     axios
-      .get(
-        `${endPoint}${
-          !(valoresBusqueda.nombre.length <= 0)
-        && !(valoresBusqueda.dni.length < 7 || valoresBusqueda.dni.length > 8)
-        && !(valoresBusqueda.categoria.length <= 0)
-            ? `nombre_completo=${valoresBusqueda.nombre}&dni=${valoresBusqueda.dni}&categoria=${valoresBusqueda.categoria}&`
-            : !(valoresBusqueda.nombre.length <= 0)
-        && !(valoresBusqueda.dni.length < 7 || valoresBusqueda.dni.length > 8)
-              ? `nombre_completo=${valoresBusqueda.nombre}&dni=${valoresBusqueda.dni}`
-              : !(valoresBusqueda.nombre.length <= 0)
-        && !(valoresBusqueda.categoria.length <= 0)
-                ? `nombre_completo=${valoresBusqueda.nombre}&categoria=${valoresBusqueda.categoria}&`
-                : !(valoresBusqueda.dni.length < 7 || valoresBusqueda.dni.length > 8)
-              && !(valoresBusqueda.categoria.length <= 0)
-                  ? `dni=${valoresBusqueda.dni}&categoria=${valoresBusqueda.categoria}`
-                  : !(valoresBusqueda.nombre.length <= 0)
-                    ? `nombre_completo=${valoresBusqueda.nombre}&`
-                    : !(valoresBusqueda.dni.length < 7 || valoresBusqueda.dni.length > 8)
-                      ? `dni=${valoresBusqueda.dni}`
-                      : !(valoresBusqueda.categoria.length <= 0)
-                        ? `categoria=${valoresBusqueda.categoria}&`
-                        : ''
-        }`,
-      )
+      .get(url)
       .then((response) => {
         setTecnicos(response.data);
         setAlertType('');
@@ -138,7 +130,6 @@ const VisualizacionBusquedaTecnicos = () => {
       traerTecnicos();
       setMostrarInfo(false);
     }
-    console.log(value);
   };
 
   /* Se muestra el detalle de trabajos realizados */
@@ -178,6 +169,11 @@ const VisualizacionBusquedaTecnicos = () => {
 
   return (
     <Box>
+      <Box mt="5px">
+        <Box display="flex">
+          <Header titulo="Datos de técnicos" subtitulo="En esta sección, tendrás la posibilidad de acceder a una visualización detallada de la información sobre cada técnico, así como los trabajos que han realizado. Además, podrás realizar búsquedas para encontrar la información específica del técnico que deseas consultar." />
+        </Box>
+      </Box>
       <Box sx={{
         display: 'flex', justifyContent: 'center', alignItems: 'center',
       }}
@@ -200,7 +196,7 @@ const VisualizacionBusquedaTecnicos = () => {
               </Typography>
 
               <Input
-                type="search"
+                type="text"
                 name="nombre"
                 value={valoresBusqueda.nombre}
                 onChange={handleChange}

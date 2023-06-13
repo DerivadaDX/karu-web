@@ -1,4 +1,4 @@
-/*eslint-disable */
+/* eslint-disable */
 import { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../../context/UsersContext';
 import '../../assets/css/formMfa.css';
@@ -35,8 +35,11 @@ const Mfa = () => {
 
   useEffect(() => {
     if (isValidToken) {
-      const Loggeduser = JSON.stringify({ username, password, type: userType });
-      cookie.set('user', Loggeduser, { maxAge: 300 });
+      const loggedUser = JSON.stringify({ username, password, type: userType });
+      const sevenDaysInSeconds = 7 * 24 * 60 * 60;
+
+      cookie.set('user', loggedUser, { maxAge: sevenDaysInSeconds });
+
       login();
       navigate('/');
     }

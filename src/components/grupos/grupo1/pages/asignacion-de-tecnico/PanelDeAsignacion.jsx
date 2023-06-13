@@ -136,7 +136,11 @@ const AsignacionDeTecnicos = ({
           setActualizar(true);
         })
         .catch((error) => {
-          setMsjError(error.response.data);
+          if (error.response && error.response.data) {
+            setMsjError(error.response.data);
+          } else {
+            setMsjError('Si el problema persiste, comuniquese con insomnia.front@gmail.com');
+          }
         });
     } else {
       setOpenPopupNoSeleccion(true);

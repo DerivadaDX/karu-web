@@ -7,6 +7,8 @@ import {
 import MaterialReactTable from 'material-react-table';
 
 import ComisionService from '../services/comision-service';
+import PopUpModificarComision from './PopUpModificarComision';
+import PopUpCrearComision from './PopUpCrearComision';
 
 const ListadoComisiones = () => {
   const [comisiones, setComisiones] = useState([]);
@@ -18,6 +20,39 @@ const ListadoComisiones = () => {
         setComisiones(response.data);
         setCargando(false);
       });
+  };
+
+  const actualizarDatosDeComision = (comisionModificada) => {
+    const actualizarComisionModificada = (comisionActual) => {
+      const esLaComisionModificada = comisionActual.id === comisionModificada.id;
+      const comision = esLaComisionModificada ? comisionModificada : comisionActual;
+
+      return comision;
+    };
+
+    setComisiones((comisionesActuales) => comisionesActuales.map(actualizarComisionModificada));
+  };
+
+  const renderFormatoPorcentaje = ({ row }) => {
+    const valorDeComision = row.original.valor;
+    const porcentaje = `${valorDeComision} %`;
+
+    return porcentaje;
+  };
+
+  const renderCategoria = ({ row }) => {
+    const idCategoria = row.original.categoria_id;
+
+    switch (idCategoria) {
+      case 1:
+        return 'Gama baja';
+      case 2:
+        return 'Gama media';
+      case 3:
+        return 'Gama alta';
+      default:
+        return '-';
+    }
   };
 
   const renderEstadoComision = ({ row }) => {
@@ -35,11 +70,21 @@ const ListadoComisiones = () => {
     );
   };
 
-  const renderFormatoPorcentaje = ({ row }) => {
-    const valorDeComision = row.original.valor;
-    const porcentaje = `${valorDeComision} %`;
+  const renderCrearComision = () => (
+    <PopUpCrearComision
+      onCreate={obtenerComisiones}
+    />
+  );
 
-    return porcentaje;
+  const renderAccionesFila = ({ row }) => {
+    const comision = row.original;
+
+    return (
+      <PopUpModificarComision
+        comision={comision}
+        onEdit={actualizarDatosDeComision}
+      />
+    );
   };
 
   const columnas = useMemo(
@@ -60,6 +105,7 @@ const ListadoComisiones = () => {
       {
         accessorKey: 'categoria_id',
         header: 'Categoría',
+        Cell: renderCategoria,
       },
       {
         accessorKey: 'activa',
@@ -78,8 +124,10 @@ const ListadoComisiones = () => {
         columns={columnas}
         data={comisiones}
         state={{ isLoading: cargando }}
+        renderTopToolbarCustomActions={renderCrearComision}
         enableRowActions
         positionActionsColumn="last"
+        renderRowActions={renderAccionesFila}
         defaultColumn={{ minSize: 10, maxSize: 130 }}
         displayColumnDefOptions={{
           'mrt-row-actions': {
