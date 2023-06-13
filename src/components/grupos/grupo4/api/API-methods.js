@@ -239,3 +239,13 @@ export const PostNewPricesByInflation = async (inflation) => {
   }
 };
 
+export const getAllPriceHistory = async () => {
+  try {
+    const response = await client.get('/price/getAll');
+    if (response) {
+      return response;
+    }
+  } catch (error) {
+    console.log("Error al obtener el historial de precios:", error);  
+  }
+}
