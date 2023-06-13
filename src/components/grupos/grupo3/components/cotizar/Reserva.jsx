@@ -22,10 +22,10 @@ import ReservaService from '../../services/ReservaService';
 
 const Cotizacion = ({ formData, precioAuto }) => {
   const {
+    dni = '',
     nombre = '',
     apellido = '',
     email = '',
-    dni = '',
   } = formData;
   const espacio = ' ';
 
@@ -103,22 +103,21 @@ const Cotizacion = ({ formData, precioAuto }) => {
 
 Cotizacion.propTypes = {
   formData: PropTypes.shape({
+    dni: PropTypes.string,
     nombre: PropTypes.string,
     apellido: PropTypes.string,
     email: PropTypes.string,
-    dni: PropTypes.string,
   }).isRequired,
   precioAuto: PropTypes.number.isRequired,
 };
 
 const fieldData = [
+  { name: 'dni', label: 'DNI', type: 'text' },
   { name: 'nombre', label: 'Nombre', type: 'text' },
   { name: 'apellido', label: 'Apellido', type: 'text' },
-  { name: 'direccion', label: 'Direccion', type: 'text' },
-  { name: 'ciudad', label: 'Ciudad', type: 'text' },
-  { name: 'telefono', label: 'Telefono', type: 'text' },
-  { name: 'dni', label: 'DNI', type: 'text' },
+  { name: 'numTelefono', label: 'Telefono', type: 'text' },
   { name: 'email', label: 'Email', type: 'email' },
+  { name: 'direccion', label: 'Direccion', type: 'text' },
 ];
 
 const Reserva = () => {
