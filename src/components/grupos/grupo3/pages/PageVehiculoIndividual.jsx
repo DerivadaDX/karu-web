@@ -1,11 +1,12 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Container, Box, Button } from '@mui/material';
 import React from 'react';
 import VehiculoIndividual from '../components/ventas/vehiculoIndividual/vehiculoIndividual';
 import AcordeonObservaciones from '../components/common/acordeonObservaciones';
 // import ConsultaDialog from '../components/common/consultaDialog';
 
-const { productId } = useParams();
+const patente = sessionStorage.getItem('patente');
+
 const PageVehiculoIndividual = () => (
   <Container>
     <VehiculoIndividual />
@@ -17,7 +18,7 @@ const PageVehiculoIndividual = () => (
     }}
     >
       <AcordeonObservaciones />
-      <Link to={`/vehiculoIndividual/${productId}/reserva`}>
+      <Link to={`/vehiculoIndividual/${patente}/reserva`}>
         <Button variant="contained">Reservar</Button>
       </Link>
     </Box>

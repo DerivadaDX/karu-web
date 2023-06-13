@@ -32,7 +32,7 @@ const VehiculoIndividual = () => {
         setVehiculo(response.data.result);
       });
   };
-
+  sessionStorage.setItem('patente', productId);
   useEffect(obtenerVehiculo, []);
   // const vehicleSelected = vehiculoData.find((product) => vehiculoData.plate === productId);
   const espacio = '  ';
