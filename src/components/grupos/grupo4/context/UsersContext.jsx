@@ -178,7 +178,7 @@ export const UserContextProvider = ({ children }) => {
     const { value, registeredVehicleModel } = postUser;
     if (registeredVehicleModel) {
       window.alert('Modelo cargado');
-      navigate('/home');
+      navigate('/');
     } else {
       if (value) {
         setsaveModelMessageError(value);
