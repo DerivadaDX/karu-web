@@ -19,7 +19,6 @@ import {
 import { newMassivePriceInput, newPriceModelInput, sellingPriceOfACarInputs } from '../../dto/priceupdate-props';
 import { GetAllModels } from '../../api/API-methods';
 
-
 const PriceUpdate = () => {
     const [sellingPriceOfACarValues, setSellingPriceOfACarValues] = useState({
         plate: "",
