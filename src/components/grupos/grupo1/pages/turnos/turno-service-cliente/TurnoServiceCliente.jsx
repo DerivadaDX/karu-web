@@ -69,6 +69,7 @@ const FormularioCliente = () => {
   const guardarKilometraje = (e) => {
     // Para que si se cambia el km, deba volver a consultar el calendario
     setMostrarDisponibilidad(false);
+    setMsjGarantia('');
     const val = e.target.value;
 
     if (e.target.validity.valid) {
@@ -141,7 +142,6 @@ const FormularioCliente = () => {
     } finally {
       setCargando(false);
       setCargandoGarantia(false);
-      setCargando(false);
     }
   };
 
@@ -267,6 +267,7 @@ const FormularioCliente = () => {
                 description="Estamos procesando los datos para mostrar el calendario. Por favor, espere un momento..."
                 openDialog={cargandoCalendario}
                 setOpenDialog={setCargandoGarantia}
+                disableBackdropClick
               />
             )}
 
@@ -299,6 +300,7 @@ const FormularioCliente = () => {
                 description="Estamos procesando los datos para saber el estado de la garantía. Por favor, espere un momento..."
                 openDialog={cargandoGarantia}
                 setOpenDialog={setCargandoGarantia}
+                disableBackdropClick
               />
             )}
 
@@ -322,6 +324,7 @@ const FormularioCliente = () => {
               description="Estamos procesando los datos para confirmar su turno. Por favor, espere un momento..."
               openDialog={openPopupCargando}
               setOpenDialog={setOpenPopupCargando}
+              disableBackdropClick
             />
           )}
           <Popup
