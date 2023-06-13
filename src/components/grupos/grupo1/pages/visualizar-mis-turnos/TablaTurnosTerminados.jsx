@@ -1,3 +1,4 @@
+/* eslint-disable no-lone-blocks */
 /* eslint-disable no-console */
 /* eslint-disable camelcase */
 /* eslint-disable react/prop-types */
@@ -92,10 +93,12 @@ const TablaTurnosTerminados = (props) => {
     setAlertType('');
   }, [traerTurnos, actualizarTabla]);
 
+  /*
   useEffect(() => {
     console.log(idRegistro);
     console.log(registroTipo);
   }, [idRegistro, registroTipo]);
+*/
 
   const seleccionarChecklist = (rowRegistro) => {
     setRegistroTipo(rowRegistro.tipo);
