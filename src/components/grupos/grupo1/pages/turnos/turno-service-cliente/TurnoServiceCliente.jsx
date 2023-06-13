@@ -34,7 +34,7 @@ const FormularioCliente = () => {
   const [isKmValido, setIsKmValido] = useState(true);
 
   const [msjGarantia, setMsjGarantia] = useState('');
-  // Para la botón de ver el estado de la garantía
+  // Para el botón de ver el estado de la garantía
   const [cargandoGarantia, setCargandoGarantia] = useState(false);
   const [cargando, setCargando] = useState(false);
 
@@ -43,6 +43,10 @@ const FormularioCliente = () => {
   const [msjError, setMsjError] = useState('');
 
   const endPointDisponibilidad = `https://autotech2.onrender.com/turnos/dias-horarios-disponibles-service/${taller}/${patenteTurno}/${kilometros}/`;
+  const [mostrarDisponibilidad, setMostrarDisponibilidad] = useState('');
+  // Para el botón de ver calendario
+  const [cargandoCalendario, setCargandoCalendario] = useState(false);
+  const [cargandoC, setCargandoC] = useState(false);
   // Para setear el límite del calendario
   const limite = 31; // El back devuelve 31 días, me adapté a eso
 
@@ -63,10 +67,12 @@ const FormularioCliente = () => {
   };
 
   const guardarKilometraje = (e) => {
+    // Para que si se cambia el km, deba volver a consultar el calendario
+    setMostrarDisponibilidad(false);
+    setMsjGarantia('');
     const val = e.target.value;
 
     if (e.target.validity.valid) {
-      // if (ValidarKm.isKilometroValid(val)) {
       if (val >= 5000) {
         setIsKmValido(true);
       } else {
@@ -136,7 +142,31 @@ const FormularioCliente = () => {
     } finally {
       setCargando(false);
       setCargandoGarantia(false);
-      setCargando(false);
+    }
+  };
+
+  const consultarDisponibilidad = async () => {
+    try {
+      setCargandoCalendario(true);
+      setCargandoC(true);
+      const r = await axios.get(endPointDisponibilidad);
+      if (r) { setMostrarDisponibilidad(true); }
+    } catch (error) {
+      if (error.response && error.response.data) {
+        const responseData = error.response.data;
+        setOpenError(true);
+        setAlertError('error');
+        setAlertTitulo('Ha ocurrido un problema');
+        setAlertMensaje(responseData);
+      } else {
+        setOpenError(true);
+        setAlertError('error');
+        setAlertTitulo('Ha ocurrido un error');
+        setAlertMensaje('Si el problema persiste, comuníquese con insomnia.front@gmail.com');
+      }
+    } finally {
+      setCargandoC(false);
+      setCargandoCalendario(false);
     }
   };
 
@@ -215,11 +245,33 @@ const FormularioCliente = () => {
             {!isKmValido
               && (
 
-                <Alerts alertType="warning" description="Coberturas válidas: de 5000 a 200000 km." title="Kilometraje inválido" />
+                <Alerts alertType="warning" description="Coberturas válidas: a partir de 5000 km." title="Kilometraje inválido" />
               )}
             <Talleres setTallerSeleccionado={setTaller} />
-            {patenteTurno
-              && kilometros && taller
+
+            <Button
+              type="button"
+              fullWidth
+              variant="contained"
+              color="primary"
+              disabled={!taller || !patenteTurno || !isPatenteValida || !kilometros || cargandoC}
+              sx={{ mt: 3, mb: 2 }}
+              onClick={consultarDisponibilidad}
+            >
+              Ver Calendario
+            </Button>
+
+            {cargandoC && (
+              <Popup
+                title={<LittleHeader titulo="Procesando datos" />}
+                description="Estamos procesando los datos para mostrar el calendario. Por favor, espere un momento..."
+                openDialog={cargandoCalendario}
+                setOpenDialog={setCargandoGarantia}
+                disableBackdropClick
+              />
+            )}
+
+            {mostrarDisponibilidad
               && (
                 <Disponibilidad
                   endPoint={endPointDisponibilidad}
@@ -229,16 +281,13 @@ const FormularioCliente = () => {
                   limite={limite}
                 />
               )}
-            {msjError && (
-              <Alerts alertType="error" description={msjError} title="No se encontró service." />
-            )}
             <Button
               type="button"
               fullWidth
               variant="contained"
               color="primary"
               disabled={!taller || !patenteTurno || !isPatenteValida || !fecha || !hora
-                || !kilometros || !isKmValido || cargando}
+                || !kilometros || !isKmValido || cargando || !mostrarDisponibilidad}
               sx={{ mt: 3, mb: 2 }}
               onClick={obtenerMsjGarantia}
             >
@@ -251,6 +300,7 @@ const FormularioCliente = () => {
                 description="Estamos procesando los datos para saber el estado de la garantía. Por favor, espere un momento..."
                 openDialog={cargandoGarantia}
                 setOpenDialog={setCargandoGarantia}
+                disableBackdropClick
               />
             )}
 
@@ -274,6 +324,7 @@ const FormularioCliente = () => {
               description="Estamos procesando los datos para confirmar su turno. Por favor, espere un momento..."
               openDialog={openPopupCargando}
               setOpenDialog={setOpenPopupCargando}
+              disableBackdropClick
             />
           )}
           <Popup
