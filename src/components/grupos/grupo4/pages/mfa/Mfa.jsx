@@ -23,6 +23,7 @@ const Mfa = () => {
     login,
     navigate,
     userType,
+    setIsAuthenticated,
   } = useContext(UserContext);
   const [isValidToken, setIsValidToken] = useState(false);
 
@@ -30,6 +31,7 @@ const Mfa = () => {
     e.preventDefault();
     if (await authToken({ username, password, twoFactorCode })) {
       setIsValidToken(true);
+      setIsAuthenticated(true);
     }
   };
 
