@@ -37,7 +37,7 @@ const GROUP_4_PAGES_CONFIG = [
     href: '/sign-up',
     icon: <AppRegistrationIcon />,
     page: <RegisterForm />,
-    roles: [Roles.ADMINISTRADOR],
+    roles: [Roles.ADMINISTRADOR,Roles.IT],
   },
   {
     id: 'g4-mfa',
@@ -53,7 +53,7 @@ const GROUP_4_PAGES_CONFIG = [
     href: '/save-vehicle-model',
     icon: <CarCrashIcon />,
     page: <ModelForm />,
-    roles: [Roles.ADMINISTRADOR],
+    roles: [Roles.ADMINISTRADOR,Roles.IT],
   },
   {
     id: 'g4-paperWork',
@@ -61,7 +61,7 @@ const GROUP_4_PAGES_CONFIG = [
     href: '/paperWork',
     icon: <DriveFolderUploadIcon />,
     page: <PaperWork />,
-    roles: [Roles.ADMINISTRADOR],
+    roles: [Roles.ADMINISTRADOR,Roles.IT],
   },
   {
     id: 'g4-restorePassword',
@@ -110,7 +110,7 @@ const GROUP_4_PAGES_CONFIG = [
     href: '/save-vehicle',
     icon: <NoteAltIcon />,
     page: <VehicleForm />,
-    roles: [Roles.ADMINISTRADOR],
+    roles: [Roles.ADMINISTRADOR,Roles.IT],
   },
   {
     id: 'g4-priceUpdate',
@@ -118,7 +118,7 @@ const GROUP_4_PAGES_CONFIG = [
     href: '/price-update',
     icon: <PriceChangeIcon />,
     page: <PriceUpdate />,
-    roles: [Roles.ADMINISTRADOR],
+    roles: [Roles.ADMINISTRADOR,Roles.IT],
   },
   {
     id: 'g4-updateuser',
