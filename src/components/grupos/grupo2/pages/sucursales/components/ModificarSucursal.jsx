@@ -22,7 +22,7 @@ import SucursalService from '../services/sucursal-service';
 const ModificarSucursal = ({ sucursal, onEdit }) => {
   const [mostrarPopUpModificarSucursal, setMostrarPopUpModificarSucursal] = useState(false);
   const [mostrarPopUpModificacionExitosa, setMostrarPopUpModificacionExitosa] = useState(false);
-  const [valorTaller, setValorTaller] = useState([]);
+  const [consultaTieneTaller, setConsultaTieneTaller] = useState([]);
   const [valoresDelFormulario, setValoresDelFormulario] = useState({
     nombre: '',
     calle: '',
@@ -34,24 +34,25 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
     activa: false,
   });
 
-  const obtenerValorTaller = (idSucursal) => {
+  const cargarConsultaDeTallerAsociado = (idSucursal) => {
     SucursalService.sucursalTieneTaller(idSucursal)
       .then((response) => {
         if (response.status === 200) {
-          setValorTaller(response.data);
+          setConsultaTieneTaller(response.data);
         }
       })
       .catch((error) => {
         if (error.response && error.response.status === 404) {
           const mensajeError = `No existe taller activo para la sucursal ${idSucursal}`;
-          setValorTaller({ mensaje: mensajeError, valor: false });
+          setConsultaTieneTaller({ mensaje: mensajeError, valor: false });
         } else {
-          setValorTaller({ mensaje: 'Ha ocurrido un error inesperado', valor: false });
+          setConsultaTieneTaller({ mensaje: 'Ha ocurrido un error inesperado', valor: false });
         }
       });
   };
 
   const mostrarYCargarFormulario = () => {
+    cargarConsultaDeTallerAsociado(sucursal.id);
     setMostrarPopUpModificarSucursal(true);
     setValoresDelFormulario({
       id: sucursal.id,
@@ -64,7 +65,6 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
       posee_taller: sucursal.posee_taller,
       activa: sucursal.activa,
     });
-    obtenerValorTaller(sucursal.id);
   };
 
   const cambiarVisibilidadDePopUpModificarSucursal = () => {
@@ -97,7 +97,8 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
   };
 
   const modificarSucursal = (event) => {
-    console.log(valorTaller);
+    // eslint-disable-next-line
+    console.log(consultaTieneTaller);
     event.preventDefault();
 
     SucursalService.modificarSucursal(sucursal.id, valoresDelFormulario)
@@ -233,9 +234,9 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
               labelPlacement="start"
               control={(
                 <Switch
-                  disabled={valorTaller.valor}
                   checked={valoresDelFormulario.activa}
                   onChange={actualizarValorDeFormulario}
+                  disabled={consultaTieneTaller.valor && sucursal.activa}
                 />
               )}
               sx={{
