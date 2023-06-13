@@ -97,8 +97,6 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
   };
 
   const modificarSucursal = (event) => {
-    // eslint-disable-next-line
-    console.log(consultaTieneTaller);
     event.preventDefault();
 
     SucursalService.modificarSucursal(sucursal.id, valoresDelFormulario)
