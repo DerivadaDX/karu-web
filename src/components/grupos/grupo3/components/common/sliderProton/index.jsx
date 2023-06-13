@@ -58,13 +58,14 @@ import React from 'react';
 import { Slider, Box } from '@mui/material';
 
 const SliderProton = ({ value, changePrice }) => (
-  <Box sx={{ width: 1 }}>
+  <Box sx={{ width: 230 }}>
+    <p>Rango de precio</p>
     <Slider
       value={value}
       onChange={changePrice}
-      valueLabelDisplay="on"
-      min={1000000}
-      max={30000000}
+      valueLabelDisplay="auto"
+      min={400000}
+      max={25000000}
     />
   </Box>
 );

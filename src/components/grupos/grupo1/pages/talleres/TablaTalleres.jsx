@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/prop-types */
@@ -9,6 +10,7 @@ import {
 } from 'react';
 import { Box, Button, Tooltip } from '@mui/material';
 import MaterialReactTable from 'material-react-table';
+import { MRT_Localization_ES } from 'material-react-table/locales/es';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import Alerts from '../../components/common/Alerts';
 import Popup from '../../components/common/DialogPopup';
@@ -239,6 +241,7 @@ const TablaTalleres = () => {
         positionActionsColumn="last"
         enableRowActions
         renderRowActions={renderRowActions}
+        localization={MRT_Localization_ES}
         renderEmptyRowsFallback={noData}
         defaultColumn={{ minSize: 10, maxSize: 100 }}
         muiTableHeadCellProps={{ align: 'center' }}

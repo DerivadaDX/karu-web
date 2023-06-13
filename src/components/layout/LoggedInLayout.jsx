@@ -3,7 +3,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { Box, Toolbar } from '@mui/material';
 import PropTypes from 'prop-types';
 import NavBar from './NavBar';
-import SideBar from './SideBar';
+import SideBar from './side-bar/SideBar';
 
 const styles = {
   mainBox: {

@@ -1,18 +1,23 @@
 const listaCategorias = [
   {
     id: 1,
-    value: 'Híbrido',
-    label: 'Híbrido',
+    value: 'TODOS',
+    label: 'TODOS',
   },
   {
     id: 2,
-    value: 'Nafta',
-    label: 'Nafta',
+    value: 'HIBRIDO',
+    label: 'HIBRIDO',
   },
   {
     id: 3,
-    value: 'Diésel',
-    label: 'Diésel',
+    value: 'NAFTA',
+    label: 'NAFTA',
+  },
+  {
+    id: 4,
+    value: 'DIESEL',
+    label: 'DIESEL',
   },
 ];
 

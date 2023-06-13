@@ -80,10 +80,23 @@ const AltaTaller = (props) => {
       setAlertType('error');
       setAlertTitle('Error de servidor');
       setAlertMessage(
-        'Error al traer los talleres. Por favor, recargue la página y vuelva a intentarlo nuevamente.',
+        'Error al traer las sucursales. Por favor, recargue la página y vuelva a intentarlo nuevamente.',
       );
     }
-  }, [traerSucursales, nombre, sucursalId, direccion, cantTecnicos, capacidad, mail, telefono]);
+  }, []);
+  /*
+  useEffect(() => {
+    try {
+      // traerSucursales();
+      setAlertType('');
+    } catch (error) {
+      setAlertType('error');
+      setAlertTitle('Error de servidor');
+      setAlertMessage(
+        'Error al traer las sucursales. Por favor, recargue la página y vuelva a intentarlo nuevamente.',
+      );
+    }
+  }, [nombre, sucursalId, direccion, cantTecnicos, capacidad, mail, telefono]); */
 
   const guardarSucursal = (event) => {
     const { value } = event.target;

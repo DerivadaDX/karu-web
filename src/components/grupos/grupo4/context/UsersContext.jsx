@@ -143,6 +143,7 @@ export const UserContextProvider = ({ children }) => {
     settwoFactorCode('');
     setIsAuthenticated(false);
     cookie.remove('user');
+    navigate('/');
   };
 
   async function saveUser(userData) {
@@ -177,7 +178,7 @@ export const UserContextProvider = ({ children }) => {
     const { value, registeredVehicleModel } = postUser;
     if (registeredVehicleModel) {
       window.alert('Modelo cargado');
-      navigate('/home');
+      navigate('/');
     } else {
       if (value) {
         setsaveModelMessageError(value);

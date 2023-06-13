@@ -21,7 +21,7 @@ import ComisionService from '../services/comision-service';
 const valoresIniciales = {
   nombre: '',
   valor: '',
-  categoria_id: '',
+  categoria_id: '-1',
   activa: false,
 };
 
@@ -140,7 +140,7 @@ const PopUpCrearComision = ({ onCreate }) => {
               required
               style={{ marginTop: '24px' }}
             >
-              <MenuItem disabled value="">Seleccionar categoría</MenuItem>
+              <MenuItem value={-1} disabled>Seleccionar categoría</MenuItem>
               <MenuItem value={1}>Gama baja</MenuItem>
               <MenuItem value={2}>Gama media</MenuItem>
               <MenuItem value={3}>Gama alta</MenuItem>
@@ -180,7 +180,7 @@ const PopUpCrearComision = ({ onCreate }) => {
         onClose={finalizarCreacion}
       >
         <DialogTitle id="alert-dialog-title">
-          ¡Modificación exitosa!
+          ¡Creación exitosa!
         </DialogTitle>
         <DialogActions>
           <Button onClick={finalizarCreacion}>
