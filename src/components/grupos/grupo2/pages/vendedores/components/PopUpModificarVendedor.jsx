@@ -61,8 +61,8 @@ const PopUpModificarVendedor = ({
         onEdit(vendedorModificado);
       })
       .catch(() => {
-        setMostrarPopUpCreacionExitosa(false)
-        setMostrarPopUpErrorAlModificar(true)
+        setMostrarPopUpCreacionExitosa(false);
+        setMostrarPopUpErrorAlModificar(true);
       });
   };
 
@@ -73,7 +73,7 @@ const PopUpModificarVendedor = ({
   const cambiarVisibilidadPopUpErrorAlModificar = () => {
     setMostrarPopUpErrorAlModificar(false);
     onClose();
-  }
+  };
 
   return (
     <Box>
@@ -92,8 +92,9 @@ const PopUpModificarVendedor = ({
             </Button>
           </DialogActions>
         </Dialog>
-        <Dialog open={mostrarPopUpErrorAlModificar} onClose={cambiarVisibilidadPopUpErrorAlModificar}>
-          <DialogTitle sx={{ color:'red' }} id="alert-dialog-title">
+        <Dialog open={mostrarPopUpErrorAlModificar}
+          onClose={cambiarVisibilidadPopUpErrorAlModificar}>
+          <DialogTitle sx={{ color: 'red' }} id="alert-dialog-title">
             No se pudo completar la modificacion, por un error en el servidor
           </DialogTitle>
           <DialogActions>
