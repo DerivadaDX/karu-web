@@ -35,7 +35,7 @@ const Dashboard = () => {
 
   const turnosTrabajadosPorTipo = `https://metabase-insomnia.mooo.com/public/question/5c81a413-50c0-43a8-bdd6-0aba474be8b4?id_tecnico=${idTecnico}#hide_parameters=id_tecnico`;
 
-  const turnosParaHoy = `https://metabase-insomnia.mooo.com/public/question/04d1aade-79ef-4734-92bf-2e980c296643?filtro_tecnico=${idTecnico}#hide_parameters=filtro_tecnico`;
+  const turnosParaHoy = `https://metabase-insomnia.mooo.com/public/question/04d1aade-79ef-4734-92bf-2e980c296643?id_tecnico=${idTecnico}#hide_parameters=id_tecnico`;
 
   const urlTurnosPorFecha = `https://metabase-insomnia.mooo.com/public/question/115afae9-86db-49eb-8a92-3466f689a7a0?id_tecnico=${idTecnico}&Desde=${fechaDesde}&Hasta=${fechaHasta}#hide_parameters=id_tecnico`;
 
