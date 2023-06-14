@@ -48,6 +48,7 @@ const Reportes = () => {
   const tallerNro = obtenerPrimerNumero(idTaller);
   // ${tallerNro}#hide_parameters=id_taller
   // id_taller=${tallerNro}&hasta=${fechaHasta}&desde=${fechaDesde}#hide_parameters=id_taller
+  // comentario
   const urlTurnosPendientes = `https://metabase-insomnia.mooo.com/public/question/981cf28d-d0e2-43e2-b033-4855a0cb4ff3?id_taller=${tallerNro}#hide_parameters=id_taller`;
 
   const urlTurnosPorTipo = `https://metabase-insomnia.mooo.com/public/question/340c3b21-d710-420d-9bb6-f3ee3b09c4f7?id_taller=${tallerNro}#hide_parameters=id_taller`;
