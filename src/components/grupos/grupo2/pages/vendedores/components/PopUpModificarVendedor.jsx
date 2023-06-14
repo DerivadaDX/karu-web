@@ -93,7 +93,7 @@ const PopUpModificarVendedor = ({
           </DialogActions>
         </Dialog>
         <Dialog open={mostrarPopUpErrorAlModificar} onClose={cambiarVisibilidadPopUpErrorAlModificar}>
-          <DialogTitle sx={{ color:'red' }}  id="alert-dialog-title">
+          <DialogTitle sx={{ color:'red' }} id="alert-dialog-title">
             No se pudo completar la modificacion, por un error en el servidor
           </DialogTitle>
           <DialogActions>
