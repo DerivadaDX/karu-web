@@ -27,14 +27,16 @@ if (dia < 10) {
 const fechaHasta = `${anio}-${mes}-${dia}`;
 const fechaDesde = `${anio}-01-01`;
 
+// ${idTecnico}#hide_parameters=id_tecnico
+// ${fechaDesde}&Hasta=${fechaHasta}&id_tecnico=${idTecnico}#hide_parameters=id_tecnico
 const Dashboard = () => {
-  const turnosAsignados = `http://metabase-insomnia.sytes.net/public/question/1ff3d9f0-afd0-409e-9981-05326b48edd9?id_tecnico=${idTecnico}#hide_parameters=id_tecnico`;
+  const turnosAsignados = `https://metabase-insomnia.mooo.com/public/question/cb7533c9-efc9-4807-af84-a38dae3ebe21?id_tecnico=${idTecnico}&Desde=${fechaDesde}&Hasta=${fechaHasta}#hide_parameters=id_tecnico`;
 
-  const turnosTrabajadosPorTipo = `http://metabase-insomnia.sytes.net/public/question/a0000903-ba2d-43ee-b6a6-6c1bb5b5391d?filtro_tecnico=${idTecnico}#hide_parameters=filtro_tecnico`;
+  const turnosTrabajadosPorTipo = `https://metabase-insomnia.mooo.com/public/question/5c81a413-50c0-43a8-bdd6-0aba474be8b4?id_tecnico=${idTecnico}#hide_parameters=id_tecnico`;
 
-  const turnosParaHoy = `http://metabase-insomnia.sytes.net/public/question/72a191aa-958e-487c-85b4-8be38506917a?filtro_tecnico=${idTecnico}#hide_parameters=filtro_tecnico`;
+  const turnosParaHoy = `https://metabase-insomnia.mooo.com/public/question/04d1aade-79ef-4734-92bf-2e980c296643?filtro_tecnico=${idTecnico}#hide_parameters=filtro_tecnico`;
 
-  const urlTurnosPorFecha = `http://metabase-insomnia.sytes.net/public/question/4d6304f7-c642-4e83-8afc-54fe0f51d079?Desde=${fechaDesde}&Hasta=${fechaHasta}&id_tecnico=${idTecnico}#hide_parameters=id_tecnico`;
+  const urlTurnosPorFecha = `https://metabase-insomnia.mooo.com/public/question/115afae9-86db-49eb-8a92-3466f689a7a0?id_tecnico=${idTecnico}&Desde=${fechaDesde}&Hasta=${fechaHasta}#hide_parameters=id_tecnico`;
 
   const iframeStyles = {
     border: '1px solid #acacac',
