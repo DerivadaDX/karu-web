@@ -29,7 +29,7 @@ const fechaDesde = `${anio}-01-01`;
 
 // ${idTecnico}#hide_parameters=id_tecnico
 // ${fechaDesde}&Hasta=${fechaHasta}&id_tecnico=${idTecnico}#hide_parameters=id_tecnico
-//Comentario con cambio 
+// Comentario con cambio 
 const Dashboard = () => {
   const turnosAsignados = `https://metabase-insomnia.mooo.com/public/question/cb7533c9-efc9-4807-af84-a38dae3ebe21?id_tecnico=${idTecnico}&Desde=${fechaDesde}&Hasta=${fechaHasta}#hide_parameters=id_tecnico`;
 
