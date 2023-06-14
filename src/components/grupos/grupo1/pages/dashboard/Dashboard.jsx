@@ -5,7 +5,7 @@
 /* eslint-disable jsx-a11y/iframe-has-title */
 import * as React from 'react';
 import {
-  Box, Divider, Paper, Grid,
+  Box, Divider, Grid,
 } from '@mui/material';
 import Header from '../../components/common/Header';
 
@@ -29,12 +29,13 @@ const fechaDesde = `${anio}-01-01`;
 
 // ${idTecnico}#hide_parameters=id_tecnico
 // ${fechaDesde}&Hasta=${fechaHasta}&id_tecnico=${idTecnico}#hide_parameters=id_tecnico
+// Comentario con cambio
 const Dashboard = () => {
   const turnosAsignados = `https://metabase-insomnia.mooo.com/public/question/cb7533c9-efc9-4807-af84-a38dae3ebe21?id_tecnico=${idTecnico}&Desde=${fechaDesde}&Hasta=${fechaHasta}#hide_parameters=id_tecnico`;
 
   const turnosTrabajadosPorTipo = `https://metabase-insomnia.mooo.com/public/question/5c81a413-50c0-43a8-bdd6-0aba474be8b4?id_tecnico=${idTecnico}#hide_parameters=id_tecnico`;
 
-  const turnosParaHoy = `https://metabase-insomnia.mooo.com/public/question/04d1aade-79ef-4734-92bf-2e980c296643?filtro_tecnico=${idTecnico}#hide_parameters=filtro_tecnico`;
+  const turnosParaHoy = `https://metabase-insomnia.mooo.com/public/question/04d1aade-79ef-4734-92bf-2e980c296643?id_tecnico=${idTecnico}#hide_parameters=id_tecnico`;
 
   const urlTurnosPorFecha = `https://metabase-insomnia.mooo.com/public/question/115afae9-86db-49eb-8a92-3466f689a7a0?id_tecnico=${idTecnico}&Desde=${fechaDesde}&Hasta=${fechaHasta}#hide_parameters=id_tecnico`;
 
