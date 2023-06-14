@@ -28,6 +28,7 @@ const PopUpModificarVendedor = ({
   sucursales, onEdit, vendedor, onClose,
 }) => {
   const [mostrarPopUpCreacionExitosa, setMostrarPopUpCreacionExitosa] = useState(false);
+  const [mostrarPopUpErrorAlModificar, setMostrarPopUpErrorAlModificar] = useState(false);
   const { handleSubmit, control, formState: { errors, isValid, isDirty } } = useForm({
     mode: 'onBlur',
     defaultValues: {
@@ -59,13 +60,20 @@ const PopUpModificarVendedor = ({
         setMostrarPopUpCreacionExitosa(true);
         onEdit(vendedorModificado);
       })
-      .catch(() => setMostrarPopUpCreacionExitosa(false));
+      .catch(() => {
+        setMostrarPopUpCreacionExitosa(false)
+        setMostrarPopUpErrorAlModificar(true)
+      });
   };
 
   const cambiarVisibilidadPopUpCreacionExitosa = () => {
     setMostrarPopUpCreacionExitosa(false);
     onClose();
   };
+  const cambiarVisibilidadPopUpErrorAlModificar = () => {
+    setMostrarPopUpErrorAlModificar(false);
+    onClose();
+  }
 
   return (
     <Box>
@@ -80,6 +88,16 @@ const PopUpModificarVendedor = ({
           </DialogTitle>
           <DialogActions>
             <Button onClick={cambiarVisibilidadPopUpCreacionExitosa}>
+              Cerrar
+            </Button>
+          </DialogActions>
+        </Dialog>
+        <Dialog open={mostrarPopUpErrorAlModificar} onClose={cambiarVisibilidadPopUpErrorAlModificar}>
+          <DialogTitle sx={{ color:'red' }}  id="alert-dialog-title">
+            No se pudo completar la modificacion, por un error en el servidor
+          </DialogTitle>
+          <DialogActions>
+            <Button onClick={cambiarVisibilidadPopUpErrorAlModificar}>
               Cerrar
             </Button>
           </DialogActions>
