@@ -9,7 +9,8 @@ export const authLogin = async (user) => {
   try {
     const response = await client.post('/login/startLogin', user);
     if (response.data?.result.sessionStatus === 'USUARIO_ENCONTRADO') {
-      return {userFound: true, type: response.data.result.type};
+      const result = response.data.result
+      return {userFound: true, type: result.type, id: result.id, branch: result.branch };
     }
     return {userFound: false};
   } catch (error) {
