@@ -67,8 +67,6 @@ const TablaTurnosTerminados = (props) => {
   }, []);
 
   useEffect(() => {
-    console.log(idRegistro);
-    console.log(registroTipo);
   }, [idRegistro, registroTipo]);
 
   const columnas = useMemo(
@@ -117,7 +115,6 @@ const TablaTurnosTerminados = (props) => {
         size="small"
         sx={{ fontSize: '0.7em', backgroundColor: 'rgba(51,51,51,0.75)' }}
         onClick={() => {
-          // console.log('Ver mas', row.original.id_turno);
           setRowDetalle(row.original);
           setVerMas(true);
         }}

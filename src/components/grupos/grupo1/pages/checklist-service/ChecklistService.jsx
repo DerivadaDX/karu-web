@@ -253,10 +253,11 @@ const ChecklistService = (props) => {
 
       {/* Popup para mostrar en caso de que no haya seleccionado ningun item */}
       <Popup
-        title={<LittleHeader titulo="No ha seleccionado nada" />}
+        title={<LittleHeader titulo="No ha seleccionado ningún elemento" />}
         openDialog={openNoSeleccion}
         setOpenDialog={setOpenNoSeleccion}
-        description="No ha seleccionado ninguna tarea. Si está seguro de esto, presione 'Aceptar'; de lo contrario, vuelva a verificar."
+        description="No ha seleccionado ningún elemento que haya sido reemplazado o reparado.
+        Si está seguro de esto, presione 'Aceptar'; de lo contrario, verifique nuevamente."
         disableBackdropClick
       >
         <Box sx={{

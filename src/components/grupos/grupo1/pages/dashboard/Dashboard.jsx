@@ -27,16 +27,16 @@ if (dia < 10) {
 const fechaHasta = `${anio}-${mes}-${dia}`;
 const fechaDesde = `${anio}-01-01`;
 
-const Home = () => {
-  const url = `http://metabase-insomnia.sytes.net:8080/public/dashboard/20101951-c26b-4a67-b631-d7e21154bad0?id_tecnico=${idTecnico}#hide_parameters=id_tecnico`;
+// ${idTecnico}#hide_parameters=id_tecnico
+// ${fechaDesde}&Hasta=${fechaHasta}&id_tecnico=${idTecnico}#hide_parameters=id_tecnico
+const Dashboard = () => {
+  const turnosAsignados = `https://metabase-insomnia.mooo.com/public/question/cb7533c9-efc9-4807-af84-a38dae3ebe21?id_tecnico=${idTecnico}&Desde=${fechaDesde}&Hasta=${fechaHasta}#hide_parameters=id_tecnico`;
 
-  const turnosAsignados = `http://metabase-insomnia.sytes.net:8080/public/question/ac4bdbd5-bad0-4f58-ba52-b81df3ce14e5?filtro_tecnico=${idTecnico}#hide_parameters=filtro_tecnico`;
+  const turnosTrabajadosPorTipo = `https://metabase-insomnia.mooo.com/public/question/5c81a413-50c0-43a8-bdd6-0aba474be8b4?id_tecnico=${idTecnico}#hide_parameters=id_tecnico`;
 
-  const turnosTrabajadosPorTipo = `http://metabase-insomnia.sytes.net:8080/public/question/7d09dcde-6963-43be-b4c9-11764c4190d1?filtro_tecnico=${idTecnico}#hide_parameters=filtro_tecnico`;
+  const turnosParaHoy = `https://metabase-insomnia.mooo.com/public/question/04d1aade-79ef-4734-92bf-2e980c296643?filtro_tecnico=${idTecnico}#hide_parameters=filtro_tecnico`;
 
-  const turnosParaHoy = `http://metabase-insomnia.sytes.net:8080/public/question/d893955e-933c-42a4-a36e-d5255aae8451?filtro_tecnico=${idTecnico}#hide_parameters=filtro_tecnico`;
-
-  const urlTurnosPorFecha = `http://metabase-insomnia.sytes.net:8080/public/question/30d81a07-05d5-40c0-a48f-cda00779a4b1?Desde=${fechaDesde}&Hasta=${fechaHasta}&id_tecnico=${idTecnico}#hide_parameters=id_tecnico`;
+  const urlTurnosPorFecha = `https://metabase-insomnia.mooo.com/public/question/115afae9-86db-49eb-8a92-3466f689a7a0?id_tecnico=${idTecnico}&Desde=${fechaDesde}&Hasta=${fechaHasta}#hide_parameters=id_tecnico`;
 
   const iframeStyles = {
     border: '1px solid #acacac',
@@ -48,7 +48,7 @@ const Home = () => {
     <>
       <Box m="2px">
         <Box display="flex">
-          <Header titulo="Dashboard" subtitulo="Inicio" />
+          <Header titulo="Dashboard" subtitulo="Visualización de la cantidad de trabajos realizados y turnos asignados." />
         </Box>
         <Divider sx={{ bgcolor: 'rgba(0, 0, 0, 0.7)' }} />
       </Box>
@@ -90,4 +90,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Dashboard;

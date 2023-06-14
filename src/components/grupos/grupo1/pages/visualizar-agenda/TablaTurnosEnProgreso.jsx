@@ -180,7 +180,6 @@ const TablaTurnosEnProgreso = (props) => {
         size="small"
         sx={{ fontSize: '0.7em' }}
         onClick={() => {
-          // console.log('Finalizar', row.original);
           setOpenFinalizar(true);
           setIdTurnoFinalizar(row.original.id_turno);
         }}

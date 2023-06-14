@@ -46,16 +46,17 @@ const Reportes = () => {
   const fechaDesde = `${anio}-01-01`;
 
   const tallerNro = obtenerPrimerNumero(idTaller);
+  // ${tallerNro}#hide_parameters=id_taller
+  // id_taller=${tallerNro}&hasta=${fechaHasta}&desde=${fechaDesde}#hide_parameters=id_taller
+  const urlTurnosPendientes = `https://metabase-insomnia.mooo.com/public/question/981cf28d-d0e2-43e2-b033-4855a0cb4ff3?id_taller=${tallerNro}#hide_parameters=id_taller`;
 
-  const urlTurnosPendientes = `http://metabase-insomnia.sytes.net:8080/public/question/6c42987a-9c30-41a3-98b8-f78601aa9007?id_taller=${tallerNro}#hide_parameters=id_taller`;
+  const urlTurnosPorTipo = `https://metabase-insomnia.mooo.com/public/question/340c3b21-d710-420d-9bb6-f3ee3b09c4f7?id_taller=${tallerNro}#hide_parameters=id_taller`;
 
-  const urlTurnosPorTipo = `http://metabase-insomnia.sytes.net:8080/public/question/d1c70595-7335-4619-ae09-24a1e20e7893?id_taller=${tallerNro}#hide_parameters=id_taller`;
+  const urlTurnosPorEstado = `https://metabase-insomnia.mooo.com/public/question/59fbe462-377e-4e62-91c5-baac89597d06?id_taller=${tallerNro}#hide_parameters=id_taller`;
 
-  const urlTurnosPorEstado = `http://metabase-insomnia.sytes.net:8080/public/question/486a6332-75cb-44c4-9f74-e56de89a3dc1?id_taller=${tallerNro}#hide_parameters=id_taller`;
+  const urlCantPendientes = `https://metabase-insomnia.mooo.com/public/question/489013da-5113-42cd-995d-c53268151a8b?id_taller=${tallerNro}#hide_parameters=id_taller`;
 
-  const urlCantPendientes = `http://metabase-insomnia.sytes.net:8080/public/question/2c339de3-0e69-4a52-b294-324f1171da19?id_taller=${tallerNro}#hide_parameters=id_taller`;
-
-  const urlUsoDelTaller = `http://metabase-insomnia.sytes.net:8080/public/question/d7c37022-664f-4199-8876-3fcea079a92f?desde=${fechaDesde}&hasta=${fechaHasta}&id_taller=${tallerNro}#hide_parameters=id_taller`;
+  const urlUsoDelTaller = `https://metabase-insomnia.mooo.com/public/question/59b8764d-3758-44c0-96a8-4ce009940194?id_taller=${tallerNro}&desde=${fechaDesde}&hasta=${fechaHasta}#hide_parameters=id_taller`;
 
   const iframeStyles = {
     border: '1px solid #acacac',
@@ -67,7 +68,7 @@ const Reportes = () => {
     <>
       <Box m="2px">
         <Box display="flex">
-          <Header titulo="Reportes" subtitulo="Inicio" />
+          <Header titulo="Reportes" subtitulo="Visualización del estado de turnos y el uso del taller" />
         </Box>
         <Divider sx={{ bgcolor: 'rgba(0, 0, 0, 0.7)' }} />
       </Box>
