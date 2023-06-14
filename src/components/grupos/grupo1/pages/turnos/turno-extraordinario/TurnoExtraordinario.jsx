@@ -235,6 +235,7 @@ const FormularioExtraordinario = (props) => {
                 variant="outlined"
                 onClick={() => {
                   setOpenPopupSeleccion(false);
+                  setOpenAgregarTurno(false);
                   setActualizarTabla(true);
                 }}
               >

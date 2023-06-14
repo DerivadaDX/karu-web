@@ -89,14 +89,14 @@ const GROUP_1_PAGES_CONFIG = [
     icon: <GarageIcon />,
     page: <Talleres />,
     roles: [
-      Roles.SUPERVISOR_TECNICO,
+      Roles.ADMINISTRADOR,
       Roles.IT,
     ],
   },
   {
     id: 'g1-TurnoEvaluacionAdmin',
     name: 'Turno para evaluación técnica',
-    href: '/turno-evaluación-administrativo',
+    href: '/turno-evaluacion-administrativo',
     icon: <RateReviewIcon />,
     page: <FormularioEvaluacionAdmin />,
     roles: [
@@ -107,9 +107,10 @@ const GROUP_1_PAGES_CONFIG = [
   {
     id: 'g1-TurnoEvaluacionCliente',
     name: 'Turno para evaluación técnica',
-    href: '/turno-evaluación-cliente',
+    href: '/turno-evaluacion-cliente',
     icon: <RateReviewIcon />,
     page: <FormularioEvaluacionCliente />,
+    soloUrl: true,
     roles: [
       Roles.CLIENTE,
       Roles.IT,
