@@ -9,7 +9,8 @@ export const authLogin = async (user) => {
   try {
     const response = await client.post('/login/startLogin', user);
     if (response.data?.result.sessionStatus === 'USUARIO_ENCONTRADO') {
-      return {userFound: true, type: response.data.result.type};
+      const result = response.data.result
+      return {userFound: true, type: result.type, id: result.id, branch: result.branch };
     }
     return {userFound: false};
   } catch (error) {
@@ -239,3 +240,45 @@ export const PostNewPricesByInflation = async (inflation) => {
   }
 };
 
+export const getAllPriceHistory = async () => {
+  try {
+    const response = await client.get('/price/getAll');
+    if (response) {
+      return response;
+    }
+  } catch (error) {
+    console.log("Error al obtener el historial de precios:", error);  
+  }
+}
+
+export const PostAnalyzeCredit = async (creditAnalysis) => {
+  try {
+    const response = await client.post('/credit-analysis/generateScoring', creditAnalysis);
+    console.log("RESPONSE DEL BACK: " , response.data)
+    if (response.data.result.message) {
+      return {
+        value: response.data.result.message,
+        analyzeCredit: false,
+      };
+    }
+    return { analyzeCredit: true };
+  } catch (error) {
+    return { analyzeCredit: false };
+  }
+};
+
+export const GetScoring = async (document) => {
+  try {
+    const response = await client.get(`/credit-analysis/getScoring?document=${document}`);
+    console.log("RESPONSE DEL BACK: " , response.data)
+    if (response.data.result.message) {
+      return {
+        value: response.data.result.message,
+        calculatedScoring: false,
+      };
+    }
+    return { calculatedScoring: true, score: response.data.result.value};
+  } catch (error) {
+    return { calculatedScoring: false };
+  }
+};

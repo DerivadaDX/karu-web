@@ -10,35 +10,29 @@ import './styles.css';
 const PanelDeFiltros = ({
   categoriaSeleccionada,
   toggleSeleccionado,
-  changedPrice,
+  changePrice,
   selectedPrice,
-  changedKM,
+  changeKM,
   selectedKM,
 }) => (
 
   <div>
     {/* combustibles */}
-    <paper className="input-group">
-      <p className="label">⛽ Combustible</p>
+    <div className="input-group">
+      <p className="label"> </p>
       <FiltroVehiculosToggle
         options={listaCategorias}
         value={categoriaSeleccionada}
         selectToggle={toggleSeleccionado}
       />
-
-    </paper>
-    {/* precio */}
-    <div className="input-group">
-      <p className="label-range">Rango de precio</p>
-      <SliderProton value={selectedPrice} changedPrice={changedPrice} />
-
-    </div>
-
-    {/* kilometraje */}
-    <div className="input-group">
-      <p className="label-range">Rango de kilometraje</p>
-      <SliderKilometros value={selectedKM} changedKM={changedKM} />
-
+      <div className="input-group">
+        <p className="label-range"> </p>
+        <SliderProton value={selectedPrice} changePrice={changePrice} />
+      </div>
+      <div className="input-group">
+        <p className="label-range"> </p>
+        <SliderKilometros value={selectedKM} changeKM={changeKM} />
+      </div>
     </div>
     {/* año */}
     {/* reservado */}

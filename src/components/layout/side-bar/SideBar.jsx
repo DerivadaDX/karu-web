@@ -41,7 +41,7 @@ const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
   }));
 
   const [rolDeUsuario, setRolDeUsuario] = useState(Roles.CLIENTE);
-  const { cookie } = useContext(UserContext);
+  const { cookie, isAuthenticated } = useContext(UserContext);
 
   useEffect(() => {
     const user = cookie.get('user');
@@ -49,7 +49,7 @@ const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
     if (user) {
       setRolDeUsuario(user.type);
     }
-  }, []);
+  }, [isAuthenticated]);
 
   return (
     <Drawer variant="permanent" open={open}>
