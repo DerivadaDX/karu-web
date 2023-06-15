@@ -22,7 +22,7 @@ import SucursalService from '../services/sucursal-service';
 const ModificarSucursal = ({ sucursal, onEdit }) => {
   const [mostrarPopUpModificarSucursal, setMostrarPopUpModificarSucursal] = useState(false);
   const [mostrarPopUpModificacionExitosa, setMostrarPopUpModificacionExitosa] = useState(false);
-  const [consultaTieneTaller, setConsultaTieneTaller] = useState([]);
+  const [sucursalTieneTallerActivo, setSucursalTieneTallerActivo] = useState(false);
   const [valoresDelFormulario, setValoresDelFormulario] = useState({
     nombre: '',
     calle: '',
@@ -34,26 +34,21 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
     activa: false,
   });
 
-  const cargarConsultaDeTallerAsociado = (idSucursal) => {
+  const verificarSiSucursalTieneTallerActivoAsociado = (idSucursal) => {
     SucursalService.sucursalTieneTallerActivo(idSucursal)
       .then((response) => {
         if (response.status === 200) {
-          setConsultaTieneTaller(response.data);
+          const tieneTallerActivo = response.data.valor;
+          setSucursalTieneTallerActivo(tieneTallerActivo);
         }
       })
-      .catch((error) => {
-        if (error.response && error.response.status === 404) {
-          const mensajeError = `No existe taller activo para la sucursal ${idSucursal}`;
-          setConsultaTieneTaller({ mensaje: mensajeError, valor: false });
-        } else {
-          setConsultaTieneTaller({ mensaje: 'Ha ocurrido un error inesperado', valor: false });
-        }
+      .catch(() => {
+        setSucursalTieneTallerActivo(false);
       });
   };
 
   const mostrarYCargarFormulario = () => {
-    cargarConsultaDeTallerAsociado(sucursal.id);
-    setMostrarPopUpModificarSucursal(true);
+    verificarSiSucursalTieneTallerActivoAsociado(sucursal.id);
     setValoresDelFormulario({
       id: sucursal.id,
       nombre: sucursal.nombre,
@@ -65,6 +60,7 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
       posee_taller: sucursal.posee_taller,
       activa: sucursal.activa,
     });
+    setMostrarPopUpModificarSucursal(true);
   };
 
   const cambiarVisibilidadDePopUpModificarSucursal = () => {
@@ -234,7 +230,7 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
                 <Switch
                   checked={valoresDelFormulario.activa}
                   onChange={actualizarValorDeFormulario}
-                  disabled={consultaTieneTaller.valor && sucursal.activa}
+                  disabled={sucursalTieneTallerActivo && sucursal.activa}
                 />
               )}
               sx={{
