@@ -26,7 +26,7 @@ const GROUP_1_PAGES_CONFIG = [
     name: 'Dashboard',
     href: '/dashboard',
     icon: <DashboardIcon />,
-    page: <Dashboard />,
+    page: <Dashboard />, // tiene harcodeado el id: const idTecnico = '46';
     roles: [
       Roles.TECNICO,
       Roles.IT],
@@ -36,7 +36,7 @@ const GROUP_1_PAGES_CONFIG = [
     name: 'Turnos',
     href: '/agenda-turnos',
     icon: <ListAltIcon />,
-    page: <AgendaTaller />,
+    page: <AgendaTaller />, // tiene harcodeado el taller:   const idTaller = 'T002';
     roles: [
       Roles.SUPERVISOR_TECNICO,
       Roles.IT],
@@ -46,7 +46,7 @@ const GROUP_1_PAGES_CONFIG = [
     name: 'Datos de técnicos',
     href: '/informacion-tecnicos',
     icon: <PersonSearchIcon />,
-    page: <VisualizacionBusquedaTecnicos />,
+    page: <VisualizacionBusquedaTecnicos />, // tiene harcodeado el taller:   const taller = 'T002';
     roles: [
       Roles.SUPERVISOR_TECNICO,
       Roles.IT],
@@ -56,7 +56,7 @@ const GROUP_1_PAGES_CONFIG = [
     name: 'Mis turnos',
     href: '/mis-turnos',
     icon: <ListAltIcon />,
-    page: <MisTurnos />,
+    page: <MisTurnos />, // tiene harcodeado al ténico: const idTecnico = 46;
     roles: [
       Roles.TECNICO,
       Roles.IT],
@@ -76,7 +76,7 @@ const GROUP_1_PAGES_CONFIG = [
     name: 'Services',
     href: '/services',
     icon: <DesignServicesIcon />,
-    page: <Services />,
+    page: <Services />, // tiene harcodeado al supervisor: const idSupervisor = 43;
     roles: [
       Roles.SUPERVISOR_TECNICO,
       Roles.IT,
@@ -121,7 +121,7 @@ const GROUP_1_PAGES_CONFIG = [
     name: 'Reportes',
     href: '/reportes',
     icon: <AssessmentIcon />,
-    page: <Reportes />,
+    page: <Reportes />, // tiene harcodeado el taller: const idTaller = 'T002';
     roles: [
       Roles.SUPERVISOR_TECNICO,
       Roles.IT,
