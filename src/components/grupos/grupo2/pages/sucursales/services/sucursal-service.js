@@ -1,5 +1,5 @@
 import HttpService from '../../../http-service';
-import HttpServiceRender from '../../../http-service-render';
+import HttpServiceGrupo1 from '../../../http-service-grupo1';
 
 const SucursalService = {
   obtenerSucursales: () => HttpService.get('/sucursales/'),
@@ -7,7 +7,7 @@ const SucursalService = {
   deshabilitarSucursal: (idSucursal) => HttpService.put(`/sucursal/${idSucursal}/`, { activa: false }),
   habilitarSucursal: (idSucursal) => HttpService.put(`/sucursal/${idSucursal}/`, { activa: true }),
   modificarSucursal: (idSucursal, datosSucursal) => HttpService.put(`/sucursal/${idSucursal}/`, datosSucursal),
-  sucursalTieneTaller: (idSucursal) => HttpServiceRender.get(`/talleres/existe/${idSucursal}/`),
+  sucursalTieneTaller: (idSucursal) => HttpServiceGrupo1.get(`/talleres/existe/${idSucursal}/`),
 };
 
 export default SucursalService;
