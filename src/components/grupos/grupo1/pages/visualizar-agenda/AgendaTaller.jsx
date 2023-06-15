@@ -12,11 +12,13 @@ const AgendaTaller = () => {
   // const idTaller = 'T002';
   const [idTaller, setIdTaller] = useState('');
   const { cookie } = useContext(UserContext);
+  const [rolUsuario, setRolUsuario] = useState('');
 
   useEffect(() => {
     const user = cookie.get('user');
     if (user) {
       setIdTaller(user.branch);
+      setRolUsuario(user.type);
       // console.log(user.branch);
     }
   }, []);
@@ -32,7 +34,7 @@ const AgendaTaller = () => {
         {idTaller ? (
           <SimpleTabTurnos idTaller={idTaller} />
         ) : (
-          <p>Cargando...</p>
+          <p>Se ingresó con rol de IT</p>
         )}
       </Container>
     </>
