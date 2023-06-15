@@ -8,13 +8,13 @@ import { UserContext } from '../../../grupo4/context/UsersContext';
 // const idTecnico = 46;
 
 const MisTurnos = () => {
-  const [idTecnico, setIdTaller] = useState('');
+  const [idTecnico, setIdTecnico] = useState('');
   const { cookie } = useContext(UserContext);
 
   useEffect(() => {
     const user = cookie.get('user');
     if (user) {
-      setIdTaller(user.id);
+      setIdTecnico(user.id);
     }
   }, []);
   return (
