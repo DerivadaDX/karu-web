@@ -35,7 +35,7 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
   });
 
   const cargarConsultaDeTallerAsociado = (idSucursal) => {
-    SucursalService.sucursalTieneTaller(idSucursal)
+    SucursalService.sucursalTieneTallerActivo(idSucursal)
       .then((response) => {
         if (response.status === 200) {
           setConsultaTieneTaller(response.data);

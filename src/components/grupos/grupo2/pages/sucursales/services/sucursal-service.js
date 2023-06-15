@@ -7,7 +7,7 @@ const SucursalService = {
   deshabilitarSucursal: (idSucursal) => HttpService.put(`/sucursal/${idSucursal}/`, { activa: false }),
   habilitarSucursal: (idSucursal) => HttpService.put(`/sucursal/${idSucursal}/`, { activa: true }),
   modificarSucursal: (idSucursal, datosSucursal) => HttpService.put(`/sucursal/${idSucursal}/`, datosSucursal),
-  sucursalTieneTaller: (idSucursal) => HttpServiceGrupo1.get(`/talleres/existe/${idSucursal}/`),
+  sucursalTieneTallerActivo: (idSucursal) => HttpServiceGrupo1.get(`/talleres/existe/${idSucursal}/`),
 };
 
 export default SucursalService;
