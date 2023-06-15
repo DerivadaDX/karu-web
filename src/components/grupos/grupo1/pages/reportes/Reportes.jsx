@@ -1,13 +1,24 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/iframe-has-title */
-import * as React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Grid from '@mui/material/Grid';
 import { Box, Divider } from '@mui/material';
 import Header from '../../components/common/Header';
+import { UserContext } from '../../../grupo4/context/UsersContext';
 
-const idTaller = 'T002';
+// const idTaller = 'T002';
 
 const Reportes = () => {
+  const [idTaller, setIdTaller] = useState('');
+  const { cookie } = useContext(UserContext);
+
+  useEffect(() => {
+    const user = cookie.get('user');
+    if (user) {
+      setIdTaller(user.branch);
+    }
+  }, []);
+
   function obtenerPrimerNumero(str) {
     // Expresión regular para encontrar el primer número que comienza con un dígito distinto de cero
     const regex = /[1-9][0-9]*/;
