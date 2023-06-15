@@ -32,13 +32,13 @@ const fechaDesde = `${anio}-01-01`;
 // ${fechaDesde}&Hasta=${fechaHasta}&id_tecnico=${idTecnico}#hide_parameters=id_tecnico
 // Comentario con cambio
 const Dashboard = () => {
-  const [idTecnico, setIdTaller] = useState('');
+  const [idTecnico, setIdTecnico] = useState('');
   const { cookie } = useContext(UserContext);
 
   useEffect(() => {
     const user = cookie.get('user');
     if (user) {
-      setIdTaller(user.id);
+      setIdTecnico(user.id);
       console.log(user.id);
     }
   }, []);
