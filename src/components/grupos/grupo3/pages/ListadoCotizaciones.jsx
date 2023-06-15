@@ -82,16 +82,23 @@ const ListadoCotizaciones = () => {
 
   const renderAccionesFilaFactura = ({ row }) => {
     const { factura } = row.original;
-    return (
-      <Box display="flex">
-        <PopUpAnular id={row.original.id} />
-        <Link to={`/facturar/${row.original.id}`}>
-          <IconButton disabled={factura}>
-            <ReceiptOutlinedIcon />
-          </IconButton>
-        </Link>
-      </Box>
-    );
+    const { estadoCotizacion } = row.original;
+    if (estadoCotizacion === 'PENDIENTE') {
+      return (
+        <Box display="flex">
+          <PopUpAnular id={row.original.id} />
+          <Link to={`/facturar/${row.original.id}`}>
+            <IconButton disabled={factura}>
+              <ReceiptOutlinedIcon />
+            </IconButton>
+          </Link>
+        </Box>
+      );
+    }
+    if (estadoCotizacion === 'PROCESADA') {
+      <PopUpAnular id={row.original.id} />;
+    }
+    return ' ';
   };
   const columnas = useMemo(
     () => [
