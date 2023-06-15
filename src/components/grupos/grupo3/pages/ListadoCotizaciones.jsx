@@ -72,22 +72,25 @@ const ListadoCotizaciones = () => {
     );
   };
 
-  const renderAccionesFila = ({ row }) => {
-    const { estadoCotizacion } = row.original;
-    if (estadoCotizacion === 'PENDIENTE') {
-      return <PopUpAnular id={row.original.id} />;
-    }
-    return ' ';
-  };
+  /* const renderAccionesFila = ({ row }) => {
+     const { estadoCotizacion } = row.original;
+     if (estadoCotizacion === 'PENDIENTE') {
+       return <PopUpAnular id={row.original.id} />;
+     }
+     return ' ';
+   }; */
 
   const renderAccionesFilaFactura = ({ row }) => {
     const { factura } = row.original;
     return (
-      <Link to={`/facturar/${row.original.id}`}>
-        <IconButton disabled={factura}>
-          <ReceiptOutlinedIcon />
-        </IconButton>
-      </Link>
+      <Box display="flex">
+        <PopUpAnular id={row.original.id} />
+        <Link to={`/facturar/${row.original.id}`}>
+          <IconButton disabled={factura}>
+            <ReceiptOutlinedIcon />
+          </IconButton>
+        </Link>
+      </Box>
     );
   };
   const columnas = useMemo(
@@ -149,11 +152,11 @@ const ListadoCotizaciones = () => {
         accessorKey: 'total',
         header: 'Total',
       },
-      {
+      /* {
         accessorKey: 'estadoCotizacion',
         header: 'Mod. Estado',
         Cell: renderAccionesFila,
-      },
+      }, */
       {
         accessorKey: 'factura',
         header: 'Factura',
