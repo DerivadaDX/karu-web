@@ -250,3 +250,35 @@ export const getAllPriceHistory = async () => {
     console.log("Error al obtener el historial de precios:", error);  
   }
 }
+
+export const PostAnalyzeCredit = async (creditAnalysis) => {
+  try {
+    const response = await client.post('/credit-analysis/generateScoring', creditAnalysis);
+    console.log("RESPONSE DEL BACK: " , response.data)
+    if (response.data.result.message) {
+      return {
+        value: response.data.result.message,
+        analyzeCredit: false,
+      };
+    }
+    return { analyzeCredit: true };
+  } catch (error) {
+    return { analyzeCredit: false };
+  }
+};
+
+export const GetScoring = async (document) => {
+  try {
+    const response = await client.get(`/credit-analysis/getScoring?document=${document}`);
+    console.log("RESPONSE DEL BACK: " , response.data)
+    if (response.data.result.message) {
+      return {
+        value: response.data.result.message,
+        calculatedScoring: false,
+      };
+    }
+    return { calculatedScoring: true, score: response.data.result.value};
+  } catch (error) {
+    return { calculatedScoring: false };
+  }
+};
