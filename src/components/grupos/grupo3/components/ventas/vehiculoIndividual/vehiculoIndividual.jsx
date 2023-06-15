@@ -44,9 +44,10 @@ const VehiculoIndividual = () => {
   ];
 
   const containerStyles = {
-    width: '500px',
-    height: '280px',
+    width: '1000px',
+    height: '450px',
     margin: '0 auto',
+    backgroundSize: 'contain',
   };
 
   return (
@@ -74,12 +75,20 @@ const VehiculoIndividual = () => {
           {vehiculoData.fuelType}
         </Typography>
         <Typography variant="body1">
-          Kilometraje:
-          {vehiculoData.kilometers}
+          Origen:
+          {vehiculoData.origin}
         </Typography>
         <Typography variant="body1">
           Año:
           {vehiculoData.year}
+        </Typography>
+        <Typography variant="body1">
+          Kilometraje:
+          {vehiculoData.kilometers}
+        </Typography>
+        <Typography variant="body1">
+          Patente:
+          {vehiculoData.plate}
         </Typography>
         <Typography variant="body1"> </Typography>
       </Box>
