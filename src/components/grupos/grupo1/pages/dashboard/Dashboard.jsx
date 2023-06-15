@@ -61,7 +61,7 @@ const Dashboard = () => {
     <>
       <Box m="2px">
         <Box display="flex">
-          <Header titulo="Dashboard" subtitulo="Visualización de la cantidad de trabajos realizados y turnos asignados." />
+          <Header titulo="Dashboard" subtitulo="Visualización de la cantidad de trabajos realizados y turnos asignados" />
         </Box>
         <Divider sx={{ bgcolor: 'rgba(0, 0, 0, 0.7)' }} />
       </Box>
