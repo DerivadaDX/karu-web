@@ -3,13 +3,14 @@
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/iframe-has-title */
-import * as React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Box, Divider, Grid,
 } from '@mui/material';
 import Header from '../../components/common/Header';
+import { UserContext } from '../../../grupo4/context/UsersContext';
 
-const idTecnico = '46';
+// const idTecnico = '46';
 const fecha = new Date();
 
 const anio = fecha.getFullYear();
@@ -31,6 +32,17 @@ const fechaDesde = `${anio}-01-01`;
 // ${fechaDesde}&Hasta=${fechaHasta}&id_tecnico=${idTecnico}#hide_parameters=id_tecnico
 // Comentario con cambio
 const Dashboard = () => {
+  const [idTecnico, setIdTecnico] = useState('');
+  const { cookie } = useContext(UserContext);
+
+  useEffect(() => {
+    const user = cookie.get('user');
+    if (user) {
+      setIdTecnico(user.id);
+      console.log(user.id);
+    }
+  }, []);
+
   const turnosAsignados = `https://metabase-insomnia.mooo.com/public/question/cb7533c9-efc9-4807-af84-a38dae3ebe21?id_tecnico=${idTecnico}&Desde=${fechaDesde}&Hasta=${fechaHasta}#hide_parameters=id_tecnico`;
 
   const turnosTrabajadosPorTipo = `https://metabase-insomnia.mooo.com/public/question/5c81a413-50c0-43a8-bdd6-0aba474be8b4?id_tecnico=${idTecnico}#hide_parameters=id_tecnico`;

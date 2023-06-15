@@ -1,22 +1,35 @@
 /* eslint-disable react/react-in-jsx-scope */
+import React, { useContext, useEffect, useState } from 'react';
 import { Box, Container, Divider } from '@mui/material';
 import Header from '../../components/common/Header';
 import { TabMisTurnos } from './TabMisTurnos';
+import { UserContext } from '../../../grupo4/context/UsersContext';
 
-const idTecnico = 46;
+// const idTecnico = 46;
 
-const MisTurnos = () => (
-  <>
-    <Box mt="5px">
-      <Box display="flex">
-        <Header titulo="Mis Turnos" subtitulo="Área de trabajo" />
+const MisTurnos = () => {
+  const [idTecnico, setIdTecnico] = useState('');
+  const { cookie } = useContext(UserContext);
+
+  useEffect(() => {
+    const user = cookie.get('user');
+    if (user) {
+      setIdTecnico(user.id);
+    }
+  }, []);
+  return (
+    <>
+      <Box mt="5px">
+        <Box display="flex">
+          <Header titulo="Mis Turnos" subtitulo="Área de trabajo" />
+        </Box>
       </Box>
-    </Box>
-    <Divider sx={{ color: 'silver' }} />
-    <Container maxWidth="xxl" sx={{ mb: 2 }}>
-      <TabMisTurnos idTecnico={idTecnico} />
-    </Container>
-  </>
-);
+      <Divider sx={{ color: 'silver' }} />
+      <Container maxWidth="xxl" sx={{ mb: 2 }}>
+        <TabMisTurnos idTecnico={idTecnico} />
+      </Container>
+    </>
+  );
+};
 
 export default MisTurnos;
