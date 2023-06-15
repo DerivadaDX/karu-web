@@ -44,7 +44,7 @@ const AgendaTaller = () => {
             {idTaller ? (
               <SimpleTabTurnos idTaller={idTaller} />
             ) : (
-              <Alerts alertType="error" title="Ha ocurrido algo" description="Ocurrio un problema. Por favor, comuniquese con el área de IT de Karu." />
+              <Alerts alertType="error" title="Ha ocurrido algo" description="Ocurrió un problema. Por favor, comuniquese con el área de IT de KarU." />
             )}
           </>
         )}

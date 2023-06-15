@@ -9,6 +9,8 @@ import {
 } from '@mui/material';
 import Header from '../../components/common/Header';
 import { UserContext } from '../../../grupo4/context/UsersContext';
+import Roles from '../../../../roles';
+import Alerts from '../../components/common/Alerts';
 
 // const idTecnico = '46';
 const fecha = new Date();
@@ -28,18 +30,20 @@ if (dia < 10) {
 const fechaHasta = `${anio}-${mes}-${dia}`;
 const fechaDesde = `${anio}-01-01`;
 
-// ${idTecnico}#hide_parameters=id_tecnico
-// ${fechaDesde}&Hasta=${fechaHasta}&id_tecnico=${idTecnico}#hide_parameters=id_tecnico
-// Comentario con cambio
 const Dashboard = () => {
   const [idTecnico, setIdTecnico] = useState('');
   const { cookie } = useContext(UserContext);
+  const [rolUsuario, setRolUsuario] = useState('');
 
   useEffect(() => {
     const user = cookie.get('user');
     if (user) {
-      setIdTecnico(user.id);
-      console.log(user.id);
+      setRolUsuario(user.type);
+      if (user.type === Roles.TECNICO) {
+        setIdTecnico(user.id);
+      } else {
+        setIdTecnico('46');
+      }
     }
   }, []);
 
@@ -65,40 +69,86 @@ const Dashboard = () => {
         </Box>
         <Divider sx={{ bgcolor: 'rgba(0, 0, 0, 0.7)' }} />
       </Box>
-      <Grid container spacing={2} sx={{ padding: 2 }}>
-        <Grid item xs={12} sm={12} md={6}>
-          <iframe
-            src={turnosParaHoy}
-            width="100%"
-            height="450rem"
-            style={iframeStyles}
-          />
-        </Grid>
-        <Grid item xs={12} sm={12} md={6}>
-          <iframe
-            src={turnosTrabajadosPorTipo}
-            width="100%"
-            height="450rem"
-            style={iframeStyles}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <iframe
-            src={turnosAsignados}
-            width="100%"
-            height="400rem"
-            style={iframeStyles}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <iframe
-            src={urlTurnosPorFecha}
-            width="100%"
-            height="400rem"
-            style={iframeStyles}
-          />
-        </Grid>
-      </Grid>
+      { idTecnico && rolUsuario !== Roles.IT
+        ? (
+          <Grid container spacing={2} sx={{ padding: 2 }}>
+            <Grid item xs={12} sm={12} md={6}>
+              <iframe
+                src={turnosParaHoy}
+                width="100%"
+                height="450rem"
+                style={iframeStyles}
+              />
+            </Grid>
+            <Grid item xs={12} sm={12} md={6}>
+              <iframe
+                src={turnosTrabajadosPorTipo}
+                width="100%"
+                height="450rem"
+                style={iframeStyles}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <iframe
+                src={turnosAsignados}
+                width="100%"
+                height="400rem"
+                style={iframeStyles}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <iframe
+                src={urlTurnosPorFecha}
+                width="100%"
+                height="400rem"
+                style={iframeStyles}
+              />
+            </Grid>
+          </Grid>
+        )
+        : (
+          <>
+            <Alerts alertType="info" title="Atención" description="Se ingresó con Rol IT. Por default, se mostrará información con el técnico id número 46. " />
+            {idTecnico ? (
+              <Grid container spacing={2} sx={{ padding: 2 }}>
+                <Grid item xs={12} sm={12} md={6}>
+                  <iframe
+                    src={turnosParaHoy}
+                    width="100%"
+                    height="450rem"
+                    style={iframeStyles}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={12} md={6}>
+                  <iframe
+                    src={turnosTrabajadosPorTipo}
+                    width="100%"
+                    height="450rem"
+                    style={iframeStyles}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <iframe
+                    src={turnosAsignados}
+                    width="100%"
+                    height="400rem"
+                    style={iframeStyles}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <iframe
+                    src={urlTurnosPorFecha}
+                    width="100%"
+                    height="400rem"
+                    style={iframeStyles}
+                  />
+                </Grid>
+              </Grid>
+            ) : (
+              <Alerts alertType="error" title="Ha ocurrido algo" description="Ocurrió un problema. Por favor, comuniquese con el área de IT de KarU." />
+            )}
+          </>
+        )}
     </>
   );
 };
