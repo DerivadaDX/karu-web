@@ -37,6 +37,7 @@ const NuevaPagina = () => {
   // } = useContext(AppContext);
   const [nombreC, setNombreC] = useState('');
   const [mail, setMail] = useState('');
+  const [clienteDNI, setDNI] = useState('');
   const [garantiaCheck, setGarantiaExtendida] = useState(false);
 
   const navigate = useNavigate();
@@ -114,8 +115,9 @@ const NuevaPagina = () => {
           nombreCliente: nombreC,
           patente: productSelected.plate, // infoCotizacion.patente,
           email: mail,
+          dni: clienteDNI,
           idVendedor: 123,
-          precioBase: 1000000,
+          /* precioBase: 1000000, */
           garantiaExtendida: garantiaCheck,
         };
         const response = await CotizacionService.guardarCotizacion(cotizacionData);
@@ -209,6 +211,27 @@ const NuevaPagina = () => {
                         Por favor, proporcione un Nombre del Cliente válido.
                     </Form.Control.Feedback>
                 </Form.Group> */}
+
+        {/* -----DNI Cliente------ */}
+        <Form.Group as={Row} className="mb-3" controlId="formPlaintextDNI">
+          <Form.Label column sm="2">
+            DNI:
+          </Form.Label>
+          <Col sm="10">
+
+            <Form.Control
+              type="number"
+              placeholder="Agregue el dni del Cliente"
+              value={clienteDNI}
+              onChange={(event) => setDNI(event.target.value)}
+              required
+            />
+
+            <Form.Control.Feedback type="invalid">
+              Por favor, proporcione un DNI válido.
+            </Form.Control.Feedback>
+          </Col>
+        </Form.Group>
 
         {/* -----Patente------ */}
         <Form.Group as={Row} className="mb-3" controlId="formPlaintextPatente">
