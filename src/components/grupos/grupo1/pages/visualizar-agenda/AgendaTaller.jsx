@@ -40,11 +40,11 @@ const AgendaTaller = () => {
           <SimpleTabTurnos idTaller={idTaller} />
         ) : (
           <>
-            <Alerts alertType="info" title="Atención" description="Se ingresó con Rol IT. Por default se mostrará con el taller id número 2. " />
+            <Alerts alertType="info" title="Atención" description="Se ingresó con Rol IT. Por default, se mostrará con el taller id número 2. " />
             {idTaller ? (
               <SimpleTabTurnos idTaller={idTaller} />
             ) : (
-              <Alerts alertType="error" title="Ha ocurrido algo" description="Ocurrió un problema. Por favor, comuniquese con el área de IT de KarU." />
+              <Alerts alertType="error" title="Ha ocurrido algo" description="Ocurrió un problema. Por favor, comuníquese con el área de IT de KarU." />
             )}
           </>
         )}
