@@ -21,6 +21,8 @@ import VehicleForm from './pages/vehicle/VehicleForm';
 import PriceUpdate from './pages/pricesUpdate/PriceUpdate';
 import Roles from '../../roles';
 import PriceHistory from './pages/priceHistory/PriceHistory';
+import CreditAnalysis from './pages/creditAnalysis/CreditAnalysis';
+import CreditScoreIcon from '@mui/icons-material/CreditScore';
 
 const GROUP_4_PAGES_CONFIG = [
   {
@@ -127,6 +129,14 @@ const GROUP_4_PAGES_CONFIG = [
     icon: <ManageAccountsIcon />,
     page: <PriceHistory />,
     roles: [Roles.ADMINISTRADOR, Roles.IT],
+  },
+  {
+    id: 'g4-creditAnalysis',
+    name: 'Calcular scoring crediticio',
+    href: '/credit-analysis',
+    icon: <CreditScoreIcon />,
+    page: <CreditAnalysis />,
+    roles: [Roles.ADMINISTRADOR,Roles.IT],
   },
 ];
 

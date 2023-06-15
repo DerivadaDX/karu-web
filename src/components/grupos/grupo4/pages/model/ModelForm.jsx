@@ -30,7 +30,7 @@ const ModelForm = () => {
 
   const [errors, setErrors] = useState({});
 
-  const { saveVehicleModel, showSpansaveModelError, saveModelMessageError } =
+  const { saveVehicleModel, showSpansaveModelError, saveModelMessageError, setSpansaveModelError } =
     useContext(UserContext);
 
   const handleSubmit = async (e) => {
@@ -52,6 +52,7 @@ const ModelForm = () => {
       }));
     }
     setValues({ ...values, [e.target.name]: e.target.value });
+    setSpansaveModelError(false);
   };
 
   const onChangeDropdown = (e) => {
@@ -61,6 +62,7 @@ const ModelForm = () => {
     }else if(e.target.name === "category"){
       setSelectedCategory(e.target.value)
     }
+    setSpansaveModelError(false);
   };
 
   const [selectedModel, setSelectedModel] = useState('');
