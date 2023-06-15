@@ -1,8 +1,9 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable max-len */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
 /* eslint-disable no-nested-ternary */
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import Typography from '@mui/material/Typography';
 import {
   Input, Box, Button, CircularProgress, TablePagination,
@@ -25,10 +26,9 @@ import IconButton from '@mui/material/IconButton';
 import Collapse from '@mui/material/Collapse';
 import SearchIcon from '@mui/icons-material/Search';
 import Alerts from '../../components/common/Alerts';
-import Header from '../../components/common/Header';
-import { UserContext } from '../../../grupo4/context/UsersContext';
 
-const VisualizacionBusquedaTecnicos = () => {
+const VisualizacionBusquedaTecnicos = (props) => {
+  const { taller } = props;
   const [listaTecnicos, setTecnicos] = useState([]);
   const [detalleTrabajos, setDetalleTrabajos] = useState([]);
   const [mostrarInfo, setMostrarInfo] = useState(false);
@@ -51,57 +51,52 @@ const VisualizacionBusquedaTecnicos = () => {
   const [alertType, setAlertType] = useState('');
   const [alertMessage, setAlertMessage] = useState('');
   const [alertTitle, setAlertTitle] = useState('');
-  // const taller = 'T002';
-  const [taller, setIdTaller] = useState('');
-  const { cookie } = useContext(UserContext);
 
   const endPoint = `https://autotech2.onrender.com/tecnicos/filtro/?branch=${taller}&`;
 
   const filtrarTecnicos = () => {
-    if (taller) {
-      setCargando(true);
-      const { nombre, dni, categoria } = valoresBusqueda;
+    setCargando(true);
+    const { nombre, dni, categoria } = valoresBusqueda;
 
-      let url = `${endPoint}`;
+    let url = `${endPoint}`;
 
-      if (nombre.length > 0) {
-        url += `&nombre_completo=${nombre}`;
-      }
-      if (dni.length >= 7 && dni.length <= 8) {
-        url += `&dni=${dni}`;
-      }
-      if (categoria.length > 0) {
-        url += `&categoria=${categoria}`;
-      }
-      axios
-        .get(url)
-        .then((response) => {
-          setTecnicos(response.data);
-          setAlertType('');
-          setCargando(false);
-          const cantidadTecnicos = response.data.tecnicos.length;
-
-          if (cantidadTecnicos === 0) {
-            setAlertMessage(
-              'No se han encontrado coincidencias sobre la búsqueda realizada.',
-            );
-            setAlertType('warning');
-            setAlertTitle('Sin coincidencias');
-          }
-
-          if (mostrarInfo) {
-            setMostrarInfo(!mostrarInfo);
-          }
-        })
-        .catch((error) => {
-          setAlertMessage(
-            'Ha ocurrido un error, disculpe las molestias. Intente nuevamente más tarde.',
-          );
-          setAlertType('error');
-          setAlertTitle('Error');
-          setCargando(false);
-        });
+    if (nombre.length > 0) {
+      url += `&nombre_completo=${nombre}`;
     }
+    if (dni.length >= 7 && dni.length <= 8) {
+      url += `&dni=${dni}`;
+    }
+    if (categoria.length > 0) {
+      url += `&categoria=${categoria}`;
+    }
+    axios
+      .get(url)
+      .then((response) => {
+        setTecnicos(response.data);
+        setAlertType('');
+        setCargando(false);
+        const cantidadTecnicos = response.data.tecnicos.length;
+
+        if (cantidadTecnicos === 0) {
+          setAlertMessage(
+            'No se han encontrado coincidencias sobre la búsqueda realizada.',
+          );
+          setAlertType('warning');
+          setAlertTitle('Sin coincidencias');
+        }
+
+        if (mostrarInfo) {
+          setMostrarInfo(!mostrarInfo);
+        }
+      })
+      .catch((error) => {
+        setAlertMessage(
+          'Ha ocurrido un error, disculpe las molestias. Intente nuevamente más tarde.',
+        );
+        setAlertType('error');
+        setAlertTitle('Error');
+        setCargando(false);
+      });
   };
 
   /* Trae todos los tecnicos, cuando los campos estan vacios */
@@ -170,24 +165,11 @@ const VisualizacionBusquedaTecnicos = () => {
   };
 
   useEffect(() => {
-    const user = cookie.get('user');
-    if (user) {
-      setIdTaller(user.branch);
-      console.log(user.branch);
-    }
-  }, []);
-
-  useEffect(() => {
     filtrarTecnicos();
   }, []);
 
   return (
     <Box>
-      <Box mt="5px">
-        <Box display="flex">
-          <Header titulo="Datos de técnicos" subtitulo="En esta sección, tendrás la posibilidad de acceder a una visualización detallada de la información sobre cada técnico, así como los trabajos que han realizado. Además, podrás realizar búsquedas para encontrar la información específica del técnico que deseas consultar." />
-        </Box>
-      </Box>
       <Box sx={{
         display: 'flex', justifyContent: 'center', alignItems: 'center',
       }}

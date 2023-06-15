@@ -19,6 +19,7 @@ import FormularioEvaluacionCliente from './pages/turnos/turno-evaluacion-cliente
 import Reportes from './pages/reportes/Reportes';
 
 import Roles from '../../roles';
+import VisualizacionTecnicos from './pages/visualizacion-tecnicos/VisualizacionTecnicos';
 
 const GROUP_1_PAGES_CONFIG = [
   {
@@ -46,7 +47,7 @@ const GROUP_1_PAGES_CONFIG = [
     name: 'Datos de técnicos',
     href: '/informacion-tecnicos',
     icon: <PersonSearchIcon />,
-    page: <VisualizacionBusquedaTecnicos />, // tiene harcodeado el taller:   const taller = 'T002';
+    page: <VisualizacionTecnicos />,
     roles: [
       Roles.SUPERVISOR_TECNICO,
       Roles.IT],
