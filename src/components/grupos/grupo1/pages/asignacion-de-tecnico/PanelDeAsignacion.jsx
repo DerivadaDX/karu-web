@@ -1,21 +1,25 @@
+/* eslint-disable camelcase */
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
 /* eslint-disable consistent-return */
 /* eslint-disable react/prop-types */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
 import { DataGrid } from '@mui/x-data-grid';
 import { Button, Box } from '@mui/material';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import { ca } from 'date-fns/locale';
+import LinearProgress from '@mui/material/LinearProgress';
 import Popup from '../../components/common/DialogPopup';
 import Alerts from '../../components/common/Alerts';
 import LittleHeader from '../../components/common/LittleHeader';
 
 const AsignacionDeTecnicos = ({
   idTurnoPadre,
-  // open,
+  open,
   setOpen,
-  // actualizar,
+  actualizar,
   setActualizar,
   idTaller,
 }) => {
@@ -24,12 +28,19 @@ const AsignacionDeTecnicos = ({
   const [openPopupNoSeleccion, setOpenPopupNoSeleccion] = useState(false);
   const [openPopupSeleccion, setOpenPopupSeleccion] = useState(false);
 
+  // Se muestra popup cuando se esta asignando a un tecnico
+  const [cargando, setCargando] = useState(false);
+  const [openPopupCargando, setOpenPopupCargando] = useState(false);
+
+  const [openError, setOpenError] = useState(false);
+
   const [tecnicosData, setTecnicosData] = useState([]);
+  const [cargandoTecnicos, setCargandoTecnicos] = useState(false);
 
   // El técnico seleccionado de la lista de técnicos
   const [selectedItem, setSelectedItem] = useState(null);
 
-  const [turnoInfo, setTurnoInfo] = useState(null);
+  const [turnoInfo, setTurnoInfo] = useState(null); // null
 
   const [tecnicosDisponibles, setTecnicosDisponibles] = useState([]);
 
@@ -62,40 +73,37 @@ const AsignacionDeTecnicos = ({
       .catch((error) => console.error(error));
   }, [idTurnoPadre]);
 
-  const fetchTurnoData = async (idTurno) => {
-    const turnoEndPoint = `https://autotech2.onrender.com/turnos/turnos-detalle/${idTurno}/`;
-
-    try {
-      const response = await axios.get(turnoEndPoint);
-      return response.data;
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  useEffect(() => {
-    // Fetch turno data from API
-    fetchTurnoData(idTurnoPadre)
-      .then((data) => {
-        setTurnoInfo(data);
+  const getTurnoData = async () => {
+    const turnoEndPoint = `https://autotech2.onrender.com/turnos/turnos-detalle/${idTurnoPadre}/`;
+    axios.get(turnoEndPoint)
+      .then((response) => {
+        setTurnoInfo(response.data);
       })
-      .catch((error) => console.error(error));
-  }, [idTurnoPadre]);
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
-  const fetchTecnicosData = async () => {
+  useEffect(() => {
+    getTurnoData();
+  }, []);
+
+  const getTecnicosData = async () => {
+    const tecnicosEndPoint = `https://autotech2.onrender.com/tecnicos/listar/?branch=${idTaller}`;
     try {
-      const response = await axios.get(
-        `https://autotech2.onrender.com/tecnicos/listar/?branch=${idTaller}`,
-      );
+      setCargandoTecnicos(true);
+      const response = await axios.get(tecnicosEndPoint);
       return response.data;
     } catch (error) {
       console.error(error);
+    } finally {
+      setCargandoTecnicos(false);
     }
   };
 
   useEffect(() => {
-    // Fetch tecnicos data from API
-    fetchTecnicosData()
+    // get tecnicos data from API
+    getTecnicosData()
       .then((data) => {
         if (typeof data === 'object' && Array.isArray(data.tecnicos)) {
           const rows = data.tecnicos.map((tecnicosItem) => ({
@@ -128,15 +136,30 @@ const AsignacionDeTecnicos = ({
       const idTurno = idTurnoPadre;
       const urlAsignarTecnico = `https://autotech2.onrender.com/turnos/asignar-tecnico/${idTecnico}/${idTurno}/`;
 
+      setCargando(true);
+      setOpenPopupCargando(true);
       axios
         .post(urlAsignarTecnico)
         .then(() => {
-          console.log('Técnico asignado:', selectedItem.id);
           setOpenPopupSeleccion(true);
           setActualizar(true);
         })
         .catch((error) => {
-          setMsjError(error.response.data);
+          if (error.response && error.response.data) {
+            setOpenError(true);
+            setCargando(false);
+            setOpenPopupCargando(false);
+            setMsjError(error.response.data);
+          } else {
+            setOpenError(true);
+            setCargando(false);
+            setOpenPopupCargando(false);
+            setMsjError('Si el problema persiste, comuniquese con insomnia.front@gmail.com');
+          }
+        })
+        .finally(() => {
+          setCargando(false);
+          setOpenPopupCargando(false);
         });
     } else {
       setOpenPopupNoSeleccion(true);
@@ -160,35 +183,44 @@ const AsignacionDeTecnicos = ({
             field: 'papeles_en_regla',
             headerName: 'Papeles en regla',
             width: 160,
+            valueGetter: (params) => (params.value ? 'Sí' : 'No'),
           },
         ]}
-        pageSize={5}
         getRowId={(row) => row.id_turno}
+        components={{
+          Pagination: () => null,
+          Footer: () => null,
+        }}
       />
-      <br />
       <EnhancedTableToolbar titulo={<LittleHeader titulo="Técnicos" />} />
       <div style={{ height: 400, width: '100%' }}>
-        <DataGrid
-          rows={tecnicosData.filter((item) => tecnicosDisponibles.includes(item.id))}
-          columns={[
-            { field: 'id', headerName: 'ID', width: 170 },
-            { field: 'nombre', headerName: 'Nombre', width: 380 },
-            { field: 'dni', headerName: 'DNI', width: 230 },
-            { field: 'categoria', headerName: 'Categoría', width: 230 },
-            { field: 'taller', headerName: 'Taller', width: 130 },
-          ]}
-          disableMultipleSelection
-          checkboxSelection={false}
-          onRowClick={(rowData) => handleRowSelected(rowData)}
-          // Set the selected item ID as the selectionModel
-          selectionModel={selectedItem ? [selectedItem.id] : []}
-          pageSize={5}
-        />
+        <Box sx={{ position: 'relative' }}>
+          {cargandoTecnicos ? (
+            <LinearProgress />
+          ) : (
+            <DataGrid
+              rows={tecnicosData.filter((item) => tecnicosDisponibles.includes(item.id))}
+              columns={[
+                { field: 'id', headerName: 'ID', width: 170 },
+                { field: 'nombre', headerName: 'Nombre', width: 380 },
+                { field: 'dni', headerName: 'DNI', width: 230 },
+                { field: 'categoria', headerName: 'Categoría', width: 230 },
+                { field: 'taller', headerName: 'Taller', width: 130 },
+              ]}
+              disableMultipleSelection
+              checkboxSelection={false}
+              onRowClick={(rowData) => handleRowSelected(rowData)}
+              selectionModel={selectedItem ? [selectedItem.id] : []}
+              pageSize={5}
+            />
+          )}
+        </Box>
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           <Button
             variant="outlined"
             color="primary"
             sx={{ fontSize: '1em', marginTop: '10px', margin: '10px' }}
+            disabled={cargando}
             onClick={() => {
               asignarTecnico();
             }}
@@ -199,12 +231,30 @@ const AsignacionDeTecnicos = ({
             variant="outlined"
             color="error"
             sx={{ fontSize: '1em', margin: '10px' }}
+            disabled={cargando}
             onClick={() => setOpen(false)}
           >
-            Cancelar
+            Cerrar
           </Button>
         </Box>
-        {msjError && <Alerts alertType="error" description={msjError} title="No se puede asignar." />}
+
+        {cargando && (
+        <Popup
+          title={<LittleHeader titulo="Realizando asignación" />}
+          description="La asignación se encuentra en proceso y puede tomar un breve instante. Por favor, espere..."
+          openDialog={openPopupCargando}
+          setOpenDialog={setOpenPopupCargando}
+          disableBackdropClick
+        />
+        ) }
+
+        <Popup
+          title={<LittleHeader titulo="Ha ocurrido un inconveniente" />}
+          description={<Alerts alertType="error" description={msjError} title="No se puede asignar." />}
+          openDialog={openError}
+          setOpenDialog={setOpenError}
+        />
+
         <Popup
           title={<LittleHeader titulo="Error en Asignación" />}
           description="No ha seleccionado un técnico. Por favor, seleccione uno antes de terminar con el proceso."

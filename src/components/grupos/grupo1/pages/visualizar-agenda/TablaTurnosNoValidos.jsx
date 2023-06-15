@@ -133,7 +133,6 @@ const TablaTurnosNoValidos = (props) => {
         variant="contained"
         sx={{ fontSize: '0.7em', backgroundColor: 'rgba(51,51,51,0.75)' }}
         onClick={() => {
-          // console.log('Ver mas', row.original.id_turno);
           setRowDetalle(row.original);
           setVerMas(true);
         }}

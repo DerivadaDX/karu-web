@@ -1,6 +1,5 @@
 /*eslint-disable */
 import { Link } from 'react-router-dom';
-import FormInput from '../../components/FormInput';
 import { useContext, useState } from 'react';
 import { UserContext } from '../../context/UsersContext';
 import inputs from '../../dto/model-props';
@@ -26,11 +25,12 @@ const ModelForm = () => {
     engine: '',
     fuelType: '',
     basePrice: 0.0,
+    category: '',
   });
 
   const [errors, setErrors] = useState({});
 
-  const { saveVehicleModel, showSpansaveModelError, saveModelMessageError } =
+  const { saveVehicleModel, showSpansaveModelError, saveModelMessageError, setSpansaveModelError } =
     useContext(UserContext);
 
   const handleSubmit = async (e) => {
@@ -52,14 +52,21 @@ const ModelForm = () => {
       }));
     }
     setValues({ ...values, [e.target.name]: e.target.value });
+    setSpansaveModelError(false);
   };
 
-  const onChangeDropdown = (e, model) => {
-    setValues({ ...values, fuelType: model });
-    setSelectedModel(model);
+  const onChangeDropdown = (e) => {
+    setValues({ ...values, [e.target.name]: e.target.value });
+    if(e.target.name === "fuelType"){
+      setSelectedModel(e.target.value)
+    }else if(e.target.name === "category"){
+      setSelectedCategory(e.target.value)
+    }
+    setSpansaveModelError(false);
   };
-  
+
   const [selectedModel, setSelectedModel] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
 
   return (
     <Paper
@@ -91,12 +98,26 @@ const ModelForm = () => {
             <Select
             name='fuelType'
               value={selectedModel}
-              onChange={(e) => onChangeDropdown(e, e.target.value)}
+              onChange={(e) => onChangeDropdown(e)}
             >
               <MenuItem value='NAFTA'>NAFTA</MenuItem>
               <MenuItem value='DIESEL'>DIESEL</MenuItem>
               <MenuItem value='ELECTRICO'>ELECTRICO</MenuItem>
               <MenuItem value='HIBRIDO'>HIBRIDO</MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
+        <Box sx={{ minWidth: 120 }}>
+          <FormControl fullWidth>
+            <InputLabel>Seleccione una categoria</InputLabel>
+            <Select
+            name='category'
+              value={selectedCategory}
+              onChange={(e) => onChangeDropdown(e)}
+            >
+              <MenuItem value='BAJA'>BAJA</MenuItem>
+              <MenuItem value='MEDIA'>MEDIA</MenuItem>
+              <MenuItem value='ALTA'>ALTA</MenuItem>
             </Select>
           </FormControl>
         </Box>

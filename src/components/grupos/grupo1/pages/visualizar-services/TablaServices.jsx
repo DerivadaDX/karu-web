@@ -1,3 +1,5 @@
+/* eslint-disable max-len */
+/* eslint-disable camelcase */
 /* eslint-disable no-console */
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react/jsx-props-no-spreading */
@@ -12,6 +14,7 @@ import {
   Box, Button, FormControlLabel, Switch,
 } from '@mui/material';
 import MaterialReactTable from 'material-react-table';
+import { MRT_Localization_ES } from 'material-react-table/locales/es';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import Tooltip from '@mui/material/Tooltip';
 import Snackbar from '@mui/material/Snackbar';
@@ -303,6 +306,7 @@ const TablaServices = (props) => {
           },
           ],
         }}
+        localization={MRT_Localization_ES}
         renderRowActions={renderRowActions}
         renderEmptyRowsFallback={noData}
         defaultColumn={{ minSize: 10, maxSize: 100, size: 30 }}
@@ -385,6 +389,12 @@ const TablaServices = (props) => {
 )}
         openDialog={openAltaService}
         setOpenDialog={setOpenAltaService}
+        description={(
+          <p>
+            Al realizar el alta de un service tenga en cuenta que no se puede modificar posteriormente.
+            Por favor, seleccione las tareas del service de manera sensata.
+          </p>
+        )}
         disableBackdropClick
       >
         <AltaServiceForm

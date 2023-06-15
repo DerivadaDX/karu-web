@@ -31,7 +31,9 @@ const AltaServiceForm = (props) => {
   // Para validar el km
   const [isKmValido, setIsKmValido] = useState(true);
 
-  const msjServiceCreado = `Se ha creado un service de ${frecuenciaKm} kilómetros para ${marcaService} ${modeloService}.`;
+  const [costoBase, setCostoBase] = useState('');
+
+  const msjServiceCreado = `Se ha creado un service de ${frecuenciaKm} kilómetros para ${marcaService} ${modeloService}, con un costo base de $${costoBase}.`;
 
   // Para el manejo de errores de la API para crear el turno
   const [openError, setOpenError] = useState(false);
@@ -93,10 +95,25 @@ const AltaServiceForm = (props) => {
     }
   };
 
+  const guardarCostoBase = (e) => {
+    const val = e.target.value;
+
+    if (e.target.validity.valid) {
+      const pattern = /^(?=.*[1-9])\d*(?:\.\d+)?$/;
+      if (pattern.test(val)) {
+        const valor = parseFloat(val);
+        setCostoBase(valor);
+      }
+    } else if (val === '') {
+      setCostoBase(val);
+    }
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (
-      marcaService && modeloService && frecuenciaKm && isKmValido && selectedItems.length !== 0) {
+      marcaService && modeloService && frecuenciaKm && isKmValido
+      && selectedItems.length !== 0 && costoBase) {
       const idTareasEnString = JSON.stringify(selectedItems);
       await axios({
         method: 'post',
@@ -105,7 +122,7 @@ const AltaServiceForm = (props) => {
           marca: marcaService,
           modelo: modeloService,
           frecuencia_km: frecuenciaKm,
-          costo_base: 7000.0,
+          costo_base: costoBase,
           id_supervisor: idSupervisor,
           id_tasks: idTareasEnString,
         },
@@ -114,10 +131,18 @@ const AltaServiceForm = (props) => {
           setOpenPopupSeleccion(true);
         })
         .catch((error) => {
-          setOpenError(true);
-          setAlertError('error');
-          setAlertTitulo('Ha ocurrido un error');
-          setAlertMensaje(error.response.data.error);
+          if (error.response && error.response.data) {
+            const responseData = error.response.data.error;
+            setOpenError(true);
+            setAlertError('error');
+            setAlertTitulo('Ha ocurrido un problema');
+            setAlertMensaje(responseData);
+          } else {
+            setOpenError(true);
+            setAlertError('error');
+            setAlertTitulo('Ha ocurrido un error');
+            setAlertMensaje('Si el problema persiste, comuniquese con insomnia.front@gmail.com');
+          }
         });
     } else {
       setOpenPopupNoSeleccion(true);
@@ -171,20 +196,6 @@ const AltaServiceForm = (props) => {
       });
   }, []);
 
-  // const handleRowsSelected = (rowData) => {
-  //   if (Array.isArray(rowData)) {
-  //     setSelectedItems(rowData);
-  //   }
-  //   const selectedItemId = rowData.row.id;
-  //   setSelectedItems((prevSelectedItems) => {
-  //     if (prevSelectedItems.includes(selectedItemId)) {
-  //       // Item is already selected, remove it from the selectedItems array
-  //       return prevSelectedItems.filter((itemId) => itemId !== selectedItemId);
-  //     }
-  //     // Item is not selected, add it to the selectedItems array
-  //     return [...prevSelectedItems, selectedItemId];
-  //   });
-  // };
   const handleRowsSelected = (rowData) => {
     if (Array.isArray(rowData)) {
       // Multiple rows selected
@@ -258,9 +269,11 @@ const AltaServiceForm = (props) => {
               onChange={guardarModelo}
             />
             <Typography variant="p" sx={{ fontSize: 13 }} className="mb-3">
-              *El kilometraje debe ser múltiplo de 5000, por lo que automáticamente se redeondeará
-              al mútiplo de 5000 más proximo cualquier valor ingresado. Por ejemplo 1235 será tomado
-              como 5000, 5001 como 10000, 8750 como 10000, 13000 como 15000, etc.
+              *El kilometraje ingresado se redondeará automáticamente al múltiplo
+              de 5000 más cercano. Por ejemplo, si se ingresa 1235, se tomará
+              como 5000; si se ingresa 5001, se tomará como 10000; si se ingresa
+              8750, se tomará como 10000; si se ingresa 13000, se tomará como 15000,
+              y así sucesivamente.
             </Typography>
             <TextField
               margin="dense"
@@ -275,6 +288,25 @@ const AltaServiceForm = (props) => {
               pattern="[1-9][0-9]*"
               inputProps={{ maxLength: 6 }}
               onChange={guardarKilometraje}
+            />
+            <Typography variant="p" sx={{ fontSize: 13 }} className="mb-3">
+              *Para ingresar un número decimal, primero debe escribir todos los dígitos y por último
+              ubicar el punto . donde corresponda. Notar que el punto debe estar entre dos números y
+              que los dígitos a la derecha del punto han de tener al menos un dígito distinto de
+              cero.
+            </Typography>
+            <TextField
+              margin="dense"
+              color="secondary"
+              required
+              fullWidth
+              value={costoBase}
+              id="costo"
+              label="Costo Base"
+              name="costo"
+              type="float"
+              pattern="/^(?=.*[1-9])\d*(?:\.\d+)?$/"
+              onChange={guardarCostoBase}
             />
             {!isKmValido && <Alerts alertType="warning" description="Coberturas válidas: de 5000 a 200000 km." title="Kilometraje inválido" />}
           </Box>
@@ -311,7 +343,7 @@ const AltaServiceForm = (props) => {
         />
         <Popup
           title={<LittleHeader titulo="Error en la creación" />}
-          description="Verifique haber puesto marca y modelo y un kilometraje dentro de las coberturas válidas (que van desde 5000 a 200000). También asegúrese de elegir al menos un elemento de la checklist para crear el service."
+          description="Verifique haber puesto marca y modelo y un kilometraje dentro de las coberturas válidas (que van desde 5000 a 200000), además de un costo base. También asegúrese de elegir al menos un elemento de la checklist para crear el service."
           openDialog={openPopupNoSeleccion}
           setOpenDialog={setOpenPopupNoSeleccion}
           disableBackdropClick

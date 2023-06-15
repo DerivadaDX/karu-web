@@ -15,6 +15,8 @@ import {
   PostNewSellPrice,
   PostNewPriceByModel,
   PostNewPricesByInflation,
+  PostAnalyzeCredit,
+  GetScoring,
 } from '../api/API-methods';
 import Cookies from 'universal-cookie';
 import { useNavigate } from 'react-router-dom';
@@ -25,7 +27,9 @@ export const UserContextProvider = ({ children }) => {
   const cookie = new Cookies();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [userType, setUserType] = useState('')
+  const [userType, setUserType] = useState('');
+  const [userId, setUserId] = useState('');
+  const [userBranch, setUserBranch] = useState('');
   const [twoFactorCode, settwoFactorCode] = useState('');
   const [userValueError, setUserValueError] = useState('');
   const [paperWorkMessageError, setPaperWorkMessageError] = useState('');
@@ -38,10 +42,12 @@ export const UserContextProvider = ({ children }) => {
   const [tokenToChangePass, setTokenToChangePass] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [saveModelMessageError, setsaveModelMessageError] = useState('');
+  const [saveAnalyzeCreditMessageError, setSaveAnalyzeCreditMessageError] = useState('');
   const [updateSellPriceMessageError, setUpdateSellPriceMessageError] = useState('');
   const [updatePriceOfAModelMessageError, setUpdatePriceOfAModelMessageError] = useState('');
   const [updatePricesByInflationMessageError, setUpdatePricesByInflationMessageError] = useState('');
   const [updateUserMessageError, setupdateUserMessageError] = useState('');
+  const [updateUserPasswordMessageError, setUpdateUserPasswordMessageError] = useState('');
   const [changePasswordMessageError, setChangePasswordMessageError] =
     useState('');
   const navigate = useNavigate();
@@ -55,10 +61,13 @@ export const UserContextProvider = ({ children }) => {
   const [showSpanConfirmEmailError, setSpanConfirmEmailError] = useState(false);
   const [showSpanConfirmTokenError, setSpanConfirmTokenError] = useState(false);
   const [showSpansaveModelError, setSpansaveModelError] = useState(false);
+  const [showSpanAnalyzeCreditError, setSpanAnalyzeCreditError] = useState(false);
+  const [creditScore, setCreditScore] = useState(null);
   const [showSpanUpdateSellPriceError, setSpanUpdateSellPriceError] = useState(false);
   const [showSpanUpdatePriceOfAModelError, setSpanUpdatePriceOfAModelError] = useState(false);
   const [showSpanUpdatePricesByInflationError, setSpanUpdatePricesByInflationError] = useState(false);
   const [showSpanUpdateUserError, setSpanUpdateUserError] = useState(false);
+  const [showSpanUpdateUserPasswordError, setSpanUpdateUserPasswordError] = useState(false);
   const [showSpanLoginTokenError, setShowSpanLoginTokenError] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showSpanChangePasswordError, setShowSpanChangePasswordError] =
@@ -90,9 +99,11 @@ export const UserContextProvider = ({ children }) => {
 
   const authUser = async (user) => {
     const isValidLogin = await authLogin(user);
-    const {userFound, type} = isValidLogin
+    const {userFound, type, id, branch} = isValidLogin
     if (userFound) {
       setUserType(type)
+      setUserId(id)
+      setUserBranch(branch)
       return true;
     }
     setShowSpanPasswordOrUser(true);
@@ -140,9 +151,11 @@ export const UserContextProvider = ({ children }) => {
   const logOut = () => {
     setUsername('');
     setPassword('');
+    setUserType('')
     settwoFactorCode('');
     setIsAuthenticated(false);
     cookie.remove('user');
+    navigate('/');
   };
 
   async function saveUser(userData) {
@@ -177,7 +190,7 @@ export const UserContextProvider = ({ children }) => {
     const { value, registeredVehicleModel } = postUser;
     if (registeredVehicleModel) {
       window.alert('Modelo cargado');
-      navigate('/home');
+      navigate('/');
     } else {
       if (value) {
         setsaveModelMessageError(value);
@@ -187,7 +200,6 @@ export const UserContextProvider = ({ children }) => {
   }
 
   async function updateSellPrice(newPriceOfACar) {
-    console.log("LO QUE ENVIO AL BACK: ", newPriceOfACar)
     const postNewPrice = await PostNewSellPrice(newPriceOfACar);
     const { value, updatedSellPrice } = postNewPrice;
     if (updatedSellPrice) {
@@ -201,7 +213,6 @@ export const UserContextProvider = ({ children }) => {
   }
 
   async function updatePriceByModel(newPriceOfAModel) {
-    console.log("LO QUE ENVIO AL BACK: ", newPriceOfAModel)
     const postNewPriceOfAModel = await PostNewPriceByModel(newPriceOfAModel);
     const { value, updatedPriceOfAModel } = postNewPriceOfAModel;
     if (updatedPriceOfAModel) {
@@ -215,7 +226,6 @@ export const UserContextProvider = ({ children }) => {
   }
 
   async function updatePricesByInflation(newPriceByInflation) {
-    console.log("LO QUE ENVIO AL BACK: ", newPriceByInflation)
     const postNewPricesByInflation = await PostNewPricesByInflation(newPriceByInflation);
     const { value, updatedPricesByInflation } = postNewPricesByInflation;
     if (updatedPricesByInflation) {
@@ -238,7 +248,7 @@ export const UserContextProvider = ({ children }) => {
       if (value) {
         setupdateUserMessageError(value); //Cambiar logica
       }
-      setSpanUpdateUserError; //Cambiar logica
+      setSpanUpdateUserError(true); //Cambiar logica
     }
   }
 
@@ -247,12 +257,12 @@ export const UserContextProvider = ({ children }) => {
     const { value, updatedUser } = putPasswordUser;
     if (updatedUser) {
       window.alert('Password modificado!');
-      navigate('/home');
+      navigate('/');
     } else {
       if (value) {
-        console.log(value); //Cambiar logica
+        setUpdateUserPasswordMessageError(value); //Cambiar logica
       }
-      window.alert('Algo salio mal'); //Cambiar logica
+      setSpanUpdateUserPasswordError(true); //Cambiar logica
     }
   }
 
@@ -283,6 +293,23 @@ export const UserContextProvider = ({ children }) => {
     }
     return false;
   };
+
+  async function analyzeCredit(creditValues) {
+    const postAnalyzeCredit = await PostAnalyzeCredit(creditValues);
+    const { value, analyzeCredit } = postAnalyzeCredit;
+    if (analyzeCredit) {
+      const getScoring = await GetScoring(creditValues.document);
+      const { calculatedScoring, score } = getScoring;
+      if(calculatedScoring){
+        setCreditScore(score);
+      }
+    } else {
+      if (value) {
+        setSaveAnalyzeCreditMessageError(value);
+      }
+      setSpanAnalyzeCreditError(true); //TODO: RENOMBRAR
+    }
+  }
 
   const providerValue = {
     authUser,
@@ -330,15 +357,21 @@ export const UserContextProvider = ({ children }) => {
     setNewPasswordState,
     newPassword,
     changePassword,
+    analyzeCredit,
     saveConfirmEmailMessageError,
     showSpanConfirmEmailError,
     saveConfirmTokenMessageError,
     showSpanConfirmTokenError,
     saveModelMessageError,
+    saveAnalyzeCreditMessageError,
     updateSellPriceMessageError,
     updatePriceOfAModelMessageError,
     updatePricesByInflationMessageError,
     showSpansaveModelError,
+    showSpanAnalyzeCreditError,
+    setSpanAnalyzeCreditError,
+    creditScore,
+    setCreditScore,
     showSpanUpdateSellPriceError,
     showSpanUpdatePriceOfAModelError,
     showSpanUpdatePricesByInflationError,
@@ -352,6 +385,14 @@ export const UserContextProvider = ({ children }) => {
     setSpanUpdatePriceOfAModelError,
     setSpanUpdatePricesByInflationError,
     setSpanUpdateSellPriceError,
+    setIsAuthenticated,
+    userId,
+    userBranch,
+    setSpansaveModelError,
+    setSpanPaperWorkError,
+    setSpanUpdateUserPasswordError,
+    setSpanUpdateUserError,
+    setSpansaveVehicleError,
   };
   
   return (

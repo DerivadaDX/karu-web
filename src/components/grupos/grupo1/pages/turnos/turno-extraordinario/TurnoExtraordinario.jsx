@@ -42,6 +42,10 @@ const FormularioExtraordinario = (props) => {
   const [patenteReparacion, setPatente] = useState();
   const [fecha, setFecha] = useState();
   const [hora, setHora] = useState();
+
+  const [loading, setLoading] = useState(false);
+  const [openPopupCargando, setOpenPopupCargando] = useState(false);
+
   // Para los mensajes de confirmar o avisar que complete todos los campos
   const [openPopupNoSeleccion, setOpenPopupNoSeleccion] = useState(false);
   const [openPopupSeleccion, setOpenPopupSeleccion] = useState(false);
@@ -77,6 +81,8 @@ const FormularioExtraordinario = (props) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
+      setOpenPopupCargando(true);
+      setLoading(true);
       if (patenteReparacion && isValid && fecha && hora) {
         await axios({
           method: 'post',
@@ -93,17 +99,21 @@ const FormularioExtraordinario = (props) => {
         setOpenPopupNoSeleccion(true);
       }
     } catch (error) {
-      if (error.response.data.includes('la patente ingresada ya tiene un turno de ese tipo registrado en el sistema')) {
+      if (error.response && error.response.data) {
+        const responseData = error.response.data;
         setOpenError(true);
         setAlertError('error');
         setAlertTitulo('Ha ocurrido un problema');
-        setAlertMensaje('Ya existe un turno para esa patente y tipo de turno.');
+        setAlertMensaje(responseData);
       } else {
         setOpenError(true);
         setAlertError('error');
         setAlertTitulo('Ha ocurrido un error');
         setAlertMensaje(error.response.data);
       }
+    } finally {
+      setLoading(false);
+      setOpenPopupCargando(false);
     }
   };
 
@@ -145,15 +155,15 @@ const FormularioExtraordinario = (props) => {
             {/* eslint-disable-next-line max-len */}
             <Box sx={{ width: '90%' }}>
               {patenteReparacion
-              && (
-              <Disponibilidad
-                endPoint={endPointDisponibilidad}
-                setFecha={setFecha}
-                setHora={setHora}
-                msjError={setMsjError}
-                limite={limite}
-              />
-              )}
+                && (
+                  <Disponibilidad
+                    endPoint={endPointDisponibilidad}
+                    setFecha={setFecha}
+                    setHora={setHora}
+                    msjError={setMsjError}
+                    limite={limite}
+                  />
+                )}
             </Box>
             {msjError && <Alerts alertType="error" description={msjError} title="Surgió un error." />}
             <Box sx={{
@@ -165,6 +175,7 @@ const FormularioExtraordinario = (props) => {
                 variant="contained"
                 color="secondary"
                 size="medium"
+                disabled={loading}
               >
                 Crear Turno
               </Button>
@@ -181,6 +192,16 @@ const FormularioExtraordinario = (props) => {
               </Button>
             </Box>
           </Box>
+
+          {loading && (
+          <Popup
+            title={<LittleHeader titulo="Enviando datos" />}
+            description="Estamos procesando los datos para confirmar su turno. Por favor, espere un momento..."
+            openDialog={openPopupCargando}
+            setOpenDialog={setOpenPopupCargando}
+          />
+          )}
+
           <Popup
             title={<LittleHeader titulo="Error en datos requeridos." />}
             description="Por favor complete todos los campos y verifique que la patente sea correcta."
@@ -214,6 +235,7 @@ const FormularioExtraordinario = (props) => {
                 variant="outlined"
                 onClick={() => {
                   setOpenPopupSeleccion(false);
+                  setOpenAgregarTurno(false);
                   setActualizarTabla(true);
                 }}
               >

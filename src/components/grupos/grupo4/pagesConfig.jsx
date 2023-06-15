@@ -1,8 +1,15 @@
 /*eslint-disable */
 import React from 'react';
 import StoreIcon from '@mui/icons-material/Store';
+import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
+import CarCrashIcon from '@mui/icons-material/CarCrash';
+import LoginIcon from '@mui/icons-material/Login';
 import LoginForm from './pages/login/LoginForm';
 import RegisterForm from './pages/register/RegisterForm';
+import NoteAltIcon from '@mui/icons-material/NoteAlt';
+import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
+import PriceChangeIcon from '@mui/icons-material/PriceChange';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import Mfa from './pages/mfa/Mfa';
 import ModelForm from './pages/model/ModelForm';
 import PaperWork from './pages/PaperWork/PaperWork';
@@ -12,13 +19,17 @@ import ChangePassword from './pages/restorePassword/changePassword/ChangePasswor
 import UpdateProfile from './pages/update/UpdateProfile';
 import VehicleForm from './pages/vehicle/VehicleForm';
 import PriceUpdate from './pages/pricesUpdate/PriceUpdate';
+import Roles from '../../roles';
+import PriceHistory from './pages/priceHistory/PriceHistory';
+import CreditAnalysis from './pages/creditAnalysis/CreditAnalysis';
+import CreditScoreIcon from '@mui/icons-material/CreditScore';
 
 const GROUP_4_PAGES_CONFIG = [
   {
     id: 'g4-login',
     name: 'Login',
     href: '/login',
-    icon: <StoreIcon />,
+    icon: <LoginIcon />,
     page: <LoginForm />,
     soloUrl: true,
   },
@@ -26,8 +37,9 @@ const GROUP_4_PAGES_CONFIG = [
     id: 'g4-register',
     name: 'Registrarse',
     href: '/sign-up',
-    icon: <StoreIcon />,
+    icon: <AppRegistrationIcon />,
     page: <RegisterForm />,
+    roles: [Roles.ADMINISTRADOR,Roles.IT],
   },
   {
     id: 'g4-mfa',
@@ -41,15 +53,17 @@ const GROUP_4_PAGES_CONFIG = [
     id: 'g4-modelForm',
     name: 'Cargar Modelo',
     href: '/save-vehicle-model',
-    icon: <StoreIcon />,
+    icon: <CarCrashIcon />,
     page: <ModelForm />,
+    roles: [Roles.ADMINISTRADOR,Roles.IT],
   },
   {
     id: 'g4-paperWork',
     name: 'Cargar Documentación',
     href: '/paperWork',
-    icon: <StoreIcon />,
+    icon: <DriveFolderUploadIcon />,
     page: <PaperWork />,
+    roles: [Roles.ADMINISTRADOR,Roles.IT],
   },
   {
     id: 'g4-restorePassword',
@@ -79,22 +93,50 @@ const GROUP_4_PAGES_CONFIG = [
     id: 'g4-updateuser',
     name: 'Actualizar usuario',
     href: '/update-user',
-    icon: <StoreIcon />,
+    icon: <ManageAccountsIcon />,
     page: <UpdateProfile />,
+    roles: [
+      Roles.ADMINISTRADOR,
+      Roles.GERENTE_SUCURSAL,
+      Roles.GERENTE_GENERAL,
+      Roles.IT,
+      Roles.SUPERVISOR_TECNICO,
+      Roles.SUPERVISOR_VENTAS,
+      Roles.TECNICO,
+      Roles.VENDEDOR,
+    ],
   },
   {
     id: 'g4-vehicleForm',
     name: 'Cargar datos del Vehículo',
     href: '/save-vehicle',
-    icon: <StoreIcon />,
+    icon: <NoteAltIcon />,
     page: <VehicleForm />,
+    roles: [Roles.ADMINISTRADOR,Roles.IT],
   },
   {
     id: 'g4-priceUpdate',
     name: 'Cambiar precios de vehiculos',
     href: '/price-update',
-    icon: <StoreIcon />,
+    icon: <PriceChangeIcon />,
     page: <PriceUpdate />,
+    roles: [Roles.ADMINISTRADOR,Roles.IT],
+  },
+  {
+    id: 'g4-updateuser',
+    name: 'Historial de precios',
+    href: '/priceHistory',
+    icon: <ManageAccountsIcon />,
+    page: <PriceHistory />,
+    roles: [Roles.ADMINISTRADOR, Roles.IT],
+  },
+  {
+    id: 'g4-creditAnalysis',
+    name: 'Calcular scoring crediticio',
+    href: '/credit-analysis',
+    icon: <CreditScoreIcon />,
+    page: <CreditAnalysis />,
+    roles: [Roles.ADMINISTRADOR,Roles.IT],
   },
 ];
 

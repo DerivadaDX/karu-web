@@ -4,7 +4,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../../context/UsersContext';
 import { inputs } from '../../dto/vehicle-props';
 import { GetAllModels } from '../../api/API-methods';
-import FormInput from '../../components/FormInput';
 import '../../assets/css/formVehicle.css';
 import {
   Alert,
@@ -33,21 +32,21 @@ const VehicleForm = () => {
       year: '',
       basePrice: 0.0,
       engine: '',
-      fuelType:'',
+      fuelType: '',
+      category: '',
     },
   });
 
   const [models, setModels] = useState([
-    { brand: '', model: '', year: '', basePrice: 0.0, engine: '', fuelType:'' },
+    { brand: '', model: '', year: '', basePrice: 0.0, engine: '', fuelType: '', category: ''},
   ]);
 
   const [isDropdownInitialized, setIsDropdownInitialized] = useState(false);
   const [selectedModel, setSelectedModel] = useState('');
   const [selectedOrigin, setSelectedOrigin] = useState('');
   const [selectedGNC, setSelectedGNC] = useState('');
-  const [plate, setPlate] = useState('');
-  const [kilometers, setKilometers] = useState('');
-  const [dni, setDni] = useState('');
+  const [errors, setErrors] = useState({});
+
   useEffect(() => {
     const updateDropdown = async () => {
       const value = await GetAllModels();
@@ -57,7 +56,8 @@ const VehicleForm = () => {
         year: model.year,
         basePrice: model.basePrice,
         engine: model.engine,
-        fuelType: model.fuelType
+        fuelType: model.fuelType,
+        category: model.category
       }));
       setModels(modelos);
       setIsDropdownInitialized(true);
@@ -68,22 +68,33 @@ const VehicleForm = () => {
     }
   }, [isDropdownInitialized]);
 
-  const { saveVehicle, showSpansaveVehicleError, saveVehicleMessageError } =
+  const { saveVehicle, showSpansaveVehicleError, saveVehicleMessageError, setSpansaveVehicleError} =
     useContext(UserContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await saveVehicle({
-      ...values,
-      plate: plate,
-      kilometers: kilometers,
-      dni: dni,
-    });
+    await saveVehicle(values);
+  };
+
+  const onChange = (e) => {
+    const { name } = e.target;
+    const inputElement = e.target;
+    const isValid = inputElement.checkValidity();
+    const errorMessage = inputs.map((input) =>
+      input.name === name ? input.errorMessage : ""
+    )
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: isValid ? '' : errorMessage,
+    }));
+    setValues({ ...values, [e.target.name]: e.target.value });
+    setSpansaveVehicleError(false);
   };
 
   const onChangeDropdown = (e, model) => {
     setValues({ ...values, [e.target.name]: model });
     setSelectedModel(e.target.value);
+    setSpansaveVehicleError(false);
   };
 
   const handleOriginChange = (e) => {
@@ -101,33 +112,20 @@ const VehicleForm = () => {
     <Paper sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <Stack component="form" onSubmit={handleSubmit} sx={{ width: '70%', display: 'flex', textAlign: 'center' }}>
         <Typography variant="h2">Cargar datos del auto</Typography>
-        <TextField
-          variant="filled"
-          label="Patente"
-          defaultValue={''}
-          onChange={(e) => setPlate(e.target.value)}
-        />
-        <TextField
-          variant="filled"
-          label="Kilometros"
-          defaultValue={''}
-          onChange={(e) => setKilometers(e.target.value)}
-        />
-        <TextField
-          variant="filled"
-          label="Dni titular"
-          defaultValue={''}
-          onChange={(e) => setDni(e.target.value)}
-        />
-        {/* {inputs.map((input) => (
+        {inputs.map((input) => (
           <TextField
             key={input.id}
+            name={input.name}
             variant="filled"
             label={input.label}
-            value={values[input.name]}
             onChange={onChange}
+            defaultValue={''}
+            inputProps={{ pattern: input.pattern }}
+            error={Boolean(errors[input.name])} // Show error message if exists
+            helperText={errors[input.name]} // Show error message
+            required
           ></TextField>
-        ))} */}
+        ))}
         <Box sx={{ minWidth: 120 }}>
           <FormControl fullWidth>
             <InputLabel>Seleccione un modelo de auto</InputLabel>

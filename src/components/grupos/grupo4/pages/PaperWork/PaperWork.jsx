@@ -29,7 +29,7 @@ const defaultState = {
 
 const PaperWork = () => {
   const [state, setState] = useState(defaultState);
-  const { sendPaperWorkData, showSpanPaperWorkError, paperWorkMessageError } =
+  const { sendPaperWorkData, showSpanPaperWorkError, paperWorkMessageError, setSpanPaperWorkError } =
     useContext(UserContext);
 
   const [errors, setErrors] = useState({});
@@ -54,6 +54,7 @@ const PaperWork = () => {
       ...prevState,
       [name]: inputValue,
     }));
+    setSpanPaperWorkError(false);
   };
 
   const handleSubmit = async (e) => {

@@ -1,112 +1,94 @@
+/* eslint-disable no-template-curly-in-string */
+/* eslint-disable react/jsx-no-undef */
+/* eslint-disable no-console */
+/* eslint-disable no-unused-vars */
+/* eslint-disable jsx-a11y/iframe-has-title */
 import * as React from 'react';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
-import ArticleIcon from '@mui/icons-material/Article';
-import { Box, CardContent } from '@mui/material';
+import {
+  Box, Divider, Grid,
+} from '@mui/material';
 import Header from '../../components/common/Header';
-import TablaTurnosEnProgreso from '../visualizar-agenda/TablaTurnosEnProgreso';
-import LittleTitle from '../../components/common/LittleTitle';
 
-const idTaller = 'T002';
+const idTecnico = '46';
+const fecha = new Date();
 
-const Home = () => (
-  <>
-    <Box m="5px">
-      <Box display="flex">
-        <Header titulo="Dashboard" subtitulo="Inicio" />
+const anio = fecha.getFullYear();
+let mes = fecha.getMonth() + 1;
+let dia = fecha.getDate() + 1;
+
+if (mes < 10) {
+  mes = `0${mes}`;
+}
+
+if (dia < 10) {
+  dia = `0${dia}`;
+}
+
+const fechaHasta = `${anio}-${mes}-${dia}`;
+const fechaDesde = `${anio}-01-01`;
+
+// ${idTecnico}#hide_parameters=id_tecnico
+// ${fechaDesde}&Hasta=${fechaHasta}&id_tecnico=${idTecnico}#hide_parameters=id_tecnico
+// Comentario con cambio
+const Dashboard = () => {
+  const turnosAsignados = `https://metabase-insomnia.mooo.com/public/question/cb7533c9-efc9-4807-af84-a38dae3ebe21?id_tecnico=${idTecnico}&Desde=${fechaDesde}&Hasta=${fechaHasta}#hide_parameters=id_tecnico`;
+
+  const turnosTrabajadosPorTipo = `https://metabase-insomnia.mooo.com/public/question/5c81a413-50c0-43a8-bdd6-0aba474be8b4?id_tecnico=${idTecnico}#hide_parameters=id_tecnico`;
+
+  const turnosParaHoy = `https://metabase-insomnia.mooo.com/public/question/04d1aade-79ef-4734-92bf-2e980c296643?id_tecnico=${idTecnico}#hide_parameters=id_tecnico`;
+
+  const urlTurnosPorFecha = `https://metabase-insomnia.mooo.com/public/question/115afae9-86db-49eb-8a92-3466f689a7a0?id_tecnico=${idTecnico}&Desde=${fechaDesde}&Hasta=${fechaHasta}#hide_parameters=id_tecnico`;
+
+  const iframeStyles = {
+    border: '1px solid #acacac',
+    borderRadius: '10px',
+    boxShadow: '0 5px 10px rgba(51, 51, 51, 0.6)',
+  };
+
+  return (
+    <>
+      <Box m="2px">
+        <Box display="flex">
+          <Header titulo="Dashboard" subtitulo="Visualización de la cantidad de trabajos realizados y turnos asignados." />
+        </Box>
+        <Divider sx={{ bgcolor: 'rgba(0, 0, 0, 0.7)' }} />
       </Box>
-    </Box>
-    <Container maxWidth="xl" sx={{ mb: 2 }}>
-      <Grid container spacing={2}>
-        <Grid item xs={6} sm={3} md={3} lg={3}>
-          <Paper
-            className="mb-2"
-            sx={{
-              p: 2,
-              display: 'flex',
-              flexDirection: 'column',
-              height: 200,
-              borderRadius: '15px',
-              borderBottom: '4px solid',
-              borderBottomColor: 'secondary.main',
-            }}
-            elevation={5}
-          >
-            <LittleTitle title="Clientes Atendidos" />
-            <CardContent />
-          </Paper>
+      <Grid container spacing={2} sx={{ padding: 2 }}>
+        <Grid item xs={12} sm={12} md={6}>
+          <iframe
+            src={turnosParaHoy}
+            width="100%"
+            height="450rem"
+            style={iframeStyles}
+          />
         </Grid>
-        <Grid item xs={6} sm={3} md={3} lg={3}>
-          <Paper
-            sx={{
-              p: 2,
-              display: 'flex',
-              flexDirection: 'column',
-              height: 200,
-              borderBottom: '4px solid',
-              borderBottomColor: 'secondary.main',
-            }}
-            elevation={5}
-            style={{ borderRadius: 15 }}
-          >
-            <LittleTitle title="Turnos Pendientes" />
-            <CardContent />
-          </Paper>
-        </Grid>
-        <Grid item xs={6} sm={3} md={3} lg={3}>
-          <Paper
-            sx={{
-              p: 2,
-              display: 'flex',
-              flexDirection: 'column',
-              height: 200,
-              borderBottom: '4px solid',
-              borderBottomColor: 'secondary.main',
-            }}
-            elevation={5}
-            style={{ borderRadius: 15 }}
-          >
-            <LittleTitle title="Evaluaciones Hechas" />
-            <CardContent />
-          </Paper>
-        </Grid>
-        <Grid item xs={6} sm={3} md={3} lg={3}>
-          <Paper
-            sx={{
-              p: 2,
-              display: 'flex',
-              flexDirection: 'column',
-              height: 200,
-              borderBottom: '4px solid',
-              borderBottomColor: 'secondary.main',
-            }}
-            elevation={5}
-            style={{ borderRadius: 15 }}
-          >
-            <LittleTitle title="Tecnicos " />
-            <CardContent />
-          </Paper>
+        <Grid item xs={12} sm={12} md={6}>
+          <iframe
+            src={turnosTrabajadosPorTipo}
+            width="100%"
+            height="450rem"
+            style={iframeStyles}
+          />
         </Grid>
         <Grid item xs={12}>
-          <Paper
-            sx={{
-              p: 2,
-              display: 'flex',
-              flexDirection: 'column',
-              borderBottom: '4px solid',
-              borderBottomColor: 'secondary.main',
-            }}
-            elevation={5}
-            style={{ borderRadius: 15 }}
-          >
-            <LittleTitle title="Turnos en progreso" icon={<ArticleIcon sx={{ marginRight: '10px', color: 'darkgray' }} />} />
-            <TablaTurnosEnProgreso idTaller={idTaller} />
-          </Paper>
+          <iframe
+            src={turnosAsignados}
+            width="100%"
+            height="400rem"
+            style={iframeStyles}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <iframe
+            src={urlTurnosPorFecha}
+            width="100%"
+            height="400rem"
+            style={iframeStyles}
+          />
         </Grid>
       </Grid>
-    </Container>
-  </>
-);
+    </>
+  );
+};
 
-export default Home;
+export default Dashboard;

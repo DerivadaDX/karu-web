@@ -50,6 +50,28 @@ const ChecklistReparacion = (props) => {
   const [alertMensaje, setAlertMensaje] = useState('');
   const [alertTitulo, setAlertTitulo] = useState('');
 
+  const columnas = useMemo(
+    () => [
+      {
+        accessorKey: 'elemento',
+        header: 'Partes del auto',
+      },
+      {
+        accessorKey: 'tarea',
+        header: 'Tarea',
+      },
+      {
+        accessorKey: 'costo_reemplazo',
+        header: 'Costo de reemplazo (ARS$)',
+      },
+      {
+        accessorKey: 'duracion_reemplazo',
+        header: 'Duración en minutos',
+      },
+    ],
+    [],
+  );
+
   const getChecklist = () => {
     getChecklistReparacion(idTurnoPadre)
       .then((response) => {
@@ -79,28 +101,6 @@ const ChecklistReparacion = (props) => {
         setAlertTitle('Ha ocurrido un problema');
       });
   };
-
-  const columnas = useMemo(
-    () => [
-      {
-        accessorKey: 'elemento',
-        header: 'Partes del auto',
-      },
-      {
-        accessorKey: 'tarea',
-        header: 'Tarea',
-      },
-      {
-        accessorKey: 'costo_reemplazo',
-        header: 'Costo de reemplazo (ARS$)',
-      },
-      {
-        accessorKey: 'duracion_reemplazo',
-        header: 'Duración en minutos',
-      },
-    ],
-    [],
-  );
 
   const urlTareaHecha = 'https://autotech2.onrender.com/reparaciones/modificar-tareas-hechas/';
   const patchTareaHecha = (idTask) => {

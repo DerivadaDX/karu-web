@@ -18,6 +18,8 @@ const ValidarKm = {
         return 25000;
       case km <= 30000:
         return 30000;
+      case km <= 35000:
+        return 35000;
       case km <= 40000:
         return 40000;
       case km <= 45000:
@@ -46,6 +48,10 @@ const ValidarKm = {
         return 100000;
       case km <= 105000:
         return 105000;
+      case km <= 110000:
+        return 110000;
+      case km <= 115000:
+        return 115000;
       case km <= 120000:
         return 120000;
       case km <= 125000:

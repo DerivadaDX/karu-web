@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import {
@@ -43,26 +44,16 @@ const ReprogramacionTurno = (props) => {
       fecha_inicio: fecha,
       hora_inicio: hora,
     })
-      .then(() => {
+      .then((response) => {
         setOpenTurnoCreado(true);
-        setActualizar(true);
       })
       .catch((error) => {
-        if (error.response.data.includes('la patente ingresada ya tiene un turno')) {
-          setOpenConfirmarTurno(false);
-          setOpenError(true);
-          setAlertError('error');
-          setAlertTitulo('Ha ocurrido un problema');
-          setAlertMensaje('Ya existe un turno para esa patente y tipo de turno.');
-          setLoadingButton(false);
-        } else {
-          setOpenConfirmarTurno(false);
-          setOpenError(true);
-          setAlertError('error');
-          setAlertTitulo('Ha ocurrido un error');
-          setAlertMensaje(error.response.data);
-          setLoadingButton(false);
-        }
+        setOpenConfirmarTurno(false);
+        setOpenError(true);
+        setAlertError('error');
+        setAlertTitulo('Ha ocurrido un problema');
+        setAlertMensaje(error.response.data);
+        setLoadingButton(false);
       });
   };
 

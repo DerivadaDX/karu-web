@@ -15,39 +15,67 @@ import GROUP_4_PAGES_CONFIG from '../../../grupos/grupo4/pagesConfig';
 import Roles from '../../../roles';
 import MenuDesplegable from './MenuDesplegable';
 
-const filtrarElementosSoloUrl = (configuracionElemento) => {
-  const esSoloUrl = configuracionElemento.soloUrl === true;
+const MenuUsuarios = ({ rolDeUsuario }) => {
+  const filtrarElementosSoloUrl = (configuracionElemento) => {
+    const esSoloUrl = configuracionElemento.soloUrl === true;
 
-  return !esSoloUrl;
+    return !esSoloUrl;
+  };
+
+  const filtrarElementosPorRolDeUsuario = (elemento) => {
+    if (elemento.roles === undefined) return false;
+
+    const usuarioPuedeAcceder = elemento.roles.includes(rolDeUsuario);
+
+    return usuarioPuedeAcceder;
+  };
+
+  const elementosGrupo1 = GROUP_1_PAGES_CONFIG
+    .filter(filtrarElementosSoloUrl)
+    .filter(filtrarElementosPorRolDeUsuario);
+
+  const elementosGrupo2 = GROUP_2_PAGES_CONFIG
+    .filter(filtrarElementosSoloUrl)
+    .filter(filtrarElementosPorRolDeUsuario);
+
+  const elementosGrupo3 = GROUP_3_PAGES_CONFIG
+    .filter(filtrarElementosSoloUrl)
+    .filter(filtrarElementosPorRolDeUsuario);
+
+  const elementosGrupo4 = GROUP_4_PAGES_CONFIG
+    .filter(filtrarElementosSoloUrl)
+    .filter(filtrarElementosPorRolDeUsuario);
+
+  const mostrarMenuAdministracion = elementosGrupo2.length > 0 || elementosGrupo4.length > 0;
+  const mostrarMenuAreaTecnica = elementosGrupo1.length > 0;
+  const mostrarMenuAreaComercial = elementosGrupo3.length > 0;
+
+  return (
+    <List component="nav">
+      {mostrarMenuAdministracion && (
+        <MenuDesplegable
+          nombre="Administración"
+          icono={<AdminPanelSettings />}
+          elementosSubmenu={elementosGrupo2.concat(elementosGrupo4)}
+        />
+      )}
+      {mostrarMenuAreaTecnica && (
+        <MenuDesplegable
+          nombre="Área técnica"
+          icono={<Engineering />}
+          elementosSubmenu={elementosGrupo1}
+        />
+      )}
+      {mostrarMenuAreaComercial && (
+        <MenuDesplegable
+          nombre="Área comercial"
+          icono={<LocalAtm />}
+          elementosSubmenu={elementosGrupo3}
+        />
+      )}
+    </List>
+  );
 };
-
-const elementosGrupo1 = GROUP_1_PAGES_CONFIG.filter(filtrarElementosSoloUrl);
-const elementosGrupo2 = GROUP_2_PAGES_CONFIG.filter(filtrarElementosSoloUrl);
-const elementosGrupo3 = GROUP_3_PAGES_CONFIG.filter(filtrarElementosSoloUrl);
-const elementosGrupo4 = GROUP_4_PAGES_CONFIG.filter(filtrarElementosSoloUrl);
-
-const MenuUsuarios = ({ rolDeUsuario }) => (
-  <List component="nav">
-    <MenuDesplegable
-      nombre="Administración"
-      icono={<AdminPanelSettings />}
-      elementosSubmenu={elementosGrupo2.concat(elementosGrupo4)}
-      rolDeUsuario={rolDeUsuario}
-    />
-    <MenuDesplegable
-      nombre="Área técnica"
-      icono={<Engineering />}
-      elementosSubmenu={elementosGrupo1}
-      rolDeUsuario={rolDeUsuario}
-    />
-    <MenuDesplegable
-      nombre="Área comercial"
-      icono={<LocalAtm />}
-      elementosSubmenu={elementosGrupo3}
-      rolDeUsuario={rolDeUsuario}
-    />
-  </List>
-);
 
 MenuUsuarios.propTypes = {
   rolDeUsuario: PropTypes.oneOf(Object.values(Roles)).isRequired,
