@@ -85,11 +85,8 @@ const ListadoCotizaciones = () => {
     const { factura } = row.original;
     return (
       <Link to={`/facturar/${row.original.id}`}>
-        <IconButton disabled={!factura}>
+        <IconButton disabled={factura}>
           <ReceiptOutlinedIcon />
-          { /* <Button disabled={!factura} variant="contained" color="primary">
-        Facturar
-      </Button> */}
         </IconButton>
       </Link>
     );
