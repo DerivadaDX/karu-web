@@ -25,7 +25,9 @@ export const UserContextProvider = ({ children }) => {
   const cookie = new Cookies();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [userType, setUserType] = useState('')
+  const [userType, setUserType] = useState('');
+  const [userId, setUserId] = useState('');
+  const [userBranch, setUserBranch] = useState('');
   const [twoFactorCode, settwoFactorCode] = useState('');
   const [userValueError, setUserValueError] = useState('');
   const [paperWorkMessageError, setPaperWorkMessageError] = useState('');
@@ -90,9 +92,11 @@ export const UserContextProvider = ({ children }) => {
 
   const authUser = async (user) => {
     const isValidLogin = await authLogin(user);
-    const {userFound, type} = isValidLogin
+    const {userFound, type, id, branch} = isValidLogin
     if (userFound) {
       setUserType(type)
+      setUserId(id)
+      setUserBranch(branch)
       return true;
     }
     setShowSpanPasswordOrUser(true);
@@ -140,6 +144,7 @@ export const UserContextProvider = ({ children }) => {
   const logOut = () => {
     setUsername('');
     setPassword('');
+    setUserType('')
     settwoFactorCode('');
     setIsAuthenticated(false);
     cookie.remove('user');
@@ -188,7 +193,6 @@ export const UserContextProvider = ({ children }) => {
   }
 
   async function updateSellPrice(newPriceOfACar) {
-    console.log("LO QUE ENVIO AL BACK: ", newPriceOfACar)
     const postNewPrice = await PostNewSellPrice(newPriceOfACar);
     const { value, updatedSellPrice } = postNewPrice;
     if (updatedSellPrice) {
@@ -202,7 +206,6 @@ export const UserContextProvider = ({ children }) => {
   }
 
   async function updatePriceByModel(newPriceOfAModel) {
-    console.log("LO QUE ENVIO AL BACK: ", newPriceOfAModel)
     const postNewPriceOfAModel = await PostNewPriceByModel(newPriceOfAModel);
     const { value, updatedPriceOfAModel } = postNewPriceOfAModel;
     if (updatedPriceOfAModel) {
@@ -216,7 +219,6 @@ export const UserContextProvider = ({ children }) => {
   }
 
   async function updatePricesByInflation(newPriceByInflation) {
-    console.log("LO QUE ENVIO AL BACK: ", newPriceByInflation)
     const postNewPricesByInflation = await PostNewPricesByInflation(newPriceByInflation);
     const { value, updatedPricesByInflation } = postNewPricesByInflation;
     if (updatedPricesByInflation) {
@@ -353,6 +355,10 @@ export const UserContextProvider = ({ children }) => {
     setSpanUpdatePriceOfAModelError,
     setSpanUpdatePricesByInflationError,
     setSpanUpdateSellPriceError,
+    setIsAuthenticated,
+    userId,
+    userBranch,
+
   };
   
   return (

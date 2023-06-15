@@ -9,7 +9,8 @@ export const authLogin = async (user) => {
   try {
     const response = await client.post('/login/startLogin', user);
     if (response.data?.result.sessionStatus === 'USUARIO_ENCONTRADO') {
-      return {userFound: true, type: response.data.result.type};
+      const result = response.data.result
+      return {userFound: true, type: result.type, id: result.id, branch: result.branch };
     }
     return {userFound: false};
   } catch (error) {
@@ -239,3 +240,13 @@ export const PostNewPricesByInflation = async (inflation) => {
   }
 };
 
+export const getAllPriceHistory = async () => {
+  try {
+    const response = await client.get('/price/getAll');
+    if (response) {
+      return response;
+    }
+  } catch (error) {
+    console.log("Error al obtener el historial de precios:", error);  
+  }
+}

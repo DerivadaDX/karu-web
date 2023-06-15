@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable camelcase */
 /* eslint-disable no-console */
 /* eslint-disable react/no-unstable-nested-components */
@@ -388,6 +389,12 @@ const TablaServices = (props) => {
 )}
         openDialog={openAltaService}
         setOpenDialog={setOpenAltaService}
+        description={(
+          <p>
+            Al realizar el alta de un service tenga en cuenta que no se puede modificar posteriormente.
+            Por favor, seleccione las tareas del service de manera sensata.
+          </p>
+        )}
         disableBackdropClick
       >
         <AltaServiceForm

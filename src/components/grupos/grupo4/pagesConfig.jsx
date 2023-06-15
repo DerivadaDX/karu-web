@@ -19,6 +19,8 @@ import ChangePassword from './pages/restorePassword/changePassword/ChangePasswor
 import UpdateProfile from './pages/update/UpdateProfile';
 import VehicleForm from './pages/vehicle/VehicleForm';
 import PriceUpdate from './pages/pricesUpdate/PriceUpdate';
+import Roles from '../../roles';
+import PriceHistory from './pages/priceHistory/PriceHistory';
 
 const GROUP_4_PAGES_CONFIG = [
   {
@@ -35,6 +37,7 @@ const GROUP_4_PAGES_CONFIG = [
     href: '/sign-up',
     icon: <AppRegistrationIcon />,
     page: <RegisterForm />,
+    roles: [Roles.ADMINISTRADOR,Roles.IT],
   },
   {
     id: 'g4-mfa',
@@ -50,6 +53,7 @@ const GROUP_4_PAGES_CONFIG = [
     href: '/save-vehicle-model',
     icon: <CarCrashIcon />,
     page: <ModelForm />,
+    roles: [Roles.ADMINISTRADOR,Roles.IT],
   },
   {
     id: 'g4-paperWork',
@@ -57,6 +61,7 @@ const GROUP_4_PAGES_CONFIG = [
     href: '/paperWork',
     icon: <DriveFolderUploadIcon />,
     page: <PaperWork />,
+    roles: [Roles.ADMINISTRADOR,Roles.IT],
   },
   {
     id: 'g4-restorePassword',
@@ -88,6 +93,16 @@ const GROUP_4_PAGES_CONFIG = [
     href: '/update-user',
     icon: <ManageAccountsIcon />,
     page: <UpdateProfile />,
+    roles: [
+      Roles.ADMINISTRADOR,
+      Roles.GERENTE_SUCURSAL,
+      Roles.GERENTE_GENERAL,
+      Roles.IT,
+      Roles.SUPERVISOR_TECNICO,
+      Roles.SUPERVISOR_VENTAS,
+      Roles.TECNICO,
+      Roles.VENDEDOR,
+    ],
   },
   {
     id: 'g4-vehicleForm',
@@ -95,6 +110,7 @@ const GROUP_4_PAGES_CONFIG = [
     href: '/save-vehicle',
     icon: <NoteAltIcon />,
     page: <VehicleForm />,
+    roles: [Roles.ADMINISTRADOR,Roles.IT],
   },
   {
     id: 'g4-priceUpdate',
@@ -102,6 +118,15 @@ const GROUP_4_PAGES_CONFIG = [
     href: '/price-update',
     icon: <PriceChangeIcon />,
     page: <PriceUpdate />,
+    roles: [Roles.ADMINISTRADOR,Roles.IT],
+  },
+  {
+    id: 'g4-updateuser',
+    name: 'Historial de precios',
+    href: '/priceHistory',
+    icon: <ManageAccountsIcon />,
+    page: <PriceHistory />,
+    roles: [Roles.ADMINISTRADOR, Roles.IT],
   },
 ];
 

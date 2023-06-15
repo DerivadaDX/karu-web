@@ -41,7 +41,7 @@ const ChecklistEvaluacion = (props) => {
 
   // Para que se mantengan seteados los valores de los sliders al cambiar de página
   const [valoresSlider, setValoresSlider] = useState({});
-  evaluacion.id_turno = 1;
+  evaluacion.id_turno = idTurnoPadre;
 
   const tableInstanceRef = useRef(null);
 
