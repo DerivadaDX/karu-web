@@ -22,7 +22,7 @@ const AcordeonObservaciones = () => (
       </AccordionSummary>
       <AccordionDetails>
         <Typography>
-          null
+          Este vehiculo no posee detalles reelevantes.
         </Typography>
       </AccordionDetails>
     </Accordion>

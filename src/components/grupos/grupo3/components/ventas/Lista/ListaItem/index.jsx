@@ -58,6 +58,7 @@ const ListItem = ({
           <span>⛽ {fuelType}</span>
           <span>🚍{kilometers}Km</span>
           <span>📆 {year}</span>
+          {origin === 'NACIONAL' ? <span>🇦🇷</span> : <span>🌍</span>}
         </p>
       </footer>
     </div>

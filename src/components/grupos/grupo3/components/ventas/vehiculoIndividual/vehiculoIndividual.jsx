@@ -15,6 +15,7 @@ import ConsultaDialog from '../../common/consultaDialog';
 import autosEnVenta from '../../../constants/autosEnVenta';
 import AcordeonObservaciones from '../../common/acordeonObservaciones';
 import VehiculoService from '../../../services/VehiculoService';
+import ImageSlider from '../../common/carrusel';
 
 const VehiculoIndividual = () => {
   const Img = styled('img')({
@@ -36,6 +37,18 @@ const VehiculoIndividual = () => {
   useEffect(obtenerVehiculo, []);
   // const vehicleSelected = vehiculoData.find((product) => vehiculoData.plate === productId);
   const espacio = '  ';
+  const slides = [
+    { url: vehiculoData.picture1, title: 'Imagen 1' },
+    { url: vehiculoData.picture2, title: 'Imagen 2' },
+    { url: vehiculoData.picture3, title: 'Imagen 3' },
+  ];
+
+  const containerStyles = {
+    width: '1000px',
+    height: '450px',
+    margin: '0 auto',
+    backgroundSize: 'contain',
+  };
 
   return (
     <Paper
@@ -47,7 +60,10 @@ const VehiculoIndividual = () => {
         mt: 5,
       }}
     >
-      <Img src={vehiculoData.picture1} alt="autousado" />
+      {/* <Img src={vehiculoData.picture1} alt="autousado" /> */}
+      <div style={containerStyles}>
+        <ImageSlider slides={slides} />
+      </div>
       <Box sx={{ flexgrow: 1, display: 'grid', gap: 4 }}>
         <Typography variant="h4">
           {vehiculoData.brand}
@@ -59,12 +75,20 @@ const VehiculoIndividual = () => {
           {vehiculoData.fuelType}
         </Typography>
         <Typography variant="body1">
-          Kilometraje:
-          {vehiculoData.kilometers}
+          Origen:
+          {vehiculoData.origin}
         </Typography>
         <Typography variant="body1">
           Año:
           {vehiculoData.year}
+        </Typography>
+        <Typography variant="body1">
+          Kilometraje:
+          {vehiculoData.kilometers}
+        </Typography>
+        <Typography variant="body1">
+          Patente:
+          {vehiculoData.plate}
         </Typography>
         <Typography variant="body1"> </Typography>
       </Box>
