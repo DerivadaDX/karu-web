@@ -1,5 +1,8 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useMemo, useState } from 'react';
+import ReceiptOutlinedIcon from '@mui/icons-material/ReceiptOutlined';
+import { IconButton } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 import {
   Box,
@@ -77,6 +80,20 @@ const ListadoCotizaciones = () => {
     }
     return ' ';
   };
+
+  const renderAccionesFilaFactura = ({ row }) => {
+    const { factura } = row.original;
+    return (
+      <Link to={`/facturar/${row.original.id}`}>
+        <IconButton disabled={!factura}>
+          <ReceiptOutlinedIcon />
+          { /* <Button disabled={!factura} variant="contained" color="primary">
+        Facturar
+      </Button> */}
+        </IconButton>
+      </Link>
+    );
+  };
   const columnas = useMemo(
     () => [
       {
@@ -104,11 +121,11 @@ const ListadoCotizaciones = () => {
         header: 'Fecha',
       },
       {
-        accessorKey: 'nombreCliente',
+        accessorKey: 'cliente.nombre',
         header: 'Nombre del Cliente',
       },
       {
-        accessorKey: 'email',
+        accessorKey: 'cliente.email',
         header: 'Email',
       },
       {
@@ -121,7 +138,7 @@ const ListadoCotizaciones = () => {
         Cell: renderGarantiaExtendida,
       },
       {
-        accessorKey: 'precioBase',
+        accessorKey: 'precioVenta',
         header: 'Precio Base',
       },
       {
@@ -138,8 +155,13 @@ const ListadoCotizaciones = () => {
       },
       {
         accessorKey: 'estadoCotizacion',
-        header: 'Estado',
+        header: 'Mod. Estado',
         Cell: renderAccionesFila,
+      },
+      {
+        accessorKey: 'factura',
+        header: 'Factura',
+        Cell: renderAccionesFilaFactura,
       },
     ],
     [],
