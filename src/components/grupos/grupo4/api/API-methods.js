@@ -1,20 +1,25 @@
 /*eslint-disable */
 import axios from 'axios';
 const client = axios.create({
-  // baseURL: 'http://localhost:8080/api/v1/',
-  baseURL: 'https://gadmin-backend-production.up.railway.app/api/v1',
+  baseURL: 'http://localhost:8080/api/v1/',
+  // baseURL: 'https://gadmin-backend-production2.up.railway.app/api/v1',
 });
 
 export const authLogin = async (user) => {
   try {
     const response = await client.post('/login/startLogin', user);
     if (response.data?.result.sessionStatus === 'USUARIO_ENCONTRADO') {
-      const result = response.data.result
-      return {userFound: true, type: result.type, id: result.id, branch: result.branch };
+      const result = response.data.result;
+      return {
+        userFound: true,
+        type: result.type,
+        id: result.id,
+        branch: result.branch,
+      };
     }
-    return {userFound: false};
+    return { userFound: false };
   } catch (error) {
-    return {userFound: false};
+    return { userFound: false };
   }
 };
 
@@ -53,7 +58,10 @@ export const modifyPassword = async (userData) => {
       userData
     );
     if (response.data?.result.value) {
-      return { errorMessage: response.data.result.message, validPassword: false };
+      return {
+        errorMessage: response.data.result.message,
+        validPassword: false,
+      };
     }
     return { validPassword: true };
   } catch (error) {
@@ -137,6 +145,35 @@ export const ModifyPasswordUser = async (user) => {
   }
 };
 
+export const getVehicle = async (plate) => {
+  try {
+    const response = await client.get(`/vehicle/getByPlate/${plate}`);
+    if (response.data.result.message) {
+      return { value: response.data.result.message, validVehicle: false };
+    }
+    return {
+      validVehicle: true,
+      status: response.data.result.status,
+      data: response.data.result,
+    };
+    // return response.data.result;
+  } catch (error) {
+    return { validVehicle: false };
+  }
+};
+
+export const enableVehicleImagePublish = async (vehicle) => {
+  try {
+    const response = await client.post('/vehicle/enableVehicle', vehicle);
+    if (response.data.result.message) {
+      return { value: response.data.result.message, updatedVehicle: false };
+    }
+    return { updatedVehicle: true };
+  } catch (error) {
+    return { updatedVehicle: false };
+  }
+};
+
 export const PostNewVehicle = async (vehicle) => {
   try {
     const response = await client.post('/vehicle/saveVehicle', vehicle);
@@ -196,7 +233,10 @@ export const GetAllWorkshops = async () => {
 
 export const PostNewSellPrice = async (newPriceOfACar) => {
   try {
-    const response = await client.post('/vehicle/updateSellPrice', newPriceOfACar);
+    const response = await client.post(
+      '/vehicle/updateSellPrice',
+      newPriceOfACar
+    );
     if (response.data.result.message) {
       return {
         value: response.data.result.message,
@@ -211,7 +251,10 @@ export const PostNewSellPrice = async (newPriceOfACar) => {
 
 export const PostNewPriceByModel = async (newPriceOfAModel) => {
   try {
-    const response = await client.post('/vehicle/updatePriceByModel', newPriceOfAModel);
+    const response = await client.post(
+      '/vehicle/updatePriceByModel',
+      newPriceOfAModel
+    );
     if (response.data.result.message) {
       return {
         value: response.data.result.message,
@@ -226,8 +269,9 @@ export const PostNewPriceByModel = async (newPriceOfAModel) => {
 
 export const PostNewPricesByInflation = async (inflation) => {
   try {
-    const response = await client.post(`/vehicle/updatePricesByInflation?inflation=${inflation}`);
-    console.log("LO QUE RECIBO DEL BACK:", response)
+    const response = await client.post(
+      `/vehicle/updatePricesByInflation?inflation=${inflation}`
+    );
     if (response.data.result.message) {
       return {
         value: response.data.result.message,
@@ -247,14 +291,16 @@ export const getAllPriceHistory = async () => {
       return response;
     }
   } catch (error) {
-    console.log("Error al obtener el historial de precios:", error);  
+    console.log('Error al obtener el historial de precios:', error);
   }
-}
+};
 
 export const PostAnalyzeCredit = async (creditAnalysis) => {
   try {
-    const response = await client.post('/credit-analysis/generateScoring', creditAnalysis);
-    console.log("RESPONSE DEL BACK: " , response.data)
+    const response = await client.post(
+      '/credit-analysis/generateScoring',
+      creditAnalysis
+    );
     if (response.data.result.message) {
       return {
         value: response.data.result.message,
@@ -269,15 +315,16 @@ export const PostAnalyzeCredit = async (creditAnalysis) => {
 
 export const GetScoring = async (document) => {
   try {
-    const response = await client.get(`/credit-analysis/getScoring?document=${document}`);
-    console.log("RESPONSE DEL BACK: " , response.data)
+    const response = await client.get(
+      `/credit-analysis/getScoring?document=${document}`
+    );
     if (response.data.result.message) {
       return {
         value: response.data.result.message,
         calculatedScoring: false,
       };
     }
-    return { calculatedScoring: true, score: response.data.result.value};
+    return { calculatedScoring: true, score: response.data.result.value };
   } catch (error) {
     return { calculatedScoring: false };
   }
