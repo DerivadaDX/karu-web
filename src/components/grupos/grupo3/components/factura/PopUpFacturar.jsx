@@ -26,12 +26,12 @@ const PopUpFacturar = ({ id }) => {
     setOpen(true);
   };
 
-  const handleClose = () => { // No
+  const handleFactura = () => { // No
     setOpen(false);
     navigate(`/facturar/${id}`);
   };
 
-  const handleConfirm = () => { // Sí
+  const handleClose = () => { // Sí
     // CotizacionService.anularCotizacion(id);
     // .then((response) => {
     // setCotizaciones(response.data);
@@ -49,18 +49,31 @@ const PopUpFacturar = ({ id }) => {
           <ReceiptOutlinedIcon />
         </IconButton>
       </Tooltip>
-      <Dialog open={open}>
-        <DialogTitle>Financiación</DialogTitle>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>
+          Financiación
+          <IconButton
+            aria-label="close"
+            onClick={handleClose}
+            sx={{
+              position: 'absolute',
+              right: 8,
+              top: 8,
+            }}
+          >
+            X
+          </IconButton>
+        </DialogTitle>
         <DialogContent>
           <p>¿Desea elegir un tipo de financiación?</p>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>No</Button>
+          <Button onClick={handleFactura}>No</Button>
           {/* Me lleva a elegir el tipo de financiación */}
-          <PopUpTipoFacturacion id={id} onClick={handleConfirm} />
+          <PopUpTipoFacturacion id={id} />
         </DialogActions>
       </Dialog>
-    </div>
+    </div >
   );
 };
 

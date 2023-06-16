@@ -18,6 +18,7 @@ const PopUpTipoFacturacion = () => {
   const navigate = useNavigate();
 
   const handleOpenTipo = () => {
+    setOpen(false);
     setOpen(true);
   };
 
