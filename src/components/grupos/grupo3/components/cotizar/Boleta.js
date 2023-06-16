@@ -8,6 +8,13 @@ import {
   Container, Row, Col, Table, Card, ListGroup,
 } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
+import {
+  Typography,
+  Snackbar,
+  Alert,
+  AlertTitle,
+  SnackbarContent,
+} from '@mui/material';
 import { AppContext } from './AppContext';
 import CotizacionService from '../../services/CotizacionService';
 
@@ -38,7 +45,11 @@ const Boleta = () => {
   //  sessionStorage.getItem('cotizacion');
   const rawValue = sessionStorage.getItem('cotizacion');
   const cotizacion = JSON.parse(rawValue);
-  console.log(`prueba${cotizacion}`);
+
+  /* ALERTAS */
+  const [errorMessage, setErrorMessage] = useState('');
+  const [showSuccessSnackbar, setShowSuccessSnackbar] = useState(false);
+  const [showErrorSnackbar, setShowErrorSnackbar] = useState(false);
 
   /* declara una variable de estado para almacenar la fecha actual */
   const [fecha, setFechaActual] = useState(new Date());
@@ -46,11 +57,20 @@ const Boleta = () => {
   const enviarCorreo = () => {
     CotizacionService.enviarPDFCotizacion(cotizacion.cliente.email, cotizacion.id)
       .then((response) => {
+        // Show success notification
+        setShowSuccessSnackbar(true);
         console.log('Correo enviado');
       })
       .catch((error) => {
         console.error('Error al enviar el correo', error);
+        setErrorMessage('Error al enviar el correo', error);
+        setShowErrorSnackbar(true);
       });
+  };
+
+  const handleSnackbarClose = () => {
+    setShowSuccessSnackbar(false);
+    setShowErrorSnackbar(false);
   };
 
   return (
@@ -141,6 +161,55 @@ const Boleta = () => {
 
         <Button type="text" onClick={enviarCorreo}>Mandar por mail</Button>
       </div>
+
+      {/* Alertas */}
+      <Snackbar
+        open={showSuccessSnackbar}
+        autoHideDuration={3000}
+        onClose={handleSnackbarClose}
+        style={{
+          position: 'fixed',
+          left: '50%',
+          top: '50%',
+          transform: 'translate(-50%, -50%)',
+          minWidth: '400px',
+        }}
+      >
+        <SnackbarContent
+          sx={{ backgroundColor: 'green' }} // Set your desired background color here
+          message={(
+            <Alert onClose={handleSnackbarClose} severity="success">
+              <AlertTitle>Correo enviado!</AlertTitle>
+              Se ha enviado la boleta al mail
+              <strong> correctamente!</strong>
+            </Alert>
+          )}
+        />
+      </Snackbar>
+      <Snackbar
+        open={showErrorSnackbar}
+        style={{
+          position: 'fixed',
+          left: '50%',
+          top: '50%',
+          transform: 'translate(-50%, -50%)',
+          minWidth: '400px',
+        }}
+      >
+        <SnackbarContent
+          sx={{ backgroundColor: 'red' }} // Set your desired background color here
+          message={(
+            <Alert onClose={handleSnackbarClose} severity="error">
+              <AlertTitle>Error</AlertTitle>
+              Hubo un
+              <strong> error al enviar el mail. </strong>
+              Por favor intente mas tarde.
+              <strong> Error: </strong>
+              {errorMessage}
+            </Alert>
+          )}
+        />
+      </Snackbar>
     </Container>
 
   );

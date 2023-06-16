@@ -7,6 +7,9 @@ import React, { useEffect, useState, useContext } from 'react';
 import {
   Form, Button, Row, Col,
 } from 'react-bootstrap';
+import {
+  Snackbar, SnackbarContent, Alert, AlertTitle,
+} from '@mui/material';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { AppContext } from './AppContext';
 import Alerts from '../../../grupo1/components/common/Alerts';
@@ -44,6 +47,8 @@ const NuevaPagina = () => {
   const [alertType, setAlertType] = useState('');
   const [alertMessage, setAlertMessage] = useState('');
   const [alertTitle, setAlertTitle] = useState('');
+  const [showErrorSnackbar, setShowErrorSnackbar] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   /* lo llamo de la misma manera que en app.js osea productId y lo desectructuramos */
   /* consumo desde los parametro las variantes del objeto y lo desestructuro el objeto */
@@ -89,7 +94,6 @@ const NuevaPagina = () => {
     /* primero valida formulario */
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
-      event.preventDefault();
       event.stopPropagation();
       setValidated(true);
     } else {
@@ -109,7 +113,7 @@ const NuevaPagina = () => {
           patente: productSelected.plate, // infoCotizacion.patente,
           /* email: mail, */
           dni: clienteDNI,
-          idVendedor: 123,
+          idVendedor: 3,
           /* precioBase: 1000000, */
           garantiaExtendida: garantiaCheck,
         };
@@ -121,15 +125,27 @@ const NuevaPagina = () => {
 
         navigate('/boleta-cotizacion');
       } catch (error) {
-        console.error(error);
-        setAlertType('Error');
-        setAlertTitle('Error de servidor');
-        setAlertMessage(
-          'Error en el servidor. Por favor, vuelva a intentarlo nuevamente.',
-        );
+        if (error.response && error.response.status === 400) {
+          // El servidor devolvió un error 400
+          console.error(error.response.data); // Muestra la respuesta del servidor en la consola
+          setAlertType('Error');
+          setAlertTitle('Error en la solicitud');
+          setErrorMessage('Ocurrió un error en la solicitud. Por favor, verifique que los datos sean correctos e intente nuevamente.');
+          setShowErrorSnackbar(true);
+        } else {
+          // Otro tipo de error, como un error de red o un error en el servidor
+          console.error(error);
+          setAlertType('Error');
+          setAlertTitle('Error en el servidor');
+          setAlertMessage('Error en el servidor. Por favor, vuelva a intentarlo nuevamente.');
+        }
         // sessionStorage.setItem('cotizacion', JSON.stringify(infoCotizacion))
       }
     }
+  };
+
+  const handleSnackbarClose = () => {
+    setShowErrorSnackbar(false);
   };
 
   return (
@@ -211,15 +227,18 @@ const NuevaPagina = () => {
           <Col sm="10">
 
             <Form.Control
-              type="number"
+              type="text"
               placeholder="Agregue el dni del Cliente"
               value={clienteDNI}
               onChange={(event) => setDNI(event.target.value)}
+              minLength="7"
+              maxLength="8"
+              pattern="(\d{8}|[A-Z]\d{7})$"
               required
             />
 
             <Form.Control.Feedback type="invalid">
-              Por favor, proporcione un DNI válido.
+              Por favor, proporcione un DNI válido de 8 caracteres sin puntos.
             </Form.Control.Feedback>
           </Col>
         </Form.Group>
@@ -255,14 +274,28 @@ const NuevaPagina = () => {
 
         {/* -----Al finalizar me pide validar------ */}
         <Button type="submit">Finalizar</Button>
-
-        <Alerts
-          alertType={alertType}
-          description={alertMessage}
-          title={alertTitle}
-        />
       </Form>
 
+      <Snackbar
+        open={showErrorSnackbar}
+        style={{
+          position: 'fixed',
+          left: '50%',
+          top: '50%',
+          transform: 'translate(-50%, -50%)',
+          minWidth: '400px',
+        }}
+      >
+        <SnackbarContent
+          sx={{ backgroundColor: 'red' }} // Set your desired background color here
+          message={(
+            <Alert onClose={handleSnackbarClose} severity="error">
+              <AlertTitle>{alertTitle}</AlertTitle>
+              {errorMessage}
+            </Alert>
+          )}
+        />
+      </Snackbar>
     </div>
   );
 };
