@@ -11,7 +11,7 @@ import {
 import ReceiptOutlinedIcon from '@mui/icons-material/ReceiptOutlined';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import PopUpTipoFinanciacion from './PopUpTipoFinanciacion';
+import PopUpTipoFacturacion from './PopUpTipoFacturacion';
 // import CotizacionService from '../../services/CotizacionService';
 
 const PopUpFacturar = ({ id }) => {
@@ -39,7 +39,7 @@ const PopUpFacturar = ({ id }) => {
     // });
 
     setOpen(false);
-      <PopUpTipoFinanciacion id={id} />;
+    // navigate(`/tipo-financiacion/${id}`);
   };
 
   return (
@@ -49,16 +49,15 @@ const PopUpFacturar = ({ id }) => {
           <ReceiptOutlinedIcon />
         </IconButton>
       </Tooltip>
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog open={open}>
         <DialogTitle>Financiación</DialogTitle>
         <DialogContent>
           <p>¿Desea elegir un tipo de financiación?</p>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>No</Button>
-          <Button onClick={handleConfirm} variant="contained" color="primary">
-            Sí
-          </Button>
+          {/* Me lleva a elegir el tipo de financiación */}
+          <PopUpTipoFacturacion id={id} onClick={handleConfirm} />
         </DialogActions>
       </Dialog>
     </div>

@@ -18,6 +18,7 @@ import Roles from '../../roles';
 import AltaCliente from './pages/AltaCliente';
 import ListadoClientes from './pages/ListadoClientes';
 import ReservaRealizada from './pages/ReservaRealizada';
+import TipoFacturacion from './components/factura/TipoFacturacion';
 
 const GROUP_3_PAGES_CONFIG = [
   {
@@ -106,6 +107,14 @@ const GROUP_3_PAGES_CONFIG = [
     href: '/ReservaRealizada',
     icon: <GroupIcon />,
     page: <ReservaRealizada />,
+    soloURL: true,
+  },
+  {
+    id: 'g3-TipoFacturacion',
+    name: 'Elegir Tipo de Facturación',
+    href: '/tipo-financiacion/:id',
+    icon: <GroupIcon />,
+    page: <TipoFacturacion />,
     soloURL: true,
   },
 ];
