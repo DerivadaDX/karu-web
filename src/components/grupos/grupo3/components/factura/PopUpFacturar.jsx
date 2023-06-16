@@ -73,7 +73,7 @@ const PopUpFacturar = ({ id }) => {
           <PopUpTipoFacturacion id={id} />
         </DialogActions>
       </Dialog>
-    </div >
+    </div>
   );
 };
 
