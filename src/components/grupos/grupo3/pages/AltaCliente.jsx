@@ -19,13 +19,12 @@ import {
 import ClientesService from '../services/ClienteService';
 
 const fieldData = [
+  { name: 'dni', label: 'DNI', type: 'text' },
   { name: 'nombre', label: 'Nombre', type: 'text' },
   { name: 'apellido', label: 'Apellido', type: 'text' },
-  { name: 'direccion', label: 'Direccion', type: 'text' },
-  { name: 'ciudad', label: 'Ciudad', type: 'text' },
-  { name: 'telefono', label: 'Telefono', type: 'text' },
-  { name: 'dni', label: 'DNI', type: 'text' },
+  { name: 'numTelefono', label: 'Telefono', type: 'text' },
   { name: 'email', label: 'Email', type: 'email' },
+  { name: 'direccion', label: 'Direccion', type: 'text' },
 ];
 
 const AltaCliente = () => {

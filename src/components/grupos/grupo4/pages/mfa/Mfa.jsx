@@ -2,6 +2,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../../context/UsersContext';
 import '../../assets/css/formMfa.css';
+import Roles from '../../../../roles';
 import {
   Alert,
   Button,
@@ -51,7 +52,13 @@ const Mfa = () => {
       cookie.set('user', loggedUser, { maxAge: sevenDaysInSeconds });
 
       login();
-      navigate('/');
+      if (userType === Roles.SUPERVISOR_TECNICO) {
+        navigate('/reportes');
+      } else if (userType === Roles.TECNICO) {
+        navigate('/dashboard');
+      } else {
+        navigate('/');
+      }
     }
   }, [isValidToken]);
 

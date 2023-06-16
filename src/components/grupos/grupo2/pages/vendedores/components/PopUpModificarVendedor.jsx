@@ -28,7 +28,12 @@ const PopUpModificarVendedor = ({
   sucursales, onEdit, vendedor, onClose,
 }) => {
   const [mostrarPopUpCreacionExitosa, setMostrarPopUpCreacionExitosa] = useState(false);
-  const { handleSubmit, control, formState: { errors, isValid, isDirty } } = useForm({
+  const {
+    handleSubmit,
+    control,
+    setError,
+    formState: { errors, isValid, isDirty },
+  } = useForm({
     mode: 'onBlur',
     defaultValues: {
       nombre: vendedor.nombre,
@@ -59,7 +64,14 @@ const PopUpModificarVendedor = ({
         setMostrarPopUpCreacionExitosa(true);
         onEdit(vendedorModificado);
       })
-      .catch(() => setMostrarPopUpCreacionExitosa(false));
+      .catch((e) => {
+        if (e.response.data.email) {
+          setError('email', { type: 'custom', message: 'El email ingresado ya se encuentra registrado' });
+        }
+        if (e.response.data.cuit) {
+          setError('cuit', { type: 'custom', message: 'El cuit ingresado ya se encuentra registrado' });
+        }
+      });
   };
 
   const cambiarVisibilidadPopUpCreacionExitosa = () => {

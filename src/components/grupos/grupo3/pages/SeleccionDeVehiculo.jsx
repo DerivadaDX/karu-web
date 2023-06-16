@@ -15,8 +15,8 @@ import VehiculoService from '../services/VehiculoService';
 const FiltroDeVehiculos = () => {
   // hooks para guardar los estados
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState('TODOS');
-  const [selectedPrice, setSelectedPrice] = useState([1000000, 5000000]);
-  const [selectedKM, setSelectedKM] = useState([2000, 8000]);
+  const [selectedPrice, setSelectedPrice] = useState([1000000, 25000000]);
+  const [selectedKM, setSelectedKM] = useState([100, 300000]);
 
   const [vehiculosData, setVehiculos] = useState([]);
   console.log(vehiculosData);

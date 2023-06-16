@@ -21,6 +21,10 @@ import VehicleForm from './pages/vehicle/VehicleForm';
 import PriceUpdate from './pages/pricesUpdate/PriceUpdate';
 import Roles from '../../roles';
 import PriceHistory from './pages/priceHistory/PriceHistory';
+import CreditAnalysis from './pages/creditAnalysis/CreditAnalysis';
+import CreditScoreIcon from '@mui/icons-material/CreditScore';
+import EnableVehicle from './pages/enableVehicle/EnableVehicle';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 const GROUP_4_PAGES_CONFIG = [
   {
@@ -121,12 +125,28 @@ const GROUP_4_PAGES_CONFIG = [
     roles: [Roles.ADMINISTRADOR,Roles.IT],
   },
   {
-    id: 'g4-updateuser',
+    id: 'g4-price-history',
     name: 'Historial de precios',
     href: '/priceHistory',
     icon: <ManageAccountsIcon />,
     page: <PriceHistory />,
     roles: [Roles.ADMINISTRADOR, Roles.IT],
+  },
+  {
+    id: 'g4-creditAnalysis',
+    name: 'Calcular scoring crediticio',
+    href: '/credit-analysis',
+    icon: <CreditScoreIcon />,
+    page: <CreditAnalysis />,
+    roles: [Roles.ADMINISTRADOR,Roles.IT],
+  },
+  {
+    id: 'g4-enableVehicle',
+    name: 'Habilitar Vehiculo',
+    href: '/enable-vehicle',
+    icon: <CheckCircleIcon />,
+    page: <EnableVehicle />,
+    roles: [Roles.ADMINISTRADOR,Roles.IT],
   },
 ];
 

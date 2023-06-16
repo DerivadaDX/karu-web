@@ -22,6 +22,7 @@ import SucursalService from '../services/sucursal-service';
 const ModificarSucursal = ({ sucursal, onEdit }) => {
   const [mostrarPopUpModificarSucursal, setMostrarPopUpModificarSucursal] = useState(false);
   const [mostrarPopUpModificacionExitosa, setMostrarPopUpModificacionExitosa] = useState(false);
+  const [sucursalTieneTallerActivo, setSucursalTieneTallerActivo] = useState(false);
   const [valoresDelFormulario, setValoresDelFormulario] = useState({
     nombre: '',
     calle: '',
@@ -33,8 +34,21 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
     activa: false,
   });
 
+  const verificarSiSucursalTieneTallerActivoAsociado = (idSucursal) => {
+    SucursalService.sucursalTieneTallerActivo(idSucursal)
+      .then((response) => {
+        if (response.status === 200) {
+          const tieneTallerActivo = response.data.valor;
+          setSucursalTieneTallerActivo(tieneTallerActivo);
+        }
+      })
+      .catch(() => {
+        setSucursalTieneTallerActivo(false);
+      });
+  };
+
   const mostrarYCargarFormulario = () => {
-    setMostrarPopUpModificarSucursal(true);
+    verificarSiSucursalTieneTallerActivoAsociado(sucursal.id);
     setValoresDelFormulario({
       id: sucursal.id,
       nombre: sucursal.nombre,
@@ -46,6 +60,7 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
       posee_taller: sucursal.posee_taller,
       activa: sucursal.activa,
     });
+    setMostrarPopUpModificarSucursal(true);
   };
 
   const cambiarVisibilidadDePopUpModificarSucursal = () => {
@@ -98,7 +113,10 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
   return (
     <Box>
       <Tooltip title="Editar">
-        <IconButton onClick={mostrarYCargarFormulario}>
+        <IconButton onClick={() => {
+          mostrarYCargarFormulario();
+        }}
+        >
           <EditIcon />
         </IconButton>
       </Tooltip>
@@ -212,6 +230,7 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
                 <Switch
                   checked={valoresDelFormulario.activa}
                   onChange={actualizarValorDeFormulario}
+                  disabled={sucursalTieneTallerActivo && sucursal.activa}
                 />
               )}
               sx={{

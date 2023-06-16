@@ -22,6 +22,8 @@ const UpdateProfile = () => {
     updateUserMessageError,
     showSpanUpdateUserPasswordError,
     updateUserPasswordMessageError,
+    setSpanUpdateUserPasswordError,
+    setSpanUpdateUserError,
   } = useContext(UserContext);
   const cookieResult = cookie.get('user');
   const [values, setValues] = useState({
@@ -45,6 +47,7 @@ const UpdateProfile = () => {
     );
     setShowMailError(!isValid);
     setValues({ ...values, [e.target.name]: e.target.value });
+    setSpanUpdateUserError(false);
   };
 
   const onChangePassword = (e) => {
@@ -54,6 +57,7 @@ const UpdateProfile = () => {
       );
     setShowError(!isValid);
     setValuesPassword({ ...valuesPassword, [e.target.name]: e.target.value });
+    setSpanUpdateUserPasswordError(false);
   };
 
   const handleSubmitEmail = async (e) => {

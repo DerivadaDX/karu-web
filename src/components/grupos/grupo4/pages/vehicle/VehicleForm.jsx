@@ -68,7 +68,7 @@ const VehicleForm = () => {
     }
   }, [isDropdownInitialized]);
 
-  const { saveVehicle, showSpansaveVehicleError, saveVehicleMessageError } =
+  const { saveVehicle, showSpansaveVehicleError, saveVehicleMessageError, setSpansaveVehicleError} =
     useContext(UserContext);
 
   const handleSubmit = async (e) => {
@@ -88,11 +88,13 @@ const VehicleForm = () => {
       [name]: isValid ? '' : errorMessage,
     }));
     setValues({ ...values, [e.target.name]: e.target.value });
+    setSpansaveVehicleError(false);
   };
 
   const onChangeDropdown = (e, model) => {
     setValues({ ...values, [e.target.name]: model });
     setSelectedModel(e.target.value);
+    setSpansaveVehicleError(false);
   };
 
   const handleOriginChange = (e) => {
