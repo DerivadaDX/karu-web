@@ -8,17 +8,14 @@ import {
   Tooltip,
   IconButton,
 } from '@mui/material';
-import ReceiptOutlinedIcon from '@mui/icons-material/ReceiptOutlined';
-import { useNavigate } from 'react-router-dom';
+import { Cancel as CancelIcon } from '@mui/icons-material';
 import PropTypes from 'prop-types';
-import PopUpTipoFinanciacion from '../components/factura/PopUpTipoFinanciacion';
 // import CotizacionService from '../../services/CotizacionService';
 
-const PopUpFacturar = ({ id }) => {
+const PopUpTipoFinanciacion = ({ id }) => {
   const [open, setOpen] = useState(false);
-  const navigate = useNavigate();
 
-  PopUpFacturar.propTypes = {
+  PopUpTipoFinanciacion.propTypes = {
     id: PropTypes.number.isRequired,
   };
 
@@ -26,38 +23,35 @@ const PopUpFacturar = ({ id }) => {
     setOpen(true);
   };
 
-  const handleClose = () => { // No
+  const handleClose = () => {
     setOpen(false);
-    navigate(`/facturar/${id}`);
   };
 
-  const handleConfirm = () => { // Sí
+  const handleConfirm = () => {
     // CotizacionService.anularCotizacion(id);
     // .then((response) => {
     // setCotizaciones(response.data);
     //  setCargando(false);
     // });
-
     setOpen(false);
-    <PopUpTipoFinanciacion id={id} />
   };
 
   return (
     <div>
       <Tooltip title="Anular" placement="top">
         <IconButton onClick={handleOpen}>
-          <ReceiptOutlinedIcon />
+          <CancelIcon />
         </IconButton>
       </Tooltip>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Financiación</DialogTitle>
+        <DialogTitle>Confirmar acción</DialogTitle>
         <DialogContent>
-          <p>¿Desea elegir un tipo de financiación?</p>
+          <p>¿Estás seguro de que deseas realizar esta acción?</p>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>No</Button>
+          <Button onClick={handleClose}>Cancelar</Button>
           <Button onClick={handleConfirm} variant="contained" color="primary">
-            Sí
+            Confirmar
           </Button>
         </DialogActions>
       </Dialog>
@@ -65,4 +59,4 @@ const PopUpFacturar = ({ id }) => {
   );
 };
 
-export default PopUpFacturar;
+export default PopUpTipoFinanciacion;
