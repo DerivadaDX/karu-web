@@ -1,8 +1,9 @@
 /* eslint-disable */
-import { Alert, Box, Button, Paper, Stack, TextField } from '@mui/material';
+import { Alert, Box, Button, FormControl, InputLabel, MenuItem, Paper, Select, Stack, TextField } from '@mui/material';
 import React, { useState, useContext, useMemo, useEffect } from 'react';
 import { UserContext } from '../../context/UsersContext';
 import MaterialReactTable from 'material-react-table';
+import { GetAllOffices } from '../../api/API-methods';
 
 const EnableVehicle = () => {
   const [plate, setPlateState] = useState('');
@@ -10,6 +11,8 @@ const EnableVehicle = () => {
   const [firstImage, setFirstImage] = useState('');
   const [secondImage, setSecondImage] = useState('');
   const [thirdImage, setThirdImage] = useState('');
+  const [branch, setBranch] = useState('')
+  const [offices, setOffices] = useState([{ officeCode: '', officeName: '' }]);
   const {
     getVehicleByPlate,
     vehicleData,
@@ -35,15 +38,22 @@ const EnableVehicle = () => {
       photo1: firstImage,
       photo2: secondImage,
       photo3: thirdImage,
-      branch: vehicleData[0].branch,
+      branch: branch,
     };
     if (await imagePublishForEnableVehicle(enableVehicle)) {
       window.alert('IMAGENES CARGADAS!');
-      window.location.reload(true)
+      window.location.reload(true);
     }
   };
 
-
+  const updateOfficeDropdown = async () => {
+    const valueOffice = await GetAllOffices();
+    const offices = valueOffice.map((office) => ({
+      officeCode: office.officeCode,
+      officeName: office.officeName,
+    }));
+    setOffices(offices);
+  };
 
   const columnas = useMemo(
     () => [
@@ -54,10 +64,6 @@ const EnableVehicle = () => {
       {
         accessorKey: 'sellPrice',
         header: 'Precio de venta',
-      },
-      {
-        accessorKey: 'branch',
-        header: 'Sucursal',
       },
       {
         accessorKey: 'kilometers',
@@ -78,6 +84,15 @@ const EnableVehicle = () => {
     ],
     []
   );
+
+  const onChange = (e) => {
+    setBranch(e.target.value)
+  };
+
+  useEffect(() => {
+    updateOfficeDropdown()
+  }, [])
+  
 
   return (
     <Paper>
@@ -170,6 +185,22 @@ const EnableVehicle = () => {
           >
             {updateImageForEnableVehicleMessageError}
           </Alert>
+
+          <Paper>
+            <Box sx={{ minWidth: 120 }}>
+              <FormControl fullWidth>
+                <InputLabel>Seleccione una Sucursal</InputLabel>
+                <Select onChange={onChange} defaultValue="" name="branch">
+                  {offices.map((office, index) => (
+                    <MenuItem key={index} value={office.officeCode}>
+                      {office.officeName}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Box>
+          </Paper>
+
           <Button variant="contained" type="submit">
             Publicar
           </Button>
