@@ -66,8 +66,8 @@ const VehiculoIndividual = () => {
       <div style={containerStyles}>
         <ImageSlider slides={slides} />
       </div>
-      <Box sx={{ flexgrow: 1, display: 'grid', gap: 5, padding: '15px', marginRight: '10%' }}>
-        <Typography sx={{ lineHeight: 0, fontWeight: 'bold', fontSize: 42 }} variant="h4">
+      <Box sx={{ flexgrow: 1, display: 'grid', gap: 5, padding: '15px', marginRight: '20%' }}>
+        <Typography sx={{ lineHeight: 1, fontWeight: 'bold', fontSize: 32 }} variant="h4">
           {vehiculoData.brand}
         </Typography>
         <Typography sx={{ lineHeight: 0 }} variant="h6">
