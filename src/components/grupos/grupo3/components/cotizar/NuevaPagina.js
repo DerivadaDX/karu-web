@@ -8,8 +8,6 @@ import {
   Form, Button, Row, Col,
 } from 'react-bootstrap';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
-import { products } from './products';
 import { AppContext } from './AppContext';
 import Alerts from '../../../grupo1/components/common/Alerts';
 import CotizacionService from '../../services/CotizacionService';
@@ -53,13 +51,9 @@ const NuevaPagina = () => {
   /* dentro de mi erreglo de productos busco
     el producto que en su propiedad id sea igual al productId que viene de los params
     en este caso product.id tiraba error, entonces TIENE que ser string ya que productId es string */
-  // 5-6
   // const productSelected = products.find((product) => product.id === productId);
   // setear los hooks useState
   const [vehiculo, setVehiculo] = useState([]);
-  // función para traer los datos de la API
-  const apiUrl = 'https://gadmin-backend-production.up.railway.app/api/v1/vehicle/getByPlate/';// sacar datos de un json
-
   const [validated, setValidated] = useState(false);
 
   // Dentro de tu componente o función
@@ -103,7 +97,6 @@ const NuevaPagina = () => {
         /* Aquí puedes utilizar los valores de nombreC y email para realizar las acciones que necesites
               tiene que estar adentro del handleSubmit, no anda por el Link
               aca afuera tira error */
-        /* agrego- 16-05 */
         // updateNombreC(nombreC);
         // updateEmail(email);
         // updatePatente(productSelected.patente);
@@ -263,10 +256,6 @@ const NuevaPagina = () => {
         {/* -----Asi me pide validar------ */}
         <Button type="submit">Finalizar</Button>
 
-        {/* ----- Asi no me valida ------
-                <Link to="/boleta-cotizacion">
-                <Button type="submit" >Finalizar</Button>
-                </Link> */}
         <Alerts
           alertType={alertType}
           description={alertMessage}
