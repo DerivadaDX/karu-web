@@ -7,7 +7,6 @@ import GarageIcon from '@mui/icons-material/Garage';
 import RateReviewIcon from '@mui/icons-material/RateReview';
 import AssessmentIcon from '@mui/icons-material/Assessment';
 import EditCalendarIcon from '@mui/icons-material/EditCalendar';
-import VisualizacionBusquedaTecnicos from './pages/visualizacion-tecnicos/VisualizacionFiltroBusqueda';
 import Dashboard from './pages/dashboard/Dashboard';
 import MisTurnos from './pages/visualizar-mis-turnos/MisTurnos';
 import AgendaTaller from './pages/visualizar-agenda/AgendaTaller';
@@ -19,6 +18,7 @@ import FormularioEvaluacionCliente from './pages/turnos/turno-evaluacion-cliente
 import Reportes from './pages/reportes/Reportes';
 
 import Roles from '../../roles';
+import VisualizacionTecnicos from './pages/visualizacion-tecnicos/VisualizacionTecnicos';
 
 const GROUP_1_PAGES_CONFIG = [
   {
@@ -26,7 +26,7 @@ const GROUP_1_PAGES_CONFIG = [
     name: 'Dashboard',
     href: '/dashboard',
     icon: <DashboardIcon />,
-    page: <Dashboard />,
+    page: <Dashboard />, // HECHO
     roles: [
       Roles.TECNICO,
       Roles.IT],
@@ -36,7 +36,7 @@ const GROUP_1_PAGES_CONFIG = [
     name: 'Turnos',
     href: '/agenda-turnos',
     icon: <ListAltIcon />,
-    page: <AgendaTaller />,
+    page: <AgendaTaller />, // HECHO
     roles: [
       Roles.SUPERVISOR_TECNICO,
       Roles.IT],
@@ -46,7 +46,7 @@ const GROUP_1_PAGES_CONFIG = [
     name: 'Datos de técnicos',
     href: '/informacion-tecnicos',
     icon: <PersonSearchIcon />,
-    page: <VisualizacionBusquedaTecnicos />,
+    page: <VisualizacionTecnicos />,
     roles: [
       Roles.SUPERVISOR_TECNICO,
       Roles.IT],
@@ -56,7 +56,7 @@ const GROUP_1_PAGES_CONFIG = [
     name: 'Mis turnos',
     href: '/mis-turnos',
     icon: <ListAltIcon />,
-    page: <MisTurnos />,
+    page: <MisTurnos />, // HECHO
     roles: [
       Roles.TECNICO,
       Roles.IT],
@@ -76,7 +76,7 @@ const GROUP_1_PAGES_CONFIG = [
     name: 'Services',
     href: '/services',
     icon: <DesignServicesIcon />,
-    page: <Services />,
+    page: <Services />, // HECHO
     roles: [
       Roles.SUPERVISOR_TECNICO,
       Roles.IT,
@@ -121,7 +121,7 @@ const GROUP_1_PAGES_CONFIG = [
     name: 'Reportes',
     href: '/reportes',
     icon: <AssessmentIcon />,
-    page: <Reportes />,
+    page: <Reportes />, // HECHO
     roles: [
       Roles.SUPERVISOR_TECNICO,
       Roles.IT,

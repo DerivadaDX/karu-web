@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable max-len */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
@@ -25,9 +26,9 @@ import IconButton from '@mui/material/IconButton';
 import Collapse from '@mui/material/Collapse';
 import SearchIcon from '@mui/icons-material/Search';
 import Alerts from '../../components/common/Alerts';
-import Header from '../../components/common/Header';
 
-const VisualizacionBusquedaTecnicos = () => {
+const VisualizacionBusquedaTecnicos = (props) => {
+  const { taller } = props;
   const [listaTecnicos, setTecnicos] = useState([]);
   const [detalleTrabajos, setDetalleTrabajos] = useState([]);
   const [mostrarInfo, setMostrarInfo] = useState(false);
@@ -38,7 +39,7 @@ const VisualizacionBusquedaTecnicos = () => {
   const startIndex = page * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
   const displayedData = listaTecnicos.tecnicos
-  && listaTecnicos.tecnicos.slice(startIndex, endIndex);
+    && listaTecnicos.tecnicos.slice(startIndex, endIndex);
 
   const [valoresBusqueda, setValoresBusqueda] = useState({
     nombre: '',
@@ -50,7 +51,7 @@ const VisualizacionBusquedaTecnicos = () => {
   const [alertType, setAlertType] = useState('');
   const [alertMessage, setAlertMessage] = useState('');
   const [alertTitle, setAlertTitle] = useState('');
-  const taller = 'T002';
+
   const endPoint = `https://autotech2.onrender.com/tecnicos/filtro/?branch=${taller}&`;
 
   const filtrarTecnicos = () => {
@@ -169,11 +170,6 @@ const VisualizacionBusquedaTecnicos = () => {
 
   return (
     <Box>
-      <Box mt="5px">
-        <Box display="flex">
-          <Header titulo="Datos de técnicos" subtitulo="En esta sección, tendrás la posibilidad de acceder a una visualización detallada de la información sobre cada técnico, así como los trabajos que han realizado. Además, podrás realizar búsquedas para encontrar la información específica del técnico que deseas consultar." />
-        </Box>
-      </Box>
       <Box sx={{
         display: 'flex', justifyContent: 'center', alignItems: 'center',
       }}
@@ -332,77 +328,77 @@ const VisualizacionBusquedaTecnicos = () => {
                       </TableRow>
 
                       {seleccionarFila === index && (
-                      <TableRow>
-                        <TableCell
-                          style={{ paddingBottom: 0, paddingTop: 0 }}
-                          colSpan={6}
-                        >
-                          <Collapse in={mostrarInfo} timeout="auto" unmountOnExit>
-                            <Box sx={{ margin: 1 }}>
-                              <Typography
-                                variant="h6"
-                                gutterBottom
-                                component="div"
-                              >
-                                Detalle
-                              </Typography>
+                        <TableRow>
+                          <TableCell
+                            style={{ paddingBottom: 0, paddingTop: 0 }}
+                            colSpan={6}
+                          >
+                            <Collapse in={mostrarInfo} timeout="auto" unmountOnExit>
+                              <Box sx={{ margin: 1 }}>
+                                <Typography
+                                  variant="h6"
+                                  gutterBottom
+                                  component="div"
+                                >
+                                  Detalle
+                                </Typography>
 
-                              <Table size="small" aria-label="purchases">
-                                <TableHead>
-                                  <TableRow>
-                                    <TableCell align="center">ID Turno</TableCell>
-                                    <TableCell align="center">Patente</TableCell>
-                                    <TableCell align="center">
-                                      Fecha inicio
-                                    </TableCell>
-                                    <TableCell align="center">
-                                      Hora inicio
-                                    </TableCell>
-                                    <TableCell align="center">
-                                      Fecha fin
-                                    </TableCell>
-                                    <TableCell align="center">Hora fin</TableCell>
-                                    <TableCell align="center">Tipo</TableCell>
-                                    <TableCell align="center">Estado</TableCell>
-                                  </TableRow>
-                                </TableHead>
-
-                                <TableBody>
-                                  {detalleTrabajos.map((detalle, idx) => (
-                                  // eslint-disable-next-line react/no-array-index-key
-                                    <TableRow key={idx}>
+                                <Table size="small" aria-label="purchases">
+                                  <TableHead>
+                                    <TableRow>
+                                      <TableCell align="center">ID Turno</TableCell>
+                                      <TableCell align="center">Patente</TableCell>
                                       <TableCell align="center">
-                                        {detalle.id_turno}
+                                        Fecha inicio
                                       </TableCell>
                                       <TableCell align="center">
-                                        {detalle.patente}
+                                        Hora inicio
                                       </TableCell>
                                       <TableCell align="center">
-                                        {detalle.fecha_inicio}
+                                        Fecha fin
                                       </TableCell>
-                                      <TableCell align="center">
-                                        {detalle.hora_inicio}
-                                      </TableCell>
-                                      <TableCell align="center">
-                                        {detalle.fecha_fin}
-                                      </TableCell>
-                                      <TableCell align="center">
-                                        {detalle.hora_fin}
-                                      </TableCell>
-                                      <TableCell align="center">
-                                        {detalle.tipo}
-                                      </TableCell>
-                                      <TableCell align="center">
-                                        {detalle.estado}
-                                      </TableCell>
+                                      <TableCell align="center">Hora fin</TableCell>
+                                      <TableCell align="center">Tipo</TableCell>
+                                      <TableCell align="center">Estado</TableCell>
                                     </TableRow>
-                                  ))}
-                                </TableBody>
-                              </Table>
-                            </Box>
-                          </Collapse>
-                        </TableCell>
-                      </TableRow>
+                                  </TableHead>
+
+                                  <TableBody>
+                                    {detalleTrabajos.map((detalle, idx) => (
+                                      // eslint-disable-next-line react/no-array-index-key
+                                      <TableRow key={idx}>
+                                        <TableCell align="center">
+                                          {detalle.id_turno}
+                                        </TableCell>
+                                        <TableCell align="center">
+                                          {detalle.patente}
+                                        </TableCell>
+                                        <TableCell align="center">
+                                          {detalle.fecha_inicio}
+                                        </TableCell>
+                                        <TableCell align="center">
+                                          {detalle.hora_inicio}
+                                        </TableCell>
+                                        <TableCell align="center">
+                                          {detalle.fecha_fin}
+                                        </TableCell>
+                                        <TableCell align="center">
+                                          {detalle.hora_fin}
+                                        </TableCell>
+                                        <TableCell align="center">
+                                          {detalle.tipo}
+                                        </TableCell>
+                                        <TableCell align="center">
+                                          {detalle.estado}
+                                        </TableCell>
+                                      </TableRow>
+                                    ))}
+                                  </TableBody>
+                                </Table>
+                              </Box>
+                            </Collapse>
+                          </TableCell>
+                        </TableRow>
                       )}
                     </>
                   ))}
