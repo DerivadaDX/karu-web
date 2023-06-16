@@ -275,6 +275,7 @@ const NuevaPagina = () => {
         {/* -----Al finalizar me pide validar------ */}
         <Button type="submit">Finalizar</Button>
       </Form>
+
       <Snackbar
         open={showErrorSnackbar}
         style={{
