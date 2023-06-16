@@ -26,7 +26,7 @@ const GROUP_3_PAGES_CONFIG = [
     href: '/cotizar',
     icon: <DriveEtaIcon />,
     page: <Cotizar />,
-    roles: [Roles.CLIENTE],
+    roles: [Roles.VENDEDOR, Roles.IT],
   },
   {
     id: 'g3-Reserva',
@@ -56,7 +56,7 @@ const GROUP_3_PAGES_CONFIG = [
     href: '/filtrarVehiculos/',
     icon: <Search />,
     page: <FiltroDeVehiculos />,
-    roles: [Roles.CLIENTE],
+    roles: [Roles.CLIENTE, Roles.IT],
   },
   {
     id: 'g3-BORRADOR vehiculo',
@@ -73,7 +73,7 @@ const GROUP_3_PAGES_CONFIG = [
     href: '/cotizaciones',
     icon: <RequestPageIcon />,
     page: <ListadoCotizaciones />,
-    roles: [Roles.CLIENTE],
+    roles: [Roles.VENDEDOR, Roles.IT],
     // soloUrl: true,
   },
   {
@@ -82,7 +82,7 @@ const GROUP_3_PAGES_CONFIG = [
     href: '/consulta',
     icon: <PermPhoneMsgIcon />,
     page: <ListadoConsultas />,
-    roles: [Roles.CLIENTE],
+    roles: [Roles.VENDEDOR, Roles.IT],
   },
   {
     id: 'g3-AltaCliente',
@@ -90,7 +90,7 @@ const GROUP_3_PAGES_CONFIG = [
     href: '/AltaCliente',
     icon: <GroupAddIcon />,
     page: <AltaCliente />,
-    roles: [Roles.CLIENTE],
+    roles: [Roles.VENDEDOR, Roles.IT],
   },
   {
     id: 'g3-ListadoClientes',
@@ -98,7 +98,7 @@ const GROUP_3_PAGES_CONFIG = [
     href: '/ListadoClientes',
     icon: <GroupIcon />,
     page: <ListadoClientes />,
-    roles: [Roles.CLIENTE],
+    roles: [Roles.VENDEDOR, Roles.IT],
   },
   {
     id: 'g3-ReservaRealizada',
