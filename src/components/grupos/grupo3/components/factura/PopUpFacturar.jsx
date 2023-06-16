@@ -11,7 +11,7 @@ import {
 import ReceiptOutlinedIcon from '@mui/icons-material/ReceiptOutlined';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import PopUpTipoFinanciacion from '../components/factura/PopUpTipoFinanciacion';
+import PopUpTipoFinanciacion from './PopUpTipoFinanciacion';
 // import CotizacionService from '../../services/CotizacionService';
 
 const PopUpFacturar = ({ id }) => {
@@ -39,7 +39,7 @@ const PopUpFacturar = ({ id }) => {
     // });
 
     setOpen(false);
-    <PopUpTipoFinanciacion id={id} />
+      <PopUpTipoFinanciacion id={id} />;
   };
 
   return (

@@ -9,11 +9,13 @@ import {
   IconButton,
 } from '@mui/material';
 import { Cancel as CancelIcon } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 // import CotizacionService from '../../services/CotizacionService';
 
 const PopUpTipoFinanciacion = ({ id }) => {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
 
   PopUpTipoFinanciacion.propTypes = {
     id: PropTypes.number.isRequired,
@@ -33,6 +35,7 @@ const PopUpTipoFinanciacion = ({ id }) => {
     // setCotizaciones(response.data);
     //  setCargando(false);
     // });
+    navigate(`/facturar/${id}`);
     setOpen(false);
   };
 
