@@ -18,6 +18,7 @@ import MaterialReactTable from 'material-react-table';
 // import CrearSucursal from './CrearSucursal';
 import CotizacionService from '../services/CotizacionService';
 import PopUpAnular from '../components/cotizaciones/PopUpAnular';
+import PopUpFacturar from '../components/factura/PopUpFacturar';
 
 const styles = {
   paper: {
@@ -87,11 +88,12 @@ const ListadoCotizaciones = () => {
       return (
         <Box display="flex">
           <PopUpAnular id={row.original.id} />
-          <Link to={`/facturar/${row.original.id}`}>
+          <PopUpFacturar id={row.original.id} />
+          {/* <Link to={`/facturar/${row.original.id}`}>
             <IconButton disabled={factura}>
               <ReceiptOutlinedIcon />
             </IconButton>
-          </Link>
+      </Link> */}
         </Box>
       );
     }
