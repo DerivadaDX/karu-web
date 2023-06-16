@@ -253,7 +253,7 @@ const NuevaPagina = () => {
           />
         </Form.Group>
 
-        {/* -----Asi me pide validar------ */}
+        {/* -----Al finalizar me pide validar------ */}
         <Button type="submit">Finalizar</Button>
 
         <Alerts
