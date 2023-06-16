@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React from 'react';
 import {
@@ -110,7 +111,7 @@ const Factura = ({ infoCotizacion }) => (
                 borderRadius: '10px',
               }}
               >
-                <Text> BLA BLA</Text>
+                <Text> ..</Text>
                 <Text> COMPROBANTE DE PAGO </Text>
                 <Text> ID DE COTIZACION ASOCIADA </Text>
               </View>
