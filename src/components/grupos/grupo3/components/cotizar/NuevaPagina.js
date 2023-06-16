@@ -8,8 +8,6 @@ import {
   Form, Button, Row, Col,
 } from 'react-bootstrap';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
-import { products } from './products';
 import { AppContext } from './AppContext';
 import Alerts from '../../../grupo1/components/common/Alerts';
 import CotizacionService from '../../services/CotizacionService';
@@ -37,6 +35,7 @@ const NuevaPagina = () => {
   // } = useContext(AppContext);
   const [nombreC, setNombreC] = useState('');
   const [mail, setMail] = useState('');
+  const [clienteDNI, setDNI] = useState('');
   const [garantiaCheck, setGarantiaExtendida] = useState(false);
 
   const navigate = useNavigate();
@@ -52,13 +51,9 @@ const NuevaPagina = () => {
   /* dentro de mi erreglo de productos busco
     el producto que en su propiedad id sea igual al productId que viene de los params
     en este caso product.id tiraba error, entonces TIENE que ser string ya que productId es string */
-  // 5-6
   // const productSelected = products.find((product) => product.id === productId);
   // setear los hooks useState
   const [vehiculo, setVehiculo] = useState([]);
-  // función para traer los datos de la API
-  const apiUrl = 'https://gadmin-backend-production.up.railway.app/api/v1/vehicle/getByPlate/';// sacar datos de un json
-
   const [validated, setValidated] = useState(false);
 
   // Dentro de tu componente o función
@@ -102,7 +97,6 @@ const NuevaPagina = () => {
         /* Aquí puedes utilizar los valores de nombreC y email para realizar las acciones que necesites
               tiene que estar adentro del handleSubmit, no anda por el Link
               aca afuera tira error */
-        /* agrego- 16-05 */
         // updateNombreC(nombreC);
         // updateEmail(email);
         // updatePatente(productSelected.patente);
@@ -111,11 +105,12 @@ const NuevaPagina = () => {
         // paso datos al back
         const cotizacionData = {
           sucursal: 'S-01',
-          nombreCliente: nombreC,
+          /* nombreCliente: nombreC, */
           patente: productSelected.plate, // infoCotizacion.patente,
-          email: mail,
+          /* email: mail, */
+          dni: clienteDNI,
           idVendedor: 123,
-          precioBase: 1000000,
+          /* precioBase: 1000000, */
           garantiaExtendida: garantiaCheck,
         };
         const response = await CotizacionService.guardarCotizacion(cotizacionData);
@@ -158,14 +153,13 @@ const NuevaPagina = () => {
                     </div>
                 </Form.Group> */}
 
-        {/* -----Nombre del Cliente------ */}
+        {/* -----Nombre del Cliente------
         <Form.Group as={Row} className="mb-3" controlId="formPlaintextNombreC">
           <Form.Label column sm="2">
             Nombre del Cliente:
           </Form.Label>
           <Col sm="10">
 
-            {/* agrego- 16-05 */}
             <Form.Control
               type="text"
               placeholder="Agregue el Nombre del Cliente"
@@ -178,16 +172,15 @@ const NuevaPagina = () => {
               Por favor, proporcione un Nombre del Cliente válido.
             </Form.Control.Feedback>
           </Col>
-        </Form.Group>
+        </Form.Group> */}
 
-        {/* -----Mail del Cliente------ */}
+        {/* -----Mail del Cliente------
         <Form.Group as={Row} className="mb-3" controlId="formPlaintextEmail">
           <Form.Label column sm="2">
             Mail del Cliente:
           </Form.Label>
           <Col sm="10">
 
-            {/* agrego- 16-05 */}
             <Form.Control
               type="email"
               placeholder="Agregue el mail del cliente"
@@ -200,7 +193,7 @@ const NuevaPagina = () => {
               Por favor, proporcione un Email válido.
             </Form.Control.Feedback>
           </Col>
-        </Form.Group>
+        </Form.Group> */}
 
         {/* <Form.Group as={Row} md="6" controlId="validationCustom03">
                     <Form.Label column sm={2}>Nombre del Cliente</Form.Label>
@@ -209,6 +202,27 @@ const NuevaPagina = () => {
                         Por favor, proporcione un Nombre del Cliente válido.
                     </Form.Control.Feedback>
                 </Form.Group> */}
+
+        {/* -----DNI Cliente------ */}
+        <Form.Group as={Row} className="mb-3" controlId="formPlaintextDNI">
+          <Form.Label column sm="2">
+            DNI:
+          </Form.Label>
+          <Col sm="10">
+
+            <Form.Control
+              type="number"
+              placeholder="Agregue el dni del Cliente"
+              value={clienteDNI}
+              onChange={(event) => setDNI(event.target.value)}
+              required
+            />
+
+            <Form.Control.Feedback type="invalid">
+              Por favor, proporcione un DNI válido.
+            </Form.Control.Feedback>
+          </Col>
+        </Form.Group>
 
         {/* -----Patente------ */}
         <Form.Group as={Row} className="mb-3" controlId="formPlaintextPatente">
@@ -239,13 +253,9 @@ const NuevaPagina = () => {
           />
         </Form.Group>
 
-        {/* -----Asi me pide validar------ */}
+        {/* -----Al finalizar me pide validar------ */}
         <Button type="submit">Finalizar</Button>
 
-        {/* ----- Asi no me valida ------
-                <Link to="/boleta-cotizacion">
-                <Button type="submit" >Finalizar</Button>
-                </Link> */}
         <Alerts
           alertType={alertType}
           description={alertMessage}

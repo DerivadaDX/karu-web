@@ -4,7 +4,6 @@
 /* eslint-disable max-len */
 /* eslint-disable no-unused-vars */
 import React, { useContext, useState } from 'react';
-import axios from 'axios';
 import {
   Container, Row, Col, Table, Card, ListGroup,
 } from 'react-bootstrap';
@@ -45,7 +44,7 @@ const Boleta = () => {
   const [fecha, setFechaActual] = useState(new Date());
   // agrego mail
   const enviarCorreo = () => {
-    CotizacionService.enviarPDFCotizacion(cotizacion.email, cotizacion.id)
+    CotizacionService.enviarPDFCotizacion(cotizacion.cliente.email, cotizacion.id)
       .then((response) => {
         console.log('Correo enviado');
       })
@@ -66,7 +65,7 @@ const Boleta = () => {
             <Card border="primary" style={{ width: '16rem' }}>
               <Card.Body>
                 Nombre del cliente:
-                <Card.Title>{cotizacion.nombreCliente}</Card.Title>
+                <Card.Title>{cotizacion.cliente.nombre}</Card.Title>
               </Card.Body>
             </Card>
             <br />
@@ -107,32 +106,38 @@ const Boleta = () => {
         <hr />
         <Row className="my-4">
           <Col xs={6}>
-            <p><strong>Precio Base</strong></p>
+            <p><strong>Precio Venta</strong></p>
             <p><strong>Importe IVA</strong></p>
             <p><strong>Garantía Extendida</strong></p>
             <p><strong>Gastos Administrativos</strong></p>
             <hr />
-            { cotizacion.gastosAdministrativos.map((gasto) => (
+            {cotizacion.gastosAdministrativos.map((gasto) => (
               <p key={gasto.id}>{gasto.nombre}</p>))}
             <hr />
-            <p><strong>TotalGastosAdministrativos: ${cotizacion.importeTotalGastosAdministrativos}</strong></p>
+            <p style={{ backgroundColor: '#b3e6cc' }}><strong>TotalGastosAdministrativos: ${cotizacion.importeTotalGastosAdministrativos}</strong></p>
           </Col>
 
           <Col xs={6}>
-            <p>{cotizacion.precioBase}</p>
-            <p>{cotizacion.importeIVA}</p>
-            <p>{cotizacion.garantiaExtendida ? 'Sí' : 'No'}</p>
+            <p style={{ backgroundColor: '#b3e6cc' }}>{cotizacion.precioVenta}</p>
+            <p style={{ backgroundColor: '#b3e6cc' }}>{cotizacion.importeIVA}</p>
+            <p style={{ backgroundColor: '#b3e6cc' }}>{cotizacion.garantiaExtendida ? 'Sí' : 'No'}</p>
             <br />
             <hr style={{ border: '1px solid transparent' }} />
             {/* Obtener el campo seguro del objeto */}
-            { cotizacion.gastosAdministrativos.map((gasto) => (
+            {cotizacion.gastosAdministrativos.map((gasto) => (
               <p key={gasto.id}>{gasto.importe}</p>))}
           </Col>
           <hr />
           <Col xs={6}><p><strong>Total:</strong></p></Col>
-          <Col xs={6}><p><strong>{cotizacion.total}</strong></p></Col>
+          <Col xs={6} style={{ backgroundColor: '#b3e6cc' }}><p>{' '}<strong> $ {cotizacion.total}</strong></p></Col>
+
+          {/* Reserva */}
+          <Col xs={6}><p><strong>importe de Reserva:</strong></p></Col>
+          <Col xs={6} style={{ backgroundColor: '#b3e6cc' }}><p><strong>-${cotizacion.importeReserva}</strong></p></Col>
+          <hr />
+          <Col xs={6} className="bg-warning"><p><strong>Total Final:</strong></p></Col>
+          <Col xs={6} className="bg-warning"><p><strong>$ {cotizacion.totalMenosReserva}</strong></p></Col>
         </Row>
-        {/* <Button type="text">Mandar por mail</Button> */}
 
         <Button type="text" onClick={enviarCorreo}>Mandar por mail</Button>
       </div>
