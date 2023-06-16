@@ -112,9 +112,9 @@ const NuevaPagina = () => {
         // paso datos al back
         const cotizacionData = {
           sucursal: 'S-01',
-          nombreCliente: nombreC,
+          /* nombreCliente: nombreC, */
           patente: productSelected.plate, // infoCotizacion.patente,
-          email: mail,
+          /* email: mail, */
           dni: clienteDNI,
           idVendedor: 123,
           /* precioBase: 1000000, */
@@ -160,14 +160,13 @@ const NuevaPagina = () => {
                     </div>
                 </Form.Group> */}
 
-        {/* -----Nombre del Cliente------ */}
+        {/* -----Nombre del Cliente------
         <Form.Group as={Row} className="mb-3" controlId="formPlaintextNombreC">
           <Form.Label column sm="2">
             Nombre del Cliente:
           </Form.Label>
           <Col sm="10">
 
-            {/* agrego- 16-05 */}
             <Form.Control
               type="text"
               placeholder="Agregue el Nombre del Cliente"
@@ -180,16 +179,15 @@ const NuevaPagina = () => {
               Por favor, proporcione un Nombre del Cliente válido.
             </Form.Control.Feedback>
           </Col>
-        </Form.Group>
+        </Form.Group> */}
 
-        {/* -----Mail del Cliente------ */}
+        {/* -----Mail del Cliente------
         <Form.Group as={Row} className="mb-3" controlId="formPlaintextEmail">
           <Form.Label column sm="2">
             Mail del Cliente:
           </Form.Label>
           <Col sm="10">
 
-            {/* agrego- 16-05 */}
             <Form.Control
               type="email"
               placeholder="Agregue el mail del cliente"
@@ -202,7 +200,7 @@ const NuevaPagina = () => {
               Por favor, proporcione un Email válido.
             </Form.Control.Feedback>
           </Col>
-        </Form.Group>
+        </Form.Group> */}
 
         {/* <Form.Group as={Row} md="6" controlId="validationCustom03">
                     <Form.Label column sm={2}>Nombre del Cliente</Form.Label>
