@@ -23,7 +23,7 @@ import SucursalService from '../services/sucursal-service';
 const ModificarSucursal = ({ sucursal, onEdit }) => {
   const [mostrarPopUpModificarSucursal, setMostrarPopUpModificarSucursal] = useState(false);
   const [mostrarPopUpModificacionExitosa, setMostrarPopUpModificacionExitosa] = useState(false);
-  const [bloquearDeshabilitacion, setBloquearDeshabilitacion] = useState(true);
+  const [bloquearDeshabilitacion, setBloquearDeshabilitacion] = useState(false);
   const [valoresDelFormulario, setValoresDelFormulario] = useState({
     nombre: '',
     calle: '',
@@ -35,21 +35,25 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
     activa: false,
   });
 
-  const verificarSiSucursalTieneTallerActivoAsociado = (idSucursal) => {
-    SucursalService.sucursalTieneTallerActivo(idSucursal)
-      .then((response) => {
-        if (response.status === 200) {
-          const tieneTallerActivo = response.data.valor;
-          setBloquearDeshabilitacion(tieneTallerActivo && sucursal.activa);
-        }
-      })
-      .catch(() => {
-        setBloquearDeshabilitacion(sucursal.activa);
-      });
+  const verificarSiSucursalTieneTallerActivoAsociado = () => {
+    if (sucursal.posee_taller) {
+      SucursalService.sucursalTieneTallerActivo(sucursal.id)
+        .then((response) => {
+          if (response.status === 200) {
+            const tieneTallerActivo = response.data.valor;
+            setBloquearDeshabilitacion(tieneTallerActivo);
+          }
+        })
+        .catch(() => {
+          setBloquearDeshabilitacion(false);
+        });
+    } else {
+      setBloquearDeshabilitacion(false);
+    }
   };
 
   const mostrarYCargarFormulario = () => {
-    verificarSiSucursalTieneTallerActivoAsociado(sucursal.id);
+    verificarSiSucursalTieneTallerActivoAsociado();
     setValoresDelFormulario({
       id: sucursal.id,
       nombre: sucursal.nombre,
