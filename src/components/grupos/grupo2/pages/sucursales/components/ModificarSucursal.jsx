@@ -35,7 +35,7 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
     activa: false,
   });
 
-  const verificarSiSucursalTieneTallerActivoAsociado = () => {
+  const bloquearDeshabilitacionSiEsNecesario = () => {
     if (sucursal.posee_taller) {
       SucursalService.sucursalTieneTallerActivo(sucursal.id)
         .then((response) => {
@@ -53,7 +53,7 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
   };
 
   const mostrarYCargarFormulario = () => {
-    verificarSiSucursalTieneTallerActivoAsociado();
+    bloquearDeshabilitacionSiEsNecesario();
     setValoresDelFormulario({
       id: sucursal.id,
       nombre: sucursal.nombre,
