@@ -44,7 +44,7 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
         }
       })
       .catch(() => {
-        setBloquearDeshabilitacion(false);
+        setBloquearDeshabilitacion(sucursal.activa);
       });
   };
 
