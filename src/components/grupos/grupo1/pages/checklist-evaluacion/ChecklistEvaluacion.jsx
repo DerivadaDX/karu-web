@@ -18,7 +18,6 @@ import axios from 'axios';
 import MaterialReactTable from 'material-react-table';
 import { MRT_Localization_ES } from 'material-react-table/locales/es';
 import Slider from '@mui/material/Slider';
-import Header from '../../components/common/Header';
 import Alerts from '../../components/common/Alerts';
 import { getChecklistEvaluaciones } from '../../services/services-checklist';
 import evaluacion from './evaluacion.json';
@@ -294,7 +293,7 @@ const ChecklistEvaluacion = (props) => {
 
       {/* Popup cuando estan todas las rows seleccionadas para confirmar evaluacion */}
       <Popup
-        title={<LittleHeader titulo="Evaluación Terminada" />}
+        title={<LittleHeader titulo="Evaluación terminada" />}
         openDialog={openConfirmarEvaluacion}
         setOpenDialog={setOpenConfirmarEvaluacion}
         description="¿Está seguro que desea enviar la evaluación? No se podrá modificar una vez realizada."
@@ -333,7 +332,6 @@ const ChecklistEvaluacion = (props) => {
             </Box>
             <Button
               color="error"
-              disabled={loadingButton}
               variant="outlined"
               onClick={() => {
                 setOpenConfirmarEvaluacion(false);
@@ -346,7 +344,7 @@ const ChecklistEvaluacion = (props) => {
         </Box>
       </Popup>
 
-      {/* Popup para mostrar mensaje de error, cuando sea enviado el turno */}
+      {/* Popup para mostrar mensaje de error, cuando sea enviada la evaluacion  */}
       <Popup
         openDialog={openError}
         setOpenDialog={setOpenError}
@@ -357,7 +355,7 @@ const ChecklistEvaluacion = (props) => {
         </Box>
       </Popup>
 
-      {/* Popup confirmando que se envio de la evaluación */}
+      {/* Popup confirmando que se envio la evaluación */}
       <Popup
         title={<LittleHeader titulo="Evaluación cargada exitosamente." />}
         openDialog={openEvaluacionEnviada}
