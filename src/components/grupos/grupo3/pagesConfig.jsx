@@ -6,6 +6,7 @@ import RequestPageIcon from '@mui/icons-material/RequestPage';
 import PermPhoneMsgIcon from '@mui/icons-material/PermPhoneMsg';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import GroupIcon from '@mui/icons-material/Group';
+import SellIcon from '@mui/icons-material/Sell';
 import Cotizar from './components/cotizar/Cotizar';
 import NuevaPagina from './components/cotizar/NuevaPagina';
 import Boleta from './components/cotizar/Boleta';
@@ -18,6 +19,7 @@ import Roles from '../../roles';
 import AltaCliente from './pages/AltaCliente';
 import ListadoClientes from './pages/ListadoClientes';
 import ReservaRealizada from './pages/ReservaRealizada';
+import CompraAuto from './components/comprar/CompraAuto';
 
 const GROUP_3_PAGES_CONFIG = [
   {
@@ -107,6 +109,14 @@ const GROUP_3_PAGES_CONFIG = [
     icon: <GroupIcon />,
     page: <ReservaRealizada />,
     soloURL: true,
+  },
+  {
+    id: 'g3-CompraAuto',
+    name: 'Vender mi Auto',
+    href: '/compra-auto/',
+    icon: <SellIcon />,
+    page: <CompraAuto />,
+    roles: [Roles.CLIENTE, Roles.IT],
   },
 ];
 
