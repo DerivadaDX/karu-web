@@ -4,11 +4,17 @@
 /* eslint-disable max-len */
 /* eslint-disable no-unused-vars */
 import React, { useContext, useState } from 'react';
-import axios from 'axios';
 import {
   Container, Row, Col, Table, Card, ListGroup,
 } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
+import {
+  Typography,
+  Snackbar,
+  Alert,
+  AlertTitle,
+  SnackbarContent,
+} from '@mui/material';
 import { AppContext } from './AppContext';
 import CotizacionService from '../../services/CotizacionService';
 
@@ -39,19 +45,32 @@ const Boleta = () => {
   //  sessionStorage.getItem('cotizacion');
   const rawValue = sessionStorage.getItem('cotizacion');
   const cotizacion = JSON.parse(rawValue);
-  console.log(`prueba${cotizacion}`);
+
+  /* ALERTAS */
+  const [errorMessage, setErrorMessage] = useState('');
+  const [showSuccessSnackbar, setShowSuccessSnackbar] = useState(false);
+  const [showErrorSnackbar, setShowErrorSnackbar] = useState(false);
 
   /* declara una variable de estado para almacenar la fecha actual */
   const [fecha, setFechaActual] = useState(new Date());
   // agrego mail
   const enviarCorreo = () => {
-    CotizacionService.enviarPDFCotizacion(cotizacion.email, cotizacion.id)
+    CotizacionService.enviarPDFCotizacion(cotizacion.cliente.email, cotizacion.id)
       .then((response) => {
+        // Show success notification
+        setShowSuccessSnackbar(true);
         console.log('Correo enviado');
       })
       .catch((error) => {
         console.error('Error al enviar el correo', error);
+        setErrorMessage('Error al enviar el correo', error);
+        setShowErrorSnackbar(true);
       });
+  };
+
+  const handleSnackbarClose = () => {
+    setShowSuccessSnackbar(false);
+    setShowErrorSnackbar(false);
   };
 
   return (
@@ -66,7 +85,7 @@ const Boleta = () => {
             <Card border="primary" style={{ width: '16rem' }}>
               <Card.Body>
                 Nombre del cliente:
-                <Card.Title>{cotizacion.nombreCliente}</Card.Title>
+                <Card.Title>{cotizacion.cliente.nombre}</Card.Title>
               </Card.Body>
             </Card>
             <br />
@@ -107,35 +126,90 @@ const Boleta = () => {
         <hr />
         <Row className="my-4">
           <Col xs={6}>
-            <p><strong>Precio Base</strong></p>
+            <p><strong>Precio Venta</strong></p>
             <p><strong>Importe IVA</strong></p>
             <p><strong>Garantía Extendida</strong></p>
             <p><strong>Gastos Administrativos</strong></p>
             <hr />
-            { cotizacion.gastosAdministrativos.map((gasto) => (
+            {cotizacion.gastosAdministrativos.map((gasto) => (
               <p key={gasto.id}>{gasto.nombre}</p>))}
             <hr />
-            <p><strong>TotalGastosAdministrativos: ${cotizacion.importeTotalGastosAdministrativos}</strong></p>
+            <p style={{ backgroundColor: '#b3e6cc' }}><strong>TotalGastosAdministrativos: ${cotizacion.importeTotalGastosAdministrativos}</strong></p>
           </Col>
 
           <Col xs={6}>
-            <p>{cotizacion.precioBase}</p>
-            <p>{cotizacion.importeIVA}</p>
-            <p>{cotizacion.garantiaExtendida ? 'Sí' : 'No'}</p>
+            <p style={{ backgroundColor: '#b3e6cc' }}>{cotizacion.precioVenta}</p>
+            <p style={{ backgroundColor: '#b3e6cc' }}>{cotizacion.importeIVA}</p>
+            <p style={{ backgroundColor: '#b3e6cc' }}>{cotizacion.garantiaExtendida ? 'Sí' : 'No'}</p>
             <br />
             <hr style={{ border: '1px solid transparent' }} />
             {/* Obtener el campo seguro del objeto */}
-            { cotizacion.gastosAdministrativos.map((gasto) => (
+            {cotizacion.gastosAdministrativos.map((gasto) => (
               <p key={gasto.id}>{gasto.importe}</p>))}
           </Col>
           <hr />
           <Col xs={6}><p><strong>Total:</strong></p></Col>
-          <Col xs={6}><p><strong>{cotizacion.total}</strong></p></Col>
+          <Col xs={6} style={{ backgroundColor: '#b3e6cc' }}><p>{' '}<strong> $ {cotizacion.total}</strong></p></Col>
+
+          {/* Reserva */}
+          <Col xs={6}><p><strong>importe de Reserva:</strong></p></Col>
+          <Col xs={6} style={{ backgroundColor: '#b3e6cc' }}><p><strong>-${cotizacion.importeReserva}</strong></p></Col>
+          <hr />
+          <Col xs={6} className="bg-warning"><p><strong>Total Final:</strong></p></Col>
+          <Col xs={6} className="bg-warning"><p><strong>$ {cotizacion.totalMenosReserva}</strong></p></Col>
         </Row>
-        {/* <Button type="text">Mandar por mail</Button> */}
 
         <Button type="text" onClick={enviarCorreo}>Mandar por mail</Button>
       </div>
+
+      {/* Alertas */}
+      <Snackbar
+        open={showSuccessSnackbar}
+        autoHideDuration={3000}
+        onClose={handleSnackbarClose}
+        style={{
+          position: 'fixed',
+          left: '50%',
+          top: '50%',
+          transform: 'translate(-50%, -50%)',
+          minWidth: '400px',
+        }}
+      >
+        <SnackbarContent
+          sx={{ backgroundColor: 'green' }} // Set your desired background color here
+          message={(
+            <Alert onClose={handleSnackbarClose} severity="success">
+              <AlertTitle>Correo enviado!</AlertTitle>
+              Se ha enviado la boleta al mail
+              <strong> correctamente!</strong>
+            </Alert>
+          )}
+        />
+      </Snackbar>
+      <Snackbar
+        open={showErrorSnackbar}
+        style={{
+          position: 'fixed',
+          left: '50%',
+          top: '50%',
+          transform: 'translate(-50%, -50%)',
+          minWidth: '400px',
+        }}
+      >
+        <SnackbarContent
+          sx={{ backgroundColor: 'red' }} // Set your desired background color here
+          message={(
+            <Alert onClose={handleSnackbarClose} severity="error">
+              <AlertTitle>Error</AlertTitle>
+              Hubo un
+              <strong> error al enviar el mail. </strong>
+              Por favor intente mas tarde.
+              <strong> Error: </strong>
+              {errorMessage}
+            </Alert>
+          )}
+        />
+      </Snackbar>
     </Container>
 
   );

@@ -1,12 +1,14 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useMemo, useState } from 'react';
+import ReceiptOutlinedIcon from '@mui/icons-material/ReceiptOutlined';
+import { Link } from 'react-router-dom';
 
 import {
   Box,
   Divider,
   Paper,
   Typography,
-  TableContainer, Table, TableHead, TableRow, TableCell, TableBody,
+  TableContainer, Table, TableHead, TableRow, TableCell, TableBody, IconButton,
 } from '@mui/material';
 import CheckBoxOutlinedIcon from '@mui/icons-material/CheckBoxOutlined';
 import CheckBoxOutlineBlankOutlinedIcon from '@mui/icons-material/CheckBoxOutlineBlankOutlined';
@@ -16,6 +18,7 @@ import MaterialReactTable from 'material-react-table';
 // import CrearSucursal from './CrearSucursal';
 import CotizacionService from '../services/CotizacionService';
 import PopUpAnular from '../components/cotizaciones/PopUpAnular';
+import PopUpFacturar from '../components/factura/PopUpFacturar';
 
 const styles = {
   paper: {
@@ -70,10 +73,32 @@ const ListadoCotizaciones = () => {
     );
   };
 
-  const renderAccionesFila = ({ row }) => {
+  /* const renderAccionesFila = ({ row }) => {
+     const { estadoCotizacion } = row.original;
+     if (estadoCotizacion === 'PENDIENTE') {
+       return <PopUpAnular id={row.original.id} />;
+     }
+     return ' ';
+   }; */
+
+  const renderAccionesFilaFactura = ({ row }) => {
+    const { factura } = row.original;
     const { estadoCotizacion } = row.original;
     if (estadoCotizacion === 'PENDIENTE') {
-      return <PopUpAnular id={row.original.id} />;
+      return (
+        <Box display="flex">
+          <PopUpAnular id={row.original.id} />
+          <PopUpFacturar id={row.original.id} />
+          {/* <Link to={`/facturar/${row.original.id}`}>
+            <IconButton disabled={factura}>
+              <ReceiptOutlinedIcon />
+            </IconButton>
+      </Link> */}
+        </Box>
+      );
+    }
+    if (estadoCotizacion === 'PROCESADA') {
+      <PopUpAnular id={row.original.id} />;
     }
     return ' ';
   };
@@ -104,11 +129,11 @@ const ListadoCotizaciones = () => {
         header: 'Fecha',
       },
       {
-        accessorKey: 'nombreCliente',
+        accessorKey: 'cliente.nombre',
         header: 'Nombre del Cliente',
       },
       {
-        accessorKey: 'email',
+        accessorKey: 'cliente.email',
         header: 'Email',
       },
       {
@@ -121,7 +146,7 @@ const ListadoCotizaciones = () => {
         Cell: renderGarantiaExtendida,
       },
       {
-        accessorKey: 'precioBase',
+        accessorKey: 'precioVenta',
         header: 'Precio Base',
       },
       {
@@ -136,10 +161,15 @@ const ListadoCotizaciones = () => {
         accessorKey: 'total',
         header: 'Total',
       },
-      {
+      /* {
         accessorKey: 'estadoCotizacion',
-        header: 'Estado',
+        header: 'Mod. Estado',
         Cell: renderAccionesFila,
+      }, */
+      {
+        accessorKey: 'factura',
+        header: 'Factura',
+        Cell: renderAccionesFilaFactura,
       },
     ],
     [],

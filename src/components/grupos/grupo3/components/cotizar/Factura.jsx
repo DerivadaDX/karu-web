@@ -1,6 +1,10 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
+<<<<<<< HEAD
 /*
+=======
+
+>>>>>>> dev
 import React from 'react';
 
 import {
@@ -129,5 +133,8 @@ const Factura = ({ infoCotizacion }) => (
 );
 
 export default Factura;
+<<<<<<< HEAD
 
 */
+=======
+>>>>>>> dev
