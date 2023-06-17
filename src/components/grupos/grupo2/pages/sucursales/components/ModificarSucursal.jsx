@@ -23,7 +23,7 @@ import SucursalService from '../services/sucursal-service';
 const ModificarSucursal = ({ sucursal, onEdit }) => {
   const [mostrarPopUpModificarSucursal, setMostrarPopUpModificarSucursal] = useState(false);
   const [mostrarPopUpModificacionExitosa, setMostrarPopUpModificacionExitosa] = useState(false);
-  const [sucursalTieneTallerActivo, setSucursalTieneTallerActivo] = useState(false);
+  const [bloquearDeshabilitacion, setBloquearDeshabilitacion] = useState(true);
   const [valoresDelFormulario, setValoresDelFormulario] = useState({
     nombre: '',
     calle: '',
@@ -40,11 +40,11 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
       .then((response) => {
         if (response.status === 200) {
           const tieneTallerActivo = response.data.valor;
-          setSucursalTieneTallerActivo(tieneTallerActivo);
+          setBloquearDeshabilitacion(tieneTallerActivo && sucursal.activa);
         }
       })
       .catch(() => {
-        setSucursalTieneTallerActivo(false);
+        setBloquearDeshabilitacion(false);
       });
   };
 
@@ -231,7 +231,7 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
                 <Switch
                   checked={valoresDelFormulario.activa}
                   onChange={actualizarValorDeFormulario}
-                  disabled={sucursalTieneTallerActivo && sucursal.activa}
+                  disabled={bloquearDeshabilitacion}
                 />
               )}
               sx={{
@@ -240,7 +240,7 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
                 marginLeft: '0ch',
               }}
             />
-            {sucursalTieneTallerActivo && sucursal.activa && (
+            {bloquearDeshabilitacion && (
               <Alert variant="outlined" severity="info">
                 No se puede deshabilitar esta sucursal porque
                 posee un taller activo asociado a ella.
