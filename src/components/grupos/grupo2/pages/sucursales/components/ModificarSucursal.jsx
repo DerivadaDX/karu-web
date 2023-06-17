@@ -35,18 +35,18 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
     activa: false,
   });
 
+  const bloquearDeshabilitacionSiTieneTallerActivo = () => {
+    SucursalService.sucursalTieneTallerActivo(sucursal.id)
+      .then((response) => {
+        const tieneTallerActivo = response.data.valor;
+        setBloquearDeshabilitacion(tieneTallerActivo);
+      })
+      .catch(() => {
+        setBloquearDeshabilitacion(false);
+      });
+  };
+
   const bloquearDeshabilitacionSiEsNecesario = () => {
-    if (sucursal.posee_taller) {
-      SucursalService.sucursalTieneTallerActivo(sucursal.id)
-        .then((response) => {
-          if (response.status === 200) {
-            const tieneTallerActivo = response.data.valor;
-            setBloquearDeshabilitacion(tieneTallerActivo);
-          }
-        })
-        .catch(() => {
-          setBloquearDeshabilitacion(false);
-        });
     } else {
       setBloquearDeshabilitacion(false);
     }
