@@ -17,7 +17,6 @@ import autosEnVenta from '../../../constants/autosEnVenta';
 import AcordeonObservaciones from '../../common/acordeonObservaciones';
 import VehiculoService from '../../../services/VehiculoService';
 import ImageSlider from '../../common/carrusel';
-import ImageSlider from '../../common/carrusel';
 
 const VehiculoIndividual = () => {
   const Img = styled('img')({

@@ -52,7 +52,7 @@ const GROUP_3_PAGES_CONFIG = [
   },
   {
     id: 'g3-Filtrar vehiculos',
-    name: 'Filtrar vehiculos',
+    name: 'Comprar mi auto',
     href: '/filtrarVehiculos/',
     icon: <Search />,
     page: <FiltroDeVehiculos />,

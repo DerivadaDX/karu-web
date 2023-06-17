@@ -1,6 +1,7 @@
 // import { Link } from 'react-router-dom';
 import { Container, Box } from '@mui/material';
 import React from 'react';
+// eslint-disable-next-line import/no-named-as-default
 import VehiculoIndividual from '../components/ventas/vehiculoIndividual/vehiculoIndividual';
 import AcordeonObservaciones from '../components/common/acordeonObservaciones';
 // import ConsultaDialog from '../components/common/consultaDialog';

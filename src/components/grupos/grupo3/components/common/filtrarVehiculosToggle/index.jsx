@@ -3,7 +3,12 @@
 import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import React from 'react';
 
-const FiltroVehiculosToggle = ({ options, value, selectToggle, titulo }) => (
+const FiltroVehiculosToggle = ({
+  options,
+  value,
+  selectToggle,
+  titulo,
+}) => (
   <Box>
     <p>{titulo}</p>
     <ToggleButtonGroup
