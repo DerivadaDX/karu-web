@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import {
+  Alert,
   Box,
   Button,
   Dialog,
@@ -239,6 +240,12 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
                 marginLeft: '0ch',
               }}
             />
+            {sucursalTieneTallerActivo && sucursal.activa && (
+              <Alert variant="outlined" severity="info">
+                No se puede deshabilitar esta sucursal porque
+                posee un taller activo asociado a ella.
+              </Alert>
+            )}
 
             <Button
               type="submit"
