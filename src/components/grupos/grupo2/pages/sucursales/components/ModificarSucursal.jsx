@@ -47,6 +47,8 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
   };
 
   const bloquearDeshabilitacionSiEsNecesario = () => {
+    if (sucursal.posee_taller) {
+      bloquearDeshabilitacionSiTieneTallerActivo();
     } else {
       setBloquearDeshabilitacion(false);
     }
