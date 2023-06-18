@@ -20,6 +20,7 @@ import AltaCliente from './pages/AltaCliente';
 import ListadoClientes from './pages/ListadoClientes';
 import ReservaRealizada from './pages/ReservaRealizada';
 import CompraAuto from './components/comprar/CompraAuto';
+// import VehicleForm from './components/comprar/VehicleForm';
 
 const GROUP_3_PAGES_CONFIG = [
   {
@@ -118,6 +119,13 @@ const GROUP_3_PAGES_CONFIG = [
     page: <CompraAuto />,
     roles: [Roles.CLIENTE, Roles.IT],
   },
+  /* {
+    id: 'g3-compra',
+    href: '/compra-vehiculo',
+    icon: <SellIcon />,
+    page: <VehicleForm />,
+    soloUrl: true,
+  }, */
 ];
 
 export default GROUP_3_PAGES_CONFIG;
