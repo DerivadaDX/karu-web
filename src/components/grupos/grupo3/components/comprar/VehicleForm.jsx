@@ -82,8 +82,6 @@ const VehicleForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = compra;
-    console.log('submit', formData);
-    console.log('submitvEHICULO', values);
     // AGREGO CLIENTE Y VEHICULOS
     await ClientesService.guardarCliente(formData);
     await saveVehicle(values);
