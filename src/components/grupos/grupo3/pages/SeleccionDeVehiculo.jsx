@@ -15,6 +15,8 @@ import VehiculoService from '../services/VehiculoService';
 const FiltroDeVehiculos = () => {
   // hooks para guardar los estados
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState('TODOS');
+  const [categoriaGNCSeleccionada, setCategoriaGNCSeleccionada] = useState('TODOS');
+  const [categoriaOrigenSeleccionada, setCategoriaOrigenSeleccionada] = useState('TODOS');
   const [selectedPrice, setSelectedPrice] = useState([1000000, 25000000]);
   const [selectedKM, setSelectedKM] = useState([100, 300000]);
 
@@ -44,6 +46,12 @@ const FiltroDeVehiculos = () => {
   const handleCategoriaSeleccionada = (event, value) => (
     !value ? null : setCategoriaSeleccionada(value));
 
+  const handleCategoriaOrigenSeleccionada = (event, value) => (
+    !value ? null : setCategoriaOrigenSeleccionada(value));
+
+  const handleCategoriaGNCSeleccionada = (event, value) => (
+    !value ? null : setCategoriaGNCSeleccionada(value));
+
   const handleChangePrice = (event, value) => {
     setSelectedPrice(value);
   };
@@ -60,6 +68,18 @@ const FiltroDeVehiculos = () => {
       updatedList = updatedList.filter((item) => ((categoriaSeleccionada === 'TODOS')
        || ((categoriaSeleccionada !== 'TODOS')
       && (item.fuelType === categoriaSeleccionada))));
+    }
+    // filtra por tipo gnc
+    if (categoriaGNCSeleccionada) {
+      updatedList = updatedList.filter((item) => ((categoriaSeleccionada === 'TODOS')
+       || ((categoriaSeleccionada !== 'TODOS')
+      && (item.gnc === categoriaGNCSeleccionada))));
+    }
+    // filtra por origen
+    if (categoriaOrigenSeleccionada) {
+      updatedList = updatedList.filter((item) => ((categoriaSeleccionada === 'TODOS')
+       || ((categoriaSeleccionada !== 'TODOS')
+      && (item.origin === categoriaOrigenSeleccionada))));
     }
 
     // filtro de barra de busqueda
@@ -96,7 +116,8 @@ const FiltroDeVehiculos = () => {
 
   useEffect(() => {
     aplicarFiltros();
-  }, [categoriaSeleccionada, searchInput, selectedPrice, selectedKM]);
+  }, [categoriaSeleccionada, categoriaGNCSeleccionada,
+    categoriaOrigenSeleccionada, searchInput, selectedPrice, selectedKM]);
 
   return (
     <div className="filtroDeVehiculos">
@@ -116,6 +137,10 @@ const FiltroDeVehiculos = () => {
             changePrice={handleChangePrice}
             selectedKM={selectedKM}
             changeKM={handleChangeKM}
+            categoriaGNCSeleccionada={categoriaGNCSeleccionada}
+            toggleGNCSeleccionado={handleCategoriaGNCSeleccionada}
+            categoriaOrigenSeleccionada={categoriaOrigenSeleccionada}
+            toggleOrigenSeleccionado={handleCategoriaOrigenSeleccionada}
           />
         </div>
         <div className="filtroDeVehiculos_list-wrap">

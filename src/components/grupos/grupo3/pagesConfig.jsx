@@ -21,6 +21,8 @@ import ListadoClientes from './pages/ListadoClientes';
 import ReservaRealizada from './pages/ReservaRealizada';
 import CompraAuto from './components/comprar/CompraAuto';
 import VehicleForm from './components/comprar/VehicleForm';
+import FormularioCliente from './components/canje/formularioClientes';
+import FormularioVehiculoG3 from './components/canje/formularioVehiculos';
 
 const GROUP_3_PAGES_CONFIG = [
   {
@@ -55,7 +57,7 @@ const GROUP_3_PAGES_CONFIG = [
   },
   {
     id: 'g3-Filtrar vehiculos',
-    name: 'Filtrar vehiculos',
+    name: 'Comprar mi auto',
     href: '/filtrarVehiculos/',
     icon: <Search />,
     page: <FiltroDeVehiculos />,
@@ -125,6 +127,22 @@ const GROUP_3_PAGES_CONFIG = [
     icon: <SellIcon />,
     page: <VehicleForm />,
     soloUrl: true,
+  },
+  {
+    id: 'g3-FormularioCliente',
+    name: 'Datos cliente',
+    href: '/vehiculoIndividual/FormularioCliente',
+    icon: <GroupAddIcon />,
+    page: <FormularioCliente />,
+    soloURL: true,
+  },
+  {
+    id: 'g3-FormularioVehiculo',
+    name: 'Datos vehiculo',
+    href: '/FormularioVehiculo',
+    icon: <GroupAddIcon />,
+    page: <FormularioVehiculoG3 />,
+    soloURL: true,
   },
 ];
 
