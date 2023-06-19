@@ -1,8 +1,8 @@
 /* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable no-shadow */
 import { Box, Button, TextField } from '@mui/material';
-import axios from 'axios';
 import { useState } from 'react';
+import ConsultaService from '../../../services/ConsultaService';
 
 const ConsultaCliente = () => {
   const [mail, setEmail] = useState('');
@@ -36,7 +36,6 @@ const ConsultaCliente = () => {
     });
 
     try {
-      const url = 'http://34.74.194.25:8080/api-gc/consultas/save';
       const consultaObject = {
         nombre: nombre_,
         apellido: apellido_,
@@ -44,7 +43,7 @@ const ConsultaCliente = () => {
         email: mail,
         mensaje: consulta,
       };
-      const response = await axios.post(url, consultaObject);
+      const response = await ConsultaService.guardarConsulta(consultaObject);
       // eslint-disable-next-line no-console
       console.log(response.data);
     } catch (error) {
