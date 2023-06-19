@@ -19,7 +19,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-// import ClientesService from '../services/ClienteService';
+import ClientesService from '../../services/ClienteService';
 
 const VehicleForm = () => {
   const rawValue = sessionStorage.getItem('compra');
@@ -85,8 +85,8 @@ const VehicleForm = () => {
     console.log('submit', formData);
     console.log('submitvEHICULO', values);
     // AGREGO CLIENTE Y VEHICULOS
-    // await ClientesService.guardarCliente(formData);
-    // await saveVehicle(values);
+    await ClientesService.guardarCliente(formData);
+    await saveVehicle(values);
     navigate('/turno-evaluacion-cliente');
   };
 
