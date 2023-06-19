@@ -18,12 +18,16 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+// import ClientesService from '../services/ClienteService';
 
 const VehicleForm = () => {
+  const rawValue = sessionStorage.getItem('compra');
+  const compra = JSON.parse(rawValue);
+  console.log('obtiene: ', compra, compra.dni)
   const [values, setValues] = useState({
     plate: '',
     kilometers: '',
-    dni: '',
+    dni: compra.dni,// paso dato de dni
     origin: '',
     gnc: false,
     modelData: {
@@ -36,9 +40,10 @@ const VehicleForm = () => {
       category: '',
     },
   });
+  console.log('valores ', values)
 
   const [models, setModels] = useState([
-    { brand: '', model: '', year: '', basePrice: 0.0, engine: '', fuelType: '', category: ''},
+    { brand: '', model: '', year: '', basePrice: 0.0, engine: '', fuelType: '', category: '' },
   ]);
 
   const [isDropdownInitialized, setIsDropdownInitialized] = useState(false);
@@ -68,13 +73,15 @@ const VehicleForm = () => {
     }
   }, [isDropdownInitialized]);
 
-  const { saveVehicle, showSpansaveVehicleError, saveVehicleMessageError, setSpansaveVehicleError} =
+  const { saveVehicle, showSpansaveVehicleError, saveVehicleMessageError, setSpansaveVehicleError } =
     useContext(UserContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    //AGREGO CLIENTE
+    const formData = compra;
+    console.log('submit', formData);
+    console.log('submitvEHICULO', values);
+    // AGREGO CLIENTE Y VEHICULOS
     // await ClientesService.guardarCliente(formData);
     // await saveVehicle(values);
   };
@@ -122,8 +129,11 @@ const VehicleForm = () => {
             variant="filled"
             label={input.label}
             onChange={onChange}
-            defaultValue={''}
-            inputProps={{ pattern: input.pattern }}
+            defaultValue={input.name === 'dni' ? compra.dni : ''}
+            inputProps={{
+              pattern: input.pattern,
+              readOnly: input.name === 'dni' ? true : false // Establece readOnly solo cuando el campo es 'dni',sino lo saco
+            }}
             error={Boolean(errors[input.name])} // Show error message if exists
             helperText={errors[input.name]} // Show error message
             required
