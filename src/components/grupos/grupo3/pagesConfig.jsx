@@ -18,6 +18,8 @@ import Roles from '../../roles';
 import AltaCliente from './pages/AltaCliente';
 import ListadoClientes from './pages/ListadoClientes';
 import ReservaRealizada from './pages/ReservaRealizada';
+import FormularioCliente from './components/canje/formularioClientes';
+import FormularioVehiculoG3 from './components/canje/formularioVehiculos';
 
 const GROUP_3_PAGES_CONFIG = [
   {
@@ -106,6 +108,22 @@ const GROUP_3_PAGES_CONFIG = [
     href: '/ReservaRealizada',
     icon: <GroupIcon />,
     page: <ReservaRealizada />,
+    soloURL: true,
+  },
+  {
+    id: 'g3-FormularioCliente',
+    name: 'Datos cliente',
+    href: '/vehiculoIndividual/FormularioCliente',
+    icon: <GroupAddIcon />,
+    page: <FormularioCliente />,
+    soloURL: true,
+  },
+  {
+    id: 'g3-FormularioVehiculo',
+    name: 'Datos vehiculo',
+    href: '/FormularioVehiculo',
+    icon: <GroupAddIcon />,
+    page: <FormularioVehiculoG3 />,
     soloURL: true,
   },
 ];

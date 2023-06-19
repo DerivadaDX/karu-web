@@ -112,6 +112,12 @@ const VehiculoIndividual = () => {
       <Link to={`/vehiculoIndividual/${vehiculoData.plate}/reserva`}>
         <Button variant="contained">Reservar</Button>
       </Link>
+      <Link to="/vehiculoIndividual/FormularioCliente">
+        <Button variant="contained">
+          Canjear
+          {vehiculoData.plate ? sessionStorage.setItem('patenteVenta', vehiculoData.plate) : ''}
+        </Button>
+      </Link>
     </Paper>
   );
 };
