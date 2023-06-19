@@ -197,8 +197,8 @@ export const UserContextProvider = ({ children }) => {
     setPassword('');
     setUserType('');
     settwoFactorCode('');
-    setIsAuthenticated(false);
     cookie.remove('user');
+    setIsAuthenticated(false);
     navigate('/');
   };
 
