@@ -1,4 +1,6 @@
 import DriveEtaIcon from '@mui/icons-material/DriveEta';
+import CarRentalIcon from '@mui/icons-material/CarRental';
+import ReceiptIcon from '@mui/icons-material/Receipt';
 import { Search } from '@mui/icons-material';
 import EuroIcon from '@mui/icons-material/Euro';
 import React from 'react';
@@ -23,6 +25,8 @@ import CompraAuto from './components/comprar/CompraAuto';
 import VehicleForm from './components/comprar/VehicleForm';
 import FormularioCliente from './components/canje/formularioClientes';
 import FormularioVehiculoG3 from './components/canje/formularioVehiculos';
+import ListadoFacturas from './pages/ListadoFacturas';
+import ListadoReservas from './pages/ListadoReservas';
 
 const GROUP_3_PAGES_CONFIG = [
   {
@@ -112,6 +116,24 @@ const GROUP_3_PAGES_CONFIG = [
     icon: <GroupIcon />,
     page: <ReservaRealizada />,
     soloURL: true,
+  },
+  {
+    id: 'g3-ListadoFacturas',
+    name: 'Ver Facturas',
+    href: '/ListadoFacturas',
+    icon: <CarRentalIcon />,
+    page: <ListadoFacturas />,
+    soloURL: true,
+    roles: [Roles.VENDEDOR, Roles.IT],
+  },
+  {
+    id: 'g3-ListadoReservas',
+    name: 'Ver Reservas',
+    href: '/ListadoReservas',
+    icon: <ReceiptIcon />,
+    page: <ListadoReservas />,
+    soloURL: true,
+    roles: [Roles.VENDEDOR, Roles.IT],
   },
   {
     id: 'g3-CompraAuto',
