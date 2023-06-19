@@ -18,12 +18,15 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 // import ClientesService from '../services/ClienteService';
 
 const VehicleForm = () => {
   const rawValue = sessionStorage.getItem('compra');
   const compra = JSON.parse(rawValue);
-  console.log('obtiene: ', compra, compra.dni)
+  console.log('obtiene: ', compra, compra.dni);
+  const navigate = useNavigate();
+
   const [values, setValues] = useState({
     plate: '',
     kilometers: '',
@@ -84,6 +87,7 @@ const VehicleForm = () => {
     // AGREGO CLIENTE Y VEHICULOS
     // await ClientesService.guardarCliente(formData);
     // await saveVehicle(values);
+    navigate('/turno-evaluacion-cliente');
   };
 
   const onChange = (e) => {
