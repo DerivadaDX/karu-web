@@ -1,10 +1,10 @@
 /*eslint-disable */
 import { Link } from 'react-router-dom';
 import React, { useContext, useEffect, useState } from 'react';
-import { UserContext } from '../../context/UsersContext';
-import { inputs } from '../../dto/vehicle-props';
-import { GetAllModels } from '../../api/API-methods';
-import '../../assets/css/formVehicle.css';
+import { UserContext } from '../../../grupo4/context/UsersContext';
+import { inputs } from '../../../grupo4/dto/vehicle-props';
+import { GetAllModels } from '../../../grupo4/api/API-methods';
+import '../comprar/formVehicle.css';
 import {
   Alert,
   Box,

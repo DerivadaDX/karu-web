@@ -80,37 +80,25 @@ const CompraAuto = () => {
     if (validateForm()) {
       try {
         // await ClientesService.guardarCliente(formData);
+        /* nombreCliente: nombreC, */
+        // patente: productSelected.plate, // infoCotizacion.patente,
+        /* email: mail, */
+        //  dni: clienteDNI,
+        // idVendedor: 3,
+        /* precioBase: 1000000, */
+        // garantiaExtendida: garantiaCheck,
         // paso datos
-        const compraData = {
-          Dni: dni.value,
-          Nombre: nombre.value,
-          Apellido: apellido.value,
-          Telefono: telefono.value,
-          Email: mail.value,
-          Direccion: direccion.value,
-
-          /* nombreCliente: nombreC, */
-          // patente: productSelected.plate, // infoCotizacion.patente,
-          /* email: mail, */
-          //  dni: clienteDNI,
-          // idVendedor: 3,
-          /* precioBase: 1000000, */
-          // garantiaExtendida: garantiaCheck,
-        };
-
         // session Storage
-        const infoCompra = compraData;
-        sessionStorage.setItem('compra', JSON.stringify(infoCompra));
-        console.log(infoCompra);
+        sessionStorage.setItem('compra', JSON.stringify(formData));
+        console.log(formData);
 
         // Show success notification
         setShowSuccessSnackbar(true);
-
         // Reset the form data if needed
-        // setFormData({});
+        setFormData({});
 
         // Lo redirecciona a la pestaña de VehicleForm
-        // navigate('/compra-vehiculo');
+        navigate('/compra-vehiculo');
       } catch (error) {
         setErrorMessage(error.message);
         setShowErrorSnackbar(true);
