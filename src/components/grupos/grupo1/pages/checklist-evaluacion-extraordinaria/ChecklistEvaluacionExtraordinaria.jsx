@@ -3,7 +3,6 @@
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
 import {
-  Alert,
   Box,
   Button,
   Container,
@@ -11,15 +10,14 @@ import {
   Divider,
   TextField,
   Checkbox,
+  CircularProgress,
 } from '@mui/material';
 import {
-  useState, useEffect, useMemo, React, useRef,
+  useState, useEffect, useMemo, React,
 } from 'react';
 import axios from 'axios';
 import MaterialReactTable from 'material-react-table';
 import { MRT_Localization_ES } from 'material-react-table/locales/es';
-import Slider from '@mui/material/Slider';
-import Header from '../../components/common/Header';
 import Alerts from '../../components/common/Alerts';
 import { getChecklistEvaluaciones } from '../../services/services-checklist';
 import Popup from '../../components/common/DialogPopup';
@@ -32,12 +30,13 @@ const ChecklistEvaluacionExtraordinaria = (props) => {
   const [evaluaciones, setEvaluaciones] = useState([]);
   const [checkboxSeleccionada, setCheckboxSeleccionada] = useState({});
   const [loading, setLoading] = useState(true);
-  const [resError, setResError] = useState([]);
+  const [loadingButton, setLoadingButton] = useState(false);
 
   // Para los popups de confirmacion y manejo de errores
   const [openNoSeleccion, setOpenNoSeleccion] = useState(false);
   const [openConfirmarEvaluacion, setOpenConfirmarEvaluacion] = useState(false);
   const [openEvaluacionEnviada, setOpenEvaluacionEnviada] = useState(false);
+  const [openError, setOpenError] = useState(false);
 
   const [valoresEvaluacion, setValoresEvaluacion] = useState({
     tareas: [],
@@ -155,11 +154,18 @@ const ChecklistEvaluacionExtraordinaria = (props) => {
       .then(() => {
         setOpenEvaluacionEnviada(true);
         setActualizar(true);
+        setAlertType('');
+        setAlertError('');
+        setLoadingButton(false);
       })
-      .catch(() => {
-        setAlertmensaje('Ha ocurrido un error.');
+      .catch((error) => {
+        const mensajeError = error.response.data.error;
+        setAlertTitulo('Ha ocurrido algo inesperado');
+        setAlertmensaje(`${mensajeError}`);
         setAlertError('error');
-        setAlertTitulo('Error de servidor');
+        setOpenConfirmarEvaluacion(false);
+        setLoadingButton(false);
+        setOpenError(true);
       });
   };
 
@@ -276,6 +282,7 @@ const ChecklistEvaluacionExtraordinaria = (props) => {
               onClick={() => {
                 setOpenConfirmarEvaluacion(true);
                 setOpenNoSeleccion(false);
+                setAlertError('');
               }}
             >
               Aceptar
@@ -300,33 +307,60 @@ const ChecklistEvaluacionExtraordinaria = (props) => {
         description="¿Está seguro que desea enviar la evaluación? No se podrá modificar una vez realizada."
         disableBackdropClick
       >
-        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <Alerts alertType={alertError} description={alertMensaje} title={alertTitulo} />
-        </Box>
+
         <Box sx={{
           display: 'flex', justifyContent: 'center', alignItems: 'center',
         }}
         >
           <DialogActions>
-            <Button
-              color="secondary"
-              variant="outlined"
-              onClick={() => {
-                handleSubmit();
-              }}
-            >
-              Enviar
-            </Button>
+            <Box sx={{ m: 1, position: 'relative' }}>
+              <Button
+                color="secondary"
+                variant="outlined"
+                disabled={loadingButton}
+                onClick={() => {
+                  handleSubmit();
+                  setLoadingButton(true);
+                  setAlertError('');
+                }}
+              >
+                Enviar
+              </Button>
+              {loadingButton && (
+              <CircularProgress
+                size={24}
+                sx={{
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  marginTop: '-12px',
+                  marginLeft: '-12px',
+                }}
+              />
+              )}
+            </Box>
             <Button
               color="error"
               variant="outlined"
               onClick={() => {
                 setOpenConfirmarEvaluacion(false);
+                setAlertError('');
               }}
             >
               Cerrar
             </Button>
           </DialogActions>
+        </Box>
+      </Popup>
+
+      {/* Popup para mostrar mensaje de error, cuando sea enviada la evaluacion */}
+      <Popup
+        openDialog={openError}
+        setOpenDialog={setOpenError}
+        title={<LittleHeader titulo="Ha ocurrido un problema" />}
+      >
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Alerts alertType={alertError} description={alertMensaje} title={alertTitulo} />
         </Box>
       </Popup>
 
