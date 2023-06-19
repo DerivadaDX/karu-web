@@ -2,7 +2,7 @@
 /* eslint-disable max-len */
 import React from 'react';
 import FiltroVehiculosToggle from '../../common/filtrarVehiculosToggle';
-import listaCategorias from '../../../constants';
+import { listaCategorias, listaOpcOrigen, listaGNC } from '../../../constants';
 import SliderProton from '../../common/sliderProton';
 import SliderKilometros from '../../common/SliderKilometros';
 import './styles.css';
@@ -14,28 +14,50 @@ const PanelDeFiltros = ({
   selectedPrice,
   changeKM,
   selectedKM,
+  categoriaOrigenSeleccionada,
+  toggleOrigenSeleccionado,
+  categoriaGNCSeleccionada,
+  toggleGNCSeleccionado,
 }) => (
 
   <div>
     {/* combustibles */}
     <div className="input-group">
-      <p className="label"> </p>
       <FiltroVehiculosToggle
         options={listaCategorias}
         value={categoriaSeleccionada}
         selectToggle={toggleSeleccionado}
+        titulo="Combustible"
       />
-      <div className="input-group">
-        <p className="label-range"> </p>
-        <SliderProton value={selectedPrice} changePrice={changePrice} />
-      </div>
-      <div className="input-group">
-        <p className="label-range"> </p>
-        <SliderKilometros value={selectedKM} changeKM={changeKM} />
-      </div>
     </div>
-    {/* año */}
-    {/* reservado */}
+    {/* precio */}
+    <div className="input-group">
+      <SliderProton value={selectedPrice} changePrice={changePrice} />
+    </div>
+    {/* kilometraje */}
+    <div className="input-group">
+      <SliderKilometros value={selectedKM} changeKM={changeKM} />
+    </div>
+    {/* origen auto */}
+    <div>
+      <p className="label-range"> </p>
+      <FiltroVehiculosToggle
+        options={listaOpcOrigen}
+        value={categoriaOrigenSeleccionada}
+        selectToggle={toggleOrigenSeleccionado}
+        titulo="Origen:"
+      />
+    </div>
+    {/* GNC */}
+    <div>
+      <p className="label-range"> </p>
+      <FiltroVehiculosToggle
+        options={listaGNC}
+        value={categoriaGNCSeleccionada}
+        selectToggle={toggleGNCSeleccionado}
+        titulo="Sistema GNC:"
+      />
+    </div>
     {/* importado */}
     <div className="input-group">
       <p className="label">  </p>
