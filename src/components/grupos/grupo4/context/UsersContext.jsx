@@ -470,6 +470,8 @@ export const UserContextProvider = ({ children }) => {
     updateImageForEnableVehicleMessageError,
     showSpanImageForEnableVehicle,
     imagePublishForEnableVehicle,
+    updateUserPasswordMessageError,
+    showSpanUpdateUserPasswordError
   };
 
   return (

@@ -112,6 +112,7 @@ const UpdateProfile = () => {
           )}
           <Alert
             severity="error"
+            onClose={() => {setSpanUpdateUserError(false)}}
             style={
               showSpanUpdateUserError
                 ? { display: 'block' }
@@ -167,6 +168,7 @@ const UpdateProfile = () => {
           )}
           <Alert
             severity="error"
+            onClose={() => {setSpanUpdateUserPasswordError(false)}}
             style={
               showSpanUpdateUserPasswordError
                 ? { display: 'block' }

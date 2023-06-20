@@ -18,8 +18,8 @@ export const sellingPriceOfACarInputs = [
       type: 'text',
       placeholder: 'Precio nuevo',
       errorMessage:
-        '¡El precio debe ser un numero sin simbolos especiales!',
-      pattern: '^[0-9]{1,15}$',
+        '¡El precio debe ser un numero que puede ser decimal, no puede contener letras!',
+      pattern: "^(?=.*[1-9])\\d*(?:\\.\\d+)?$",
       required: true,
     },
 ];
@@ -32,8 +32,8 @@ export const newPriceModelInput = [
       type: 'text',
       placeholder: 'Patente',
       errorMessage:
-        '¡El precio para el modelo debe ser un numero sin simbolos especiales!',
-      pattern: '^[0-9]{1,15}$',
+        '¡El precio para el modelo debe ser un numero que puede ser decimal, no puede contener letras!',
+      pattern: "^(?=.*[1-9])\\d*(?:\\.\\d+)?$",
       required: true,
     },
 ];
@@ -46,8 +46,8 @@ export const newMassivePriceInput = [
       type: 'text',
       placeholder: 'Nuevo precio masivo',
       errorMessage:
-        '¡El cambio masivo a los precios debe ser un numero del 1 al 100!',
-      pattern: '^(?:100|[1-9][0-9]?)$',
+        '¡El cambio masivo a los precios debe ser un numero del -100 al 100!',
+      pattern: '-?(100|\\d{1,2})',
       required: true,
     },
 ];

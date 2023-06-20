@@ -166,6 +166,7 @@ const VehicleForm = () => {
         </Button>
         <Alert
           severity="error"
+          onClose={() => {setSpansaveVehicleError(false)}}
           style={
             showSpansaveVehicleError
               ? { display: 'block' }
