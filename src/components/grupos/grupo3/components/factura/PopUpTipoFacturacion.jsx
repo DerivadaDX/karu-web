@@ -12,7 +12,7 @@ import {
   Select,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import FianciacionService from '../../services/FianciacionService';
+import FinanciacionService from '../../services/FinanciacionService';
 
 const PopUpTipoFacturacion = () => {
   const [open, setOpen] = useState(false);
@@ -24,7 +24,7 @@ const PopUpTipoFacturacion = () => {
 
   // datos que traemos
   const showData = async () => {
-    const response = await FianciacionService.obtenerPlanes();
+    const response = await FinanciacionService.obtenerPlanes();
     console.log(response.data.result);
     setPlanes(response.data.result);
   };
