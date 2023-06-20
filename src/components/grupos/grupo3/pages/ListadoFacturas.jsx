@@ -479,10 +479,10 @@ const ListadoFacturas = () => {
         </DialogActions>
       </Dialog>
       <Dialog open={openDialogAnularFactura} onClose={handleCloseDialogAnularFactura}>
-        <DialogTitle>Confirmar Anulación de Reserva</DialogTitle>
+        <DialogTitle>Confirmar Anulación de Factura</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            ¿Estás seguro de que quieres anular esta reserva?
+            ¿Estás seguro de que quieres anular esta factura?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
