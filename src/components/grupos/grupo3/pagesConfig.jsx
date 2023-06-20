@@ -1,4 +1,6 @@
 import DriveEtaIcon from '@mui/icons-material/DriveEta';
+import CarRentalIcon from '@mui/icons-material/CarRental';
+import ReceiptIcon from '@mui/icons-material/Receipt';
 import { Search } from '@mui/icons-material';
 import EuroIcon from '@mui/icons-material/Euro';
 import React from 'react';
@@ -6,6 +8,7 @@ import RequestPageIcon from '@mui/icons-material/RequestPage';
 import PermPhoneMsgIcon from '@mui/icons-material/PermPhoneMsg';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import GroupIcon from '@mui/icons-material/Group';
+import SellIcon from '@mui/icons-material/Sell';
 import Cotizar from './components/cotizar/Cotizar';
 import NuevaPagina from './components/cotizar/NuevaPagina';
 import Boleta from './components/cotizar/Boleta';
@@ -18,6 +21,12 @@ import Roles from '../../roles';
 import AltaCliente from './pages/AltaCliente';
 import ListadoClientes from './pages/ListadoClientes';
 import ReservaRealizada from './pages/ReservaRealizada';
+import CompraAuto from './components/comprar/CompraAuto';
+import VehicleForm from './components/comprar/VehicleForm';
+import FormularioCliente from './components/canje/formularioClientes';
+import FormularioVehiculoG3 from './components/canje/formularioVehiculos';
+import ListadoFacturas from './pages/ListadoFacturas';
+import ListadoReservas from './pages/ListadoReservas';
 
 const GROUP_3_PAGES_CONFIG = [
   {
@@ -52,7 +61,7 @@ const GROUP_3_PAGES_CONFIG = [
   },
   {
     id: 'g3-Filtrar vehiculos',
-    name: 'Filtrar vehiculos',
+    name: 'Comprar mi auto',
     href: '/filtrarVehiculos/',
     icon: <Search />,
     page: <FiltroDeVehiculos />,
@@ -106,6 +115,55 @@ const GROUP_3_PAGES_CONFIG = [
     href: '/ReservaRealizada',
     icon: <GroupIcon />,
     page: <ReservaRealizada />,
+    soloURL: true,
+  },
+  {
+    id: 'g3-ListadoFacturas',
+    name: 'Ver Facturas',
+    href: '/ListadoFacturas',
+    icon: <CarRentalIcon />,
+    page: <ListadoFacturas />,
+    soloURL: true,
+    roles: [Roles.VENDEDOR, Roles.IT],
+  },
+  {
+    id: 'g3-ListadoReservas',
+    name: 'Ver Reservas',
+    href: '/ListadoReservas',
+    icon: <ReceiptIcon />,
+    page: <ListadoReservas />,
+    soloURL: true,
+    roles: [Roles.VENDEDOR, Roles.IT],
+  },
+  {
+    id: 'g3-CompraAuto',
+    name: 'Vender mi Auto',
+    href: '/compra-auto/',
+    icon: <SellIcon />,
+    page: <CompraAuto />,
+    roles: [Roles.CLIENTE, Roles.IT],
+  },
+  {
+    id: 'g3-compra',
+    href: '/compra-vehiculo',
+    icon: <SellIcon />,
+    page: <VehicleForm />,
+    soloUrl: true,
+  },
+  {
+    id: 'g3-FormularioCliente',
+    name: 'Datos cliente',
+    href: '/vehiculoIndividual/FormularioCliente',
+    icon: <GroupAddIcon />,
+    page: <FormularioCliente />,
+    soloURL: true,
+  },
+  {
+    id: 'g3-FormularioVehiculo',
+    name: 'Datos vehiculo',
+    href: '/FormularioVehiculo',
+    icon: <GroupAddIcon />,
+    page: <FormularioVehiculoG3 />,
     soloURL: true,
   },
 ];

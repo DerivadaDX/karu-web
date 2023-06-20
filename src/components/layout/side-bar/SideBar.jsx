@@ -48,6 +48,8 @@ const SideBar = ({ open, drawerWidth, toggleDrawer }) => {
 
     if (user) {
       setRolDeUsuario(user.type);
+    } else {
+      setRolDeUsuario(Roles.CLIENTE);
     }
   }, [isAuthenticated]);
 

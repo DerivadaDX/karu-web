@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React, { useState } from 'react';
 import {
   Form,
@@ -13,10 +14,11 @@ import {
   AlertTitle,
   SnackbarContent,
 } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 // import { toast, ToastContainer } from 'react-toastify';
 // import 'react-toastify/dist/ReactToastify.css';
 // eslint-disable-next-line no-unused-vars
-import ClientesService from '../services/ClienteService';
+// import ClientesService from '../services/ClienteService';
 
 const fieldData = [
   { name: 'dni', label: 'DNI', type: 'text' },
@@ -27,12 +29,14 @@ const fieldData = [
   { name: 'direccion', label: 'Direccion', type: 'text' },
 ];
 
-const AltaCliente = () => {
+const CompraAuto = () => {
   const [formData, setFormData] = useState({});
   const [errors, setErrors] = useState({});
   const [errorMessage, setErrorMessage] = useState('');
   const [showSuccessSnackbar, setShowSuccessSnackbar] = useState(false);
   const [showErrorSnackbar, setShowErrorSnackbar] = useState(false);
+  const navigate = useNavigate();
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevFormData) => ({
@@ -78,11 +82,26 @@ const AltaCliente = () => {
     e.preventDefault();
     if (validateForm()) {
       try {
-        await ClientesService.guardarCliente(formData);
+        // await ClientesService.guardarCliente(formData);
+        /* nombreCliente: nombreC, */
+        // patente: productSelected.plate, // infoCotizacion.patente,
+        /* email: mail, */
+        //  dni: clienteDNI,
+        // idVendedor: 3,
+        /* precioBase: 1000000, */
+        // garantiaExtendida: garantiaCheck,
+        // paso datos
+        // session Storage
+        sessionStorage.setItem('compra', JSON.stringify(formData));
+        console.log(formData);
+
         // Show success notification
         setShowSuccessSnackbar(true);
         // Reset the form data if needed
         setFormData({});
+
+        // Lo redirecciona a la pestaña de VehicleForm
+        navigate('/compra-vehiculo');
       } catch (error) {
         setErrorMessage(error.message);
         setShowErrorSnackbar(true);
@@ -98,7 +117,7 @@ const AltaCliente = () => {
   return (
     <Container>
 
-      <h1 id="titulo-formulario">Alta del cliente</h1>
+      <h1 id="titulo-formulario">Vender mi Auto</h1>
       <Row>
         <Col>
           <Form onSubmit={handleSubmit}>
@@ -119,7 +138,7 @@ const AltaCliente = () => {
                 )}
               </Form.Group>
             ))}
-            <Button type="submit" variant="primary">Enviar</Button>
+            <Button type="submit" variant="primary">Submit</Button>
           </Form>
         </Col>
       </Row>
@@ -174,4 +193,4 @@ const AltaCliente = () => {
   );
 };
 
-export default AltaCliente;
+export default CompraAuto;

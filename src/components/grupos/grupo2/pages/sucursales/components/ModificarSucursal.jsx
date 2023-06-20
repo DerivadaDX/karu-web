@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import {
+  Alert,
   Box,
   Button,
   Dialog,
@@ -22,7 +23,7 @@ import SucursalService from '../services/sucursal-service';
 const ModificarSucursal = ({ sucursal, onEdit }) => {
   const [mostrarPopUpModificarSucursal, setMostrarPopUpModificarSucursal] = useState(false);
   const [mostrarPopUpModificacionExitosa, setMostrarPopUpModificacionExitosa] = useState(false);
-  const [sucursalTieneTallerActivo, setSucursalTieneTallerActivo] = useState(false);
+  const [bloquearDeshabilitacion, setBloquearDeshabilitacion] = useState(false);
   const [valoresDelFormulario, setValoresDelFormulario] = useState({
     nombre: '',
     calle: '',
@@ -34,21 +35,27 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
     activa: false,
   });
 
-  const verificarSiSucursalTieneTallerActivoAsociado = (idSucursal) => {
-    SucursalService.sucursalTieneTallerActivo(idSucursal)
+  const bloquearDeshabilitacionSiTieneTallerActivo = () => {
+    SucursalService.sucursalTieneTallerActivo(sucursal.id)
       .then((response) => {
-        if (response.status === 200) {
-          const tieneTallerActivo = response.data.valor;
-          setSucursalTieneTallerActivo(tieneTallerActivo);
-        }
+        const tieneTallerActivo = response.data.valor;
+        setBloquearDeshabilitacion(tieneTallerActivo);
       })
       .catch(() => {
-        setSucursalTieneTallerActivo(false);
+        setBloquearDeshabilitacion(false);
       });
   };
 
+  const bloquearDeshabilitacionSiEsNecesario = () => {
+    if (sucursal.posee_taller) {
+      bloquearDeshabilitacionSiTieneTallerActivo();
+    } else {
+      setBloquearDeshabilitacion(false);
+    }
+  };
+
   const mostrarYCargarFormulario = () => {
-    verificarSiSucursalTieneTallerActivoAsociado(sucursal.id);
+    bloquearDeshabilitacionSiEsNecesario();
     setValoresDelFormulario({
       id: sucursal.id,
       nombre: sucursal.nombre,
@@ -230,7 +237,7 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
                 <Switch
                   checked={valoresDelFormulario.activa}
                   onChange={actualizarValorDeFormulario}
-                  disabled={sucursalTieneTallerActivo && sucursal.activa}
+                  disabled={bloquearDeshabilitacion}
                 />
               )}
               sx={{
@@ -239,6 +246,12 @@ const ModificarSucursal = ({ sucursal, onEdit }) => {
                 marginLeft: '0ch',
               }}
             />
+            {bloquearDeshabilitacion && (
+              <Alert variant="outlined" severity="info">
+                No se puede deshabilitar esta sucursal porque
+                posee un taller activo asociado a ella.
+              </Alert>
+            )}
 
             <Button
               type="submit"
