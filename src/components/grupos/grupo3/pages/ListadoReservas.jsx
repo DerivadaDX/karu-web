@@ -85,10 +85,10 @@ const ListadoReservas = () => {
     setOpenDialogAnularReserva(false);
   };
 
-  const handleAnularReserva = async () => {
+  const handleAnularReserva = () => {
     try {
       // esperar a que fer confirme
-      await ReservaService.anularReserva(selectedReserva.id);
+      ReservaService.anularReserva(selectedReserva.id);
       setShowSuccessSnackbar(true);
     } catch (error) {
       setErrorMessage(error.message);

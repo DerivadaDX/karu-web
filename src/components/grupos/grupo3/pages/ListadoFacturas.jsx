@@ -172,10 +172,10 @@ const ListadoFacturas = () => {
     setOpenDialogAnularFactura(false);
   };
 
-  const handleAnularFactura = async () => {
+  const handleAnularFactura = () => {
     if (selectedFactura.estado === 'PENDIENTE') {
       try {
-        await FacturaService.anularFactura(selectedFactura.id);
+        FacturaService.anularFactura(selectedFactura.id);
         setShowSuccessSnackbar(true);
       } catch (error) {
         setErrorMessage(error.message);
