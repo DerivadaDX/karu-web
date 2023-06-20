@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+/* eslint-disable no-console */
+import React, { useState, useEffect } from 'react';
 import {
   Button,
   Dialog,
@@ -11,12 +12,26 @@ import {
   Select,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import FianciacionService from '../../services/FianciacionService';
 
 const PopUpTipoFacturacion = () => {
   const [open, setOpen] = useState(false);
   const [tipoFinanciacion, setTipoFinanciacion] = useState('');
   const [error, setError] = useState(false); // Estado para controlar el error
+  const [planes, setPlanes] = useState([]);
+
   const navigate = useNavigate();
+
+  // datos que traemos
+  const showData = async () => {
+    const response = await FianciacionService.obtenerPlanes();
+    console.log(response.data.result);
+    setPlanes(response.data.result);
+  };
+  useEffect(() => {
+    // mostrar datos desde API
+    showData();
+  }, []);
 
   const handleOpenTipo = () => {
     setOpen(false);
@@ -47,17 +62,20 @@ const PopUpTipoFacturacion = () => {
       <Dialog open={open} onClose={handleCloseTipo}>
         <DialogTitle>Financiación</DialogTitle>
         <DialogContent>
-          <FormControl fullWidth>
-            <InputLabel>Tipo de financiación</InputLabel>
-            <Select
-              value={tipoFinanciacion}
-              onChange={handleTipoFinanciacionChange}
-              error={error} // Establecer el estado de error en el componente Select
-            >
-              <MenuItem value="tarjeta-credito">Tarjeta de crédito</MenuItem>
-              <MenuItem value="credito-bancario">Crédito bancario</MenuItem>
-            </Select>
-          </FormControl>
+          {/* Eligo planes de Pago */}
+          {planes.map((plan) => (
+            <FormControl fullWidth>
+              <InputLabel>Tipo de financiación</InputLabel>
+              <Select
+                value={plan}
+                onChange={handleTipoFinanciacionChange}
+                error={error} // Establecer el estado de error en el componente Select
+              >
+                <MenuItem>{plan}</MenuItem>
+              </Select>
+            </FormControl>
+          ))}
+
           {/* Mostrar mensaje de error si no se seleccionó ninguna opción */}
           {error && <p style={{ color: 'red' }}>Por favor, seleccione un tipo de financiación.</p>}
         </DialogContent>
