@@ -1,10 +1,10 @@
 /*eslint-disable */
 import { Link } from 'react-router-dom';
 import React, { useContext, useEffect, useState } from 'react';
-import { UserContext } from '../../context/UsersContext';
-import { inputs } from '../../dto/vehicle-props';
-import { GetAllModels } from '../../api/API-methods';
-import '../../assets/css/formVehicle.css';
+import { UserContext } from '../../../grupo4/context/UsersContext';
+import { inputs } from '../../../grupo4/dto/vehicle-props';
+import { GetAllModels } from '../../../grupo4/api/API-methods';
+import '../comprar/formVehicle.css';
 import {
   Alert,
   Box,
@@ -18,12 +18,19 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import ClientesService from '../../services/ClienteService';
 
 const VehicleForm = () => {
+  const rawValue = sessionStorage.getItem('compra');
+  const compra = JSON.parse(rawValue);
+  console.log('obtiene: ', compra, compra.dni);
+  const navigate = useNavigate();
+
   const [values, setValues] = useState({
     plate: '',
     kilometers: '',
-    dni: '',
+    dni: compra.dni,// paso dato de dni
     origin: '',
     gnc: false,
     modelData: {
@@ -36,9 +43,10 @@ const VehicleForm = () => {
       category: '',
     },
   });
+  console.log('valores ', values)
 
   const [models, setModels] = useState([
-    { brand: '', model: '', year: '', basePrice: 0.0, engine: '', fuelType: '', category: ''},
+    { brand: '', model: '', year: '', basePrice: 0.0, engine: '', fuelType: '', category: '' },
   ]);
 
   const [isDropdownInitialized, setIsDropdownInitialized] = useState(false);
@@ -68,12 +76,17 @@ const VehicleForm = () => {
     }
   }, [isDropdownInitialized]);
 
-  const { saveVehicle, showSpansaveVehicleError, saveVehicleMessageError, setSpansaveVehicleError} =
+  const { saveVehicle, showSpansaveVehicleError, saveVehicleMessageError, setSpansaveVehicleError } =
     useContext(UserContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const formData = compra;
+
+    // AGREGO CLIENTE Y VEHICULOS
+    await ClientesService.guardarCliente(formData);
     await saveVehicle(values);
+    navigate('/turno-evaluacion-cliente');
   };
 
   const onChange = (e) => {
@@ -119,8 +132,11 @@ const VehicleForm = () => {
             variant="filled"
             label={input.label}
             onChange={onChange}
-            defaultValue={''}
-            inputProps={{ pattern: input.pattern }}
+            defaultValue={input.name === 'dni' ? compra.dni : ''}
+            inputProps={{
+              pattern: input.pattern,
+              readOnly: input.name === 'dni' ? true : false // Establece readOnly solo cuando el campo es 'dni',sino lo saco
+            }}
             error={Boolean(errors[input.name])} // Show error message if exists
             helperText={errors[input.name]} // Show error message
             required
@@ -166,7 +182,6 @@ const VehicleForm = () => {
         </Button>
         <Alert
           severity="error"
-          onClose={() => {setSpansaveVehicleError(false)}}
           style={
             showSpansaveVehicleError
               ? { display: 'block' }

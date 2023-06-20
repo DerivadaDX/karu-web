@@ -228,6 +228,7 @@ const RegisterForm = () => {
         <Paper>
           <Alert
             severity="error"
+            onClose={() => {setSpanAlreadyExistsUser(false)}}
             style={
               showSpanAlreadyExistsUser
                 ? { display: 'block' }

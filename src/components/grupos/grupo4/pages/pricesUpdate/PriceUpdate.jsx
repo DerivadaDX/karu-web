@@ -269,17 +269,17 @@ const PriceUpdate = () => {
                 </Button>
                 <Paper>
                     {showSpanUpdateSellPriceError && purchasePriceType === 'selling_price_of_a_car' && (
-                        <Alert severity="error" style={{ display: 'block' }}>
+                        <Alert severity="error" onClose={() => {setSpanUpdateSellPriceError(false)}} style={{ display: 'block' }}>
                             {updateSellPriceMessageError}
                         </Alert>
                     )}
                     {showSpanUpdatePriceOfAModelError && purchasePriceType === 'base_price_of_a_model' && (
-                        <Alert severity="error" style={{ display: 'block' }}>
+                        <Alert severity="error"  onClose={() => {setSpanUpdatePriceOfAModelError(false)}} style={{ display: 'block' }}>
                             {updatePriceOfAModelMessageError}
                         </Alert>
                     )}
                     {showSpanUpdatePricesByInflationError && purchasePriceType === 'inflation_price' && (
-                        <Alert severity="error" style={{ display: 'block' }}>
+                        <Alert severity="error" onClose={() => {setSpanUpdatePricesByInflationError(false)}} style={{ display: 'block' }}>
                             {updatePricesByInflationMessageError}
                         </Alert>
                     )}

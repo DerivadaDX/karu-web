@@ -2,12 +2,13 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable import/no-duplicates */
 /* eslint-disable object-curly-newline */
-import { Box, Paper, Typography } from '@mui/material';
+import { Box, Button, Paper, Typography } from '@mui/material';
+
 import styled from '@emotion/styled';
 import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
-// import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import imagenAuto from '../../../constants/autoUsado.jpg';
@@ -44,8 +45,8 @@ const VehiculoIndividual = () => {
   ];
 
   const containerStyles = {
-    width: '1000px',
-    height: '450px',
+    width: '600px',
+    height: '350px',
     margin: '0 auto',
     backgroundSize: 'contain',
   };
@@ -58,45 +59,65 @@ const VehiculoIndividual = () => {
         gap: 2,
         overflow: 'Hidden',
         mt: 5,
+        padding: '15px',
       }}
     >
       {/* <Img src={vehiculoData.picture1} alt="autousado" /> */}
       <div style={containerStyles}>
         <ImageSlider slides={slides} />
       </div>
-      <Box sx={{ flexgrow: 1, display: 'grid', gap: 4 }}>
-        <Typography variant="h4">
+      <Box sx={{ flexgrow: 1, display: 'grid', gap: 5, padding: '15px', marginRight: '20%' }}>
+        <Typography sx={{ lineHeight: 1, fontWeight: 'bold', fontSize: 32 }} variant="h4">
           {vehiculoData.brand}
-          {espacio}
+        </Typography>
+        <Typography sx={{ lineHeight: 0 }} variant="h6">
+          Modelo:
           {vehiculoData.model}
         </Typography>
-        <Typography variant="body1">
+        <Typography sx={{ lineHeight: 0, fontWeight: '200' }} variant="h6">
+          {vehiculoData.year}
+        </Typography>
+        <Typography
+          sx={{ lineHeight: 2,
+            fontSize: 25,
+            fontWeight: 'bold',
+          }}
+          variant="body1"
+        >
+          $
+          {vehiculoData.sellPrice}
+        </Typography>
+        <Typography sx={{ lineHeight: 0 }} variant="subtitle1">
           Combustible:
           {vehiculoData.fuelType}
         </Typography>
-        <Typography variant="body1">
+        <Typography sx={{ lineHeight: 0 }} variant="body1">
+          {vehiculoData.gnc ? 'Posee GNC' : 'No posee GNC'}
+        </Typography>
+        <Typography sx={{ lineHeight: 0 }} variant="body1">
           Origen:
           {vehiculoData.origin}
         </Typography>
-        <Typography variant="body1">
-          Año:
-          {vehiculoData.year}
-        </Typography>
-        <Typography variant="body1">
+        <Typography sx={{ lineHeight: 0 }} variant="body1">
           Kilometraje:
           {vehiculoData.kilometers}
         </Typography>
-        <Typography variant="body1">
+        <Typography sx={{ lineHeight: 0 }} variant="body1">
           Patente:
           {vehiculoData.plate}
         </Typography>
-        <Typography variant="body1"> </Typography>
+        <Typography sx={{ lineHeight: 0 }} variant="body1"> </Typography>
       </Box>
-      <Box sx={{ mr: 1, fontSize: 34, fontWeight: 'bold' }} component="p">
-        $
-        {vehiculoData.sellPrice}
-      </Box>
-      <ConsultaDialog />
+      <ConsultaDialog sx={{ lineHeight: 0 }} />
+      <Link to={`/vehiculoIndividual/${vehiculoData.plate}/reserva`}>
+        <Button variant="contained">Reservar</Button>
+      </Link>
+      <Link to="/vehiculoIndividual/FormularioCliente">
+        <Button variant="contained">
+          Canjear
+          {vehiculoData.plate ? sessionStorage.setItem('patenteVenta', vehiculoData.plate) : ''}
+        </Button>
+      </Link>
     </Paper>
   );
 };

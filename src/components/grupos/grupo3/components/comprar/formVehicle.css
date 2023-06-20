@@ -1,0 +1,43 @@
+.vehicle-container {
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    margin: 3em auto;
+    width: 20%;
+    text-align: center;
+}
+
+.vehicle-container__form-a{
+    display: block;
+    margin-top: 20px;
+}
+
+.vehicle_form-h2 {
+    color: #272992;
+    font-size: 30px;
+}
+
+.vehicle-container__form-a {
+    display: block;
+    text-align: center;
+    font-size: 15px;
+    text-decoration: none;
+    color: #5B146F;
+    padding-top: 20px;
+}
+
+.vehicle-container__form-a:hover {
+    text-decoration: underline;
+}
+
+@media only screen and (max-width: 1024px) {
+    input {
+        width: 25em;
+    }
+}
+
+@media only screen and (max-width: 856px) {
+    .input {
+        width: 20em;
+    }
+}

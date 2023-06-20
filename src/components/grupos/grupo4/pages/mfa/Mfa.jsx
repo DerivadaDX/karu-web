@@ -34,7 +34,6 @@ const Mfa = () => {
     e.preventDefault();
     if (await authToken({ username, password, twoFactorCode })) {
       setIsValidToken(true);
-      setIsAuthenticated(true);
     }
   };
 

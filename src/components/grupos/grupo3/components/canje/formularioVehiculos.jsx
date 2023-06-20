@@ -1,10 +1,12 @@
 /*eslint-disable */
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import React, { useContext, useEffect, useState } from 'react';
-import { UserContext } from '../../context/UsersContext';
-import { inputs } from '../../dto/vehicle-props';
-import { GetAllModels } from '../../api/API-methods';
-import '../../assets/css/formVehicle.css';
+import InfoIcon from '@mui/icons-material/Info';
+import { UserContext } from '../../../grupo4/context/UsersContext';
+import { inputs } from '../../../grupo4/dto/vehicle-props';
+import { GetAllModels } from '../../../grupo4/api/API-methods'
+//import { GetAllModels } from '../../api/API-methods';
+import '../canje/formularioVehiculo.css'
 import {
   Alert,
   Box,
@@ -18,8 +20,11 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+import ClientesService from '../../services/ClienteService';
+import ReservaService from '../../services/ReservaService';
 
-const VehicleForm = () => {
+
+const FormularioVehiculoG3 = () => {
   const [values, setValues] = useState({
     plate: '',
     kilometers: '',
@@ -36,6 +41,11 @@ const VehicleForm = () => {
       category: '',
     },
   });
+
+  const reservaData= JSON.parse(sessionStorage.formularioCliente);
+  console.log(reservaData);
+  const navigate = useNavigate();
+ 
 
   const [models, setModels] = useState([
     { brand: '', model: '', year: '', basePrice: 0.0, engine: '', fuelType: '', category: ''},
@@ -74,6 +84,10 @@ const VehicleForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     await saveVehicle(values);
+    // cambios: aca guarda el vehiculo si todo sale bien, por ende aca tmb deberia generar la reserva
+    await ClientesService.guardarCliente(reservaData);
+    await ReservaService.guardarReserva(sessionStorage.patenteVenta, reservaData); 
+    navigate('/turno-evaluacion-cliente');
   };
 
   const onChange = (e) => {
@@ -109,6 +123,7 @@ const VehicleForm = () => {
   };
 
   return (
+    
     <Paper sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <Stack component="form" onSubmit={handleSubmit} sx={{ width: '70%', display: 'flex', textAlign: 'center' }}>
         <Typography variant="h2">Cargar datos del auto</Typography>
@@ -166,7 +181,6 @@ const VehicleForm = () => {
         </Button>
         <Alert
           severity="error"
-          onClose={() => {setSpansaveVehicleError(false)}}
           style={
             showSpansaveVehicleError
               ? { display: 'block' }
@@ -175,6 +189,18 @@ const VehicleForm = () => {
         >
           {saveVehicleMessageError}
         </Alert>
+
+        <Paper variant="elevation" >
+            <Typography
+            component="h2"
+            sx={{
+                display: 'flex', alignContent: 'center', fontSize: '1rem',
+            }}
+            >
+            <InfoIcon color="secondary" />
+            Luego de enviar los datos deberá autogestionar un turno con el taller técnico para iniciar la revisión vehicular.
+            </Typography>
+        </Paper>
         <Link className="vehicle-container__form-a" to={'/'}>
           <p>Volver al inicio</p>
         </Link>
@@ -183,4 +209,4 @@ const VehicleForm = () => {
   );
 };
 
-export default VehicleForm;
+export default FormularioVehiculoG3;

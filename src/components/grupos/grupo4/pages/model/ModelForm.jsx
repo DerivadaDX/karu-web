@@ -123,6 +123,7 @@ const ModelForm = () => {
         </Box>
         <Alert
           severity="error"
+          onClose={() => {setSpansaveModelError(false)}}
           style={
             showSpansaveModelError ? { display: 'block' } : { display: 'none' }
           }

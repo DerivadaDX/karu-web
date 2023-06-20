@@ -16,7 +16,9 @@ import {
 // import { toast, ToastContainer } from 'react-toastify';
 // import 'react-toastify/dist/ReactToastify.css';
 // eslint-disable-next-line no-unused-vars
-import ClientesService from '../services/ClienteService';
+// import ClientesService from '../services/ClienteService';
+// import ClientesService from '../../services/ClienteService';
+import { useNavigate } from 'react-router-dom';
 
 const fieldData = [
   { name: 'dni', label: 'DNI', type: 'text' },
@@ -27,12 +29,14 @@ const fieldData = [
   { name: 'direccion', label: 'Direccion', type: 'text' },
 ];
 
-const AltaCliente = () => {
+const FormularioCliente = () => {
   const [formData, setFormData] = useState({});
   const [errors, setErrors] = useState({});
   const [errorMessage, setErrorMessage] = useState('');
   const [showSuccessSnackbar, setShowSuccessSnackbar] = useState(false);
   const [showErrorSnackbar, setShowErrorSnackbar] = useState(false);
+  const navigate = useNavigate();
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevFormData) => ({
@@ -78,11 +82,14 @@ const AltaCliente = () => {
     e.preventDefault();
     if (validateForm()) {
       try {
-        await ClientesService.guardarCliente(formData);
+        // cambios
+        sessionStorage.formularioCliente = JSON.stringify(formData);
+        // await ClientesService.guardarCliente(formData);
         // Show success notification
-        setShowSuccessSnackbar(true);
+        // setShowSuccessSnackbar(true);
         // Reset the form data if needed
         setFormData({});
+        navigate('/FormularioVehiculo');
       } catch (error) {
         setErrorMessage(error.message);
         setShowErrorSnackbar(true);
@@ -98,7 +105,7 @@ const AltaCliente = () => {
   return (
     <Container>
 
-      <h1 id="titulo-formulario">Alta del cliente</h1>
+      <h1 id="titulo-formulario">Formulario de cliente</h1>
       <Row>
         <Col>
           <Form onSubmit={handleSubmit}>
@@ -119,7 +126,7 @@ const AltaCliente = () => {
                 )}
               </Form.Group>
             ))}
-            <Button type="submit" variant="primary">Enviar</Button>
+            <Button type="submit" variant="primary">Submit</Button>
           </Form>
         </Col>
       </Row>
@@ -140,7 +147,7 @@ const AltaCliente = () => {
           message={(
             <Alert onClose={handleSnackbarClose} severity="success">
               <AlertTitle>Realizado!</AlertTitle>
-              El usuario se guardo correctamente
+              Los datos del formulario se han guardado
               <strong> correctamente!</strong>
             </Alert>
           )}
@@ -174,4 +181,4 @@ const AltaCliente = () => {
   );
 };
 
-export default AltaCliente;
+export default FormularioCliente;

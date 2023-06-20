@@ -6,8 +6,8 @@ const inputs = [
         type: 'number',
         label: 'Ingresos totales',
         errorMessage:
-            '¡Los ingresos totales son un numero, no pueden contener letras ni simbolos!',
-        pattern: '^[0-9]{1,15}$',
+            '¡Los ingresos totales son un numero que puede ser decimal, no pueden contener letras!',
+        pattern: "^(?=.*[1-9])\\d*(?:\\.\\d+)?$",
         required: true,
     },
     {
@@ -16,8 +16,8 @@ const inputs = [
         type: 'number',
         label: 'Monto total de las deudas',
         errorMessage:
-            '¡Las deudas son un numero, no pueden contener letras ni simbolos!',
-        pattern: '^[0-9]{1,15}$',
+            '¡Las deudas son un numero que puede ser decimal, no pueden contener letras!',
+        pattern: "^(?=.*[1-9])\\d*(?:\\.\\d+)?$",
         required: true,
     },
     {
@@ -26,8 +26,8 @@ const inputs = [
         type: 'number',
         label: 'Monto de gastos mensuales',
         errorMessage:
-            '¡Los gastos mensuales son un numero, no pueden contener letras ni simbolos!',
-        pattern: '^[0-9]{1,15}$',
+            '¡Los gastos mensuales son un numero que puede ser decimal, no pueden contener letras!',
+        pattern: "^(?=.*[1-9])\\d*(?:\\.\\d+)?$",
         required: true,
     },
     {
@@ -46,8 +46,8 @@ const inputs = [
         type: 'number',
         label: 'Ingresos totales de todos los miembros de la familia',
         errorMessage:
-            '¡Ingrese la suma de los ingresos totales de todos los miembros de la familia!',
-        pattern: '^[0-9]{1,25}$',
+            '¡Ingrese la suma de los ingresos totales de todos los miembros de la familia, es un numero que puede ser decimal, no pueden contener letras!',
+        pattern: "^(?=.*[1-9])\\d*(?:\\.\\d+)?$",
         required: true,
     },
     {
