@@ -23,6 +23,7 @@ import CompraAuto from './components/comprar/CompraAuto';
 import VehicleForm from './components/comprar/VehicleForm';
 import FormularioCliente from './components/canje/formularioClientes';
 import FormularioVehiculoG3 from './components/canje/formularioVehiculos';
+import GenerarFactura from './components/factura/Facturar';
 
 const GROUP_3_PAGES_CONFIG = [
   {
@@ -142,6 +143,14 @@ const GROUP_3_PAGES_CONFIG = [
     href: '/FormularioVehiculo',
     icon: <GroupAddIcon />,
     page: <FormularioVehiculoG3 />,
+    soloURL: true,
+  },
+  {
+    id: 'g3-Factura',
+    name: 'Factura',
+    href: '/facturar/:idCotizacion',
+    icon: <GroupAddIcon />,
+    page: <GenerarFactura />,
     soloURL: true,
   },
 ];

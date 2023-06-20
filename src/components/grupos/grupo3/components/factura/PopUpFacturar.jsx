@@ -44,7 +44,7 @@ const PopUpFacturar = ({ id }) => {
 
   return (
     <div>
-      <Tooltip title="Anular" placement="top">
+      <Tooltip title="Facturar" placement="top">
         <IconButton onClick={handleOpen}>
           <ReceiptOutlinedIcon />
         </IconButton>

@@ -80,7 +80,7 @@ const ConsultaCliente = () => {
         <div>
           <TextField
             id="outlined-basic"
-            label="nombre_"
+            label="nombre"
             variant="outlined"
             fullWidth
             required
@@ -91,7 +91,7 @@ const ConsultaCliente = () => {
         <div>
           <TextField
             id="outlined-basic"
-            label="apellido_"
+            label="apellido"
             variant="outlined"
             fullWidth
             required
@@ -102,7 +102,7 @@ const ConsultaCliente = () => {
         <div>
           <TextField
             id="outlined-basic"
-            label="telefono_"
+            label="telefono"
             variant="outlined"
             fullWidth
             required

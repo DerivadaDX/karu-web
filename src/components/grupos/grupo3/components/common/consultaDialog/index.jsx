@@ -31,7 +31,7 @@ const ConsultaDialog = () => {
           <ConsultaCliente />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleClose}>Cancelar</Button>
         </DialogActions>
       </Dialog>
     </div>
