@@ -112,6 +112,7 @@ const PaperWork = () => {
           </Button>
           <Alert
             severity="error"
+            onClose={() => {setSpanPaperWorkError(false)}}
             style={
               showSpanPaperWorkError
                 ? { display: 'block' }
