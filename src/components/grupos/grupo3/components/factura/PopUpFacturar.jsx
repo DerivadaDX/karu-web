@@ -35,14 +35,7 @@ const PopUpFacturar = ({ id }) => {
   };
 
   const handleClose = () => { // Sí
-    // CotizacionService.anularCotizacion(id);
-    // .then((response) => {
-    // setCotizaciones(response.data);
-    //  setCargando(false);
-    // });
-
     setOpen(false);
-    // navigate(`/tipo-financiacion/${id}`);
   };
   // paso datos
   const guardarDatos = async () => {
