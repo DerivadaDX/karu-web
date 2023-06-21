@@ -86,16 +86,21 @@ const ListadoReservas = () => {
   };
 
   const handleAnularReserva = () => {
-    try {
-      // esperar a que fer confirme
-      ReservaService.anularReserva(selectedReserva.id);
-      setShowSuccessSnackbar(true);
-    } catch (error) {
-      setErrorMessage(error.message);
+    if (selectedReserva.estadoReserva === 'PENDIENTE') {
+      try {
+        // esperar a que fer confirme
+        ReservaService.anularReserva(selectedReserva.id);
+        setShowSuccessSnackbar(true);
+      } catch (error) {
+        setErrorMessage(error.message);
+        setShowErrorSnackbar(true);
+      }
+      handleCloseDialogAnularReserva();
+    } else {
+      setErrorMessage('La reserva seleccionada se cuentra anulada o ya pagada, por lo que es imposible anularla.');
       setShowErrorSnackbar(true);
+      handleCloseDialogAnularReserva();
     }
-    // Close the dialog
-    handleCloseDialogAnularReserva();
   };
   const handleSnackbarClose = () => {
     setShowSuccessSnackbar(false);
@@ -134,8 +139,8 @@ const ListadoReservas = () => {
         // eslint-disable-next-line
         Cell: ({ row }) => (
           <>
-            <Button onClick={() => handleOpenDialogVerCliente(row.original)}>Ver Cliente</Button>
-            <Button onClick={() => handleOpenDialogAnularReserva(row.original)}>
+            <Button sx={{ backgroundColor: '#212121', color: '#ffffff' }} onClick={() => handleOpenDialogVerCliente(row.original)}>Ver Cliente</Button>
+            <Button sx={{ marginTop: '10px', backgroundColor: '#801313', color: '#ffffff' }} onClick={() => handleOpenDialogAnularReserva(row.original)}>
               Anular Reserva
             </Button>
           </>
@@ -257,8 +262,10 @@ const ListadoReservas = () => {
             <Alert onClose={handleSnackbarClose} severity="error">
               <AlertTitle>Error</AlertTitle>
               Hubo un
-              <strong> error al intentar anular la reserva </strong>
-              Por favor intente mas tarde, refresque la pagina o vea el error descripto.
+              <strong> error al intentar anular la reserva. </strong>
+              <br />
+              Vea el error descripto debajo para mas informacion.
+              <br />
               <strong> Error: </strong>
               {errorMessage}
             </Alert>
