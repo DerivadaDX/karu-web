@@ -1,3 +1,5 @@
+/* eslint-disable max-len */
+/* eslint-disable radix */
 /* eslint-disable no-console */
 import React, { useState, useEffect } from 'react';
 import {
@@ -9,28 +11,63 @@ import {
   FormControl,
   InputLabel,
   MenuItem,
+  Typography,
   Select,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import FinanciacionService from '../../services/FinanciacionService';
+import CotizacionService from '../../services/CotizacionService';
 
-const PopUpTipoFacturacion = () => {
+const PopUpTipoFacturacion = ({ id }) => {
   const [open, setOpen] = useState(false);
   const [tipoFinanciacion, setTipoFinanciacion] = useState('');
   const [error, setError] = useState(false); // Estado para controlar el error
   const [planes, setPlanes] = useState([]);
-
+  const [cotizacionDNI, setcotizacionDNI] = useState('');
+  const [cotizacionTotal, setcotizacionTotal] = useState('');
+  console.log(id);
   const navigate = useNavigate();
 
+  const guardarDatos = () => {
+    CotizacionService.obtenerUnaCotizacion(id)
+      .then((response) => {
+        if (response) {
+          setcotizacionDNI(response.data.cliente.dni);
+          setcotizacionTotal(response.data.total);
+        } else {
+          // Manejar el caso en que la respuesta no sea exitosa
+          // sale error
+        }
+      })
+      .catch((error) => {
+        // Manejar el error de la solicitud
+        console.error(error);
+      });
+  };
   // datos que traemos
-  const showData = async () => {
-    const response = await FinanciacionService.obtenerPlanes();
-    console.log(response.data.result);
-    setPlanes(response.data.result);
+  const showDataTipo = async () => {
+    try {
+      // eslint-disable-next-line max-len
+      // console.log(cotizacionDNI, cotizacionTotal);
+      const response = await FinanciacionService.obtenerPlanes(12345678, 173151225.55519998);
+      console.log('response', response.data);
+      if (response) {
+        // console.log(response.data);
+        setPlanes(response.data);
+      } else {
+        // Manejar el error en caso de que la respuesta no sea exitosa
+        // sale error
+      }
+    } catch (error) {
+      // Manejar el error de la solicitud
+      console.error(error);
+    }
   };
   useEffect(() => {
     // mostrar datos desde API
-    showData();
+    guardarDatos();
+    showDataTipo();
   }, []);
 
   const handleOpenTipo = () => {
@@ -62,20 +99,40 @@ const PopUpTipoFacturacion = () => {
       <Dialog open={open} onClose={handleCloseTipo}>
         <DialogTitle>Financiación</DialogTitle>
         <DialogContent>
-          {/* Eligo planes de Pago */}
-          {planes.map((plan) => (
-            <FormControl fullWidth>
-              <InputLabel>Tipo de financiación</InputLabel>
+          {planes.no_recomendados && (
+            <FormControl fullWidth style={{ marginBottom: '10px' }}>
+              <Typography variant="h6" gutterBottom>
+                Tipo de financiación (No recomendado)
+              </Typography>
               <Select
-                value={plan}
+                value={tipoFinanciacion}
                 onChange={handleTipoFinanciacionChange}
-                error={error} // Establecer el estado de error en el componente Select
+                error={error}
               >
-                <MenuItem>{plan}</MenuItem>
+                {planes.no_recomendados.map((plan) => (
+                  <MenuItem key={plan.id_plan} value={plan.id_plan}>{plan.scoring_asociado}</MenuItem>
+                ))}
               </Select>
             </FormControl>
-          ))}
+          )}
 
+          {planes.recomendados && (
+            <FormControl fullWidth style={{ marginBottom: '10px' }}>
+              <Typography variant="h6" gutterBottom>
+                Tipo de financiación (Recomendado)
+              </Typography>
+              <InputLabel style={{ maxWidth: '100%' }}>Tipo de financiación (Recomendado)</InputLabel>
+              <Select
+                value={tipoFinanciacion}
+                onChange={handleTipoFinanciacionChange}
+                error={error}
+              >
+                {planes.recomendados.map((plan) => (
+                  <MenuItem key={plan.id_plan} value={plan.id_plan}>{plan.scoring_asociado}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          )}
           {/* Mostrar mensaje de error si no se seleccionó ninguna opción */}
           {error && <p style={{ color: 'red' }}>Por favor, seleccione un tipo de financiación.</p>}
         </DialogContent>
@@ -88,6 +145,10 @@ const PopUpTipoFacturacion = () => {
       </Dialog>
     </div>
   );
+};
+
+PopUpTipoFacturacion.propTypes = {
+  id: PropTypes.number.isRequired,
 };
 
 export default PopUpTipoFacturacion;
