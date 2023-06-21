@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+/* eslint-disable no-console */
+import React, { useState, useEffect } from 'react';
 import {
   Button,
   Dialog,
@@ -12,10 +13,12 @@ import ReceiptOutlinedIcon from '@mui/icons-material/ReceiptOutlined';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import PopUpTipoFacturacion from './PopUpTipoFacturacion';
-// import CotizacionService from '../../services/CotizacionService';
+import CotizacionService from '../../services/CotizacionService';
 
 const PopUpFacturar = ({ id }) => {
   const [open, setOpen] = useState(false);
+  const [cotizacionDNI, setcotizacionDNI] = useState('');
+  const [cotizacionTotal, setcotizacionTotal] = useState('');
   const navigate = useNavigate();
 
   PopUpFacturar.propTypes = {
@@ -41,7 +44,27 @@ const PopUpFacturar = ({ id }) => {
     setOpen(false);
     // navigate(`/tipo-financiacion/${id}`);
   };
-
+  // paso datos
+  const guardarDatos = async () => {
+    try {
+      const response = await CotizacionService.obtenerUnaCotizacion(id);
+      if (response) {
+        setcotizacionDNI(response.data.cliente.dni);
+        setcotizacionTotal(response.data.total);
+        console.log('primera', cotizacionDNI, cotizacionTotal);
+      } else {
+        // Manejar el caso en que la respuesta no sea exitosa
+        // sale error
+      }
+    } catch (error) {
+      // Manejar el error de la solicitud
+      console.error(error);
+    }
+  };
+  useEffect(() => {
+    // mostrar datos desde API
+    guardarDatos();
+  }, []);
   return (
     <div>
       <Tooltip title="Anular" placement="top">
@@ -70,7 +93,7 @@ const PopUpFacturar = ({ id }) => {
         <DialogActions>
           <Button onClick={handleFactura}>No</Button>
           {/* Me lleva a elegir el tipo de financiación */}
-          <PopUpTipoFacturacion id={id} />
+          <PopUpTipoFacturacion id={id} dni={cotizacionDNI} total={cotizacionTotal} />
         </DialogActions>
       </Dialog>
     </div>
