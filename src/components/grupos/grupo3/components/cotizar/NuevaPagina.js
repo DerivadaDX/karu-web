@@ -66,9 +66,7 @@ const NuevaPagina = () => {
     try {
       const response = await VehiculoService.obtenerVehiculo(product);
       if (response) {
-        // const data = await response.json();
         // Manejar los datos de respuesta aquí
-        console.log(response.data.result);
         setVehiculo(response.data.result);
       } else {
         // Manejar el error en caso de que la respuesta no sea exitosa
