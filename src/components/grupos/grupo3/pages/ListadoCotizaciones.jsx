@@ -137,6 +137,10 @@ const ListadoCotizaciones = () => {
         header: 'Email',
       },
       {
+        accessorKey: 'cliente.dni',
+        header: 'DNI',
+      },
+      {
         accessorKey: 'patente',
         header: 'Patente',
       },

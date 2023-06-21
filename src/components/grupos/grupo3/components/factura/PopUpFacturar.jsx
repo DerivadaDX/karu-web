@@ -51,7 +51,6 @@ const PopUpFacturar = ({ id }) => {
       if (response) {
         setcotizacionDNI(response.data.cliente.dni);
         setcotizacionTotal(response.data.total);
-        console.log('primera', cotizacionDNI, cotizacionTotal);
       } else {
         // Manejar el caso en que la respuesta no sea exitosa
         // sale error

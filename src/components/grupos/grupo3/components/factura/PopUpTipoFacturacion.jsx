@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable camelcase */
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable max-len */
@@ -11,24 +12,18 @@ import {
   DialogContent,
   DialogActions,
   FormControl,
-  InputLabel,
   MenuItem,
   Typography,
   Select,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import FinanciacionService from '../../services/FinanciacionService';
-import CotizacionService from '../../services/CotizacionService';
 
 const PopUpTipoFacturacion = ({ id, dni, total }) => {
   const [open, setOpen] = useState(false);
   const [tipoFinanciacion, setTipoFinanciacion] = useState('');
   const [error, setError] = useState(false); // Estado para controlar el error
   const [planes, setPlanes] = useState([]);
-  const [cotizacionDNI, setcotizacionDNI] = useState('');
-  const [cotizacionTotal, setcotizacionTotal] = useState('');
-  const [resultsFound, setResultsFound] = useState(true);
   // Guardo datos
   const [orden, setOrden] = useState('');
   const [scoring, setScoring] = useState('');
@@ -39,45 +34,25 @@ const PopUpTipoFacturacion = ({ id, dni, total }) => {
 
   const navigate = useNavigate();
 
-  /* const guardarDatos = () => {
-    CotizacionService.obtenerUnaCotizacion(id)
-      .then((response) => {
-        if (response) {//se pasan los datos bien
-          setcotizacionDNI(response.data.cliente.dni);
-          setcotizacionTotal(response.data.total);
-          console.log(cotizacionDNI, cotizacionTotal);
-          setResultsFound(true);
-        } else {
-          // Manejar el caso en que la respuesta no sea exitosa
-          // sale error
-        }
-      })
-      .catch((error) => {
-        // Manejar el error de la solicitud
-        console.error(error);
-      });
-  }; */
   // datos que traemos
   const showDataTipo = () => {
-    console.log('segunda', dni, total);
     FinanciacionService.obtenerPlanes(dni, total)
       .then((response) => {
-        if (response) {// se pasan los datos bien
+        if (response) { // se pasan los datos bien
           setPlanes(response.data);
         } else {
           // Manejar el caso en que la respuesta no sea exitosa
           // sale error
         }
       })
-      .catch((error) => {
+      .catch((err) => {
         // Manejar el error de la solicitud
-        console.error(error);
+        console.error('Error al elegir el tipo de financiacion', err);
       });
   };
 
   useEffect(() => {
     // mostrar datos desde API
-    // guardarDatos();
     showDataTipo();
   }, []);
 
@@ -203,10 +178,6 @@ const PopUpTipoFacturacion = ({ id, dni, total }) => {
       </Dialog>
     </div>
   );
-};
-
-PopUpTipoFacturacion.propTypes = {
-  id: PropTypes.number.isRequired,
 };
 
 export default PopUpTipoFacturacion;
