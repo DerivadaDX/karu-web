@@ -148,7 +148,7 @@ const GROUP_3_PAGES_CONFIG = [
   {
     id: 'g3-Factura',
     name: 'Factura',
-    href: '/facturar/:idCotizacion',
+    href: '/facturar',
     icon: <GroupAddIcon />,
     page: <GenerarFactura />,
     soloURL: true,

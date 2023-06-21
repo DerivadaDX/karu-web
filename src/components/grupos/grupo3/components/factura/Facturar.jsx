@@ -1,9 +1,12 @@
+/* eslint-disable prefer-destructuring */
+/* eslint-disable no-undef */
 /* eslint-disable no-console */
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable react/jsx-filename-extension */
 /* eslint-disable max-len */
 /* eslint-disable no-unused-vars */
-import React, { useContext, useState } from 'react';
+
+import React, { useContext, useState, useEffect } from 'react';
 import {
   Container, Row, Col, Table, Card, ListGroup,
 } from 'react-bootstrap';
@@ -17,6 +20,8 @@ import {
 } from '@mui/material';
 import { AppContext } from '../cotizar/AppContext';
 import CotizacionService from '../../services/CotizacionService';
+import FacturaService from '../../services/FacturaService';
+import Financiacion from './Financiacion';
 
 /* y despues le devuelve esta boleta por asi decirlos con todos estos datos
       Long id;
@@ -35,26 +40,34 @@ import CotizacionService from '../../services/CotizacionService';
      Boolean garatiaExtendida;
       Double total; */
 const GenerarFactura = () => {
-  // const cotiacion = {
-  //  nombreC, email, patente, garantiaExtendida,
-  // } = useContext(AppContext);
-
-  // const {
-  //  nombreC, email, patente, garantiaExtendida,
-  // } = JSON.parse(sesionStorage.getItem('cotizacion'));
-  //  sessionStorage.getItem('cotizacion');
-  const rawValue = sessionStorage.getItem('cotizacion');
-  const cotizacion = JSON.parse(rawValue);
-
-  /* ALERTAS */
+/* ALERTAS */
   const [errorMessage, setErrorMessage] = useState('');
   const [showSuccessSnackbar, setShowSuccessSnackbar] = useState(false);
   const [showErrorSnackbar, setShowErrorSnackbar] = useState(false);
 
   /* declara una variable de estado para almacenar la fecha actual */
   const [fecha, setFechaActual] = useState(new Date());
-  // agrego mail
-  const enviarCorreo = () => {
+  // eslint-disable-next-line prefer-destructuring
+  const cotizacion = sessionStorage.cotizacion;
+  const financiacion = sessionStorage.financiacion;
+
+  // const [cotizacion, setCotizacion] = useState([]);
+  // const [factura, setFactura] = useState([]);
+  // guardo los datos de la factura
+  const confirmarFactura = () => {
+    FacturaService.generarFactura(sessionStorage.idCotizacion)
+      .then((response) => {
+        // Show success notification
+        setShowSuccessSnackbar(true);
+        console.log('Factura generada');
+      })
+      .catch((error) => {
+        console.error('Error al generar factura', error);
+        setErrorMessage('Error al generar factura', error);
+        setShowErrorSnackbar(true);
+      });
+
+    /*
     CotizacionService.enviarPDFCotizacion(cotizacion.cliente.email, cotizacion.id)
       .then((response) => {
         // Show success notification
@@ -66,12 +79,38 @@ const GenerarFactura = () => {
         setErrorMessage('Error al enviar el correo', error);
         setShowErrorSnackbar(true);
       });
+      */
   };
 
   const handleSnackbarClose = () => {
     setShowSuccessSnackbar(false);
     setShowErrorSnackbar(false);
   };
+
+  /*
+  const obtenerDatosCotizacion = async () => {
+    try {
+      const response = await CotizacionService.obtener(sessionStorage.idCotizacion);
+      setCotizacion(response.data.result);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const obtenerDatosFactura = async () => {
+    try {
+      const response = await FacturaService.obtenerFactura(sessionStorage.facturaId);
+      setFactura(response.data.result);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    obtenerDatosFactura();
+    obtenerDatosCotizacion();
+  }, []);
+*/
 
   return (
     <Container className="my-0">
@@ -103,6 +142,10 @@ const GenerarFactura = () => {
                 <ListGroup.Item>
                   Sucursal:
                   {cotizacion.sucursal}
+                </ListGroup.Item>
+                <ListGroup.Item>
+                  Número de Factura:
+                  {factura.id ? factura.id : ''}
                 </ListGroup.Item>
                 <ListGroup.Item>
                   Número de cotización asociada:
@@ -159,7 +202,12 @@ const GenerarFactura = () => {
           <Col xs={6} className="bg-warning"><p><strong>$ {cotizacion.totalMenosReserva}</strong></p></Col>
         </Row>
 
-        <Button type="text" onClick={enviarCorreo}>Mandar por mail</Button>
+        {/* Aca pregunto si hay financiacion, y de haberla, incluyo un componente encargado
+            de gestionar los datos de la financiacion    */}
+
+        {sessionStorage.conFinanciacion ? <Financiacion /> : '' }
+
+        <Button type="text" onClick={confirmarFactura}>Confirmar Factura</Button>
       </div>
 
       {/* Alertas */}
@@ -179,8 +227,8 @@ const GenerarFactura = () => {
           sx={{ backgroundColor: 'green' }} // Set your desired background color here
           message={(
             <Alert onClose={handleSnackbarClose} severity="success">
-              <AlertTitle>Correo enviado!</AlertTitle>
-              Se ha enviado la factura al email
+              <AlertTitle>Factura Generada!</AlertTitle>
+              Se ha creado una nueva factura
               <strong> correctamente!</strong>
             </Alert>
           )}
@@ -202,7 +250,7 @@ const GenerarFactura = () => {
             <Alert onClose={handleSnackbarClose} severity="error">
               <AlertTitle>Error</AlertTitle>
               Hubo un
-              <strong> error al enviar el mail. </strong>
+              <strong> error al generar la factura. </strong>
               Por favor intente mas tarde.
               <strong> Error: </strong>
               {errorMessage}

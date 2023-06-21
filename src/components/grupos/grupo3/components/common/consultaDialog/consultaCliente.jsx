@@ -1,6 +1,14 @@
 /* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable no-shadow */
-import { Box, Button, TextField } from '@mui/material';
+import {
+  Box,
+  Button,
+  TextField,
+  Snackbar,
+  SnackbarContent,
+  Alert,
+  AlertTitle,
+} from '@mui/material';
 import { useState } from 'react';
 import ConsultaService from '../../../services/ConsultaService';
 
@@ -14,6 +22,9 @@ const ConsultaCliente = () => {
     error: false,
     message: '',
   });
+
+  const [showSuccessSnackbar, setShowSuccessSnackbar] = useState(false);
+  const [showErrorSnackbar, setShowErrorSnackbar] = useState(false);
 
   const emailValidation = (email) => {
     // expresion regular para validar email
@@ -32,7 +43,6 @@ const ConsultaCliente = () => {
     }
     setError({
       error: false,
-      message: 'Se ha cargado exitosamente',
     });
 
     try {
@@ -46,10 +56,16 @@ const ConsultaCliente = () => {
       const response = await ConsultaService.guardarConsulta(consultaObject);
       // eslint-disable-next-line no-console
       console.log(response.data);
+      setShowSuccessSnackbar(true);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error);
     }
+  };
+
+  const handleSnackbarClose = () => {
+    setShowSuccessSnackbar(false);
+    setShowErrorSnackbar(false);
   };
 
   return (
@@ -130,6 +146,51 @@ const ConsultaCliente = () => {
           Enviar Consulta
         </Button>
       </Box>
+      <Snackbar
+        open={showSuccessSnackbar}
+        autoHideDuration={3000}
+        onClose={handleSnackbarClose}
+        style={{
+          position: 'fixed',
+          left: '50%',
+          top: '50%',
+          transform: 'translate(-50%, -50%)',
+          minWidth: '400px',
+        }}
+      >
+        <SnackbarContent
+          sx={{ backgroundColor: 'green' }} // Set your desired background color here
+          message={(
+            <Alert onClose={handleSnackbarClose} severity="success">
+              <AlertTitle>Realizado!</AlertTitle>
+              La consulta se realizo
+              <strong> correctamente!</strong>
+            </Alert>
+          )}
+        />
+      </Snackbar>
+      <Snackbar
+        open={showErrorSnackbar}
+        style={{
+          position: 'fixed',
+          left: '50%',
+          top: '50%',
+          transform: 'translate(-50%, -50%)',
+          minWidth: '400px',
+        }}
+      >
+        <SnackbarContent
+          sx={{ backgroundColor: 'red' }} // Set your desired background color here
+          message={(
+            <Alert onClose={handleSnackbarClose} severity="error">
+              <AlertTitle>Error</AlertTitle>
+              Hubo un
+              <strong> error al cargar el formulario. </strong>
+              <strong> Por favor intentelo nuevamente </strong>
+            </Alert>
+          )}
+        />
+      </Snackbar>
     </>
   );
 };

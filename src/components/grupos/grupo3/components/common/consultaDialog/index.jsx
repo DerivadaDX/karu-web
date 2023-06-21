@@ -26,12 +26,12 @@ const ConsultaDialog = () => {
         Consultar
       </Button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Formulario de consulta</DialogTitle>
+        <DialogTitle>Formulario de consultas</DialogTitle>
         <DialogContent>
           <ConsultaCliente />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancelar</Button>
+          <Button onClick={handleClose}>VOLVER</Button>
         </DialogActions>
       </Dialog>
     </div>
