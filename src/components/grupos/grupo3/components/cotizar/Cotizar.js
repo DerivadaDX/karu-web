@@ -28,8 +28,6 @@ const Cotizar = () => {
   // datos que traemos
   const showData = async () => {
     const response = await VehiculoService.obtenerVehiculos();
-    // const data = await response.json();
-    console.log(response.data.result);
     setVehiculos(response.data.result);
   };
   // función de búsqueda

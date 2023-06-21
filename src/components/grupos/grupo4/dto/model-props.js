@@ -30,9 +30,9 @@ const inputs = [
   {
     id: 4,
     name:'basePrice',
-    label: 'Precio base',
+    label: 'Precio de compra',
     errorMessage:
-      '¡El precio base del auto debe tener el formato de precios valido, con numeros y puntos!',
+      '¡El precio de compra del auto debe tener el formato de precios valido, con numeros y puntos!',
     pattern: '[0-9]+(\\.[0-9]+)?',
     required: true,
   },

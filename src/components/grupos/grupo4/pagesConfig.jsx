@@ -25,6 +25,8 @@ import CreditAnalysis from './pages/creditAnalysis/CreditAnalysis';
 import CreditScoreIcon from '@mui/icons-material/CreditScore';
 import EnableVehicle from './pages/enableVehicle/EnableVehicle';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import AssessmentIcon from '@mui/icons-material/Assessment';
+import ReportesG4 from './pages/reportes/Reportes';
 
 const GROUP_4_PAGES_CONFIG = [
   {
@@ -147,6 +149,17 @@ const GROUP_4_PAGES_CONFIG = [
     icon: <CheckCircleIcon />,
     page: <EnableVehicle />,
     roles: [Roles.ADMINISTRADOR,Roles.IT],
+  },
+  {
+    id: 'g4-Reportes',
+    name: 'Reportes de vehículo',
+    href: '/vehicle-reports',
+    icon: <AssessmentIcon />,
+    page: <ReportesG4 />,
+    roles: [
+      Roles.SUPERVISOR_TECNICO,
+      Roles.IT,
+    ],
   },
 ];
 

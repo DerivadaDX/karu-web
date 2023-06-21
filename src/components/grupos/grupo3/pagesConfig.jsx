@@ -1,10 +1,13 @@
 import DriveEtaIcon from '@mui/icons-material/DriveEta';
+import CarRentalIcon from '@mui/icons-material/CarRental';
+import ReceiptIcon from '@mui/icons-material/Receipt';
 import { Search } from '@mui/icons-material';
 import EuroIcon from '@mui/icons-material/Euro';
 import React from 'react';
 import RequestPageIcon from '@mui/icons-material/RequestPage';
 import PermPhoneMsgIcon from '@mui/icons-material/PermPhoneMsg';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import CarCrashIcon from '@mui/icons-material/CarCrash';
 import GroupIcon from '@mui/icons-material/Group';
 import SellIcon from '@mui/icons-material/Sell';
 import Cotizar from './components/cotizar/Cotizar';
@@ -23,6 +26,9 @@ import CompraAuto from './components/comprar/CompraAuto';
 import VehicleForm from './components/comprar/VehicleForm';
 import FormularioCliente from './components/canje/formularioClientes';
 import FormularioVehiculoG3 from './components/canje/formularioVehiculos';
+import ListadoFacturas from './pages/ListadoFacturas';
+import ListadoReservas from './pages/ListadoReservas';
+import ListadoCompras from './pages/ListadoCompras';
 import GenerarFactura from './components/factura/Facturar';
 
 const GROUP_3_PAGES_CONFIG = [
@@ -115,12 +121,30 @@ const GROUP_3_PAGES_CONFIG = [
     soloURL: true,
   },
   {
+    id: 'g3-ListadoFacturas',
+    name: 'Ver Facturas',
+    href: '/ListadoFacturas',
+    icon: <CarRentalIcon />,
+    page: <ListadoFacturas />,
+    soloURL: true,
+    roles: [Roles.VENDEDOR, Roles.IT],
+  },
+  {
+    id: 'g3-ListadoReservas',
+    name: 'Ver Reservas',
+    href: '/ListadoReservas',
+    icon: <ReceiptIcon />,
+    page: <ListadoReservas />,
+    soloURL: true,
+    roles: [Roles.VENDEDOR, Roles.IT],
+  },
+  {
     id: 'g3-CompraAuto',
     name: 'Vender mi Auto',
     href: '/compra-auto/',
     icon: <SellIcon />,
     page: <CompraAuto />,
-    roles: [Roles.CLIENTE, Roles.IT],
+    roles: [Roles.CLIENTE, Roles.VENDEDOR, Roles.IT],
   },
   {
     id: 'g3-compra',
@@ -128,6 +152,15 @@ const GROUP_3_PAGES_CONFIG = [
     icon: <SellIcon />,
     page: <VehicleForm />,
     soloUrl: true,
+  },
+
+  {
+    id: 'g3-Factura',
+    name: 'Factura',
+    href: '/facturar',
+    icon: <GroupAddIcon />,
+    page: <GenerarFactura />,
+    soloURL: true,
   },
   {
     id: 'g3-FormularioCliente',
@@ -146,12 +179,12 @@ const GROUP_3_PAGES_CONFIG = [
     soloURL: true,
   },
   {
-    id: 'g3-Factura',
-    name: 'Factura',
-    href: '/facturar',
-    icon: <GroupAddIcon />,
-    page: <GenerarFactura />,
-    soloURL: true,
+    id: 'g3-ListadoCompras',
+    name: 'Compras',
+    href: '/ListadoCompras',
+    icon: <CarCrashIcon />,
+    page: <ListadoCompras />,
+    roles: [Roles.VENDEDOR, Roles.IT],
   },
 ];
 
