@@ -7,6 +7,7 @@ import React from 'react';
 import RequestPageIcon from '@mui/icons-material/RequestPage';
 import PermPhoneMsgIcon from '@mui/icons-material/PermPhoneMsg';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import CarCrashIcon from '@mui/icons-material/CarCrash';
 import GroupIcon from '@mui/icons-material/Group';
 import SellIcon from '@mui/icons-material/Sell';
 import Cotizar from './components/cotizar/Cotizar';
@@ -27,6 +28,7 @@ import FormularioCliente from './components/canje/formularioClientes';
 import FormularioVehiculoG3 from './components/canje/formularioVehiculos';
 import ListadoFacturas from './pages/ListadoFacturas';
 import ListadoReservas from './pages/ListadoReservas';
+import ListadoCompras from './pages/ListadoCompras';
 
 const GROUP_3_PAGES_CONFIG = [
   {
@@ -141,7 +143,7 @@ const GROUP_3_PAGES_CONFIG = [
     href: '/compra-auto/',
     icon: <SellIcon />,
     page: <CompraAuto />,
-    roles: [Roles.CLIENTE, Roles.IT],
+    roles: [Roles.CLIENTE, Roles.VENDEDOR, Roles.IT],
   },
   {
     id: 'g3-compra',
@@ -165,6 +167,14 @@ const GROUP_3_PAGES_CONFIG = [
     icon: <GroupAddIcon />,
     page: <FormularioVehiculoG3 />,
     soloURL: true,
+  },
+  {
+    id: 'g3-ListadoCompras',
+    name: 'Compras',
+    href: '/ListadoCompras',
+    icon: <CarCrashIcon />,
+    page: <ListadoCompras />,
+    roles: [Roles.VENDEDOR, Roles.IT],
   },
 ];
 
