@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { Alert, Box, Button, FormControl, InputLabel, MenuItem, Paper, Select, Stack, TextField } from '@mui/material';
+import { Alert, Box, Button, FormControl, InputLabel, MenuItem, Paper, Select, Stack, TextField, Typography } from '@mui/material';
 import React, { useState, useContext, useMemo, useEffect } from 'react';
 import { UserContext } from '../../context/UsersContext';
 import MaterialReactTable from 'material-react-table';
@@ -104,6 +104,7 @@ const EnableVehicle = () => {
           onSubmit={submitHandler}
           sx={{ width: '70%', display: 'flex', textAlign: 'center' }}
         >
+        <Typography variant="h3">Habilitar vehículo</Typography>
           <TextField
             variant="filled"
             label="Patente"
@@ -201,10 +202,13 @@ const EnableVehicle = () => {
             </Box>
           </Paper>
 
-          <Button variant="contained" type="submit">
+          <Button variant="contained" type="submit" sx={{marginBottom: '1em'}}>
             Publicar
           </Button>
         </Stack>
+      </Paper>
+      <Paper sx={{textAlign: 'center'}}>
+      <a style={{color: 'rgba(0, 0, 0, 0.54)'}} href="https://youtu.be/tJwiq_e7yqE">Tutorial: como habilitar un vehiculo</a>
       </Paper>
     </Paper>
   );
