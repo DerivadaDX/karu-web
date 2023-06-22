@@ -196,8 +196,8 @@ const ListadoCotizaciones = () => {
         initialState={{
           sorting: [
             {
-              id: 'id',
-              desc: false,
+              id: 'fecha',
+              desc: true,
             },
           ],
         }}

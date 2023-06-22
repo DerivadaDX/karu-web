@@ -9,6 +9,7 @@ import PermPhoneMsgIcon from '@mui/icons-material/PermPhoneMsg';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import CarCrashIcon from '@mui/icons-material/CarCrash';
 import GroupIcon from '@mui/icons-material/Group';
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import SellIcon from '@mui/icons-material/Sell';
 import Cotizar from './components/cotizar/Cotizar';
 import NuevaPagina from './components/cotizar/NuevaPagina';
@@ -29,6 +30,7 @@ import FormularioVehiculoG3 from './components/canje/formularioVehiculos';
 import ListadoFacturas from './pages/ListadoFacturas';
 import ListadoReservas from './pages/ListadoReservas';
 import ListadoCompras from './pages/ListadoCompras';
+import ListadoPagarG4 from './pages/ListadoPagarG4';
 import GenerarFactura from './components/factura/Facturar';
 import FacturaRealizada from './components/factura/FacturaRealizada';
 
@@ -194,6 +196,14 @@ const GROUP_3_PAGES_CONFIG = [
     icon: <CarCrashIcon />,
     page: <ListadoCompras />,
     roles: [Roles.VENDEDOR, Roles.IT],
+  },
+  {
+    id: 'g3-ListadoPagarG4',
+    name: 'Pagar',
+    href: '/ListadoPagarG4',
+    icon: <AddShoppingCartIcon />,
+    page: <ListadoPagarG4 />,
+    roles: [Roles.ADMINISTRADOR, Roles.IT],
   },
 ];
 

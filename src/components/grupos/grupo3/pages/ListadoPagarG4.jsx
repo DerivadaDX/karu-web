@@ -29,18 +29,17 @@ styles.paperInferior = {
   maxHeight: '60vh',
 };
 
-const ListadoCompras = () => {
+const ListadoPagarG4 = () => {
   const [vehiculos, setVehiculos] = useState([]);
   const [vehiculoSeleccionado, setVehiculoSeleccionado] = useState([]);
   const [cliente, setCliente] = useState([]);
-  const [vehiculosComprados, setVehiculosComprados] = useState([]);
-  const [vehiculosRechazados, setVehiculosRechazados] = useState([]);
+  const [vehiculosAceptados, setVehiculosAceptados] = useState([]);
+  const [vehiculosRevisionTecnica, setVehiculosRevisionTecnica] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [openDialogVerCliente, setOpenDialogVerCliente] = useState(false);
   const [openDialogVerComentario, setOpenDialogVerComentario] = useState(false);
   const [openDialogVerMasDetalles, setOpenDialogVerMasDetalles] = useState(false);
-  const [openDialogAceptar, setOpenDialogAceptar] = useState(false);
-  const [openDialogRechazar, setOpenDialogRechazar] = useState(false);
+  const [openDialogComprar, setOpenDialogComprar] = useState(false);
   const [infoMessage, setinfoMessage] = useState('');
   const [showSuccessSnackbar, setShowSuccessSnackbar] = useState(false);
   const [showInfoSnackbar, setShowInfoSnackbar] = useState(false);
@@ -48,7 +47,7 @@ const ListadoCompras = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
 
-  ListadoCompras.propTypes = {
+  ListadoPagarG4.propTypes = {
     row: PropTypes.shape({
       original: PropTypes.shape({
         plate: PropTypes.string.isRequired,
@@ -81,12 +80,12 @@ const ListadoCompras = () => {
   };
 
   const obtenerVehiculos = async () => {
-    const response = await VehiculoService.obtenerVehiculoPorEstado('ESPERA_DECISION_FINAL');
+    const response = await VehiculoService.obtenerVehiculoPorEstado('COMPRADO');
     setVehiculos(response.data.result);
-    const response2 = await VehiculoService.obtenerVehiculoPorEstado('RECHAZADO');
-    setVehiculosRechazados(response2.data.result);
+    const response2 = await VehiculoService.obtenerVehiculoPorEstado('EN_REPARACION');
+    setVehiculosRevisionTecnica(response2.data.result);
     const response3 = await VehiculoService.obtenerVehiculoPorEstado('ACEPTADO');
-    setVehiculosComprados(response3.data.result);
+    setVehiculosAceptados(response3.data.result);
     // const data = await response.json();
     setCargando(false);
   };
@@ -131,61 +130,28 @@ const ListadoCompras = () => {
     setOpenDialogVerMasDetalles(false);
   };
 
-  const handleOpenDialogAceptar = (vehiculo) => {
+  const handleOpenDialogComprar = (vehiculo) => {
     setVehiculoSeleccionado(vehiculo);
-    setOpenDialogAceptar(true);
+    setOpenDialogComprar(true);
   };
-  const handleCloseDialogAceptar = () => {
-    setOpenDialogAceptar(false);
+  const handleCloseDialogComprar = () => {
+    setOpenDialogComprar(false);
   };
-  const handleAceptar = () => {
-    if (vehiculoSeleccionado.status === 'ESPERA_DECISION_FINAL') {
-      const modificacionEstado = {
-        plate: vehiculoSeleccionado.plate,
-        status: 'ACEPTADO',
-      };
+  const handleComprar = () => {
+    if (vehiculoSeleccionado.status === 'ACEPTADO') {
       try {
-        VehiculoService.modificarEstadoVehiculo(modificacionEstado);
-        setSuccessMessage('El vehículo a sido aceptado exitosamente');
+        VehiculoService.pagarVehiculo(vehiculoSeleccionado.plate);
+        setSuccessMessage('El vehículo a sido pagado exitosamente');
         setShowSuccessSnackbar(true);
       } catch (error) {
         setErrorMessage(error.message);
         setShowErrorSnackbar(true);
       }
-      handleCloseDialogAceptar();
+      handleCloseDialogComprar();
     } else {
-      setErrorMessage('El vehiculo seleccionada se encuentra ya aceptado o rechazado, por lo que es imposible tomar una decision sobre él.');
+      setErrorMessage('El vehiculo seleccionada ya se encuentra pagado y la empresa no quiere pagar dos veces por el mismo vehículo.');
       setShowErrorSnackbar(true);
-      handleCloseDialogAceptar();
-    }
-  };
-
-  const handleOpenDialogRechazar = (vehiculo) => {
-    setVehiculoSeleccionado(vehiculo);
-    setOpenDialogRechazar(true);
-  };
-  const handleCloseDialogRechazar = () => {
-    setOpenDialogRechazar(false);
-  };
-  const handleRechazar = () => {
-    if (vehiculoSeleccionado.status === 'ESPERA_DECISION_FINAL') {
-      const modificacionEstado = {
-        plate: vehiculoSeleccionado.plate,
-        status: 'RECHAZADO',
-      };
-      try {
-        VehiculoService.modificarEstadoVehiculo(modificacionEstado);
-        setSuccessMessage('El vehículo a sido rechazado exitosamente');
-        setShowSuccessSnackbar(true);
-      } catch (error) {
-        setErrorMessage(error.message);
-        setShowErrorSnackbar(true);
-      }
-      handleCloseDialogRechazar();
-    } else {
-      setErrorMessage('El vehiculo seleccionada ya se encuentra aceptado o rechazado, por lo que es imposible tomar una decision sobre él.');
-      setShowErrorSnackbar(true);
-      handleCloseDialogRechazar();
+      handleCloseDialogComprar();
     }
   };
 
@@ -234,7 +200,7 @@ const ListadoCompras = () => {
       },
       {
         accessorKey: 'masDetalles',
-        header: 'Detalles vehiculo',
+        header: 'Detalles vehículo',
         // eslint-disable-next-line
         Cell: ({ row }) => (
           <Button sx={{ backgroundColor: '#212121', color: '#ffffff' }} onClick={() => handleOpenDialogVerMasDetalles(row.original)}>
@@ -243,18 +209,13 @@ const ListadoCompras = () => {
         ),
       },
       {
-        accessorKey: 'aceptarRechazar',
-        header: 'Aceptar/Rechazar',
+        accessorKey: 'Comprar',
+        header: 'Comprar',
         // eslint-disable-next-line
         Cell: ({ row }) => (
-          <>
-            <Button sx={{ backgroundColor: '#205723', color: '#ffffff' }} onClick={() => handleOpenDialogAceptar(row.original)}>
-              Aceptar
-            </Button>
-            <Button sx={{ backgroundColor: '#801313', color: '#ffffff' }} onClick={() => handleOpenDialogRechazar(row.original)}>
-              Rechazar
-            </Button>
-          </>
+          <Button sx={{ backgroundColor: '#205723', color: '#ffffff' }} onClick={() => handleOpenDialogComprar(row.original)}>
+            Comprar
+          </Button>
         ),
       },
     ],
@@ -268,15 +229,32 @@ const ListadoCompras = () => {
 
   return (
     <Box style={{ overflowX: 'auto' }}>
-      <h1>Listado de compras</h1>
+      <h1>Listado a pagar</h1>
       {vehiculos.length === 0
-      && vehiculosComprados.length === 0 && vehiculosRechazados.length === 0 && !cargando && (
+      && vehiculosAceptados.length === 0 && vehiculosRevisionTecnica.length === 0 && !cargando && (
       <div>No hay registros para mostrar.</div>
+      )}
+
+      {vehiculosAceptados.length > 0 && (
+      <>
+        <h2>Vehículos Aceptados</h2>
+        <MaterialReactTable
+          columns={columnas}
+          data={vehiculosAceptados}
+          state={{ isLoading: cargando }}
+          defaultColumn={{ minSize: 10, maxSize: 100 }}
+          displayColumnDefOptions={{
+            'mrt-row-actions': {
+              header: 'Acciones',
+            },
+          }}
+        />
+      </>
       )}
 
       {vehiculos.length > 0 && (
       <>
-        <h2>Vehículos a comprar</h2>
+        <h2>Vehículos Comprados</h2>
         <MaterialReactTable
           columns={columnas}
           data={vehiculos}
@@ -291,29 +269,12 @@ const ListadoCompras = () => {
       </>
       )}
 
-      {vehiculosComprados.length > 0 && (
+      {vehiculosRevisionTecnica.length > 0 && (
       <>
-        <h2>Vehículos aceptados</h2>
+        <h2>Vehículos en reparacion</h2>
         <MaterialReactTable
           columns={columnas}
-          data={vehiculosComprados}
-          state={{ isLoading: cargando }}
-          defaultColumn={{ minSize: 10, maxSize: 100 }}
-          displayColumnDefOptions={{
-            'mrt-row-actions': {
-              header: 'Acciones',
-            },
-          }}
-        />
-      </>
-      )}
-
-      {vehiculosRechazados.length > 0 && (
-      <>
-        <h2>Vehículos Rechazados</h2>
-        <MaterialReactTable
-          columns={columnas}
-          data={vehiculosRechazados}
+          data={vehiculosRevisionTecnica}
           state={{ isLoading: cargando }}
           defaultColumn={{ minSize: 10, maxSize: 100 }}
           displayColumnDefOptions={{
@@ -358,7 +319,7 @@ const ListadoCompras = () => {
         </DialogActions>
       </Dialog>
       <Dialog open={openDialogVerComentario} onClose={handleCloseDialogVerComentario}>
-        <DialogTitle>Detalles del ccomentario</DialogTitle>
+        <DialogTitle>Detalles del comentario</DialogTitle>
         <DialogContent>
           {vehiculoSeleccionado && (
             <DialogContentText>
@@ -433,35 +394,19 @@ const ListadoCompras = () => {
           <Button onClick={handleCloseDialogVerMasDetalles}>Cerrar</Button>
         </DialogActions>
       </Dialog>
-      <Dialog open={openDialogAceptar} onClose={handleCloseDialogAceptar}>
-        <DialogTitle>Confirmar aceptacion de vehiculo</DialogTitle>
+      <Dialog open={openDialogComprar} onClose={handleCloseDialogComprar}>
+        <DialogTitle>Confirmar compra del vehiculo</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            ¿Estás seguro de que quieres aceptar este vehículo?
+            ¿Estás seguro de que quieres Comprar este vehículo?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseDialogAceptar} color="primary">
+          <Button onClick={handleCloseDialogComprar} color="primary">
             Cancelar
           </Button>
-          <Button onClick={handleAceptar} color="primary">
-            Aceptar
-          </Button>
-        </DialogActions>
-      </Dialog>
-      <Dialog open={openDialogRechazar} onClose={handleCloseDialogRechazar}>
-        <DialogTitle>Confirmar rechazo de vehiculo</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            ¿Estás seguro de que quieres rechazar este vehículo?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDialogRechazar} color="primary">
-            Cancelar
-          </Button>
-          <Button onClick={handleRechazar} color="primary">
-            Rechazar
+          <Button onClick={handleComprar} color="primary">
+            Comprar
           </Button>
         </DialogActions>
       </Dialog>
@@ -526,7 +471,7 @@ const ListadoCompras = () => {
             <Alert onClose={handleSnackbarClose} severity="error">
               <AlertTitle>Error</AlertTitle>
               Hubo un
-              <strong> error al intentar rechazar o aceptar la compra </strong>
+              <strong> error al intentar comprar el vehiculo </strong>
               <br />
               Vea el error descripto debajo para mas información.
               <br />
@@ -540,4 +485,4 @@ const ListadoCompras = () => {
   );
 };
 
-export default ListadoCompras;
+export default ListadoPagarG4;
