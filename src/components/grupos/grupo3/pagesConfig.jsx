@@ -30,6 +30,7 @@ import ListadoFacturas from './pages/ListadoFacturas';
 import ListadoReservas from './pages/ListadoReservas';
 import ListadoCompras from './pages/ListadoCompras';
 import GenerarFactura from './components/factura/Facturar';
+import FacturaRealizada from './components/factura/FacturaRealizada';
 
 const GROUP_3_PAGES_CONFIG = [
   {
@@ -160,6 +161,14 @@ const GROUP_3_PAGES_CONFIG = [
     href: '/facturar',
     icon: <GroupAddIcon />,
     page: <GenerarFactura />,
+    soloURL: true,
+  },
+  {
+    id: 'g3-FacturaRealizada',
+    name: 'Factura realizada',
+    href: '/FacturaRealizada',
+    icon: <GroupIcon />,
+    page: <FacturaRealizada />,
     soloURL: true,
   },
   {

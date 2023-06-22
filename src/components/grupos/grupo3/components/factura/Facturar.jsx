@@ -7,6 +7,7 @@
 /* eslint-disable no-unused-vars */
 
 import React, { useContext, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Container, Row, Col, Table, Card, ListGroup,
 } from 'react-bootstrap';
@@ -50,6 +51,7 @@ const GenerarFactura = () => {
   const [fecha, setFechaActual] = useState(new Date());
 
   const [cotizacion, setCotizacion] = useState([]);
+  const navigate = useNavigate();
 
   const confirmarFactura = () => {
     FacturaService.guardarFactura(sessionStorage.idCotizacion)
@@ -57,6 +59,7 @@ const GenerarFactura = () => {
         // Show success notification
         setShowSuccessSnackbar(true);
         console.log('Factura generada');
+        navigate('/FacturaRealizada');
       })
       .catch((error) => {
         console.error('Error al generar factura', error);
@@ -71,6 +74,7 @@ const GenerarFactura = () => {
         // Show success notification
         setShowSuccessSnackbar(true);
         console.log('Factura generada');
+        navigate('/FacturaRealizada');
       })
       .catch((error) => {
         console.error('Error al generar factura', error);
