@@ -9,6 +9,7 @@ import {
     Box,
     Button,
     FormControl,
+    Grid,
     InputLabel,
     MenuItem,
     Paper,
@@ -126,9 +127,15 @@ const CreditAnalysis = () => {
                 </Alert>
               </Box>
             )}
-            <Link to={'/'}>
-              <p>Volver al inicio</p>
-            </Link>
+            <Grid container justifyContent="center">
+              <Grid item>
+                <Box display="inline-block">
+                  <Link to={'/'}>
+                    <p>Volver al inicio</p>
+                  </Link>
+                </Box>
+              </Grid>
+            </Grid>
           </Stack>
         </Paper>
       );

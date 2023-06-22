@@ -39,7 +39,7 @@ const GROUP_4_PAGES_CONFIG = [
   },
   {
     id: 'g4-register',
-    name: 'Registrarse',
+    name: 'Registrar usuario',
     href: '/sign-up',
     icon: <AppRegistrationIcon />,
     page: <RegisterForm />,
