@@ -43,7 +43,6 @@ const FormularioVehiculoG3 = () => {
   });
 
   const reservaData= JSON.parse(sessionStorage.formularioCliente);
-  console.log(reservaData);
   const navigate = useNavigate();
  
 
@@ -85,7 +84,6 @@ const FormularioVehiculoG3 = () => {
     e.preventDefault();
     await saveVehicle(values);
     // cambios: aca guarda el vehiculo si todo sale bien, por ende aca tmb deberia generar la reserva
-    await ClientesService.guardarCliente(reservaData);
     await ReservaService.guardarReserva(sessionStorage.patenteVenta, reservaData); 
     navigate('/turno-evaluacion-cliente');
   };
