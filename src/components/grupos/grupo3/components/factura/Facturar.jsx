@@ -69,7 +69,8 @@ const GenerarFactura = () => {
   };
 
   const confirmarFacturaFinanciacion = () => {
-    FacturaService.guardarFacturaFinanciada(sessionStorage.idCotizacion, sessionStorage.factura)
+    console.log(sessionStorage.idCotizacion, JSON.parse(sessionStorage.factura));
+    FacturaService.guardarFacturaFinanciada(sessionStorage.idCotizacion, JSON.parse(sessionStorage.factura))
       .then((response) => {
         // Show success notification
         setShowSuccessSnackbar(true);
