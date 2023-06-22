@@ -10,6 +10,7 @@ import {
   Box,
   Button,
   FormControl,
+  Grid,
   InputLabel,
   MenuItem,
   Paper,
@@ -175,9 +176,15 @@ const VehicleForm = () => {
         >
           {saveVehicleMessageError}
         </Alert>
-        <Link className="vehicle-container__form-a" to={'/'}>
-          <p>Volver al inicio</p>
-        </Link>
+        <Grid container justifyContent="center">
+            <Grid item>
+              <Box display="inline-block">
+                <Link className="vehicle-container__form-a" to={'/'}>
+                  <p>Volver al inicio</p>
+                </Link>
+              </Box>
+            </Grid>
+        </Grid>
       </Stack>
     </Paper>
   );
