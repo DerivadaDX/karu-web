@@ -184,7 +184,7 @@ const GROUP_3_PAGES_CONFIG = [
     href: '/ListadoPagarG4',
     icon: <AddShoppingCartIcon />,
     page: <ListadoPagarG4 />,
-    roles: [Roles.VENDEDOR, Roles.IT],
+    roles: [Roles.ADMINISTRADOR, Roles.IT],
   },
 ];
 

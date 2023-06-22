@@ -80,9 +80,9 @@ const ListadoPagarG4 = () => {
   };
 
   const obtenerVehiculos = async () => {
-    const response = await VehiculoService.obtenerVehiculoPorEstado('DISPONIBLE');
+    const response = await VehiculoService.obtenerVehiculoPorEstado('COMPRADO');
     setVehiculos(response.data.result);
-    const response2 = await VehiculoService.obtenerVehiculoPorEstado('ESPERA_REVISION_TECNICA');
+    const response2 = await VehiculoService.obtenerVehiculoPorEstado('EN_REPARACION');
     setVehiculosRevisionTecnica(response2.data.result);
     const response3 = await VehiculoService.obtenerVehiculoPorEstado('ACEPTADO');
     setVehiculosAceptados(response3.data.result);
@@ -229,7 +229,7 @@ const ListadoPagarG4 = () => {
 
   return (
     <Box style={{ overflowX: 'auto' }}>
-      <h1>Listado de compras</h1>
+      <h1>Listado a pagar</h1>
       {vehiculos.length === 0
       && vehiculosAceptados.length === 0 && vehiculosRevisionTecnica.length === 0 && !cargando && (
       <div>No hay registros para mostrar.</div>
@@ -254,7 +254,7 @@ const ListadoPagarG4 = () => {
 
       {vehiculos.length > 0 && (
       <>
-        <h2>Vehículos Disponibles</h2>
+        <h2>Vehículos Comprados</h2>
         <MaterialReactTable
           columns={columnas}
           data={vehiculos}
@@ -271,7 +271,7 @@ const ListadoPagarG4 = () => {
 
       {vehiculosRevisionTecnica.length > 0 && (
       <>
-        <h2>Vehículos RevisionTecnica</h2>
+        <h2>Vehículos en reparacion</h2>
         <MaterialReactTable
           columns={columnas}
           data={vehiculosRevisionTecnica}
