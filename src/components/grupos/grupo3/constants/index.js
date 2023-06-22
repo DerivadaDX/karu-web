@@ -47,12 +47,12 @@ export const listaGNC = [
   },
   {
     id: 2,
-    value: true,
-    label: '  CON GNC ',
+    value: 'CON GNC',
+    label: 'CON GNC',
   },
   {
     id: 3,
-    value: false,
+    value: 'SIN GNC',
     label: 'SIN GNC',
   },
 ];

@@ -72,8 +72,9 @@ const FiltroDeVehiculos = () => {
     // filtra por tipo gnc
     if (categoriaGNCSeleccionada) {
       updatedList = updatedList.filter((item) => ((categoriaGNCSeleccionada === 'TODOS')
-       || ((categoriaGNCSeleccionada !== 'TODOS')
-      && (item.gnc === categoriaGNCSeleccionada))));
+       || ((categoriaGNCSeleccionada !== 'TODOS') && ((categoriaGNCSeleccionada === 'CON GNC') && item.gnc))
+       || ((categoriaGNCSeleccionada !== 'TODOS') && ((categoriaGNCSeleccionada === 'SIN GNC') && (!item.gnc)))
+      ));
     }
     // filtra por origen
     if (categoriaOrigenSeleccionada) {
