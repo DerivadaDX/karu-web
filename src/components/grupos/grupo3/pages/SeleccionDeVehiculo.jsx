@@ -71,14 +71,14 @@ const FiltroDeVehiculos = () => {
     }
     // filtra por tipo gnc
     if (categoriaGNCSeleccionada) {
-      updatedList = updatedList.filter((item) => ((categoriaSeleccionada === 'TODOS')
-       || ((categoriaSeleccionada !== 'TODOS')
+      updatedList = updatedList.filter((item) => ((categoriaGNCSeleccionada === 'TODOS')
+       || ((categoriaGNCSeleccionada !== 'TODOS')
       && (item.gnc === categoriaGNCSeleccionada))));
     }
     // filtra por origen
     if (categoriaOrigenSeleccionada) {
-      updatedList = updatedList.filter((item) => ((categoriaSeleccionada === 'TODOS')
-       || ((categoriaSeleccionada !== 'TODOS')
+      updatedList = updatedList.filter((item) => ((categoriaOrigenSeleccionada === 'TODOS')
+       || ((categoriaOrigenSeleccionada !== 'TODOS')
       && (item.origin === categoriaOrigenSeleccionada))));
     }
 

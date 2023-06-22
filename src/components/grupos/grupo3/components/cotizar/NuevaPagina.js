@@ -15,6 +15,7 @@ import { AppContext } from './AppContext';
 import Alerts from '../../../grupo1/components/common/Alerts';
 import CotizacionService from '../../services/CotizacionService';
 import VehiculoService from '../../services/VehiculoService';
+import { UserContext } from '../../../grupo4/context/UsersContext';
 
 /*
 cuanto presion el boton cotizar pongo un input donde tiene que rellenar esto datos
@@ -60,6 +61,9 @@ const NuevaPagina = () => {
   // setear los hooks useState
   const [vehiculo, setVehiculo] = useState([]);
   const [validated, setValidated] = useState(false);
+  const { cookie } = useContext(UserContext);
+
+  const user = cookie.get('user');
 
   // Dentro de tu componente o función
   const getProductData = async (product) => {
@@ -106,12 +110,12 @@ const NuevaPagina = () => {
 
         // paso datos al back
         const cotizacionData = {
-          sucursal: 'S-01',
+          sucursal: user.branch,
           /* nombreCliente: nombreC, */
           patente: productSelected.plate, // infoCotizacion.patente,
           /* email: mail, */
           dni: clienteDNI,
-          idVendedor: 3,
+          idVendedor: user.id,
           /* precioBase: 1000000, */
           garantiaExtendida: garantiaCheck,
         };
@@ -157,7 +161,7 @@ const NuevaPagina = () => {
             Sucursal:
           </Form.Label>
           <Col sm="10">
-            <Form.Control plaintext readOnly defaultValue="Surcusal del vendedor" />
+            <Form.Control plaintext readOnly defaultValue={user.branch} />
           </Col>
         </Form.Group>
         {/* <Form.Group as={Row} md="6" controlId="validationCustom03">
@@ -257,7 +261,8 @@ const NuevaPagina = () => {
             IdVendedor:
           </Form.Label>
           <Col sm="10">
-            <Form.Control plaintext readOnly defaultValue="Id del Vendedor" />
+            <Form.Control plaintext readOnly defaultValue={user.id} />
+            {console.log(user)}
           </Col>
         </Form.Group>
 

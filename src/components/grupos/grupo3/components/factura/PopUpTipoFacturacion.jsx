@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 /* eslint-disable camelcase */
 /* eslint-disable react/jsx-one-expression-per-line */
@@ -54,6 +55,10 @@ const PopUpTipoFacturacion = ({ id, dni, total }) => {
   useEffect(() => {
     // mostrar datos desde API
     showDataTipo();
+  }, []);
+
+  useEffect(() => {
+    sessionStorage.conFinanciacion = 'si';
   }, []);
 
   const handleOpenTipo = () => {
@@ -113,7 +118,7 @@ const PopUpTipoFacturacion = ({ id, dni, total }) => {
       };
       const infoCotizacion = facturaData;
       sessionStorage.setItem('factura', JSON.stringify(infoCotizacion));
-      navigate(`/facturar/${id}`);
+      navigate('/facturar');
       setOpen(true);
       setError(false);
     } else {

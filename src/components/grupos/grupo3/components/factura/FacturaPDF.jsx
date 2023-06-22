@@ -1,6 +1,4 @@
-/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-/*
 import React from 'react';
 
 import {
@@ -74,7 +72,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Factura = ({ infoCotizacion }) => (
+const Factura = () => (
   <Document>
     <Page size="A4">
       <View style={{ padding: '15px' }}>
@@ -129,5 +127,3 @@ const Factura = ({ infoCotizacion }) => (
 );
 
 export default Factura;
-
-*/

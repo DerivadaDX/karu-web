@@ -19,6 +19,7 @@ const PopUpFacturar = ({ id }) => {
   const [open, setOpen] = useState(false);
   const [cotizacionDNI, setcotizacionDNI] = useState('');
   const [cotizacionTotal, setcotizacionTotal] = useState('');
+  sessionStorage.idCotizacion = JSON.stringify(id);
   const navigate = useNavigate();
 
   PopUpFacturar.propTypes = {
@@ -31,7 +32,9 @@ const PopUpFacturar = ({ id }) => {
 
   const handleFactura = () => { // No
     setOpen(false);
-    navigate(`/facturar/${id}`);
+    navigate('/facturar');
+    sessionStorage.conFinanciacion = 'no';
+    sessionStorage.factura = '';
   };
 
   const handleClose = () => { // Sí
@@ -59,7 +62,7 @@ const PopUpFacturar = ({ id }) => {
   }, []);
   return (
     <div>
-      <Tooltip title="Anular" placement="top">
+      <Tooltip title="Facturar" placement="top">
         <IconButton onClick={handleOpen}>
           <ReceiptOutlinedIcon />
         </IconButton>
