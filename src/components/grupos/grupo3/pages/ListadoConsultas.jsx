@@ -82,14 +82,6 @@ const ListadoConsulta = () => {
     );
   }; */
 
-  const renderAccionesFila = ({ row }) => {
-    const { estadoConsulta } = row.original;
-    return <PopUpAnular id={row.original.id} />; // crear y cambiar popup de consultas
-    /* if (estadoConsulta === 'PENDIENTE') {
-      return <PopUpAnular id={row.original.id} />;
-    }
-    return ' '; */
-  };
   const columnas = useMemo(
     () => [
       {
@@ -119,16 +111,6 @@ const ListadoConsulta = () => {
       {
         accessorKey: 'fecha',
         header: 'Fecha',
-      },
-      /* {
-        accessorKey: 'garantiaExtendida',
-        header: 'Garantia Exentendida',
-        Cell: renderGarantiaExtendida,
-      }, */
-      {
-        accessorKey: 'estadoConsulta',
-        header: 'Estado',
-        Cell: renderAccionesFila,
       },
     ],
     [],
@@ -166,8 +148,8 @@ const ListadoConsulta = () => {
         initialState={{
           sorting: [
             {
-              id: 'id',
-              desc: false,
+              id: 'fecha',
+              desc: true,
             },
           ],
         }}
