@@ -24,7 +24,6 @@ import ClientesService from '../../services/ClienteService';
 const VehicleForm = () => {
   const rawValue = sessionStorage.getItem('compra');
   const compra = JSON.parse(rawValue);
-  console.log('obtiene: ', compra, compra.dni);
   const navigate = useNavigate();
 
   const [values, setValues] = useState({
@@ -43,7 +42,6 @@ const VehicleForm = () => {
       category: '',
     },
   });
-  console.log('valores ', values)
 
   const [models, setModels] = useState([
     { brand: '', model: '', year: '', basePrice: 0.0, engine: '', fuelType: '', category: '' },

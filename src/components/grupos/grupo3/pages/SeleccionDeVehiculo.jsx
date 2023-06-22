@@ -21,7 +21,6 @@ const FiltroDeVehiculos = () => {
   const [selectedKM, setSelectedKM] = useState([100, 300000]);
 
   const [vehiculosData, setVehiculos] = useState([]);
-  console.log(vehiculosData);
 
   // aca deberia inicializar el hook con el data importado de la api.
   const [list, setList] = useState([]);

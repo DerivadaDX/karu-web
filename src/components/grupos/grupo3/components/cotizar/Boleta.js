@@ -59,7 +59,6 @@ const Boleta = () => {
       .then((response) => {
         // Show success notification
         setShowSuccessSnackbar(true);
-        console.log('Correo enviado');
       })
       .catch((error) => {
         console.error('Error al enviar el correo', error);

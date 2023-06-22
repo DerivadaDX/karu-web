@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React, { useState } from 'react';
 import {
   Form,
@@ -93,7 +92,6 @@ const CompraAuto = () => {
         // paso datos
         // session Storage
         sessionStorage.setItem('compra', JSON.stringify(formData));
-        console.log(formData);
 
         // Show success notification
         setShowSuccessSnackbar(true);

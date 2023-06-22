@@ -58,27 +58,22 @@ const GenerarFactura = () => {
       .then((response) => {
         // Show success notification
         setShowSuccessSnackbar(true);
-        console.log('Factura generada');
         navigate('/FacturaRealizada');
       })
       .catch((error) => {
-        console.error('Error al generar factura', error);
         setErrorMessage('Error al generar factura', error);
         setShowErrorSnackbar(true);
       });
   };
 
   const confirmarFacturaFinanciacion = () => {
-    console.log(sessionStorage.idCotizacion, JSON.parse(sessionStorage.factura));
     FacturaService.guardarFacturaFinanciada(sessionStorage.idCotizacion, JSON.parse(sessionStorage.factura))
       .then((response) => {
         // Show success notification
         setShowSuccessSnackbar(true);
-        console.log('Factura generada');
         navigate('/FacturaRealizada');
       })
       .catch((error) => {
-        console.error('Error al generar factura', error);
         setErrorMessage('Error al generar factura', error);
         setShowErrorSnackbar(true);
       });
@@ -101,8 +96,6 @@ const GenerarFactura = () => {
     try {
       const response = await CotizacionService.obtenerUnaCotizacion(idCotizacion);
       setCotizacion(response.data);
-      console.log(idCotizacion);
-      console.log(response);
       setCargando(false);
     } catch (error) {
       console.error(error);
