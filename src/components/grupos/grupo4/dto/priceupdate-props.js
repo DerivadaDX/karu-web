@@ -19,7 +19,7 @@ export const sellingPriceOfACarInputs = [
       placeholder: 'Precio nuevo',
       errorMessage:
         '¡El precio debe ser un numero que puede ser decimal, no puede contener letras!',
-      pattern: "^(?=.*[1-9])\\d*(?:\\.\\d+)?$",
+      pattern: "^(?=.*[0-9])\\d*(?:\\.\\d+)?$",
       required: true,
     },
 ];
@@ -33,7 +33,7 @@ export const newPriceModelInput = [
       placeholder: 'Patente',
       errorMessage:
         '¡El precio para el modelo debe ser un numero que puede ser decimal, no puede contener letras!',
-      pattern: "^(?=.*[1-9])\\d*(?:\\.\\d+)?$",
+      pattern: "^(?=.*[0-9])\\d*(?:\\.\\d+)?$",
       required: true,
     },
 ];
