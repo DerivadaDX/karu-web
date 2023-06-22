@@ -6,7 +6,9 @@ import { UserContext } from '../../context/UsersContext';
 import '../../assets/css/formRegister.css';
 import {
   Alert,
+  Box,
   Button,
+  Grid,
   Paper,
   Stack,
   TextField,
@@ -184,10 +186,16 @@ const UpdateProfile = () => {
           >
             Enviar
           </Button>
-          <Link to={'/'}>
-            <Paper>Volver al inicio</Paper>
-          </Link>
         </Stack>
+        <Grid container justifyContent="center">
+          <Grid item>
+            <Box display="inline-block">
+              <Link to={'/'}>
+                <p>Volver al inicio</p>
+              </Link>
+            </Box>
+          </Grid>
+        </Grid>
       </Paper>
     </Paper>
   );

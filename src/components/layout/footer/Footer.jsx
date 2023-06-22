@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 
-import { Box } from '@mui/material';
+import { Box, Grid } from '@mui/material';
 
 import Copyright from './components/Copyright';
 import BotonLogIn from './components/BotonLogIn';
@@ -16,10 +16,14 @@ const Footer = () => {
   }, [isAuthenticated]);
 
   return (
-    <Box>
-      {mostrarLogin ? <BotonLogIn /> : <BotonLogOut />}
-      <Copyright />
-    </Box>
+    <Grid container justifyContent="center">
+      <Grid item>
+        <Box display="inline-block">
+          {mostrarLogin ? <BotonLogIn /> : <BotonLogOut />}
+          <Copyright />
+        </Box>
+      </Grid>
+    </Grid>
   );
 };
 

@@ -8,6 +8,7 @@ import {
   Box,
   Button,
   FormControl,
+  Grid,
   InputLabel,
   MenuItem,
   Paper,
@@ -102,7 +103,6 @@ const ModelForm = () => {
             >
               <MenuItem value='NAFTA'>NAFTA</MenuItem>
               <MenuItem value='DIESEL'>DIESEL</MenuItem>
-              <MenuItem value='ELECTRICO'>ELECTRICO</MenuItem>
               <MenuItem value='HIBRIDO'>HIBRIDO</MenuItem>
             </Select>
           </FormControl>
@@ -133,9 +133,15 @@ const ModelForm = () => {
         <Button variant="contained" type="submit" sx={{ marginBottom: '2em' }}>
           Enviar
         </Button>
-        <Link to={'/'}>
-          <p>Volver al inicio</p>
-        </Link>
+        <Grid container justifyContent="center">
+          <Grid item>
+            <Box display="inline-block">
+              <Link to={'/'}>
+                <p>Volver al inicio</p>
+              </Link>
+            </Box>
+          </Grid>
+        </Grid>
       </Stack>
     </Paper>
   );
