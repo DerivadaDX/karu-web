@@ -21,6 +21,8 @@ import ConsultaService from '../../../services/ConsultaService';
 
 const ConsultaDialog = () => {
   const [open, setOpen] = React.useState(false);
+  const [showSuccessSnackbar, setShowSuccessSnackbar] = useState(false);
+  const [showErrorSnackbar, setShowErrorSnackbar] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -39,9 +41,6 @@ const ConsultaDialog = () => {
     error: false,
     message: '',
   });
-
-  const [showSuccessSnackbar, setShowSuccessSnackbar] = useState(false);
-  const [showErrorSnackbar, setShowErrorSnackbar] = useState(false);
 
   const emailValidation = (email) => {
     // expresion regular para validar email
@@ -74,8 +73,7 @@ const ConsultaDialog = () => {
       // eslint-disable-next-line no-console
       console.log(response.data);
       setShowSuccessSnackbar(true);
-      if (!showSuccessSnackbar) handleClose();
-      consultaObject= '';
+      consultaObject = '';
     } catch (error2) {
       // eslint-disable-next-line no-console
       console.log(error2);
@@ -86,6 +84,7 @@ const ConsultaDialog = () => {
   const handleSnackbarClose = () => {
     setShowSuccessSnackbar(false);
     setShowErrorSnackbar(false);
+    handleClose();
   };
 
   return (
