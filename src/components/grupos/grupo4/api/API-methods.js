@@ -148,7 +148,7 @@ export const ModifyPasswordUser = async (user) => {
 export const getVehicle = async (plate) => {
   try {
     const response = await client.get(`/vehicle/getByPlate/${plate}`);
-    if (response.data.result.message) {
+    if (response.data.result.code) {
       return { value: response.data.result.message, validVehicle: false };
     }
     return {
@@ -156,7 +156,6 @@ export const getVehicle = async (plate) => {
       status: response.data.result.status,
       data: response.data.result,
     };
-    // return response.data.result;
   } catch (error) {
     return { validVehicle: false };
   }

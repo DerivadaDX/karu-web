@@ -20,7 +20,7 @@ import {
 
 const defaultState = {
   plate: '',
-  infractions: null,
+  infractions: true,
   debt: 0,
   vpa: null,
   rva: null,
