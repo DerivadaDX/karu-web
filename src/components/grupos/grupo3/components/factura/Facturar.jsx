@@ -47,15 +47,11 @@ const GenerarFactura = () => {
 
   /* declara una variable de estado para almacenar la fecha actual */
   const [fecha, setFechaActual] = useState(new Date());
-  // eslint-disable-next-line prefer-destructuring
-  const cotizacion = sessionStorage.cotizacion;
-  const financiacion = sessionStorage.financiacion;
 
-  // const [cotizacion, setCotizacion] = useState([]);
-  // const [factura, setFactura] = useState([]);
-  // guardo los datos de la factura
+  const [cotizacion, setCotizacion] = useState([]);
+
   const confirmarFactura = () => {
-    FacturaService.generarFactura(sessionStorage.idCotizacion)
+    FacturaService.guardarFactura(sessionStorage.idCotizacion)
       .then((response) => {
         // Show success notification
         setShowSuccessSnackbar(true);
@@ -66,20 +62,20 @@ const GenerarFactura = () => {
         setErrorMessage('Error al generar factura', error);
         setShowErrorSnackbar(true);
       });
+  };
 
-    /*
-    CotizacionService.enviarPDFCotizacion(cotizacion.cliente.email, cotizacion.id)
+  const confirmarFacturaFinanciacion = () => {
+    FacturaService.guardarFacturaFinanciada(sessionStorage.idCotizacion, sessionStorage.factura)
       .then((response) => {
         // Show success notification
         setShowSuccessSnackbar(true);
-        console.log('Correo enviado');
+        console.log('Factura generada');
       })
       .catch((error) => {
-        console.error('Error al enviar el correo', error);
-        setErrorMessage('Error al enviar el correo', error);
+        console.error('Error al generar factura', error);
+        setErrorMessage('Error al generar factura', error);
         setShowErrorSnackbar(true);
       });
-      */
   };
 
   const handleSnackbarClose = () => {
@@ -87,30 +83,27 @@ const GenerarFactura = () => {
     setShowErrorSnackbar(false);
   };
 
-  /*
+  let financiacionData = '';
+
+  if (sessionStorage.conFinanciacion === 'si') {
+    financiacionData = JSON.parse(sessionStorage.factura);
+  }
+  const idCotizacion = Number(sessionStorage.idCotizacion);
+
   const obtenerDatosCotizacion = async () => {
     try {
-      const response = await CotizacionService.obtener(sessionStorage.idCotizacion);
-      setCotizacion(response.data.result);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const obtenerDatosFactura = async () => {
-    try {
-      const response = await FacturaService.obtenerFactura(sessionStorage.facturaId);
-      setFactura(response.data.result);
+      const response = await CotizacionService.obtenerUnaCotizacion(idCotizacion);
+      setCotizacion(response.data);
+      console.log(idCotizacion);
+      console.log(response);
     } catch (error) {
       console.error(error);
     }
   };
 
   useEffect(() => {
-    obtenerDatosFactura();
     obtenerDatosCotizacion();
   }, []);
-*/
 
   return (
     <Container className="my-0">
@@ -118,20 +111,20 @@ const GenerarFactura = () => {
         <h2>Factura de compra</h2>
         <hr />
         ID:
-        {cotizacion.id}
+        {/* cotizacion.id */}
         <div className="row">
           <div className="col-md-6">
             <Card border="primary" style={{ width: '16rem' }}>
               <Card.Body>
                 Nombre del cliente:
-                <Card.Title>{cotizacion.cliente.nombre}</Card.Title>
+                <Card.Title>{ cotizacion.cliente.nombre }</Card.Title>
               </Card.Body>
             </Card>
             <br />
             <Card border="primary" style={{ width: '16rem' }}>
               <Card.Body>
                 Patente:
-                <Card.Title>{cotizacion.patente}</Card.Title>
+                <Card.Title>{ cotizacion.patente }</Card.Title>
               </Card.Body>
             </Card>
             <br />
@@ -141,23 +134,23 @@ const GenerarFactura = () => {
               <ListGroup variant="flush">
                 <ListGroup.Item>
                   Sucursal:
-                  {cotizacion.sucursal}
+                  { cotizacion.sucursal }
                 </ListGroup.Item>
                 <ListGroup.Item>
-                  Número de Factura:
-                  {factura.id ? factura.id : ''}
+                  Nro de Factura:
+                  { /* factura.id ? factura.id : '' */}
                 </ListGroup.Item>
                 <ListGroup.Item>
-                  Número de cotización asociada:
-                  {cotizacion.numeroCotizacion}
+                  Nro de cotización asociada:
+                  { cotizacion.numeroCotizacion }
                 </ListGroup.Item>
                 <ListGroup.Item>
                   ID del vendedor:
-                  {cotizacion.idVendedor}
+                  { cotizacion.idVendedor }
                 </ListGroup.Item>
                 <ListGroup.Item>
                   Fecha:
-                  {cotizacion.fecha}
+                  { cotizacion.fecha }
                 </ListGroup.Item>
               </ListGroup>
             </Card>
@@ -174,40 +167,40 @@ const GenerarFactura = () => {
             <p><strong>Garantía Extendida</strong></p>
             <p><strong>Gastos Administrativos</strong></p>
             <hr />
-            {cotizacion.gastosAdministrativos.map((gasto) => (
-              <p key={gasto.id}>{gasto.nombre}</p>))}
+            { cotizacion.gastosAdministrativos.map((gasto) => (
+              <p key={gasto.id}>{gasto.nombre}</p>)) }
             <hr />
-            <p style={{ backgroundColor: '#b3e6cc' }}><strong>TotalGastosAdministrativos: ${cotizacion.importeTotalGastosAdministrativos}</strong></p>
+            <p style={{ backgroundColor: '#b3e6cc' }}><strong>TotalGastosAdministrativos: ${ cotizacion.importeTotalGastosAdministrativos }</strong></p>
           </Col>
 
           <Col xs={6}>
-            <p style={{ backgroundColor: '#b3e6cc' }}>{cotizacion.precioVenta}</p>
-            <p style={{ backgroundColor: '#b3e6cc' }}>{cotizacion.importeIVA}</p>
-            <p style={{ backgroundColor: '#b3e6cc' }}>{cotizacion.garantiaExtendida ? 'Sí' : 'No'}</p>
+            <p style={{ backgroundColor: '#b3e6cc' }}>{ cotizacion.precioVenta }</p>
+            <p style={{ backgroundColor: '#b3e6cc' }}>{ cotizacion.importeIVA }</p>
+            <p style={{ backgroundColor: '#b3e6cc' }}>{ cotizacion.garantiaExtendida ? 'Sí' : 'No' }</p>
             <br />
             <hr style={{ border: '1px solid transparent' }} />
             {/* Obtener el campo seguro del objeto */}
-            {cotizacion.gastosAdministrativos.map((gasto) => (
-              <p key={gasto.id}>{gasto.importe}</p>))}
+            { cotizacion.gastosAdministrativos.map((gasto) => (
+              <p key={gasto.id}>{gasto.importe}</p>)) }
           </Col>
           <hr />
           <Col xs={6}><p><strong>Total:</strong></p></Col>
-          <Col xs={6} style={{ backgroundColor: '#b3e6cc' }}><p>{' '}<strong> $ {cotizacion.total}</strong></p></Col>
+          <Col xs={6} style={{ backgroundColor: '#b3e6cc' }}><p>{' '}<strong> $ { cotizacion.total }</strong></p></Col>
 
           {/* Reserva */}
           <Col xs={6}><p><strong>importe de Reserva:</strong></p></Col>
-          <Col xs={6} style={{ backgroundColor: '#b3e6cc' }}><p><strong>-${cotizacion.importeReserva}</strong></p></Col>
+          <Col xs={6} style={{ backgroundColor: '#b3e6cc' }}><p><strong>${ cotizacion.importeReserva ? cotizacion.importeReserva : 0 }</strong></p></Col>
           <hr />
           <Col xs={6} className="bg-warning"><p><strong>Total Final:</strong></p></Col>
-          <Col xs={6} className="bg-warning"><p><strong>$ {cotizacion.totalMenosReserva}</strong></p></Col>
+          <Col xs={6} className="bg-warning"><p><strong>$ { cotizacion.totalMenosReserva ? cotizacion.totalMenosReserva : cotizacion.total }</strong></p></Col>
         </Row>
 
         {/* Aca pregunto si hay financiacion, y de haberla, incluyo un componente encargado
             de gestionar los datos de la financiacion    */}
 
-        {sessionStorage.conFinanciacion ? <Financiacion /> : '' }
+        {sessionStorage.conFinanciacion === 'si' ? <Financiacion financiacion={financiacionData} /> : '' }
 
-        <Button type="text" onClick={confirmarFactura}>Confirmar Factura</Button>
+        <Button type="text" onClick={sessionStorage.conFinanciacion === 'si' ? confirmarFacturaFinanciacion : confirmarFactura}>Confirmar Factura</Button>
       </div>
 
       {/* Alertas */}
