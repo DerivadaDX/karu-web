@@ -53,6 +53,6 @@ export const listaGNC = [
   {
     id: 3,
     value: false,
-    label: '_SIN GNC_',
+    label: 'SIN GNC',
   },
 ];
