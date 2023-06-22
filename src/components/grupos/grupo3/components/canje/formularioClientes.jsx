@@ -126,7 +126,7 @@ const FormularioCliente = () => {
                 )}
               </Form.Group>
             ))}
-            <Button type="submit" variant="primary">Submit</Button>
+            <Button type="submit" variant="primary">Enviar</Button>
           </Form>
         </Col>
       </Row>
