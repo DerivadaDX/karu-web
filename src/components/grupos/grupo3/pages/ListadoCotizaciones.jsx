@@ -68,7 +68,7 @@ const ListadoCotizaciones = () => {
         variant="body1"
         component="span"
       >
-        {garantiaExtendida ? 'Simple' : 'Extendida'}
+        {garantiaExtendida ? 'Extendida' : 'Simple'}
       </Typography>
     );
   };
