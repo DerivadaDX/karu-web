@@ -88,10 +88,8 @@ const Cotizacion = ({ formData, precioAuto }) => {
           la reserva sera
           <strong> ¡anulada! </strong>
           <br />
-          Una vez completado el formulario se le enviara un email con
-          los detalles de
-          <strong> la factura y el CBU </strong>
-          de donde deberá ingresar el dinero.
+          <strong>El CBU es: 0000000000000000000001 </strong>
+          allí debera ingrear su pago con el id de su reserva.
           <br />
           Luego, de haber efectuado el pago y dentro de un lapso de 48hs,
           un vendedor se contactara con usted para concretar un turno.
@@ -189,19 +187,19 @@ const Reserva = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (validateForm()) {
-      try {
-        await ReservaService.guardarReserva(productId, formData);
-        // Se muestra la success notificion
-        setShowSuccessSnackbar(true);
-        // Reset the form data if needed
-        setFormData({});
-        navigate('/ReservaRealizada');
-      } catch (error) {
-        setErrorMessage(error.message);
-        setShowErrorSnackbar(true);
-      }
+      ReservaService.guardarReserva(productId, formData)
+        .then((response) => {
+          // Se muestra la success notificion
+          setShowSuccessSnackbar(true);
+          // Reset the form data if needed
+          const reservaId = response.data.id;
+          setFormData({});
+          navigate(`/ReservaRealizada/${reservaId}`);
+        }).catch((error) => {
+          setErrorMessage(error.message);
+          setShowErrorSnackbar(true);
+        });
     }
   };
 

@@ -117,7 +117,7 @@ const GROUP_3_PAGES_CONFIG = [
   {
     id: 'g3-ReservaRealizada',
     name: 'Reserva realizada',
-    href: '/ReservaRealizada',
+    href: '/ReservaRealizada/:reservaId',
     icon: <GroupIcon />,
     page: <ReservaRealizada />,
     soloURL: true,
