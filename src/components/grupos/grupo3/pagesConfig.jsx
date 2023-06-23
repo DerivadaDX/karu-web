@@ -71,7 +71,7 @@ const GROUP_3_PAGES_CONFIG = [
     href: '/filtrarVehiculos/',
     icon: <Search />,
     page: <FiltroDeVehiculos />,
-    roles: [Roles.CLIENTE, Roles.IT],
+    roles: [Roles.CLIENTE, Roles.VENDEDOR, Roles.IT],
   },
   {
     id: 'g3-BORRADOR vehiculo',
@@ -89,7 +89,6 @@ const GROUP_3_PAGES_CONFIG = [
     icon: <RequestPageIcon />,
     page: <ListadoCotizaciones />,
     roles: [Roles.VENDEDOR, Roles.IT],
-    // soloUrl: true,
   },
   {
     id: 'g3-Consulta',
@@ -129,7 +128,6 @@ const GROUP_3_PAGES_CONFIG = [
     href: '/ListadoFacturas',
     icon: <CarRentalIcon />,
     page: <ListadoFacturas />,
-    soloURL: true,
     roles: [Roles.VENDEDOR, Roles.IT],
   },
   {
@@ -138,7 +136,6 @@ const GROUP_3_PAGES_CONFIG = [
     href: '/ListadoReservas',
     icon: <ReceiptIcon />,
     page: <ListadoReservas />,
-    soloURL: true,
     roles: [Roles.VENDEDOR, Roles.IT],
   },
   {

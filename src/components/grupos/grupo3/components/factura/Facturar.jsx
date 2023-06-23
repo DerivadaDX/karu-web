@@ -192,13 +192,6 @@ const GenerarFactura = () => {
               <hr />
               <Col xs={6}><p><strong>Total:</strong></p></Col>
               <Col xs={6} style={{ backgroundColor: '#b3e6cc' }}><p>{' '}<strong> $ { cotizacion.total }</strong></p></Col>
-
-              {/* Reserva */}
-              <Col xs={6}><p><strong>importe de Reserva:</strong></p></Col>
-              <Col xs={6} style={{ backgroundColor: '#b3e6cc' }}><p><strong>${ cotizacion.importeReserva ? cotizacion.importeReserva : 0 }</strong></p></Col>
-              <hr />
-              <Col xs={6} className="bg-warning"><p><strong>Total Final:</strong></p></Col>
-              <Col xs={6} className="bg-warning"><p><strong>$ { cotizacion.totalMenosReserva ? cotizacion.totalMenosReserva : cotizacion.total }</strong></p></Col>
             </Row>
 
             {/* Aca pregunto si hay financiacion, y de haberla, incluyo un componente encargado

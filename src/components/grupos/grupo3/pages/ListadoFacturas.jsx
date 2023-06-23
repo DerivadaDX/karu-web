@@ -426,12 +426,6 @@ const ListadoFacturas = () => {
               <br />
               Total:
               {cotizacion.total}
-              <br />
-              Importe Reserva:
-              {cotizacion.importeReserva ? cotizacion.importeReserva : 'No tiene reserva' }
-              <br />
-              Total Menos reserva:
-              {cotizacion.totalMenosReserva ? cotizacion.totalMenosReserva : cotizacion.total}
             </DialogContentText>
           )}
         </DialogContent>

@@ -12,6 +12,7 @@ import {
   Alert,
   AlertTitle,
 } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import MaterialReactTable from 'material-react-table';
 import PropTypes from 'prop-types';
 import ReservaService from '../services/ReservaService';
@@ -33,10 +34,12 @@ const ListadoReservas = () => {
   const [cargando, setCargando] = useState(true);
   const [openDialogVerCliente, setOpenDialogVerCliente] = useState(false);
   const [openDialogAnularReserva, setOpenDialogAnularReserva] = useState(false);
+  const [openDialogRealizarCotizacion, setOpenDialogRealizarCotizacion] = useState(false);
   const [selectedReserva, setSelectedReserva] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
   const [showSuccessSnackbar, setShowSuccessSnackbar] = useState(false);
   const [showErrorSnackbar, setShowErrorSnackbar] = useState(false);
+  const navigate = useNavigate();
 
   ListadoReservas.propTypes = {
     row: PropTypes.shape({
@@ -97,11 +100,39 @@ const ListadoReservas = () => {
       }
       handleCloseDialogAnularReserva();
     } else {
-      setErrorMessage('La reserva seleccionada se cuentra anulada o ya pagada, por lo que es imposible anularla.');
+      setErrorMessage('La reserva seleccionada se encuentra anulada o ya pagada, por lo que es imposible anularla.');
       setShowErrorSnackbar(true);
       handleCloseDialogAnularReserva();
     }
   };
+
+  const handleOpenDialogRealizarCotizacion = (reserva) => {
+    setSelectedReserva(reserva);
+    setOpenDialogRealizarCotizacion(true);
+  };
+
+  const handleCloseDialogRealizarCotizacion = () => {
+    setOpenDialogRealizarCotizacion(false);
+  };
+
+  const handleRealizarCotizacion = () => {
+    if (selectedReserva.estadoReserva === 'PAGADA') {
+      try {
+        // esperar a que fer confirme
+        navigate(`/cotizar/${selectedReserva.patente}`);
+        setShowSuccessSnackbar(true);
+      } catch (error) {
+        setErrorMessage(error.message);
+        setShowErrorSnackbar(true);
+      }
+      handleCloseDialogAnularReserva();
+    } else {
+      setErrorMessage('La reserva seleccionada se encuentra anulada, pendiente o procesada, por lo que es imposible cotizarla.');
+      setShowErrorSnackbar(true);
+      handleCloseDialogAnularReserva();
+    }
+  };
+
   const handleSnackbarClose = () => {
     setShowSuccessSnackbar(false);
     setShowErrorSnackbar(false);
@@ -144,6 +175,16 @@ const ListadoReservas = () => {
               Anular Reserva
             </Button>
           </>
+        ),
+      },
+      {
+        accessorKey: 'cotizar',
+        header: 'Cotizar',
+        // eslint-disable-next-line
+        Cell: ({ row }) => (
+          <Button sx={{ marginTop: '10px', backgroundColor: '#205723', color: '#ffffff' }} onClick={() => handleOpenDialogRealizarCotizacion(row.original)}>
+            Cotizar Vehiculo
+          </Button>
         ),
       },
     ],
@@ -219,6 +260,22 @@ const ListadoReservas = () => {
           </Button>
           <Button onClick={handleAnularReserva} color="primary">
             Anular
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={openDialogRealizarCotizacion} onClose={handleCloseDialogRealizarCotizacion}>
+        <DialogTitle>Confirmar Cotizacion de Reserva</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            ¿Estás seguro de que quieres cotizar esta reserva?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialogRealizarCotizacion} color="primary">
+            Cancelar
+          </Button>
+          <Button onClick={handleRealizarCotizacion} color="primary">
+            cotizar
           </Button>
         </DialogActions>
       </Dialog>
